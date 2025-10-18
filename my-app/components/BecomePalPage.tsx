@@ -354,12 +354,11 @@ export function BecomePalPage({ onNavigate }: BecomePalPageProps) {
               >
                 {/* Profile */}
                 <div className="flex items-center space-x-4 mb-6">
-                  {/* Placeholder for profile image */}
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                    <span className="text-gray-600 text-xl font-bold">
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                  </div>
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-[#f44708]"
+                  />
                   <div>
                     <h4 className="font-bold text-[#2f2f2f]">{testimonial.name}</h4>
                     <p className="text-sm text-gray-600">{testimonial.role}</p>

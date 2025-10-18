@@ -132,13 +132,13 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInRight}
             >
-              {/* Placeholder for Lagos skyline image */}
-              <div className="w-full h-full bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center">
-                <div className="text-center text-gray-600">
-                  <Building2 size={64} className="mx-auto mb-4" />
-                  <p>Lagos Nigeria Skyline</p>
-                </div>
-              </div>
+              <motion.img
+                src="https://images.unsplash.com/photo-1649502913092-fb7f0e8fc632?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxMYWdvcyUyME5pZ2VyaWElMjBjaXR5JTIwc2t5bGluZXxlbnwxfHx8fDE3NjAxMDk2Njh8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Lagos Nigeria Skyline"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+              />
             </motion.div>
           </div>
         </div>

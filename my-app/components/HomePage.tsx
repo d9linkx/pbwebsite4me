@@ -131,7 +131,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </motion.button>
 
                 <motion.button
-                  onClick={() => onNavigate?.('website-send-items')}
+                  onClick={() => router.push('/send-items')}
                   className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
@@ -409,13 +409,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden">
-                {/* Placeholder for entrepreneur image */}
-                <div className="w-full h-full bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Users size={64} className="mx-auto mb-4" />
-                    <p>Nigerian Entrepreneur</p>
-                  </div>
-                </div>
+                <motion.img 
+                  src="https://images.pexels.com/photos/16155217/pexels-photo-16155217.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="Nigerian entrepreneur"
+                  className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.1 }}
+                  transition={{ duration: 0.4 }}
+                />
               </div>
               <div className="p-8 bg-gray-50">
                 <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">
@@ -425,7 +426,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Send inventory, products, and documents across Nigeria with ease. Focus on growing your business while we handle deliveries.
                 </p>
                 <motion.button
-                  onClick={() => onNavigate?.('website-send-items')}
+                  onClick={() => router.push('/send-items')}
                   className="text-[#f44708] font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
@@ -448,13 +449,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden">
-                {/* Placeholder for delivery professional image */}
-                <div className="w-full h-full bg-gradient-to-br from-green-200 to-green-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Package size={64} className="mx-auto mb-4" />
-                    <p>Delivery Professional</p>
-                  </div>
-                </div>
+                <motion.img 
+                  src="https://images.pexels.com/photos/6868625/pexels-photo-6868625.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="Delivery professional"
+                  className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.1 }}
+                  transition={{ duration: 0.4 }}
+                />
               </div>
               <div className="p-8 bg-gray-50">
                 <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">
@@ -545,7 +547,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Turn your business location into a secure package hub. Earn storage fees by safely holding deliveries for pickup when receivers are unavailable.
                 </p>
                 <motion.button
-                  onClick={() => onNavigate?.('website-become-proxy')}
+                  onClick={() => router.push('/become-proxy')}
                   className="text-[#f44708] font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
@@ -615,13 +617,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInRight}
             >
-              {/* Placeholder for trust and security image */}
-              <div className="w-full h-full bg-gradient-to-br from-indigo-200 to-indigo-300 flex items-center justify-center">
-                <div className="text-center text-gray-600">
-                  <Shield size={64} className="mx-auto mb-4" />
-                  <p>Trust & Security</p>
-                </div>
-              </div>
+              <motion.img 
+                src="https://images.unsplash.com/photo-1687422808366-c5b2800c6e98?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwc21hcnRwaG9uZXxlbnwxfHx8fDE3NjAxMTU3Njh8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Trust and security"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+              />
             </motion.div>
           </div>
         </div>
@@ -638,13 +641,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              {/* Placeholder for community marketplace image */}
-              <div className="w-full h-full bg-gradient-to-br from-teal-200 to-teal-300 flex items-center justify-center">
-                <div className="text-center text-gray-600">
-                  <Users size={64} className="mx-auto mb-4" />
-                  <p>Community Marketplace</p>
-                </div>
-              </div>
+              <motion.img 
+                src="https://images.pexels.com/photos/29812611/pexels-photo-29812611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="Community marketplace"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+              />
             </motion.div>
             <motion.div
               className="order-1 lg:order-2"
@@ -781,13 +785,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInRight}
             >
-              {/* Placeholder for flexible delivery work image */}
-              <div className="w-full h-full bg-gradient-to-br from-yellow-200 to-yellow-300 flex items-center justify-center">
-                <div className="text-center text-gray-600">
-                  <Package size={64} className="mx-auto mb-4" />
-                  <p>Flexible Delivery Work</p>
-                </div>
-              </div>
+              <motion.img 
+                src="https://images.pexels.com/photos/6868557/pexels-photo-6868557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="Flexible delivery work"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+              />
             </motion.div>
           </div>
         </div>
@@ -804,13 +809,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              {/* Placeholder for small business owner image */}
-              <div className="w-full h-full bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
-                <div className="text-center text-gray-600">
-                  <Users size={64} className="mx-auto mb-4" />
-                  <p>Small Business Owner</p>
-                </div>
-              </div>
+              <motion.img 
+                src="https://images.unsplash.com/photo-1604933762021-54a5858c9832?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwc21hbGwlMjBidXNpbmVzcyUyMG93bmVyfGVufDF8fHx8MTc2MDExNTQ3M3ww&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Small business owner"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+              />
             </motion.div>
             <motion.div
               className="order-1 lg:order-2"
