@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { Target, Users, Zap, Heart, Shield, TrendingUp, ArrowRight, Linkedin, BarChart3, Rocket, CheckCircle, Building2, Code, Lock, Gift, Sparkles, Brain, Handshake, Coins, Map, GraduationCap, ShieldCheck, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';

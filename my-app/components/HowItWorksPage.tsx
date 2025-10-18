@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Package, DollarSign, MapPin, CheckCircle, Users, Building, Mail, ArrowRight, Smartphone, Shield, Star } from 'lucide-react';
 import { motion } from 'framer-motion';

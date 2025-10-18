@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { Package, Zap, Shield, Users, TrendingUp, CheckCircle, ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';

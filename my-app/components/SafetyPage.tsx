@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { Shield, Lock, Eye, CheckCircle, AlertTriangle, Phone, FileText, Camera, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';

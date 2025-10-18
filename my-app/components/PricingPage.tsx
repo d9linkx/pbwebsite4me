@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Check, X, ArrowRight, Calculator, TrendingDown, Shield, Package, DollarSign, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { ArrowRight, Store, TrendingUp, Clock, Shield, DollarSign, MapPin, Check, Star, Users, Package, Building, Footprints, Zap } from 'lucide-react';
 
