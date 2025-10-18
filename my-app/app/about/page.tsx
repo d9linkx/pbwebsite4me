@@ -1,3 +1,4 @@
+"use client";
 import { WebsiteLayout } from '../../components/WebsiteLayout';
 import { AboutPage } from '../../components/AboutPage';
 
