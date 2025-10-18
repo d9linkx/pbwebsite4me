@@ -67,14 +67,9 @@ export function WebsiteHeader({ onNavigate }: WebsiteHeaderProps) {
             onClick={() => handleNavigate('/', 'website-home')}
             className="flex items-center space-x-3 group"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200 p-2">
-              {/* Placeholder for logo - replace with actual logo image */}
-              <div className="w-full h-full bg-white rounded-lg flex items-center justify-center text-[#f44708] font-bold text-lg">
-                P
-              </div>
-              {/* Uncomment and add your logo file when available */}
-              {/* <img src={prawnboxLogo} alt="Prawnbox" className="w-full h-full object-contain" /> */}
-            </div>
+            {/* <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200 p-2"> */}
+              <img src='/P-logo.png' alt="Prawnbox" className="w-10 h-10 object-contain" />
+            
             <span className="text-2xl font-bold text-white">Prawnbox</span>
           </button>
 

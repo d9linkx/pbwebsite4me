@@ -3,6 +3,9 @@ import React from 'react';
 import { Package, Zap, Shield, Users, TrendingUp, CheckCircle, ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import woman from '/public/woman.jpg';
+import tamperProof from '/public/tamper-proof.jpg';
+import proxyWoman from '/public/woman-in-a-shop.jpg';
 
 interface HomePageProps {
   onNavigate?: (screen: string) => void;
@@ -158,14 +161,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               variants={fadeInRight}
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                {/* Placeholder for hero image - replace with actual image */}
-                <div className="w-full h-[500px] bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Package size={64} className="mx-auto mb-4" />
-                    <p>Hero Delivery Image</p>
-                    <p className="text-sm">Replace with actual image</p>
-                  </div>
-                </div>
+                <motion.img
+                  src='/woman.jpg'
+                  alt="Prawnbox delivery Pal with package - Professional delivery service"
+                  className="w-full h-[500px] object-cover object-center"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 1.05 }}
+                  transition={{ duration: 0.4 }}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent px-[0px] p-[0px] mx-[0px] m-[0px]"></div>
 
                 {/* Floating Card */}
@@ -489,14 +492,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden relative">
-                {/* Placeholder for tamper-proof tape image */}
-                <div className="w-full h-full bg-gradient-to-br from-orange-200 to-orange-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Shield size={64} className="mx-auto mb-4" />
-                    <p>Tamper-Proof Security</p>
-                    <p className="text-sm">Coming Soon</p>
-                  </div>
-                </div>
+                <motion.img 
+                  src='/tamper-proof-tape.png'
+                  alt="Hands applying tamper-proof security tape with QR code to a package"
+                  className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.1 }}
+                  transition={{ duration: 0.4 }}
+                />
                 <div className="absolute top-4 right-4 bg-[#f44708] text-white px-4 py-2 rounded-full shadow-lg">
                   <span className="font-semibold text-sm">Coming Soon</span>
                 </div>
@@ -531,13 +534,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden">
-                {/* Placeholder for proxy shop owner image */}
-                <div className="w-full h-full bg-gradient-to-br from-purple-200 to-purple-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Users size={64} className="mx-auto mb-4" />
-                    <p>Shop Owner</p>
-                  </div>
-                </div>
+                <motion.img 
+                  src='/woman-in-a-shop.png'
+                  alt="Nigerian woman shop owner at provision store"
+                  className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 1.1 }}
+                  transition={{ duration: 0.4 }}
+                />
               </div>
               <div className="p-8 bg-gray-50">
                 <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">

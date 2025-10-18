@@ -211,14 +211,11 @@ export function SendItemsPage({ onNavigate }: SendItemsPageProps) {
             {/* Hero Image */}
             <div className="relative lg:mt-[50px]">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                {/* Placeholder for send items hero image */}
-                <div className="w-full h-[500px] bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Package size={64} className="mx-auto mb-4" />
-                    <p>Send Items</p>
-                    <p className="text-sm">Fast & Affordable Delivery</p>
-                  </div>
-                </div>
+                <img
+                  src='/couple.jpg'
+                  alt="Prawnbox delivery in Lagos"
+                  className="w-full h-[500px] object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent m-[0px] p-[0px]"></div>
 
                 {/* Floating Card */}

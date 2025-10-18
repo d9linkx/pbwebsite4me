@@ -183,14 +183,11 @@ export function BecomePalPage({ onNavigate }: BecomePalPageProps) {
             {/* Hero Image */}
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                {/* Placeholder for pal hero image */}
-                <div className="w-full h-[500px] bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Package size={64} className="mx-auto mb-4" />
-                    <p>Prawnbox Pals</p>
-                    <p className="text-sm">Professional delivery team</p>
-                  </div>
-                </div>
+                <img
+                  src='/pal.jpg'
+                  alt="Prawnbox Pals - Professional delivery team ready to earn"
+                  className="w-full h-[500px] object-cover object-center"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}

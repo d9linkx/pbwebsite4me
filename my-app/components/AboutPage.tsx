@@ -880,7 +880,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 company: 'Prawnbox',
                 linkedin: 'https://www.linkedin.com/in/uchechukwu-friday/',
                 initials: 'UF',
-                photo: null // Placeholder for team member photos
+                photo: '/2.png' // Placeholder for team member photos
               },
               {
                 name: 'Prince DIKE',
@@ -888,15 +888,15 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 company: 'Prawnbox',
                 linkedin: 'https://www.linkedin.com/in/prince-dike/',
                 initials: 'PD',
-                photo: null // Placeholder for team member photos
+                photo: '/1.png' // Placeholder for team member photos
               },
               {
-                name: 'Laurels ECHICHINWO',
+                name: 'Laurels Ozy ECHICHINWO',
                 role: 'Chief Technology Officer (CTO)',
                 company: 'Prawnbox',
                 linkedin: 'https://www.linkedin.com/in/laurels-ozy-echichinwo/',
                 initials: 'LE',
-                photo: null // Placeholder for team member photos
+                photo: '/3.png' // Placeholder for team member photos
               }
             ].map((member, index) => (
               <div
@@ -906,7 +906,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 {/* Square Image with slight rounding - positioned at top with 99% width */}
                 <div className="w-[99%] aspect-square rounded-lg mx-auto mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-lg">
                   {member.photo ? (
-                    <Image
+                    <img
                       src={member.photo}
                       alt={member.name}
                       className="w-full h-full object-cover object-center"

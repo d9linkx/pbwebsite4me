@@ -216,14 +216,11 @@ export function BecomeProxyPage({ onNavigate }: BecomeProxyPageProps) {
             {/* Hero Image */}
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                {/* Placeholder for proxy shop owner image */}
-                <div className="w-full h-[500px] bg-gradient-to-br from-green-200 to-green-300 flex items-center justify-center">
-                  <div className="text-center text-gray-600">
-                    <Store size={64} className="mx-auto mb-4" />
-                    <p>Proxy Shop Owner</p>
-                    <p className="text-sm">Secure storage location</p>
-                  </div>
-                </div>
+                <img
+                  src='/proxy.jpg'
+                  alt="Prawnbox Proxy - Shop owner with smartphone"
+                  className="w-full h-[500px] object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}
