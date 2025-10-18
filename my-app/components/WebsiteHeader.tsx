@@ -59,7 +59,7 @@ export function WebsiteHeader({ onNavigate }: WebsiteHeaderProps) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#2f2f2f] border-b border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-[0px] px-[14px] m-[0px]">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <button
@@ -141,8 +141,8 @@ export function WebsiteHeader({ onNavigate }: WebsiteHeaderProps) {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-[#1a1a1a] border-t border-gray-800">
-          <nav className="px-4 py-6 space-y-2">
+        <div className="lg:hidden bg-[#1a1a1a] border-t border-gray-800 w-full">
+          <nav className="px-4 py-6 space-y-2 max-w-7xl mx-auto">
             {menuItems.map((item) => (
               <button
                 key={item.screen}
