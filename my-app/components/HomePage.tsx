@@ -1,12 +1,14 @@
 import React from 'react';
 import { Package, Zap, Shield, Users, TrendingUp, CheckCircle, ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 interface HomePageProps {
   onNavigate?: (screen: string) => void;
 }
 
 export function HomePage({ onNavigate }: HomePageProps) {
+  const router = useRouter();
   // Animation variants for scroll effects (compatible with framer-motion v12)
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
@@ -461,7 +463,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Join our network of verified Pals <span className="font-bold">with or without a vehicle</span>. Set your own rates, choose your schedule, and build your reputation.
                 </p>
                 <motion.button
-                  onClick={() => onNavigate?.('website-become-pal')}
+                  onClick={() => router.push('/become-pal')}
                   className="text-[#f44708] font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}

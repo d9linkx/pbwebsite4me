@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { Facebook, X, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 // Using a placeholder for the logo - you can replace this with your actual logo
 // import prawnboxLogo from '../public/prawnbox-logo.png';
@@ -8,12 +9,34 @@ interface WebsiteFooterProps {
 }
 
 export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
+  const router = useRouter();
   const currentYear = new Date().getFullYear();
 
   // Helper function to navigate and scroll to top
   const handleNavigate = (screen: string) => {
-    onNavigate?.(screen);
+    // Map screen names to routes
+    const routeMap: { [key: string]: string } = {
+      'website-about': '/about',
+      'website-how-it-works': '/how-it-works',
+      'website-pricing': '/pricing',
+      'website-safety': '/safety',
+      'website-faqs': '/faqs',
+      'website-contact': '/contact',
+      'website-become-pal': '/become-pal',
+      'website-become-proxy': '/become-proxy',
+      'website-send-items': '/send-items',
+      'website-terms': '/terms',
+      'website-privacy': '/privacy',
+    };
+
+    const route = routeMap[screen] || '/';
+    router.push(route);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Call the optional onNavigate callback if provided
+    if (onNavigate) {
+      onNavigate(screen);
+    }
   };
 
   return (
