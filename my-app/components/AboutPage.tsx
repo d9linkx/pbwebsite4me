@@ -11,6 +11,7 @@ interface AboutPageProps {
 export function AboutPage({ onNavigate }: AboutPageProps) {
 
   // Animation variants (compatible with framer-motion v12)
+  // Added to make this look cool
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
     visible: { opacity: 1, y: 0 }
