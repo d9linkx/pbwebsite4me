@@ -17,7 +17,6 @@ export type Screen =
   | 'auth'
   | 'dashboard'
   | 'post-delivery'
-  | 'bids'
   | 'pal-profile'
   | 'escrow-payment'
   | 'payment-confirmation'
@@ -36,6 +35,7 @@ export type Screen =
   | 'location-selection'
   | 'referral'
   | 'sponsorship'
+  | 'sponsor-search'
   | 'sponsor-user-search'
   | 'sponsor-user-confirmation'
   | 'sponsorship-success'
@@ -54,6 +54,16 @@ export type Screen =
   | 'pickup-verification'
   | 'handover-qr'
   | 'accepted-bids'
+  | 'my-deliveries'
+  | 'receiver-dashboard'
+  | 'sponsorship-management'
+  | 'sponsorship-details'
+  | 'bids'
+  | 'website-become-pal'
+  | 'website-become-proxy'
+  | 'website-send-items'
+  | 'website-home'
+  | "proxy-to-receiver-handover"
   | 'delivery-progress'
   | 'delivery-confirmation'
   | 'arrival-confirmation'
@@ -83,7 +93,9 @@ export type Screen =
   | 'proxy-handover-directions'
   | 'sent-deliveries-history'
   | 'proxy-deliveries'
-  | 'received-deliveries';
+  | 'received-deliveries'
+  | 'sponsorship-management'
+  | 'sponsorship-details';
 
 export type UserRole = 'sender' | 'pal' | 'receiver' | 'proxy';
 
@@ -101,12 +113,40 @@ export type DeliveryStatus =
 
 export type ItemSize = 'Small' | 'Medium' | 'Large';
 
+export interface Item {
+  title: string;
+  description: string;
+  category: string;
+  size: string;
+  weight?: string;
+}
+
 export type VehicleType = 'Motorcycle' | 'Car' | 'Bicycle' | 'Van';
 
-export type ProxyStatus = 'incoming' | 'stored' | 'completed' | 'returned';
+export type ProxyStatus = 'incoming' | 'stored' | 'completed' | 'returned' | 'waiting-pickup' | 'ready-pickup' | 'collected';
 
 export type DisputeStatus = 'pending' | 'resolved' | 'escalated' | 'timeout';
 
+export interface DisputeResolutionMetrics {
+  disputeId: string;
+  resolutionTimeMs: number;
+  resolutionTimeHours: number;
+  disputeType: string;
+  jobValue: number;
+  automaticResolution: boolean;
+  timestamp: string;
+}
+
+export interface Dispute{
+  id: string;
+  jobId: string;
+  reason: string;
+  details: string;
+  reportedBy: string;
+  reportedAt: string;
+  status: DisputeStatus;
+  resolution?: DisputeResolution;
+}
 export interface User {
   id: string;
   name: string;
@@ -122,6 +162,7 @@ export interface User {
   isVerified?: boolean;
   governmentIdUrl?: string;
   governmentIdStatus?: 'pending' | 'verified' | 'rejected';
+  activeEscrows?: SponsorshipEscrow[]; // Tracks user's ongoing escrow-like engagements
   transactions?: Transaction[];
   bankAccounts?: BankAccount[];
   cards?: PaymentCard[];
@@ -149,6 +190,24 @@ export interface UserPreferences {
     autoAcceptRadius: number;
     preferredVehicles: VehicleType[];
   };
+  emailUpdate?: boolean;
+  smsUpdate?: boolean;
+}
+
+// Sponsorship system types
+export interface SponsorshipEscrow {
+  id: string;
+  beneficiaryName: string;
+  beneficiaryId: string;
+  amount: number;
+  availableAmount: number;
+  usedAmount: number;
+  commissionRate: number;
+  totalEarnings: number;
+  pendingReturn: number;
+  endDate: string;
+  startDate: string;
+  status: 'active' | 'completed' | 'cancelled';
 }
 
 export interface BankAccount {
@@ -168,6 +227,19 @@ export interface PaymentCard {
   isDefault: boolean;
 }
 
+export interface PaymentMethod {
+  id: string;
+  type: 'card' | 'bank';
+  last4: string;
+  isDefault: boolean;
+  brand?: string;
+  bankName?: string;
+  expiryMonth?: number;
+  expiryYear?: number;
+  accountNumber?: string;
+  accountName?: string;
+}
+
 export interface Transaction {
   id: string;
   userId: string;
@@ -184,6 +256,16 @@ export interface Transaction {
   };
 }
 
+export interface DispurteResolution {
+  id: string;
+  disputeId: string;
+  resolverId: string; // User ID of the support agent or system that resolved it
+  resolutionDetails: string;
+  compensationAmount?: number; // NGN
+  penaltyAmount?: number; // NGN
+  resolvedAt: string;
+}
+
 export interface DeliveryJob {
   id: string;
   senderId: string;
@@ -194,7 +276,9 @@ export interface DeliveryJob {
   receiverPhone?: string;
   selectedPalId?: string;
   selectedPalName?: string;
+  selectedPalPhone?: string;
   proxyId?: string;
+  proxyName?: string; // Name of the proxy associated with this delivery
   chatId?: string;
   
   title: string;
@@ -209,17 +293,20 @@ export interface DeliveryJob {
   notes?: string;
   images?: string[];
   description?: string;
+  distance?: number; // km
   
   status: DeliveryStatus;
   bids: Bid[];
   acceptedBidAmount?: number;
   escrowAmount?: number;
+  escrowId?: string;
   
   isLive?: boolean;
   createdAt: string;
   updatedAt?: string;
   completedAt?: string;
   deliveredAt?: string;
+  acceptedAt?: string; // When Pal accepts the job
   
   // Dispute fields
   isDisputed?: boolean;
@@ -228,6 +315,7 @@ export interface DeliveryJob {
   disputeTimestamp?: string;
   disputeTimeoutAt?: string;
   violationFee?: number;
+  disputeResolution?: DisputeResolution;
   
   // Tracking
   currentLocation?: {
@@ -296,9 +384,12 @@ export interface ProxyItem {
   receiverPhone: string;
   status: ProxyStatus;
   dropoffDate: string;
+  storedDate?: string; // When item was stored by proxy
   value: number;
   storageFee: number;
+  storageEarnings?: number; // Earnings from completed proxy storage
   itemSize: ItemSize;
+  size?: string; // Backward compatibility alias for itemSize
   weight: string;
   notes?: string;
   images?: string[];
@@ -314,6 +405,8 @@ export interface ChatThread {
   participants: string[]; // User IDs
   lastActivity: string;
   messages: ChatMessage[];
+  awaitingUserChoice?: boolean;
+  supportAgentState?: string;
 }
 
 export interface ChatMessage {
@@ -328,6 +421,18 @@ export interface ChatMessage {
   metadata?: {
     [key: string]: unknown;
   };
+}
+
+export interface CommunicationMessage {
+  id: string;
+  from: string; // User ID of sender
+  fromRole: UserRole;
+  to: 'sender' | 'pal' | 'receiver' | 'support';
+  message: string;
+  urgency: 'low' | 'medium' | 'high';
+  timestamp: string;
+  jobId?: string; // Optional job reference
+  read: boolean;
 }
 
 export interface NigerianLocation {
@@ -346,12 +451,14 @@ export interface NigerianLocation {
 export interface DisputeResolution {
   id: string;
   jobId: string;
+  palId?: string; // Pal involved in the dispute
+  senderId?: string; // Sender involved in the dispute
   reason: string;
   description: string;
   reportedBy: string;
   reportedAt: string;
   status: DisputeStatus;
-  evidence?: string[];
+  evidence?: EvidenceFile[];
   resolution?: string;
   resolvedAt?: string;
   timestamp: string;
@@ -366,7 +473,7 @@ export type NotificationCategory = 'alert' | 'general';
 export interface Notification {
   id: string;
   userId: string;
-  type: 'bid-placed' | 'delivery-assigned' | 'delivery-completed' | 'payment-received' | 'item-edit-request' | 'dispute-flagged' | 'rating-received' | 'system-message' | 'promo-offer' | 'delivery-update' | 'item-verified' | 'wallet-topup' | 'delivery-posted' | 'payment-processed' | 'tip-payment';
+  type: 'bid-placed' | 'delivery-assigned' | 'delivery-completed' | 'payment-received' | 'item-edit-request' | 'dispute-flagged' | 'rating-received' | 'system-message' | 'promo-offer' | 'delivery-update' | 'item-verified' | 'wallet-topup' | 'delivery-posted' | 'payment-processed' | 'tip-payment'| 'delivery-picked-up';
   title: string;
   message: string;
   timestamp: string;
@@ -403,28 +510,48 @@ export interface ImageUpload {
   error?: string;
 }
 
-// Route planning types
-export interface RouteWaypoint {
+export interface EvidenceFile {
   id: string;
-  address: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  type: 'pickup' | 'dropoff';
-  jobId: string;
-  estimatedTime?: string;
+  name: string;
+  type: string;
+  size: number;
+  uploadedAt: string;
+  url: string;
 }
 
-export interface DeliveryRoute {
-  id: string;
+export interface FavoritePalJobData {
+  jobId: string;
   palId: string;
-  waypoints: RouteWaypoint[];
-  totalDistance: number; // km
-  estimatedDuration: number; // minutes
-  totalEarnings: number; // NGN
-  status: 'planned' | 'active' | 'completed';
-  createdAt: string;
+  palName: string;
+  jobTitle: string;
+  status: DeliveryStatus;
+  amount: number;
+}
+
+export interface RatingData {
+  rating: number;
+  review: string;
+  photoTaken: boolean;
+}
+
+export interface FavoritePalData {
+  id: string;
+  name: string;
+  phone: string;
+  rating: number;
+  totalDeliveries: number;
+  vehicleType: VehicleType;
+  isVerified: boolean;
+}
+
+export interface ProxyUserData {
+  id: string;
+  name: string;
+  phone: string;
+  location: string;
+  rating: number;
+  isVerified: boolean;
+  businessName?: string;
 }
 
 // Payment types

@@ -1,0 +1,257 @@
+'use client'
+import React from 'react';
+import { ArrowLeft, Star, Shield, Car, Clock, Phone, MessageCircle, MapPin, Calendar, Award, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Badge } from './ui/badge';
+import { Avatar, AvatarFallback } from './ui/avatar';
+import { User } from '../types';
+
+interface PalProfileScreenProps {
+  pal: User | null;
+  onBack: () => void;
+  onCall: (phone: string) => void;
+  onMessage: () => void;
+}
+
+export function PalProfileScreen({ pal, onBack, onCall, onMessage }: PalProfileScreenProps) {
+  if (!pal) return null;
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const formatJoinDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  const recentReviews = [
+    {
+      id: '1',
+      reviewer: 'Adunni A.',
+      rating: 5,
+      comment: 'Excellent service! Very careful with my electronics delivery.',
+      date: '2025-01-10',
+    },
+    {
+      id: '2',
+      reviewer: 'Chukwu E.',
+      rating: 5,
+      comment: 'Fast delivery and great communication throughout.',
+      date: '2025-01-08',
+    },
+    {
+      id: '3',
+      reviewer: 'Ibrahim M.',
+      rating: 4,
+      comment: 'Professional and reliable. Would recommend!',
+      date: '2025-01-05',
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500 rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute bottom-0 -left-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
+      </div>
+
+      {/* Header */}
+      <motion.div 
+        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="flex items-center space-x-4">
+          <motion.button
+            onClick={onBack}
+            className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ArrowLeft size={20} className="text-white" />
+          </motion.button>
+          <div>
+            <h1 className="text-lg font-semibold text-white">Pal Profile</h1>
+            <p className="text-sm text-gray-400">Delivery professional</p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
+        {/* Profile Header */}
+        <motion.div 
+          className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-2xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-start space-x-4">
+            <Avatar className="w-20 h-20 border-2 border-white/20">
+              <AvatarFallback className="bg-gradient-to-br from-green-500 to-blue-500 text-white text-2xl">
+                {pal.name?.charAt(0) || 'P'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <div className="flex items-center space-x-2 mb-2">
+                <h2 className="text-xl font-bold text-white">{pal.name || 'Pal Name'}</h2>
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                  <CheckCircle size={12} className="mr-1" />
+                  Verified
+                </Badge>
+              </div>
+              <div className="flex items-center space-x-1 mb-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    size={16}
+                    className={star <= (pal.rating || 5) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600'}
+                  />
+                ))}
+                <span className="text-white font-semibold ml-2">{pal.rating || 5.0}</span>
+                <span className="text-gray-400 text-sm">({pal.totalDeliveries || 0} deliveries)</span>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-300 text-sm">
+                <Calendar size={14} />
+                <span>Joined {formatJoinDate(pal.joinedDate || '2024-01-01')}</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { label: 'On-Time', value: '95%', icon: Clock, color: 'green' },
+            { label: 'Rating', value: '4.9', icon: Star, color: 'yellow' },
+            { label: 'Response', value: '<5min', icon: MessageCircle, color: 'blue' }
+          ].map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 + 0.1 }}
+              >
+                <Icon size={20} className={`text-${stat.color}-400 mx-auto mb-2`} />
+                <p className="text-white font-semibold">{stat.value}</p>
+                <p className="text-gray-400 text-xs">{stat.label}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Contact Buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          <motion.button
+            onClick={() => onCall(pal.phone || '+234 800 000 0000')}
+            className="flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-4 rounded-xl font-semibold"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Phone size={20} />
+            <span>Call</span>
+          </motion.button>
+
+          <motion.button
+            onClick={onMessage}
+            className="flex items-center justify-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-xl font-semibold"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            <MessageCircle size={20} />
+            <span>Message</span>
+          </motion.button>
+        </div>
+
+        {/* Vehicle Info */}
+        <motion.div 
+          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <h3 className="text-white font-semibold mb-4">Vehicle Information</h3>
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+              <Car size={24} className="text-blue-400" />
+            </div>
+            <div>
+              <p className="text-white font-medium">{pal.vehicleType || 'Motorcycle'}</p>
+              <p className="text-gray-400 text-sm">Delivery Vehicle</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Recent Reviews */}
+        <motion.div 
+          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h3 className="text-white font-semibold mb-4">Recent Reviews</h3>
+          <div className="space-y-4">
+            {recentReviews.map((review, index) => (
+              <div key={review.id} className="border-b border-white/10 pb-4 last:border-0">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-white font-medium">{review.reviewer}</p>
+                  <div className="flex items-center space-x-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={12}
+                        className={star <= review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600'}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm mb-1">{review.comment}</p>
+                <p className="text-gray-500 text-xs">{new Date(review.date).toLocaleDateString()}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Badges */}
+        <motion.div 
+          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <h3 className="text-white font-semibold mb-4">Achievements</h3>
+          <div className="flex flex-wrap gap-2">
+            <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30">
+              <Award size={12} className="mr-1" />
+              Top Rated
+            </Badge>
+            <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+              <Shield size={12} className="mr-1" />
+              100+ Deliveries
+            </Badge>
+            <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">
+              <Clock size={12} className="mr-1" />
+              Always On-Time
+            </Badge>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

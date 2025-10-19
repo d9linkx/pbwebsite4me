@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { ArrowRight, Package, Shield, Zap, Mail, Lock, User as UserIcon } from 'lucide-react';
+import { ArrowRight, Package, Shield, Zap, Mail, Lock, User as UserIcon, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from './ui/input';
 import { User } from '../types';
+import { useRouter } from 'next/navigation';
 // Using a placeholder for the logo - you can replace this with your actual logo
 // import prawnboxLogo from '../public/prawnbox-logo.png';
 
@@ -19,6 +20,7 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
   const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,6 +170,20 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
 
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center p-6 relative z-10">
+        {/* Back Button */}
+        <motion.button
+          onClick={() => router.push('/')} 
+          className="absolute top-6 left-6 z-20 flex items-center space-x-2 text-white/80 hover:text-white transition-colors duration-200"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ArrowLeft size={20} />
+          <span className="text-sm font-medium">Back to Home</span>
+        </motion.button>
+
         {/* Logo & Header */}
         <motion.div
           className="text-center mb-8"
@@ -175,18 +191,15 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <motion.div
-            className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center mx-auto mb-4 shadow-2xl p-3"
+          <motion.button
+            onClick={() => router.push('/')}
+            className="w-12 h-12 mx-auto mb-4"
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
-            {/* Placeholder for logo - replace with actual logo image */}
-            <div className="w-full h-full bg-white rounded-lg flex items-center justify-center text-[#f44708] font-bold text-lg">
-              P
-            </div>
-            {/* Uncomment and add your logo file when available */}
-            {/* <img src={prawnboxLogo} alt="Prawnbox" className="w-full h-full object-contain" /> */}
-          </motion.div>
+            <img src='/P-logo.png' alt="Prawnbox" className="w-12 h-12 object-contain mx-auto" />
+          </motion.button>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome to Prawnbox</h1>
           <p className="text-gray-400">Peer-to-peer delivery made simple</p>
         </motion.div>

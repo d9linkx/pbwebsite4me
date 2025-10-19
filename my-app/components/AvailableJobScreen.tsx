@@ -1,0 +1,1016 @@
+'use client'
+import React, { useState, useMemo } from 'react';
+import { ArrowLeft, MapPin, Package, Clock, DollarSign, ChevronDown, ChevronUp, Star, User, Calendar, Edit3, Timer, Navigation, Filter, CheckCircle, Eye, MessageSquare, Phone, AlertTriangle, Wallet, Info, X, SlidersHorizontal, Map, Weight, Ruler, Zap, Tag, TrendingUp, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Input } from './ui/input';
+import { Alert, AlertDescription } from './ui/alert';
+import { DeliveryJob, Bid, User as UserType } from '../types';
+import { RouteAdModal } from './RouteAdModal';
+
+interface RouteAd {
+  id: string;
+  fromLocation: string;
+  toLocation: string;
+  vehicleType: string;
+  maxWeight?: string;
+  preferredCategories: string[];
+  startTime?: string;
+  endTime?: string;
+  notes?: string;
+  createdAt: string;
+  active: boolean;
+}
+
+interface AvailableJobsScreenProps {
+  onBack: () => void;
+  onJobSelect: (job: DeliveryJob) => void;
+  onPlaceBid: (job: DeliveryJob, bidAmount: number, message: string) => void;
+  availableJobs: DeliveryJob[];
+  selectedRoute?: string | null;
+  currentUser?: UserType | null;
+  allJobs?: DeliveryJob[];
+  onNavigateToWallet?: (job: DeliveryJob, bidAmount: number) => void;
+  pendingBid?: {
+    jobId: string;
+    bidAmount: number;
+    job: DeliveryJob;
+  } | null;
+  onClearPendingBid?: () => void;
+  routeAds?: RouteAd[];
+  onNavigateToRouteAds?: () => void;
+}
+
+export function AvailableJobsScreen({ 
+  onBack, 
+  onJobSelect, 
+  onPlaceBid, 
+  availableJobs,
+  selectedRoute,
+  currentUser,
+  allJobs = [],
+  onNavigateToWallet,
+  pendingBid,
+  onClearPendingBid,
+  routeAds = [],
+  onNavigateToRouteAds
+}: AvailableJobsScreenProps) {
+  const [bidAmounts, setBidAmounts] = useState<{[key: string]: string}>({});
+  const [expandedJobs, setExpandedJobs] = useState<Set<string>>(new Set());
+  const [bidSubmittedJobs, setBidSubmittedJobs] = useState<Set<string>>(new Set());
+  const [bidTimestamps, setBidTimestamps] = useState<{[key: string]: number}>({});
+  const [routeFilter, setRouteFilter] = useState<string | null>(selectedRoute || null);
+  const [showRouteFilter, setShowRouteFilter] = useState(false);
+  const [activeTab, setActiveTab] = useState<'available' | 'my-bids'>('available');
+  const [showBidWarning, setShowBidWarning] = useState<{[key: string]: boolean}>({});
+  const [pendingBidJob, setPendingBidJob] = useState<DeliveryJob | null>(null);
+  const [editingBidJobId, setEditingBidJobId] = useState<string | null>(null);
+  const [editBidAmounts, setEditBidAmounts] = useState<{[key: string]: string}>({});
+  const [expandedMaps, setExpandedMaps] = useState<Set<string>>(new Set());
+  
+  // Hierarchical location filtering state
+  const [filterLevel, setFilterLevel] = useState<'states' | 'lgas' | 'areas'>('states');
+  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [selectedLGA, setSelectedLGA] = useState<string | null>(null);
+  
+  // 🔥 NEW COMPREHENSIVE FILTERS
+  const [itemWorthFilter, setItemWorthFilter] = useState<string | null>(null);
+  const [dateRangeFilter, setDateRangeFilter] = useState<string | null>(null);
+  const [sizeFilter, setSizeFilter] = useState<string | null>(null);
+  const [weightFilter, setWeightFilter] = useState<string | null>(null);
+  const [distanceFilter, setDistanceFilter] = useState<string | null>(null);
+  const [urgencyFilter, setUrgencyFilter] = useState<string | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  
+  // 🔥 ROUTE ADS FEATURE - Pals advertise where they're headed
+  const [showRouteAdModal, setShowRouteAdModal] = useState(false);
+  const [showMyRouteAds, setShowMyRouteAds] = useState(false);
+  const [editingRouteAd, setEditingRouteAd] = useState<RouteAd | null>(null);
+  
+  // 🔥 SLIDE-IN POPUP STATE - For pending bid celebration
+  const [showPendingBidPopup, setShowPendingBidPopup] = useState(false);
+  
+  // 🔥 AUTO-HIDE POPUP AFTER 5 SECONDS
+  React.useEffect(() => {
+    if (pendingBid && activeTab === 'available') {
+      setShowPendingBidPopup(true);
+      
+      const timer = setTimeout(() => {
+        setShowPendingBidPopup(false);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    } else {
+      setShowPendingBidPopup(false);
+    }
+  }, [pendingBid, activeTab]);
+
+  const nigerianAreas = [
+    'Lagos Island', 'Victoria Island', 'Ikoyi', 'Surulere', 'Ikeja', 'Yaba',
+    'Lekki', 'Ajah', 'Festac', 'Apapa', 'Oshodi', 'Isolo', 'Gbagada',
+    'Ketu', 'Magodo', 'Ojodu', 'Berger', 'Maryland', 'Anthony', 'Palmgrove'
+  ];
+
+  // Hierarchical Nigerian location data (abbreviated for brevity)
+  const nigerianLocationHierarchy: { [state: string]: { [lga: string]: string[] } } = {
+    'Lagos State': {
+      'Lagos Island': ['Victoria Island', 'Ikoyi', 'Lagos Island', 'Dodan Barracks'],
+      'Lagos Mainland': ['Yaba', 'Surulere', 'Mushin', 'Ebute-Metta'],
+      'Eti-Osa': ['Lekki', 'Ajah', 'Victoria Island', 'Ikoyi'],
+      'Ikeja': ['Ikeja', 'Ojodu', 'Berger', 'Allen Avenue'],
+      'Alimosho': ['Egbeda', 'Idimu', 'Igando', 'Ikotun'],
+      'Kosofe': ['Ketu', 'Mile 12', 'Gbagada', 'Anthony', 'Maryland'],
+    },
+    'Oyo State': {
+      'Ibadan North': ['Bodija', 'Agodi', 'Jericho', 'Secretariat'],
+      'Ibadan South-West': ['Ring Road', 'Mokola', 'Sango', 'Challenge'],
+    }
+  };
+
+  // Helper functions
+  const getLocationSummary = (location: string) => location.split(',')[0];
+  const getJobRoute = (job: DeliveryJob) => `${getLocationSummary(job.pickupLocation)} → ${getLocationSummary(job.dropoffLocation)}`;
+  
+  const getJobCategory = (job: DeliveryJob) => {
+    const title = job.title.toLowerCase();
+    if (title.includes('food') || title.includes('grocery')) return 'Food & Groceries';
+    if (title.includes('laptop') || title.includes('phone') || title.includes('tech')) return 'Electronics';
+    if (title.includes('document')) return 'Documents';
+    if (title.includes('package')) return 'Packages';
+    return 'General';
+  };
+
+  const getAreaFromLocation = (location: string) => {
+    const area = location.split(',')[0];
+    return nigerianAreas.find(a => area.toLowerCase().includes(a.toLowerCase())) || area;
+  };
+
+  const getRouteEstimates = (pickupLocation: string, dropoffLocation: string) => {
+    const distance = Math.floor(Math.random() * 20) + 5;
+    const timeInMinutes = Math.floor(distance * 2.5);
+    
+    return {
+      distance: `${distance} km`,
+      estimatedTime: timeInMinutes >= 60 
+        ? `${Math.floor(timeInMinutes / 60)}h ${timeInMinutes % 60}m` 
+        : `${timeInMinutes} mins`
+    };
+  };
+
+  const toggleMapExpanded = (jobId: string) => {
+    setExpandedMaps(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(jobId)) {
+        newSet.delete(jobId);
+      } else {
+        newSet.add(jobId);
+      }
+      return newSet;
+    });
+  };
+
+  // Get jobs where Pal has placed bids
+  const myBiddedJobs = useMemo(() => {
+    if (!currentUser) return [];
+    return allJobs.filter(job => 
+      job.bids?.some(bid => bid.palId === currentUser.id) && 
+      job.status === 'bidding'
+    );
+  }, [allJobs, currentUser]);
+
+  const formatAmount = (amount: number) => {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const getCurrentUserBid = (job: DeliveryJob): Bid | undefined => {
+    if (!currentUser) return undefined;
+    return job.bids?.find(bid => bid.palId === currentUser.id);
+  };
+
+  const getBidStatusMessage = (job: DeliveryJob) => {
+    const currentUserBid = getCurrentUserBid(job);
+    if (!currentUserBid) {
+      return { message: 'No bid placed', statusType: 'none' as const, canEdit: false };
+    }
+
+    if (job.selectedPalId === currentUser?.id) {
+      return { 
+        message: '🎉 Congratulations! Your bid has been accepted by the sender. The job is now yours!', 
+        statusType: 'accepted' as const, 
+        canEdit: false 
+      };
+    }
+
+    if (job.selectedPalId && job.selectedPalId !== currentUser?.id) {
+      return { 
+        message: 'The sender selected another Pal for this delivery. Better luck next time!', 
+        statusType: 'outbid' as const, 
+        canEdit: false 
+      };
+    }
+
+    const otherBids = job.bids?.filter(bid => bid.palId !== currentUser?.id) || [];
+    const lowestBid = otherBids.length > 0 ? Math.min(...otherBids.map(b => b.amount)) : currentUserBid.amount;
+
+    if (currentUserBid.amount <= lowestBid) {
+      return { 
+        message: `You're currently the lowest bidder at ${formatAmount(currentUserBid.amount)}! The sender is reviewing all bids.`, 
+        statusType: 'pending' as const, 
+        canEdit: true 
+      };
+    } else {
+      const difference = currentUserBid.amount - lowestBid;
+      return { 
+        message: `Your bid is ${formatAmount(difference)} higher than the lowest bid. Consider reducing your bid to increase your chances.`, 
+        statusType: 'pending' as const, 
+        canEdit: true 
+      };
+    }
+  };
+
+  // Filtering logic
+  const filteredJobs = useMemo(() => {
+    let jobs = activeTab === 'available' ? availableJobs : myBiddedJobs;
+
+    // Route filter
+    if (routeFilter) {
+      jobs = jobs.filter(job => 
+        job.pickupLocation.toLowerCase().includes(routeFilter.toLowerCase()) ||
+        job.dropoffLocation.toLowerCase().includes(routeFilter.toLowerCase())
+      );
+    }
+
+    // Hierarchical location filter
+    if (selectedState) {
+      jobs = jobs.filter(job => {
+        const pickup = job.pickupLocation;
+        const dropoff = job.dropoffLocation;
+        const stateJobs = pickup.includes(selectedState) || dropoff.includes(selectedState);
+
+        if (!selectedLGA) return stateJobs;
+
+        const lgaJobs = pickup.includes(selectedLGA) || dropoff.includes(selectedLGA);
+        return stateJobs && lgaJobs;
+      });
+    }
+
+    // Item worth filter
+    if (itemWorthFilter) {
+      jobs = jobs.filter(job => {
+        if (itemWorthFilter === 'under-50k') return job.value < 50000;
+        if (itemWorthFilter === '50k-200k') return job.value >= 50000 && job.value <= 200000;
+        if (itemWorthFilter === '200k-500k') return job.value > 200000 && job.value <= 500000;
+        if (itemWorthFilter === 'above-500k') return job.value > 500000;
+        return true;
+      });
+    }
+
+    // Size filter
+    if (sizeFilter) {
+      jobs = jobs.filter(job => job.itemSize.toLowerCase() === sizeFilter.toLowerCase());
+    }
+
+    // Category filter
+    if (categoryFilter) {
+      jobs = jobs.filter(job => getJobCategory(job) === categoryFilter);
+    }
+
+    return jobs;
+  }, [activeTab, availableJobs, myBiddedJobs, routeFilter, selectedState, selectedLGA, itemWorthFilter, sizeFilter, categoryFilter]);
+
+  const handleBidSubmit = (job: DeliveryJob, e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const bidAmount = parseFloat(bidAmounts[job.id] || '0');
+    
+    if (!bidAmount || bidAmount < 100) {
+      setShowBidWarning({...showBidWarning, [job.id]: true});
+      return;
+    }
+
+    if (!currentUser?.walletBalance || currentUser.walletBalance < bidAmount) {
+      if (onNavigateToWallet) {
+        onNavigateToWallet(job, bidAmount);
+      }
+      return;
+    }
+
+    onPlaceBid(job, bidAmount, '');
+    setBidSubmittedJobs(new Set(bidSubmittedJobs).add(job.id));
+    setBidTimestamps({...bidTimestamps, [job.id]: Date.now()});
+    setBidAmounts({...bidAmounts, [job.id]: ''});
+  };
+
+  const handleEditBid = (job: DeliveryJob, e: React.FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const newBidAmount = parseFloat(editBidAmounts[job.id] || '0');
+    
+    if (!newBidAmount || newBidAmount < 100) {
+      return;
+    }
+
+    onPlaceBid(job, newBidAmount, '');
+    setEditingBidJobId(null);
+    setEditBidAmounts({...editBidAmounts, [job.id]: ''});
+  };
+
+  const toggleJobExpansion = (jobId: string) => {
+    const newExpanded = new Set(expandedJobs);
+    if (newExpanded.has(jobId)) {
+      newExpanded.delete(jobId);
+    } else {
+      newExpanded.add(jobId);
+    }
+    setExpandedJobs(newExpanded);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -bottom-40 right-1/4 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
+      </div>
+
+      {/* Header */}
+      <motion.div 
+        className="bg-[#2f2f2f] border-b border-white/10 sticky top-0 z-20"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <motion.button
+                onClick={onBack}
+                className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ArrowLeft size={20} className="text-white" />
+              </motion.button>
+              <div>
+                <h1 className="text-xl font-semibold text-white">Available Jobs</h1>
+                <p className="text-sm text-gray-400">
+                  {filteredJobs.length} {activeTab === 'available' ? 'available' : 'bidded'} {filteredJobs.length === 1 ? 'job' : 'jobs'}
+                </p>
+              </div>
+            </div>
+
+            {/* Route Ads Button */}
+            {onNavigateToRouteAds && (
+              <motion.button
+                onClick={onNavigateToRouteAds}
+                className="flex items-center space-x-2 bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Navigation size={16} />
+                <span className="hidden sm:inline">My Routes</span>
+              </motion.button>
+            )}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="px-6 pb-4">
+          <div className="flex space-x-2">
+            {(['available', 'my-bids'] as const).map((tab) => (
+              <motion.button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center ${
+                  activeTab === tab
+                    ? 'bg-[#f44708] text-white shadow-lg'
+                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span>{tab === 'available' ? 'Available Jobs' : 'My Bids'}</span>
+                {tab === 'my-bids' && myBiddedJobs.length > 0 && (
+                  <span className="ml-2 bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
+                    {myBiddedJobs.length}
+                  </span>
+                )}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Pending Bid Success Popup */}
+      <AnimatePresence>
+        {showPendingBidPopup && pendingBid && (
+          <motion.div 
+            className="fixed top-20 left-4 right-4 z-30"
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+          >
+            <div className="bg-green-600 text-white p-4 rounded-2xl shadow-2xl border-2 border-green-500">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-3 flex-1">
+                  <CheckCircle size={24} className="text-green-200 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold text-sm">Bid Placed Successfully!</p>
+                    <p className="text-xs text-green-200 mt-1">
+                      Your bid of {formatAmount(pendingBid.bidAmount)} for &quot;{pendingBid.job.title}&quot; has been submitted.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowPendingBidPopup(false);
+                    if (onClearPendingBid) onClearPendingBid();
+                  }}
+                  className="ml-2 p-1 hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Filter Section */}
+      <motion.div 
+        className="px-6 py-4 bg-[#2f2f2f]/50 border-b border-white/10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <motion.button
+          onClick={() => setShowRouteFilter(!showRouteFilter)}
+          className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-3 transition-all"
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+        >
+          <div className="flex items-center space-x-2">
+            <SlidersHorizontal size={18} className="text-white" />
+            <span className="text-white font-medium">
+              {routeFilter || selectedState || itemWorthFilter || sizeFilter || categoryFilter
+                ? 'Filters Active'
+                : 'Filter Jobs'}
+            </span>
+            {(routeFilter || selectedState || itemWorthFilter || sizeFilter || categoryFilter) && (
+              <Badge className="bg-[#f44708] text-white text-xs">
+                {[routeFilter, selectedState, itemWorthFilter, sizeFilter, categoryFilter].filter(Boolean).length}
+              </Badge>
+            )}
+          </div>
+          {showRouteFilter ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
+        </motion.button>
+
+        <AnimatePresence>
+          {showRouteFilter && (
+            <motion.div 
+              className="mt-4 space-y-4"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              {/* Quick Location Filter */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-2">
+                    <MapPin size={16} className="text-[#f44708]" />
+                    <h4 className="font-medium text-white">Location</h4>
+                  </div>
+                  {routeFilter && (
+                    <button
+                      onClick={() => setRouteFilter(null)}
+                      className="text-xs text-gray-400 hover:text-white"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {nigerianAreas.slice(0, 6).map((area) => (
+                    <motion.button
+                      key={area}
+                      onClick={() => setRouteFilter(routeFilter === area ? null : area)}
+                      className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                        routeFilter === area
+                          ? 'bg-[#f44708] text-white'
+                          : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {area}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Item Worth Filter */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-2">
+                    <DollarSign size={16} className="text-green-400" />
+                    <h4 className="font-medium text-white">Item Value</h4>
+                  </div>
+                  {itemWorthFilter && (
+                    <button
+                      onClick={() => setItemWorthFilter(null)}
+                      className="text-xs text-gray-400 hover:text-white"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { value: 'under-50k', label: '< ₦50k' },
+                    { value: '50k-200k', label: '₦50k - ₦200k' },
+                    { value: '200k-500k', label: '₦200k - ₦500k' },
+                    { value: 'above-500k', label: '> ₦500k' }
+                  ].map((option) => (
+                    <motion.button
+                      key={option.value}
+                      onClick={() => setItemWorthFilter(itemWorthFilter === option.value ? null : option.value)}
+                      className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                        itemWorthFilter === option.value
+                          ? 'bg-green-500 text-white'
+                          : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {option.label}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Size & Category Filters */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Size Filter */}
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <Ruler size={16} className="text-purple-400" />
+                    <h4 className="font-medium text-white text-sm">Size</h4>
+                  </div>
+                  <div className="space-y-2">
+                    {['small', 'medium', 'large'].map((size) => (
+                      <motion.button
+                        key={size}
+                        onClick={() => setSizeFilter(sizeFilter === size ? null : size)}
+                        className={`w-full px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                          sizeFilter === size
+                            ? 'bg-purple-500 text-white'
+                            : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {size.charAt(0).toUpperCase() + size.slice(1)}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Category Filter */}
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <Tag size={16} className="text-blue-400" />
+                    <h4 className="font-medium text-white text-sm">Category</h4>
+                  </div>
+                  <div className="space-y-2">
+                    {['Electronics', 'Documents', 'Food & Groceries'].map((category) => (
+                      <motion.button
+                        key={category}
+                        onClick={() => setCategoryFilter(categoryFilter === category ? null : category)}
+                        className={`w-full px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                          categoryFilter === category
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {category}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Clear All Filters */}
+              {(routeFilter || selectedState || itemWorthFilter || sizeFilter || categoryFilter) && (
+                <motion.button
+                  onClick={() => {
+                    setRouteFilter(null);
+                    setSelectedState(null);
+                    setSelectedLGA(null);
+                    setItemWorthFilter(null);
+                    setSizeFilter(null);
+                    setCategoryFilter(null);
+                  }}
+                  className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-3 rounded-xl font-medium transition-all"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Clear All Filters
+                </motion.button>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Jobs List */}
+      <div className="px-6 py-6 space-y-4 relative z-10">
+        {filteredJobs.map((job, index) => {
+          const isExpanded = expandedJobs.has(job.id);
+          const isBidSubmitted = bidSubmittedJobs.has(job.id);
+          const currentUserBid = getCurrentUserBid(job);
+          const isEditingBid = editingBidJobId === job.id;
+          const isMapExpanded = expandedMaps.has(job.id);
+          const routeEstimates = getRouteEstimates(job.pickupLocation, job.dropoffLocation);
+
+          return (
+            <motion.div
+              key={job.id}
+              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.01 }}
+            >
+              {/* Job Header */}
+              <div className="p-6">
+                <div className="mb-4">
+                  <div className="flex flex-col space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#f44708]/20 to-[#ff5722]/20 flex items-center justify-center flex-shrink-0">
+                        <Package size={20} className="text-[#f44708]" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-white">{job.title}</h3>
+                    </div>
+                    
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center space-x-2 text-sm text-gray-400">
+                        <User size={14} />
+                        <span>{job.senderName}</span>
+                      </div>
+                      <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+                        {getJobCategory(job)}
+                      </Badge>
+                    </div>
+                    
+                    <div>
+                      <div className="text-2xl font-bold text-[#f44708]">
+                        {formatAmount(job.value)}
+                      </div>
+                      <div className="text-xs text-gray-400">Item Value</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Route Info */}
+                <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-4 mb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3 flex-1">
+                      <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                        <Navigation size={16} className="text-blue-400" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-400">Route</div>
+                        <div className="text-sm text-white font-medium">{getJobRoute(job)}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-gray-400">{routeEstimates.distance}</div>
+                      <div className="text-xs text-gray-400">{routeEstimates.estimatedTime}</div>
+                    </div>
+                  </div>
+
+                  {/* Map Toggle */}
+                  <motion.button
+                    onClick={() => toggleMapExpanded(job.id)}
+                    className="w-full mt-3 flex items-center justify-center space-x-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl py-2 text-xs text-white font-medium transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Map size={14} />
+                    <span>{isMapExpanded ? 'Hide Map' : 'View Map'}</span>
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {isMapExpanded && (
+                      <motion.div 
+                        className="mt-3 rounded-xl overflow-hidden border border-blue-500/30"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 200 }}
+                        exit={{ opacity: 0, height: 0 }}
+                      >
+                        <iframe
+                          width="100%"
+                          height="200"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                          src={`https://www.google.com/maps/embed/v1/directions?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&origin=${encodeURIComponent(job.pickupLocation)}&destination=${encodeURIComponent(job.dropoffLocation)}&mode=driving`}
+                        ></iframe>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Bid Section - Available Tab */}
+                {activeTab === 'available' && !currentUserBid && (
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        <Wallet size={16} className="text-green-400" />
+                        <span className="text-white font-medium">Place Your Bid</span>
+                      </div>
+                      {job.bids && job.bids.length > 0 && (
+                        <Badge className="bg-amber-500/20 text-amber-400 text-xs">
+                          {job.bids.length} {job.bids.length === 1 ? 'bid' : 'bids'}
+                        </Badge>
+                      )}
+                    </div>
+
+                    <form onSubmit={(e) => handleBidSubmit(job, e)} className="space-y-3">
+                      <Input
+                        type="number"
+                        placeholder="Enter bid amount (₦)"
+                        value={bidAmounts[job.id] || ''}
+                        onChange={(e) => setBidAmounts({...bidAmounts, [job.id]: e.target.value})}
+                        className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 rounded-xl h-12"
+                        min="100"
+                        required
+                      />
+
+                      {showBidWarning[job.id] && (
+                        <Alert className="bg-red-500/20 border-red-500/30">
+                          <AlertDescription className="text-red-400 text-xs">
+                            Please enter a valid bid amount (minimum ₦100)
+                          </AlertDescription>
+                        </Alert>
+                      )}
+
+                      <motion.button
+                        type="submit"
+                        className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 font-semibold transition-all"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Submit Bid
+                      </motion.button>
+                    </form>
+                  </div>
+                )}
+
+                {/* My Bid Section - My Bids Tab */}
+                {activeTab === 'my-bids' && currentUserBid && (
+                  <div className="space-y-3">
+                    {/* Bid Status */}
+                    <div className={`rounded-xl p-4 border ${
+                      getBidStatusMessage(job).statusType === 'accepted'
+                        ? 'bg-green-500/20 border-green-500/30'
+                        : getBidStatusMessage(job).statusType === 'outbid'
+                        ? 'bg-red-500/20 border-red-500/30'
+                        : 'bg-amber-500/20 border-amber-500/30'
+                    }`}>
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          getBidStatusMessage(job).statusType === 'accepted'
+                            ? 'bg-green-500'
+                            : getBidStatusMessage(job).statusType === 'outbid'
+                            ? 'bg-red-500'
+                            : 'bg-amber-500'
+                        }`}>
+                          {getBidStatusMessage(job).statusType === 'accepted' ? (
+                            <CheckCircle size={16} className="text-white" />
+                          ) : (
+                            <Clock size={16} className="text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`text-sm ${
+                            getBidStatusMessage(job).statusType === 'accepted'
+                              ? 'text-green-300'
+                              : getBidStatusMessage(job).statusType === 'outbid'
+                              ? 'text-red-300'
+                              : 'text-amber-300'
+                          }`}>
+                            {getBidStatusMessage(job).message}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Your Bid Amount */}
+                    {!isEditingBid ? (
+                      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-xs text-gray-400 mb-1">Your Bid</div>
+                            <div className="text-2xl font-bold text-[#f44708]">
+                              {formatAmount(currentUserBid.amount)}
+                            </div>
+                          </div>
+                          {getBidStatusMessage(job).canEdit && (
+                            <motion.button
+                              onClick={() => {
+                                setEditingBidJobId(job.id);
+                                setEditBidAmounts({...editBidAmounts, [job.id]: currentUserBid.amount.toString()});
+                              }}
+                              className="flex items-center space-x-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Edit3 size={14} />
+                              <span>Edit Bid</span>
+                            </motion.button>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <form onSubmit={(e) => handleEditBid(job, e)} className="space-y-3">
+                          <Input
+                            type="number"
+                            placeholder="Enter new bid amount (₦)"
+                            value={editBidAmounts[job.id] || ''}
+                            onChange={(e) => setEditBidAmounts({...editBidAmounts, [job.id]: e.target.value})}
+                            className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 rounded-xl h-12"
+                            min="100"
+                            required
+                          />
+                          <div className="flex space-x-2">
+                            <motion.button
+                              type="button"
+                              onClick={() => {
+                                setEditingBidJobId(null);
+                                setEditBidAmounts({...editBidAmounts, [job.id]: ''});
+                              }}
+                              className="flex-1 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl py-3 font-medium transition-all"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              Cancel
+                            </motion.button>
+                            <motion.button
+                              type="submit"
+                              className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 font-semibold transition-all"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              Update Bid
+                            </motion.button>
+                          </div>
+                        </form>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* View Details Toggle */}
+                <motion.button
+                  onClick={() => toggleJobExpansion(job.id)}
+                  className="w-full mt-4 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3 transition-all"
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                >
+                  <span className="text-white font-medium text-sm">
+                    {isExpanded ? 'Hide Details' : 'View Full Details'}
+                  </span>
+                  {isExpanded ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
+                </motion.button>
+
+                {/* Expanded Details */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div 
+                      className="mt-4 space-y-4"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      {/* Full Addresses */}
+                      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <h4 className="text-white font-medium mb-3">Full Addresses</h4>
+                        <div className="space-y-3">
+                          <div>
+                            <div className="text-xs text-gray-400 mb-1">Pickup</div>
+                            <p className="text-white text-sm">{job.pickupLocation}</p>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400 mb-1">Dropoff</div>
+                            <p className="text-white text-sm">{job.dropoffLocation}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Package Details */}
+                      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <h4 className="text-white font-medium mb-3">Package Details</h4>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <div className="text-xs text-gray-400 mb-1">Size</div>
+                            <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 text-xs">
+                              {job.itemSize}
+                            </Badge>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400 mb-1">Weight</div>
+                            <p className="text-white text-sm">{job.weight}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Images */}
+                      {job.images && job.images.length > 0 && (
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                          <h4 className="text-white font-medium mb-3">Item Photos</h4>
+                          <div className="grid grid-cols-2 gap-3">
+                            {job.images.slice(0, 4).map((image, imgIndex) => (
+                              <div key={imgIndex} className="relative rounded-xl overflow-hidden">
+                                <img
+                                  src={image}
+                                  alt={`${job.title} - ${imgIndex + 1}`}
+                                  className="w-full h-24 object-cover"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Special Instructions */}
+                      {job.notes && (
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                          <h4 className="text-white font-medium mb-3">Special Instructions</h4>
+                          <p className="text-gray-300 text-sm italic">&quot;{job.notes}&quot;</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        })}
+
+        {/* Empty State */}
+        {filteredJobs.length === 0 && (
+          <motion.div 
+            className="text-center py-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <div className="w-24 h-24 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Package size={40} className="text-gray-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">
+              {activeTab === 'available' ? 'No Available Jobs' : 'No Active Bids'}
+            </h3>
+            <p className="text-gray-400 max-w-md mx-auto">
+              {activeTab === 'available'
+                ? routeFilter
+                  ? `No delivery jobs available in ${routeFilter} area right now.`
+                  : 'No delivery jobs available in your area right now.'
+                : "You haven't placed any bids yet."}
+            </p>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Route Ad Modal */}
+      {showRouteAdModal && (
+        <RouteAdModal
+          isOpen={showRouteAdModal}
+          onUpdate={() => {
+            setShowRouteAdModal(false);
+            setEditingRouteAd(null);
+          }}
+          onClose={() => {
+            setShowRouteAdModal(false);
+            setEditingRouteAd(null);
+          }}
+          onSave={() => {
+            setShowRouteAdModal(false);
+            setEditingRouteAd(null);
+          }}
+          editingAd={editingRouteAd}
+        />
+      )}
+    </div>
+  );
+}
