@@ -447,6 +447,7 @@ export default function App() {
     setIsMobileMenuOpen((prev) => !prev);
   };
 
+  # UPDATE
   const closeMobileMenu = () => {
     console.log("🍔 Mobile Menu Close: Closing menu");
     setIsMobileMenuOpen(false);
