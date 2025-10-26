@@ -104,7 +104,7 @@ export function NotificationsScreen({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] pt-safe-top pb-safe-bottom">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
@@ -186,7 +186,7 @@ export function NotificationsScreen({
       </motion.div>
 
       {/* Notifications List */}
-      <div className="px-4 py-4 space-y-3 relative z-10">
+      <div className="w-full px-4 py-4 space-y-3 relative z-10">
         {currentNotifications.length === 0 ? (
           <motion.div 
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-12 text-center"

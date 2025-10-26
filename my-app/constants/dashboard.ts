@@ -136,26 +136,26 @@ export const BUTTON_THEMES = {
 
 export const STATS_CONFIG = {
   SENDER: [
-    { key: 'pending', label: 'Pending', icon: 'Clock', color: 'text-orange-500' },
-    { key: 'active', label: 'Active', icon: 'Truck', color: 'text-prawnbox-accent' },
-    { key: 'completed', label: 'Completed', icon: 'CheckCircle', color: 'text-green-500' },
+    { key: 'pending', label: 'Pending', icon: 'Clock', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'active', label: 'Active', icon: 'Truck', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'completed', label: 'Completed', icon: 'CheckCircle', color: 'text-prawnbox-accent', isAmount: false },
   ],
   PAL: [
-    { key: 'pending', label: 'Available', icon: 'TrendingUp', color: 'text-blue-500' },
-    { key: 'active', label: 'Active', icon: 'Package', color: 'text-prawnbox-accent' },
-    { key: 'completed', label: 'Completed', icon: 'CheckCircle', color: 'text-green-500' },
-    { key: 'earnings', label: 'Earnings', icon: 'DollarSign', color: 'text-green-600', isAmount: true },
+    { key: 'pending', label: 'Available', icon: 'TrendingUp', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'active', label: 'Active', icon: 'Package', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'completed', label: 'Completed', icon: 'CheckCircle', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'earnings', label: 'Earnings', icon: 'DollarSign', color: 'text-prawnbox-accent', isAmount: true },
   ],
   RECEIVER: [
-    { key: 'pending', label: 'Coming', icon: 'Clock', color: 'text-blue-500' },
-    { key: 'active', label: 'In Transit', icon: 'Truck', color: 'text-prawnbox-accent' },
-    { key: 'completed', label: 'Received', icon: 'CheckCircle', color: 'text-green-500' },
+    { key: 'pending', label: 'Coming', icon: 'Clock', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'active', label: 'In Transit', icon: 'Truck', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'completed', label: 'Received', icon: 'CheckCircle', color: 'text-prawnbox-accent', isAmount: false },
   ],
   PROXY: [
-    { key: 'pending', label: 'Waiting', icon: 'Clock', color: 'text-orange-500' },
-    { key: 'active', label: 'Ready', icon: 'Package', color: 'text-prawnbox-accent' },
-    { key: 'completed', label: 'Collected', icon: 'CheckCircle', color: 'text-green-500' },
-    { key: 'earnings', label: 'Earnings', icon: 'DollarSign', color: 'text-green-600', isAmount: true },
+    { key: 'pending', label: 'Waiting', icon: 'Clock', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'active', label: 'Ready', icon: 'Package', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'completed', label: 'Collected', icon: 'CheckCircle', color: 'text-prawnbox-accent', isAmount: false },
+    { key: 'earnings', label: 'Earnings', icon: 'DollarSign', color: 'text-prawnbox-accent', isAmount: true },
   ],
 } as const;
 

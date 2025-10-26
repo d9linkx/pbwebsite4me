@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { getCurrentSubdomain } from "../utils/domain";
+import { Toaster } from "sonner";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -19,6 +20,7 @@ export default async function RootLayout({
         className={`${plusJakartaSans.variable} antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
@@ -27,6 +29,12 @@ export default async function RootLayout({
 // Generate metadata based on subdomain
 export async function generateMetadata(): Promise<Metadata> {
   const subdomain = await getCurrentSubdomain();
+
+  // Get domain from environment variables with fallbacks
+  const websiteDomain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'localhost:3000'
+  const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN || 'localhost:3000'
+
+  const baseUrl = subdomain === 'app' ? `https://${appDomain}` : `https://${websiteDomain}`
 
   return {
     title: subdomain === 'app' ? "Prawnbox - Dashboard" : "Prawnbox - Peer-to-Peer Delivery",
@@ -39,14 +47,14 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: "Prawnbox" }],
     creator: "Prawnbox",
     publisher: "Prawnbox",
-    metadataBase: new URL(subdomain === 'app' ? 'https://app.prawnbox.com' : 'https://prawnbox.com'),
+    metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: subdomain === 'app' ? 'https://app.prawnbox.com' : 'https://prawnbox.com',
+      canonical: baseUrl,
     },
     openGraph: {
       type: 'website',
       locale: 'en_NG',
-      url: subdomain === 'app' ? 'https://app.prawnbox.com' : 'https://prawnbox.com',
+      url: baseUrl,
       title: subdomain === 'app' ? "Prawnbox - Dashboard" : "Prawnbox - Peer-to-Peer Delivery",
       description: subdomain === 'app'
         ? "Manage your deliveries, track packages, and earn money with Prawnbox"

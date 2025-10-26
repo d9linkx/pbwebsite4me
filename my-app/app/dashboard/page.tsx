@@ -21,6 +21,7 @@ import Image from "next/image";
 // import { AuthScreen } from './components/AuthScreen';
 import { DashboardScreen } from "../../components/dashboard/DashboardScreen";
 import { DashboardHeader } from "../../components/dashboard/DashboardHeader";
+import { DashboardFooter } from "../../components/dashboard/DashboardFooter";
 import { PostDeliveryScreen } from "../../components/PostDeliveryScreen";
 import { BidsScreen } from "../../components/BidsScreen";
 import { EscrowPaymentScreen } from "../../components/EscrowPaymentScreen";
@@ -173,13 +174,16 @@ export default function App() {
   // Create a mock user for testing purposes
   const mockUser: User = {
     id: "demo-user-1",
-    name: "Demo User",
+    userName: "demo-user-1",
+    firstName: "Demo",
+    lastName: "User",
+    name: "Demo User", // Full name computed from firstName + lastName
     email: "demo@prawnbox.com",
     phone: "+234-801-234-5678",
     role: "sender",
     rating: 4.5,
     totalDeliveries: 0,
-    vehicleType: "Car",
+    // vehicleType: "Car",
     isVerified: true,
     walletBalance: 25000,
     governmentIdUrl: "",
@@ -200,12 +204,34 @@ export default function App() {
       },
       delivery: {
         autoAcceptRadius: 5,
-        preferredVehicles: ['Car'],
+        // preferredVehicles: ['Car'],
       },
     },
   };
 
-  const [user, setUser] = useState<User | null>(mockUser);
+      // Check for logged-in user from localStorage immediately
+  const getInitialUser = (): User | null => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('prawnbox_user');
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          if (parsedUser && parsedUser.id && parsedUser.email) {
+            console.log('🔄 Initializing with user from localStorage:', parsedUser.email);
+            return parsedUser;
+          }
+        } catch (error) {
+          console.error('Failed to parse stored user:', error);
+          localStorage.removeItem('prawnbox_user');
+        }
+      }
+    }
+    console.log('📝 Initializing with mock user (no real user found)');
+    return mockUser;
+  };
+  
+  const initialUser = getInitialUser();
+  const [user, setUser] = useState<User | null>(initialUser);
   const [selectedJob, setSelectedJob] = useState<DeliveryJob | null>(null);
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null);
   const [selectedPal, setSelectedPal] = useState<User | null>(null);
@@ -271,6 +297,11 @@ export default function App() {
   const [notificationTab, setNotificationTab] = useState<"alerts" | "general">(
     "alerts"
   );
+
+
+
+
+
 
   // PENDING BID STATE - For wallet funding continuation flow
   const [pendingBid, setPendingBid] = useState<{
@@ -385,14 +416,14 @@ export default function App() {
       })
   );
 
-  const [eventHandlers] = useState(
-    () =>
-      new EventHandlers({
-        user: null,
-        activeRole: "sender",
-        selectedJob: null,
-      })
-  );
+  // Sync user state changes back to localStorage (only for real users)
+  useEffect(() => {
+    if (user && user.id && user.email && user.id !== 'demo-user-1') {
+      // Only sync real users, not demo users
+      localStorage.setItem('prawnbox_user', JSON.stringify(user));
+      console.log('💾 Real user synced to localStorage:', user.email);
+    }
+  }, [user?.id, user?.email]);
 
   const [supportHandlers] = useState(
     () =>
@@ -414,6 +445,14 @@ export default function App() {
     }
   }, [currentScreen, user?.id, activeRole]);
 
+  const [eventHandlers] = useState(
+    () =>
+      new EventHandlers({
+        user: null,
+        selectedJob: null,
+        activeRole: "sender",
+      })
+  );
   useEffect(() => {
     if (eventHandlers && user && activeRole) {
       eventHandlers.updateContext({ user, activeRole, selectedJob });
@@ -792,6 +831,9 @@ export default function App() {
           setNotifications([]);
         }
       }, 0);
+
+      // Store user in localStorage
+      localStorage.setItem('prawnbox_user', JSON.stringify(enhancedUserWithTransactions));
 
       setUser(enhancedUserWithTransactions);
       setActiveRole(enhancedUserWithTransactions.role);
@@ -3262,6 +3304,9 @@ export default function App() {
       if (user && user.id === selectedJob.selectedPalId) {
         const updatedUser: User = {
           id: user.id,
+          userName: user.userName,
+          firstName: user.firstName,
+          lastName: user.lastName,
           name: user.name,
           email: user.email,
           phone: user.phone,
@@ -3272,7 +3317,7 @@ export default function App() {
           rating: user.rating,
           totalDeliveries: user.totalDeliveries,
           joinedDate: user.joinedDate,
-          vehicleType: user.vehicleType,
+          // vehicleType: user.vehicleType,
           isVerified: user.isVerified,
           governmentIdUrl: user.governmentIdUrl,
           governmentIdStatus: user.governmentIdStatus,
@@ -3948,7 +3993,7 @@ export default function App() {
                 palId: user?.id || "",
                 palName: user?.name || "",
                 palRating: user?.rating || 4.5,
-                vehicleType: user?.vehicleType || "Car",
+                // vehicleType: user?.vehicleType || "Car",
                 estimatedTime: "30 minutes",
                 amount: bidAmount,
                 message: message,
@@ -4601,9 +4646,9 @@ export default function App() {
       case "profile-information":
         return (
           <ProfileInformationScreen
-            user={user}
             onBack={goBack}
             onUpdateUser={handleUserUpdate}
+            // Removed: currentUser prop - ProfileInformationScreen now fetches from API
           />
         );
 
@@ -5441,13 +5486,16 @@ export default function App() {
           // We know exactly what fields FavoritePalData has and what we need to add for User
           return {
             id: pal.id,
+            userName: pal.userName,
+            firstName: pal.firstName,
+            lastName: pal.lastName,
             name: pal.name,
             email: "", // FavoritePalData doesn't include email
             phone: pal.phone,
             role: "pal" as const, // Using const assertion for type safety
             rating: pal.rating,
             totalDeliveries: pal.totalDeliveries,
-            vehicleType: pal.vehicleType,
+            // vehicleType: pal.vehicleType,
             isVerified: pal.isVerified,
             walletBalance: 0,
             governmentIdUrl: "",
@@ -5468,7 +5516,7 @@ export default function App() {
               },
               delivery: {
                 autoAcceptRadius: 5,
-                preferredVehicles: ['Motorcycle'], // Fixing the VehicleType in the preferences section
+                // preferredVehicles: ['Motorcycle'], // Fixing the VehicleType in the preferences section
               },
             },
           };
@@ -5591,7 +5639,7 @@ export default function App() {
   );
 
   // 🔥 FULL-SCREEN SCREENS DETECTION - Better Mobile & Tablet Handling
-  const isFullScreenScreen = ["splash", "onboarding", "auth"].includes(
+  const isFullScreenScreen = ["splash", "onboarding", "auth", "profile-information", "notifications"].includes(
     currentScreen
   );
 
@@ -6186,172 +6234,184 @@ export default function App() {
           </>
         )}
 
-        {/* 🔥 ENHANCED RESPONSIVE LAYOUT - CENTERED TABLET-WIDTH DESKTOP VIEW */}
+
         {isDesktopLayout ? (
           /* ✅ DESKTOP LAYOUT - CENTERED TABLET-WIDTH WITH WHITE SIDES */
-          <div className="w-full h-screen flex flex-col xl:flex-row overflow-hidden bg-white">
-            {/* Global DashboardHeader Space for Desktop */}
-            {shouldShowDashboardHeader && (
-              <div
-                className={`w-full ${
-                  currentScreen === "dashboard" ||
-                  currentScreen === "notifications"
-                    ? "h-40"
-                    : "h-16"
-                } flex-shrink-0 p-[0px] m-[0px] bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]`}
-              ></div>
-            )}
+          <>
+            <div className="w-full h-screen flex flex-col xl:flex-row overflow-hidden bg-white">
+              {/* Global DashboardHeader Space for Desktop */}
+              {shouldShowDashboardHeader && (
+                <div
+                  className={`w-full ${currentScreen === "dashboard" ||
+                      currentScreen === "notifications"
+                      ? "h-40"
+                      : "h-16"
+                    } flex-shrink-0 p-[0px] m-[0px] bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]`}
+                ></div>
+              )}
 
-            {/* Enhanced Desktop Sidebar - Expanded Width */}
-            <div className="hidden xl:flex xl:w-96 2xl:w-[450px] bg-white/90 backdrop-blur-sm border-r border-gray-100 flex-col relative z-20 flex-shrink-0">
-              {/* Sidebar Header */}
-              <div className="p-4 2xl:p-6 border-b border-gray-100 flex-shrink-0">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-prawnbox-accent flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-lg">P</span>
+              {/* Enhanced Desktop Sidebar - Expanded Width */}
+              <div className="hidden xl:flex xl:w-96 2xl:w-[450px] bg-white/90 backdrop-blur-sm border-r border-gray-100 flex-col relative z-20 flex-shrink-0">
+                {/* Sidebar Header */}
+                <div className="p-4 2xl:p-6 border-b border-gray-100 flex-shrink-0">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-prawnbox-accent flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-lg">P</span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h2 className="font-semibold text-prawnbox-primary text-base truncate">
+                        Prawnbox
+                      </h2>
+                      <p className="text-sm text-prawnbox-text-light capitalize truncate">
+                        {activeRole} Dashboard
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h2 className="font-semibold text-prawnbox-primary text-base truncate">
-                      Prawnbox
-                    </h2>
-                    <p className="text-sm text-prawnbox-text-light capitalize truncate">
-                      {activeRole} Dashboard
-                    </p>
-                  </div>
+
+                  {/* Enhanced User Info */}
+                  {user && (
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl">
+                      <div className="w-10 h-10 rounded-full bg-prawnbox-accent/10 border-2 border-prawnbox-accent/20 flex items-center justify-center flex-shrink-0">
+                        <span className="text-prawnbox-accent font-medium text-sm">
+                          {user.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-prawnbox-primary truncate text-sm">
+                          {user.name}
+                        </p>
+                        <p className="text-xs text-prawnbox-text-light truncate">
+                          {formatAmount(user.walletBalance || 0)}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Enhanced User Info */}
-                {user && (
-                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl">
-                    <div className="w-10 h-10 rounded-full bg-prawnbox-accent/10 border-2 border-prawnbox-accent/20 flex items-center justify-center flex-shrink-0">
-                      <span className="text-prawnbox-accent font-medium text-sm">
-                        {user.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                          .toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-prawnbox-primary truncate text-sm">
-                        {user.name}
-                      </p>
-                      <p className="text-xs text-prawnbox-text-light truncate">
-                        {formatAmount(user.walletBalance || 0)}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
+                {/* Enhanced Sidebar Navigation - Scrollable Content */}
+                <div className="flex-1 p-4 2xl:p-6 overflow-y-auto">
+                  <nav className="space-y-2">
+                    {[
+                      { screen: "dashboard", label: "Dashboard" },
+                      { screen: "my-deliveries", label: "My Deliveries" },
+                      { screen: "wallet", label: "Wallet" },
+                      { screen: "settings", label: "Settings" },
+                    ].map((item) => (
+                      <button
+                        key={item.screen}
+                        onClick={eventHandlers.createNavigationHandler(
+                          item.screen as Screen,
+                          navigateToScreen
+                        )}
+                        className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 text-left hover:scale-[1.02] active:scale-95 relative z-30 ${currentScreen === item.screen
+                            ? "bg-prawnbox-accent text-white shadow-lg"
+                            : "hover:bg-gray-100 text-prawnbox-primary"
+                          }`}
+                        style={{
+                          pointerEvents: "auto",
+                          userSelect: "none",
+                          WebkitUserSelect: "none",
+                        }}
+                      >
+                        <span className="font-medium text-sm truncate">
+                          {item.label}
+                        </span>
+                      </button>
+                    ))}
+                  </nav>
 
-              {/* Enhanced Sidebar Navigation - Scrollable Content */}
-              <div className="flex-1 p-4 2xl:p-6 overflow-y-auto">
-                <nav className="space-y-2">
-                  {[
-                    { screen: "dashboard", label: "Dashboard" },
-                    { screen: "my-deliveries", label: "My Deliveries" },
-                    { screen: "wallet", label: "Wallet" },
-                    { screen: "settings", label: "Settings" },
-                  ].map((item) => (
-                    <button
-                      key={item.screen}
-                      onClick={eventHandlers.createNavigationHandler(
-                        item.screen as Screen,
-                        navigateToScreen
-                      )}
-                      className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-200 text-left hover:scale-[1.02] active:scale-95 relative z-30 ${
-                        currentScreen === item.screen
-                          ? "bg-prawnbox-accent text-white shadow-lg"
-                          : "hover:bg-gray-100 text-prawnbox-primary"
-                      }`}
-                      style={{
-                        pointerEvents: "auto",
-                        userSelect: "none",
-                        WebkitUserSelect: "none",
-                      }}
-                    >
-                      <span className="font-medium text-sm truncate">
-                        {item.label}
-                      </span>
-                    </button>
-                  ))}
-                </nav>
-
-                {/* 🔥 ENHANCED RECENT ACTIVITY WITH COLORED BUTTONS */}
-                <div className="mt-8">
-                  <h3 className="font-medium text-prawnbox-primary mb-4 text-sm">
-                    Recent Activity
-                  </h3>
-                  <div className="space-y-3">
-                    {deliveryJobs.slice(0, 6).map((job, index) => {
-                      const colorScheme =
-                        recentActivityColors[
+                  {/* 🔥 ENHANCED RECENT ACTIVITY WITH COLORED BUTTONS */}
+                  <div className="mt-8">
+                    <h3 className="font-medium text-prawnbox-primary mb-4 text-sm">
+                      Recent Activity
+                    </h3>
+                    <div className="space-y-3">
+                      {deliveryJobs.slice(0, 6).map((job, index) => {
+                        const colorScheme =
+                          recentActivityColors[
                           index % recentActivityColors.length
-                        ];
-                      return (
-                        <button
-                          key={job.id}
-                          className={`w-full p-3 ${colorScheme.bg} ${colorScheme.hover} border ${colorScheme.border} rounded-xl transition-all duration-200 cursor-pointer text-left relative z-30 hover:scale-[1.02] active:scale-95 shadow-sm`}
-                          onClick={eventHandlers.createJobSelectionHandler(
-                            job,
-                            handleJobSelect,
-                            () => navigateToScreen("tracking")
-                          )}
-                          style={{
-                            pointerEvents: "auto",
-                            userSelect: "none",
-                            WebkitUserSelect: "none",
-                          }}
-                        >
-                          <p
-                            className={`font-medium text-xs ${colorScheme.text} truncate`}
+                          ];
+                        return (
+                          <button
+                            key={job.id}
+                            className={`w-full p-3 ${colorScheme.bg} ${colorScheme.hover} border ${colorScheme.border} rounded-xl transition-all duration-200 cursor-pointer text-left relative z-30 hover:scale-[1.02] active:scale-95 shadow-sm`}
+                            onClick={eventHandlers.createJobSelectionHandler(
+                              job,
+                              handleJobSelect,
+                              () => navigateToScreen("tracking")
+                            )}
+                            style={{
+                              pointerEvents: "auto",
+                              userSelect: "none",
+                              WebkitUserSelect: "none",
+                            }}
                           >
-                            {job.title}
-                          </p>
-                          <p
-                            className={`text-xs ${colorScheme.subtext} capitalize`}
-                          >
-                            {job.status}
-                          </p>
-                        </button>
-                      );
-                    })}
+                            <p
+                              className={`font-medium text-xs ${colorScheme.text} truncate`}
+                            >
+                              {job.title}
+                            </p>
+                            <p
+                              className={`text-xs ${colorScheme.subtext} capitalize`}
+                            >
+                              {job.status}
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
+                </div>
+              </div>
+
+              {/* 🔥 CENTERED TABLET-WIDTH MAIN CONTENT AREA WITH WHITE SIDES */}
+              <div className="flex-1 min-w-0 overflow-hidden relative z-10 bg-white flex justify-center">
+                {/* Centered container with tablet max-width */}
+                <div className="w-full h-full overflow-y-auto">
+                  <div className="w-full h-full">{renderScreen()}</div>
                 </div>
               </div>
             </div>
 
-            {/* 🔥 CENTERED TABLET-WIDTH MAIN CONTENT AREA WITH WHITE SIDES */}
-            <div className="flex-1 min-w-0 overflow-hidden relative z-10 bg-white flex justify-center">
-              {/* Centered container with tablet max-width */}
-              <div className="w-full max-w-[896px] h-full overflow-y-auto">
-                <div className="w-full h-full">{renderScreen()}</div>
-              </div>
-            </div>
-          </div>
+            {/* Footer outside the main container */}
+            {!isFullScreenScreen && (
+              <DashboardFooter
+                activeRole={activeRole}
+                onActionClick={handleActionClick}
+              />
+            )}
+          </>
         ) : (
           /* 🔥 MOBILE & TABLET LAYOUT - FULL WIDTH FOR ALL SCREENS */
           <div className="w-full min-h-screen flex flex-col relative z-10">
             {/* 🔥 MOBILE & TABLET CONTAINER - FULL WIDTH OPTIMIZED */}
-            <div
-              className={`w-full flex-1 bg-white ${
-                isFullScreenScreen
-                  ? "p-0"
-                  : shouldShowDashboardHeader
-                  ? `${
-                      currentScreen === "dashboard" ||
-                      currentScreen === "notifications"
+              <div
+                className={`w-full flex-1 bg-white ${isFullScreenScreen
+                    ? "p-0"
+                    : shouldShowDashboardHeader
+                      ? `${currentScreen === "dashboard"
                         ? "pt-44"
-                        : "pt-20"
-                    } px-2 pb-safe-area-inset-bottom sm:px-4 lg:px-6` // Reduced padding for more space
-                  : "px-2 py-2 pb-safe-area-inset-bottom sm:px-4 sm:py-4 lg:px-6"
-              }`}
-            >
-              <div className="w-full min-h-full">{renderScreen()}</div>
-            </div>
+                        : currentScreen === "notifications"
+                          ? "pt-20"
+                          : "pt-18"
+                      } pb-safe-area-inset-bottom sm:px-4 lg:px-6`
+                      : "px-2 py-2 pb-safe-area-inset-bottom sm:px-4 sm:py-4 lg:px-6"
+                  }`}
+              >
+                <div className="w-full min-h-full">{renderScreen()}</div>
+              </div>
           </div>
         )}
-
+        {!isFullScreenScreen && (
+          <DashboardFooter
+            activeRole={activeRole}
+            onActionClick={handleActionClick}
+          />
+        )}
         {/* Enhanced Floating Action Button - Desktop Only */}
         {isDesktopLayout && currentScreen === "dashboard" && (
           <div className="hidden xl:block fixed bottom-8 right-8 z-50">

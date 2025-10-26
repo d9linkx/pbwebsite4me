@@ -1,6 +1,6 @@
 "use client"
 import { AuthScreen } from '../../components/AuthScreen';
-import { User, VehicleType } from '../../types';
+import { User } from '../../types';
 
 export default function AuthPage() {
   const handleLogin = (user: User) => {
@@ -8,7 +8,7 @@ export default function AuthPage() {
     localStorage.setItem('prawnbox_user', JSON.stringify(user));
 
     // Redirect to home page or dashboard
-    window.location.href = '/';
+    window.location.href = '/dashboard';
   };
 
   const handleDemoLogin = (userType: 'sender' | 'pal' | 'receiver' | 'proxy') => {
@@ -43,7 +43,7 @@ export default function AuthPage() {
           },
           delivery: {
             autoAcceptRadius: 5,
-            preferredVehicles: ['Car'] as VehicleType[]
+            //preferredVehicles: ['Car'] as VehicleType[]
           }
         }
       },
@@ -77,7 +77,7 @@ export default function AuthPage() {
           },
           delivery: {
             autoAcceptRadius: 5,
-            preferredVehicles: ['Car'] as VehicleType[]
+            //preferredVehicles: ['Car'] as VehicleType[]
           }
         }
       },
@@ -110,7 +110,7 @@ export default function AuthPage() {
           },
           delivery: {
             autoAcceptRadius: 5,
-            preferredVehicles: ['Car'] as VehicleType[]
+            //preferredVehicles: ['Car'] as VehicleType[]
           }
         }
       },
@@ -143,7 +143,7 @@ export default function AuthPage() {
           },
           delivery: {
             autoAcceptRadius: 5,
-            preferredVehicles: ['Car'] as VehicleType[]
+            //preferredVehicles: ['Car'] as VehicleType[]
           }
         }
       }

@@ -534,33 +534,30 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
           {/* Progress Steps */}
           <div className="flex items-center justify-between">
             {[1, 2, 3].map((step) => (
-              <div key={step} className="flex items-center flex-1">
-                <div className="flex flex-col items-center flex-1">
-                  <motion.div 
-                    className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold transition-all ${
-                      step < currentStep 
-                        ? 'bg-green-500 text-white' 
-                        : step === currentStep 
-                        ? 'bg-[#f44708] text-white' 
-                        : 'bg-white/20 text-gray-400'
-                    }`}
+              <React.Fragment key={step}>
+                <div className="flex flex-col items-center">
+                  <motion.div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold transition-all ${step < currentStep
+                        ? 'bg-green-500 text-white'
+                        : step === currentStep
+                          ? 'bg-[#f44708] text-white'
+                          : 'bg-white/20 text-gray-400'
+                      }`}
                     animate={step === currentStep ? { scale: [1, 1.1, 1] } : {}}
                     transition={{ duration: 0.5 }}
                   >
                     {step < currentStep ? <CheckCircle size={16} /> : step}
                   </motion.div>
-                  <span className={`text-xs mt-1 ${
-                    step === currentStep ? 'text-white font-medium' : 'text-gray-400'
-                  }`}>
+                  <span className={`text-xs mt-1 ${step === currentStep ? 'text-white font-medium' : 'text-gray-400'
+                    }`}>
                     Step {step}
                   </span>
                 </div>
                 {step < 3 && (
-                  <div className={`h-1 flex-1 mx-2 rounded-full ${
-                    step < currentStep ? 'bg-green-500' : 'bg-white/20'
-                  }`} />
+                  <div className={`h-1 flex-1 mx-2 rounded-full ${step < currentStep ? 'bg-green-500' : 'bg-white/20'
+                    }`} />
                 )}
-              </div>
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -568,9 +565,9 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
 
       {/* White Content Area - Form */}
       <div className="flex-1 overflow-y-auto">
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-6">
+        <form onSubmit={handleSubmit} className="w-full p-4 sm:p-6 lg:p-8">
           <motion.div
-            className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 space-y-6"
+            className="bg-white rounded-2xl shadow-lg border border-gray-200 space-y-6 w-full"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -579,7 +576,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
             {currentStep === 1 && (
               <div className="space-y-6">
                 <div>
-                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">Item Name *</Label>
+                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">Item Name <span className="text-red-500">*</span></Label>
                   <Input
                     id="title"
                     value={formData.title}
@@ -592,41 +589,67 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="itemSize" className="text-sm font-medium text-gray-700">Package Size *</Label>
+                    <Label htmlFor="itemSize" className="text-sm font-medium text-gray-700">
+                      Package Size <span className="text-red-500">*</span>
+                    </Label>
                     <Select value={formData.itemSize} onValueChange={(value) => updateFormData('itemSize', value)}>
                       <SelectTrigger className="mt-2 rounded-xl h-12 border-gray-300">
                         <SelectValue placeholder="Select size" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Small">📱 Small (Fits in pocket)</SelectItem>
-                        <SelectItem value="Medium">📦 Medium (Shoebox size)</SelectItem>
-                        <SelectItem value="Large">📺 Large (Suitcase size)</SelectItem>
+                      <SelectContent className="bg-white/95 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-xl z-50">
+                        <SelectItem value="Small" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Small (Fits in pocket)
+                        </SelectItem>
+                        <SelectItem value="Medium" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Medium (Shoebox size)
+                        </SelectItem>
+                        <SelectItem value="Large" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Large (Suitcase size)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor="category" className="text-sm font-medium text-gray-700">Category *</Label>
+                    <Label htmlFor="category" className="text-sm font-medium text-gray-700">
+                      Category <span className="text-red-500">*</span>
+                    </Label>
                     <Select value={formData.category} onValueChange={(value) => updateFormData('category', value)}>
                       <SelectTrigger className="mt-2 rounded-xl h-12 border-gray-300">
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
-                      <SelectContent className="max-h-[300px]">
-                        <SelectItem value="electronics">📱 Electronics</SelectItem>
-                        <SelectItem value="food">🍕 Food & Groceries</SelectItem>
-                        <SelectItem value="documents">📄 Documents</SelectItem>
-                        <SelectItem value="clothing">👕 Clothing & Fashion</SelectItem>
-                        <SelectItem value="jewelry">💎 Jewelry & Accessories</SelectItem>
-                        <SelectItem value="medical">💊 Medical Supplies</SelectItem>
-                        <SelectItem value="fragile">🍷 Fragile Items</SelectItem>
-                        <SelectItem value="other">📦 Other</SelectItem>
+                      <SelectContent className="max-h-[300px] bg-white/95 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-xl z-50">
+                        <SelectItem value="electronics" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Electronics
+                        </SelectItem>
+                        <SelectItem value="food" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Food & Groceries
+                        </SelectItem>
+                        <SelectItem value="documents" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Documents
+                        </SelectItem>
+                        <SelectItem value="clothing" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Clothing & Fashion
+                        </SelectItem>
+                        <SelectItem value="jewelry" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Jewelry & Accessories
+                        </SelectItem>
+                        <SelectItem value="medical" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Medical Supplies
+                        </SelectItem>
+                        <SelectItem value="fragile" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Fragile Items
+                        </SelectItem>
+                        <SelectItem value="other" className="hover:bg-gray-100/80 backdrop-blur-sm">
+                          Other
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="value" className="text-sm font-medium text-gray-700">Item Value (₦) *</Label>
+                  <Label htmlFor="value" className="text-sm font-medium text-gray-700">Item Value (₦) <span className="text-red-500">*</span></Label>
                   <Input
                     id="value"
                     type="number"
@@ -643,7 +666,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
 
                 {/* AI Item Scanner */}
                 <div>
-                  <Label className="text-sm font-medium text-gray-700">Item Verification Scan *</Label>
+                  <Label className="text-sm font-medium text-gray-700">Item Verification Scan <span className="text-red-500">*</span></Label>
                   <div className="mt-2">
                     {!scanCompleted ? (
                       <motion.div 
@@ -759,7 +782,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
               <div className="space-y-6">
                 {/* Pickup Location with Autocomplete */}
                 <div className="relative" ref={pickupRef}>
-                  <Label className="text-sm font-medium text-gray-700">Pickup Location *</Label>
+                  <Label className="text-sm font-medium text-gray-700">Pickup Location <span className="text-red-500">*</span></Label>
                   <div className="relative mt-2">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
                       <MapPin size={20} className="text-[#f44708]" />
@@ -807,7 +830,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
 
                 {/* Delivery Location with Autocomplete */}
                 <div className="relative" ref={dropoffRef}>
-                  <Label className="text-sm font-medium text-gray-700">Delivery Location *</Label>
+                  <Label className="text-sm font-medium text-gray-700">Delivery Location <span className="text-red-500">*</span></Label>
                   <div className="relative mt-2">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
                       <MapPin size={20} className="text-[#f44708]" />
@@ -855,7 +878,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="pickupDate" className="text-sm font-medium text-gray-700">Pickup Date *</Label>
+                    <Label htmlFor="pickupDate" className="text-sm font-medium text-gray-700">Pickup Date <span className="text-red-500">*</span></Label>
                     <Input
                       id="pickupDate"
                       type="date"
@@ -897,7 +920,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div>
-                  <Label htmlFor="receiverName" className="text-sm font-medium text-gray-700">Receiver Name *</Label>
+                  <Label htmlFor="receiverName" className="text-sm font-medium text-gray-700">Receiver Name <span className="text-red-500">*</span></Label>
                   <Input
                     id="receiverName"
                     value={formData.receiverName}
@@ -909,7 +932,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                 </div>
 
                 <div>
-                  <Label htmlFor="receiverPhone" className="text-sm font-medium text-gray-700">Receiver Phone *</Label>
+                  <Label htmlFor="receiverPhone" className="text-sm font-medium text-gray-700">Receiver Phone <span className="text-red-500">*</span></Label>
                   <Input
                     id="receiverPhone"
                     type="tel"
@@ -1006,7 +1029,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                 type="button"
                 onClick={handleNext}
                 disabled={!isCurrentStepValid()}
-                className={`${currentStep === 1 ? 'w-full' : 'flex-1'} bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all`}
+                className={`${currentStep === 1 ? 'w-full' : 'flex-1'} bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all mb-10`}
                 whileHover={isCurrentStepValid() ? { scale: 1.02 } : {}}
                 whileTap={isCurrentStepValid() ? { scale: 0.98 } : {}}
               >

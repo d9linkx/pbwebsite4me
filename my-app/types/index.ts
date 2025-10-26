@@ -15,6 +15,7 @@ export type Screen =
   | 'splash'
   | 'onboarding'
   | 'auth'
+  | 'email-verification'
   | 'dashboard'
   | 'post-delivery'
   | 'pal-profile'
@@ -121,7 +122,19 @@ export interface Item {
   weight?: string;
 }
 
-export type VehicleType = 'Motorcycle' | 'Car' | 'Bicycle' | 'Van';
+export interface VerifyEmailRequest {
+  email: string;
+  verificationCode: string;
+}
+
+export interface VerifyEmailResponse {
+  success: boolean;
+  message: string;
+  user?: User;
+  token?: string;
+  refreshToken?: string;
+  expiresIn?: number;
+}
 
 export type ProxyStatus = 'incoming' | 'stored' | 'completed' | 'returned' | 'waiting-pickup' | 'ready-pickup' | 'collected';
 
@@ -147,22 +160,29 @@ export interface Dispute{
   status: DisputeStatus;
   resolution?: DisputeResolution;
 }
+
 export interface User {
   id: string;
-  name: string;
+  _id?: string; // MongoDB ObjectId field
+  userName: string;
+  firstName: string;
+  lastName: string;
+  name: string; // Full name (computed from firstName + lastName)
+  fullName?: string;
   email: string;
-  phone: string;
+  phone: string; // Frontend expects 'phone', backend returns 'phoneNumber'
+  phoneNumber?: string; // Backend field name
   role: UserRole;
   profileImage?: string;
   walletBalance?: number;
   rating?: number;
   totalDeliveries?: number;
   joinedDate?: string;
-  vehicleType?: VehicleType;
+  // vehicleType?: VehicleType;
   isVerified?: boolean;
   governmentIdUrl?: string;
   governmentIdStatus?: 'pending' | 'verified' | 'rejected';
-  activeEscrows?: SponsorshipEscrow[]; // Tracks user's ongoing escrow-like engagements
+  activeEscrows?: SponsorshipEscrow[];
   transactions?: Transaction[];
   bankAccounts?: BankAccount[];
   cards?: PaymentCard[];
@@ -188,7 +208,7 @@ export interface UserPreferences {
   };
   delivery: {
     autoAcceptRadius: number;
-    preferredVehicles: VehicleType[];
+    // preferredVehicles: VehicleType[];
   };
   emailUpdate?: boolean;
   smsUpdate?: boolean;
@@ -366,7 +386,7 @@ export interface Bid {
   palId: string;
   palName: string;
   palRating: number;
-  vehicleType: VehicleType;
+  // vehicleType: VehicleType;
   estimatedTime: string;
   amount: number;
   message: string;
@@ -536,11 +556,14 @@ export interface RatingData {
 
 export interface FavoritePalData {
   id: string;
-  name: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  name: string; // Full name (computed from firstName + lastName)
   phone: string;
   rating: number;
   totalDeliveries: number;
-  vehicleType: VehicleType;
+  // vehicleType: VehicleType;
   isVerified: boolean;
 }
 

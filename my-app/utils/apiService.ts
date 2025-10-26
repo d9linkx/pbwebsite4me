@@ -1,0 +1,457 @@
+import { apiClient, retry } from '../utils/apiClient';
+import {
+  User,
+  DeliveryJob,
+  Bid,
+  ProxyItem,
+  ChatThread,
+  ChatMessage,
+  Notification,
+  Transaction,
+  UserRole,
+  DeliveryStatus,
+  NigerianLocation,
+  DisputeResolution,
+
+//   JobsResponse,
+//   BidsResponse,
+//   UsersResponse,
+//   ChatThreadsResponse,
+//   NotificationsResponse,
+//   TransactionsResponse,
+//   DashboardAnalyticsResponse,
+//   ProfileResponse,
+//   WalletBalanceResponse,
+//   ProxyStorageResponse,
+//   SponsorshipResponse,
+//   ReferralStatsResponse,
+//   LocationSearchResponse,
+//   FileUploadResponse,
+} from '../types';
+
+import {   
+AuthResponse,
+} from '../types/api';
+
+import { ApiResponse } from '../utils/apiClient';
+import {
+  LoginRequest,
+  RegisterRequest,
+//   CreateDeliveryJobRequest,
+//   UpdateDeliveryJobRequest,
+//   CreateBidRequest,
+//   UpdateBidRequest,
+//   SendMessageRequest,
+//   CreateNotificationRequest,
+//   UpdateUserRequest,
+//   AddPaymentMethodRequest,
+//   CreateTransactionRequest,
+//   DisputeRequest,
+//   UpdateProfileRequest,
+//   WithdrawalRequest,
+//   LocationSearchRequest,
+//   FileUploadRequest,
+//   ProxyStorageRequest,
+//   SponsorshipRequest,
+} from '../types/api';
+
+import {
+  VerifyEmailRequest,
+  VerifyEmailResponse,
+  UpdateUserRequest,
+} from '../types/api';
+
+export class ApiService {
+  // Authentication
+  async login(credentials: LoginRequest): Promise<ApiResponse<AuthResponse>> {
+    return retry(() => apiClient.post<AuthResponse>('/user/login', credentials));
+  }
+
+  async register(userData: RegisterRequest): Promise<ApiResponse<AuthResponse>> {
+    return retry(() => apiClient.post<AuthResponse>('/user/register', userData));
+  }
+
+  async refreshToken(refreshToken: string): Promise<ApiResponse<AuthResponse>> {
+    return retry(() => apiClient.post<AuthResponse>('/user/refresh', { refreshToken }));
+  }
+
+  async logout(): Promise<ApiResponse<void>> {
+    return retry(() => apiClient.post<void>('/user/logout'));
+  }
+
+  async getCurrentUser(): Promise<ApiResponse<User>> {
+    return retry(() => apiClient.get<User>('/user/me'));
+  }
+
+  async verifyEmail(request: VerifyEmailRequest): Promise<ApiResponse<VerifyEmailResponse>> {
+    return retry(() => apiClient.post<VerifyEmailResponse>('/user/verify-verification-code', request));
+  }
+
+  async updateProfile(userId: string, updates: UpdateUserRequest): Promise<ApiResponse<User>> {
+    return retry(() => apiClient.put<User>(`/users/${userId}`, updates));
+  }
+
+  // Users
+//   async getUsers(params?: {
+//     role?: UserRole;
+//     page?: number;
+//     limit?: number;
+//     search?: string;
+//   }): Promise<ApiResponse<UsersResponse>> {
+//     return retry(() => apiClient.get<UsersResponse>('/users', params));
+//   }
+
+//   async getUserById(userId: string): Promise<ApiResponse<User>> {
+//     return retry(() => apiClient.get<User>(`/users/${userId}`));
+//   }
+
+//   async updateUser(userId: string, updates: UpdateUserRequest): Promise<ApiResponse<User>> {
+//     return retry(() => apiClient.put<User>(`/users/${userId}`, updates));
+//   }
+
+//   async updateProfile(updates: UpdateProfileRequest): Promise<ApiResponse<ProfileResponse>> {
+//     return retry(() => apiClient.put<ProfileResponse>('/users/profile', updates));
+//   }
+
+//   async getUserProfile(): Promise<ApiResponse<ProfileResponse>> {
+//     return retry(() => apiClient.get<ProfileResponse>('/users/profile'));
+//   }
+
+//   async uploadProfileImage(file: File): Promise<ApiResponse<{ url: string }>> {
+//     const formData = new FormData();
+//     formData.append('profileImage', file);
+//     return retry(() =>
+//       apiClient.post<{ url: string }>('/users/profile/image', formData, {
+//         headers: {}, // Let browser set Content-Type for FormData
+//       })
+//     );
+//   }
+
+//   // Delivery Jobs
+//   async getJobs(params?: {
+//     status?: DeliveryStatus[];
+//     role?: UserRole;
+//     userId?: string;
+//     page?: number;
+//     limit?: number;
+//     dateRange?: { start: string; end: string };
+//   }): Promise<ApiResponse<JobsResponse>> {
+//     return retry(() => apiClient.get<JobsResponse>('/jobs', params));
+//   }
+
+//   async getJobById(jobId: string): Promise<ApiResponse<DeliveryJob>> {
+//     return retry(() => apiClient.get<DeliveryJob>(`/jobs/${jobId}`));
+//   }
+
+//   async createJob(jobData: CreateDeliveryJobRequest): Promise<ApiResponse<DeliveryJob>> {
+//     return retry(() => apiClient.post<DeliveryJob>('/jobs', jobData));
+//   }
+
+//   async updateJob(jobId: string, updates: UpdateDeliveryJobRequest): Promise<ApiResponse<DeliveryJob>> {
+//     return retry(() => apiClient.put<DeliveryJob>(`/jobs/${jobId}`, updates));
+//   }
+
+//   async deleteJob(jobId: string): Promise<ApiResponse<void>> {
+//     return retry(() => apiClient.delete<void>(`/jobs/${jobId}`));
+//   }
+
+//   async getUserJobs(userId: string, role: UserRole, params?: {
+//     status?: DeliveryStatus[];
+//     page?: number;
+//     limit?: number;
+//   }): Promise<ApiResponse<JobsResponse>> {
+//     return retry(() => apiClient.get<JobsResponse>(`/users/${userId}/jobs`, { role, ...params }));
+//   }
+
+//   async getJobBids(jobId: string): Promise<ApiResponse<BidsResponse>> {
+//     return retry(() => apiClient.get<BidsResponse>(`/jobs/${jobId}/bids`));
+//   }
+
+//   // Bids
+//   async createBid(bidData: CreateBidRequest): Promise<ApiResponse<Bid>> {
+//     return retry(() => apiClient.post<Bid>('/bids', bidData));
+//   }
+
+//   async updateBid(bidId: string, updates: UpdateBidRequest): Promise<ApiResponse<Bid>> {
+//     return retry(() => apiClient.put<Bid>(`/bids/${bidId}`, updates));
+//   }
+
+//   async deleteBid(bidId: string): Promise<ApiResponse<void>> {
+//     return retry(() => apiClient.delete<void>(`/bids/${bidId}`));
+//   }
+
+//   async acceptBid(jobId: string, bidId: string): Promise<ApiResponse<DeliveryJob>> {
+//     return retry(() => apiClient.post<DeliveryJob>(`/jobs/${jobId}/bids/${bidId}/accept`));
+//   }
+
+//   // Chat and Messaging
+//   async getChatThreads(userId: string, params?: { page?: number; limit?: number }): Promise<ApiResponse<ChatThreadsResponse>> {
+//     return retry(() => apiClient.get<ChatThreadsResponse>(`/users/${userId}/chat-threads`, params));
+//   }
+
+//   async getChatThread(threadId: string): Promise<ApiResponse<ChatThread>> {
+//     return retry(() => apiClient.get<ChatThread>(`/chat-threads/${threadId}`));
+//   }
+
+//   async sendMessage(messageData: SendMessageRequest): Promise<ApiResponse<ChatMessage>> {
+//     return retry(() => apiClient.post<ChatMessage>('/messages', messageData));
+//   }
+
+//   async markThreadAsRead(threadId: string): Promise<ApiResponse<void>> {
+//     return retry(() => apiClient.post<void>(`/chat-threads/${threadId}/read`));
+//   }
+
+//   // Notifications
+//   async getNotifications(userId: string, params?: {
+//     category?: 'alert' | 'general';
+//     unreadOnly?: boolean;
+//     page?: number;
+//     limit?: number;
+//   }): Promise<ApiResponse<NotificationsResponse>> {
+//     return retry(() => apiClient.get<NotificationsResponse>(`/users/${userId}/notifications`, params));
+//   }
+
+//   async markNotificationAsRead(notificationId: string): Promise<ApiResponse<Notification>> {
+//     return retry(() => apiClient.put<Notification>(`/notifications/${notificationId}/read`));
+//   }
+
+//   async markAllNotificationsAsRead(userId: string): Promise<ApiResponse<void>> {
+//     return retry(() => apiClient.post<void>(`/users/${userId}/notifications/read-all`));
+//   }
+
+//   async createNotification(notificationData: CreateNotificationRequest): Promise<ApiResponse<Notification>> {
+//     return retry(() => apiClient.post<Notification>('/notifications', notificationData));
+//   }
+
+//   // Wallet and Transactions
+//   async getWalletBalance(userId: string): Promise<ApiResponse<WalletBalanceResponse>> {
+//     return retry(() => apiClient.get<WalletBalanceResponse>(`/users/${userId}/wallet`));
+//   }
+
+//   async getTransactions(userId: string, params?: {
+//     type?: string;
+//     status?: string;
+//     page?: number;
+//     limit?: number;
+//     dateRange?: { start: string; end: string };
+//   }): Promise<ApiResponse<TransactionsResponse>> {
+//     return retry(() => apiClient.get<TransactionsResponse>(`/users/${userId}/transactions`, params));
+//   }
+
+//   async createTransaction(transactionData: CreateTransactionRequest): Promise<ApiResponse<Transaction>> {
+//     return retry(() => apiClient.post<Transaction>('/transactions', transactionData));
+//   }
+
+//   async withdrawFunds(withdrawalData: WithdrawalRequest): Promise<ApiResponse<Transaction>> {
+//     return retry(() => apiClient.post<Transaction>('/transactions/withdraw', withdrawalData));
+//   }
+
+//   // Payment Methods
+//   async getPaymentMethods(userId: string): Promise<ApiResponse<any[]>> {
+//     return retry(() => apiClient.get<any[]>(`/users/${userId}/payment-methods`));
+//   }
+
+//   async addPaymentMethod(userId: string, paymentData: AddPaymentMethodRequest): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.post<any>(`/users/${userId}/payment-methods`, paymentData));
+//   }
+
+//   async deletePaymentMethod(userId: string, paymentMethodId: string): Promise<ApiResponse<void>> {
+//     return retry(() => apiClient.delete<void>(`/users/${userId}/payment-methods/${paymentMethodId}`));
+//   }
+
+//   async setDefaultPaymentMethod(userId: string, paymentMethodId: string): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.put<any>(`/users/${userId}/payment-methods/${paymentMethodId}/default`));
+//   }
+
+//   // Location Services
+//   async searchLocations(searchData: LocationSearchRequest): Promise<ApiResponse<LocationSearchResponse>> {
+//     return retry(() => apiClient.post<LocationSearchResponse>('/locations/search', searchData));
+//   }
+
+//   async getPopularLocations(): Promise<ApiResponse<NigerianLocation[]>> {
+//     return retry(() => apiClient.get<NigerianLocation[]>('/locations/popular'));
+//   }
+
+//   async updateLocation(userId: string, location: { lat: number; lng: number; address?: string }): Promise<ApiResponse<User>> {
+//     return retry(() => apiClient.put<User>(`/users/${userId}/location`, location));
+//   }
+
+//   // File Upload
+//   async uploadFile(uploadData: FileUploadRequest): Promise<ApiResponse<FileUploadResponse>> {
+//     const formData = new FormData();
+//     formData.append('file', uploadData.file);
+//     formData.append('type', uploadData.type);
+//     if (uploadData.folder) {
+//       formData.append('folder', uploadData.folder);
+//     }
+
+//     return retry(() =>
+//       apiClient.post<FileUploadResponse>('/upload', formData, {
+//         headers: {}, // Let browser set Content-Type for FormData
+//       })
+//     );
+//   }
+
+//   async deleteFile(fileId: string): Promise<ApiResponse<void>> {
+//     return retry(() => apiClient.delete<void>(`/upload/${fileId}`));
+//   }
+
+//   // Analytics and Dashboard
+//   async getDashboardAnalytics(userId: string, role: UserRole): Promise<ApiResponse<DashboardAnalyticsResponse>> {
+//     return retry(() => apiClient.get<DashboardAnalyticsResponse>(`/users/${userId}/analytics`, { role }));
+//   }
+
+//   async getUserAnalytics(userId: string): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.get<any>(`/users/${userId}/analytics`));
+//   }
+
+//   // Proxy Services
+//   async getProxyItems(userId: string, params?: {
+//     status?: ProxyStatus[];
+//     page?: number;
+//     limit?: number;
+//   }): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.get<any>(`/users/${userId}/proxy-items`, params));
+//   }
+
+//   async createProxyStorage(storageData: ProxyStorageRequest): Promise<ApiResponse<ProxyStorageResponse>> {
+//     return retry(() => apiClient.post<ProxyStorageResponse>('/proxy/storage', storageData));
+//   }
+
+//   async updateProxyItem(proxyItemId: string, updates: any): Promise<ApiResponse<ProxyItem>> {
+//     return retry(() => apiClient.put<ProxyItem>(`/proxy-items/${proxyItemId}`, updates));
+//   }
+
+//   async handoverToReceiver(proxyItemId: string, receiverId: string): Promise<ApiResponse<ProxyItem>> {
+//     return retry(() => apiClient.post<ProxyItem>(`/proxy-items/${proxyItemId}/handover`, { receiverId }));
+//   }
+
+//   // Dispute Resolution
+//   async createDispute(disputeData: DisputeRequest): Promise<ApiResponse<DisputeResolution>> {
+//     return retry(() => apiClient.post<DisputeResolution>('/disputes', disputeData));
+//   }
+
+//   async getDisputes(userId: string, params?: {
+//     status?: DisputeStatus[];
+//     page?: number;
+//     limit?: number;
+//   }): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.get<any>(`/users/${userId}/disputes`, params));
+//   }
+
+//   async resolveDispute(disputeId: string, resolution: {
+//     resolutionDetails: string;
+//     compensationAmount?: number;
+//     penaltyAmount?: number;
+//   }): Promise<ApiResponse<DisputeResolution>> {
+//     return retry(() => apiClient.put<DisputeResolution>(`/disputes/${disputeId}/resolve`, resolution));
+//   }
+
+//   // Sponsorship System
+//   async createSponsorship(sponsorshipData: SponsorshipRequest): Promise<ApiResponse<SponsorshipResponse>> {
+//     return retry(() => apiClient.post<SponsorshipResponse>('/sponsorships', sponsorshipData));
+//   }
+
+//   async getUserSponsorships(userId: string): Promise<ApiResponse<any[]>> {
+//     return retry(() => apiClient.get<any[]>(`/users/${userId}/sponsorships`));
+//   }
+
+//   async getAvailableSponsorships(): Promise<ApiResponse<any[]>> {
+//     return retry(() => apiClient.get<any[]>('/sponsorships/available'));
+//   }
+
+//   // Referral System
+//   async getReferralStats(userId: string): Promise<ApiResponse<ReferralStatsResponse>> {
+//     return retry(() => apiClient.get<ReferralStatsResponse>(`/users/${userId}/referrals`));
+//   }
+
+//   async createReferralCode(userId: string, code: string, reward: number): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.post<any>(`/users/${userId}/referral-codes`, { code, reward }));
+//   }
+
+//   async applyReferralCode(code: string): Promise<ApiResponse<{ discount: number; message: string }>> {
+//     return retry(() => apiClient.post<{ discount: number; message: string }>('/referrals/apply', { code }));
+//   }
+
+//   // QR Code and Verification
+//   async verifyItemScan(jobId: string, scanData: {
+//     itemId?: string;
+//     itemName?: string;
+//     category?: string;
+//     size?: string;
+//     estimatedWeight?: string;
+//     color?: string;
+//     confidence: number;
+//     images?: string[];
+//     features?: number;
+//     scanHash?: string;
+//   }): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.post<any>(`/jobs/${jobId}/verify-scan`, scanData));
+//   }
+
+//   async generateQRCode(jobId: string, type: 'pickup' | 'delivery' | 'handover'): Promise<ApiResponse<{ qrCode: string; expiresAt: string }>> {
+//     return retry(() => apiClient.post<{ qrCode: string; expiresAt: string }>(`/jobs/${jobId}/qr-code`, { type }));
+//   }
+
+//   async verifyQRCode(jobId: string, token: string): Promise<ApiResponse<{ verified: boolean; message: string }>> {
+//     return retry(() => apiClient.post<{ verified: boolean; message: string }>(`/jobs/${jobId}/verify-qr`, { token }));
+//   }
+
+//   // Route and Navigation
+//   async getRoute(from: { lat: number; lng: number }, to: { lat: number; lng: number }, vehicleType?: VehicleType): Promise<ApiResponse<{
+//     distance: number;
+//     duration: number;
+//     polyline: string;
+//     instructions: string[];
+//   }>> {
+//     return retry(() => apiClient.get<{
+//       distance: number;
+//       duration: number;
+//       polyline: string;
+//       instructions: string[];
+//     }>('/routes', { fromLat: from.lat.toString(), fromLng: from.lng.toString(), toLat: to.lat.toString(), toLng: to.lng.toString(), vehicleType }));
+//   }
+
+//   async getNearbyUsers(userId: string, location: { lat: number; lng: number }, radius?: number): Promise<ApiResponse<any[]>> {
+//     return retry(() => apiClient.get<any[]>(`/users/${userId}/nearby`, {
+//       lat: location.lat.toString(),
+//       lng: location.lng.toString(),
+//       radius: radius?.toString()
+//     }));
+//   }
+
+//   // System and Configuration
+//   async getSystemNotices(): Promise<ApiResponse<any[]>> {
+//     return retry(() => apiClient.get<any[]>('/system/notices'));
+//   }
+
+//   async getAppConfig(): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.get<any>('/config'));
+//   }
+
+//   async healthCheck(): Promise<ApiResponse<{ status: string; timestamp: string }>> {
+//     return retry(() => apiClient.get<{ status: string; timestamp: string }>('/health'));
+//   }
+
+//   // Admin and Support
+//   async getSupportTickets(userId: string): Promise<ApiResponse<any[]>> {
+//     return retry(() => apiClient.get<any[]>(`/users/${userId}/support-tickets`));
+//   }
+
+//   async createSupportTicket(ticketData: {
+//     subject: string;
+//     message: string;
+//     priority: 'low' | 'medium' | 'high';
+//     category: string;
+//     jobId?: string;
+//   }): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.post<any>('/support-tickets', ticketData));
+//   }
+
+//   async updateSupportTicket(ticketId: string, updates: { message: string; status?: string }): Promise<ApiResponse<any>> {
+//     return retry(() => apiClient.put<any>(`/support-tickets/${ticketId}`, updates));
+//   }
+}
+
+// // Create and export a default API service instance
+export const apiService = new ApiService();

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, User, Mail, Phone, MapPin, Camera, Save, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Input } from './ui/input';
@@ -7,23 +7,28 @@ import { Label } from './ui/label';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Textarea } from './ui/textarea';
 import { User as UserType } from '../types';
+import { useUserProfile, useUpdateProfile } from '../utils/apiHooks';
+import { toast } from 'sonner';
 
 interface ProfileInformationScreenProps {
-  user: UserType | null;
   onBack: () => void;
   onUpdateUser: (user: UserType) => void;
+  // Removed: currentUser prop - now always fetches from API
 }
 
-export function ProfileInformationScreen({ user, onBack, onUpdateUser }: ProfileInformationScreenProps) {
+export function ProfileInformationScreen({ onBack, onUpdateUser }: ProfileInformationScreenProps) {
+  const { user: apiCurrentUser, loading: apiUserLoading, error: apiUserError, refetch } = useUserProfile();
+  const { updateProfile, loading: updateLoading } = useUpdateProfile();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    address: user?.location?.address || ''
+    firstName: '',
+    lastName: '',
+    userName: '',
+    email: '',
+    phone: '',
+    address: ''
   });
-  const [isSaving, setIsSaving] = useState(false);
-  
+
   // Photo upload states
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [photoVerificationStatus, setPhotoVerificationStatus] = useState<'idle' | 'uploading' | 'verifying' | 'success' | 'failed'>('idle');
@@ -31,39 +36,82 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
   const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  if (!user) return null;
+  // Always use API user data - ignore mock user prop from dashboard
+  const currentUser = apiCurrentUser;
+  const userLoading = apiUserLoading;
+  const userError = apiUserError;
+
+  // // Type assertion to help TypeScript understand the structure
+  // you areconst typedUser = currentUser as User | null;
+
+  // Validate that currentUser has the expected structure
+  const isValidUser = currentUser && typeof currentUser === 'object' && (currentUser.id || currentUser._id);
+
+  // Update form data when user data loads
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        firstName: currentUser.firstName || '',
+        lastName: currentUser.lastName || '',
+        userName: currentUser.userName || '',
+        email: currentUser.email || '',
+        phone: currentUser.phoneNumber || '',
+        address: currentUser.location?.address || ''
+      });
+    }
+  }, [currentUser]);
+
+  // Show loading state while fetching user data
+  if (apiUserLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#f44708] border-t-transparent"></div>
+        <p className="text-white mt-4">Loading profile...</p>
+      </div>
+    );
+  }
+
+  // Show error state if user data fails to load
+  if (apiUserError || !isValidUser) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
+        <div className="text-white text-center">
+          <p className="mb-4">Failed to load profile information</p>
+          <button
+            onClick={() => refetch()}
+            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const handleSave = async () => {
-    setIsSaving(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const updatedUser = {
-        ...user,
-        name: formData.name,
+    if (!currentUser?.id) return;
+
+    try {
+      const response = await updateProfile(currentUser.id, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        userName: formData.userName,
         email: formData.email,
         phone: formData.phone,
-        address: formData.address
-      };
-      
-      onUpdateUser(updatedUser);
-      setIsEditing(false);
-      setIsSaving(false);
-    }, 1000);
-  };
+        address: formData.address,
+      });
 
-  const handleCancel = () => {
-    setFormData({
-      name: user.name,
-      email: user.email,
-      phone: user.phone || '',
-      address: user.location?.address || ''
-    });
-    setIsEditing(false);
-    // Reset photo upload states
-    setPhotoVerificationStatus('idle');
-    setVerificationMessage('');
-    setPreviewPhoto(null);
+      if (response.success && response.profile) {
+        toast.success('Profile updated successfully!');
+        onUpdateUser(response.profile);
+        setIsEditing(false);
+      } else {
+        toast.error(response.error || 'Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Profile update error:', error);
+      toast.error('Failed to update profile');
+    }
   };
 
   // Photo upload functionality
@@ -102,27 +150,27 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
 
       // Simulate upload process
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       setPhotoVerificationStatus('verifying');
       setVerificationMessage('Verifying photo against your ID...');
 
       // Simulate ID verification process
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Simulate verification result (90% success rate for demo)
       const verificationSuccess = Math.random() > 0.1;
-      
+
       if (verificationSuccess) {
         setPhotoVerificationStatus('success');
         setVerificationMessage('Photo verified successfully! Your profile photo has been updated.');
-        
+
         // Update user profile with new photo immediately
         const updatedUser = {
-          ...user,
+          ...currentUser,
           ...(previewPhoto && { profileImage: previewPhoto })
         };
         onUpdateUser(updatedUser);
-        
+
         // Reset verification states after success but keep the photo
         setTimeout(() => {
           setPhotoVerificationStatus('idle');
@@ -133,7 +181,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
         setPhotoVerificationStatus('failed');
         setVerificationMessage('Photo verification failed. The photo does not match your verified ID. Please try again with a clearer photo or contact support.');
         setPreviewPhoto(null);
-        
+
         // Reset after failure
         setTimeout(() => {
           setPhotoVerificationStatus('idle');
@@ -144,12 +192,31 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
       setPhotoVerificationStatus('failed');
       setVerificationMessage('Upload failed. Please try again.');
       setPreviewPhoto(null);
-      
+
       setTimeout(() => {
         setPhotoVerificationStatus('idle');
         setVerificationMessage('');
       }, 3000);
     }
+  };
+
+  const handleCancel = () => {
+    if (currentUser) {
+      // Reset form data to current user values
+      setFormData({
+        firstName: currentUser.firstName || '',
+        lastName: currentUser.lastName || '',
+        userName: currentUser.userName || '',
+        email: currentUser.email || '',
+        phone: currentUser.phone || '',
+        address: currentUser.location?.address || ''
+      });
+    }
+    setIsEditing(false);
+    // Reset photo upload states
+    setPhotoVerificationStatus('idle');
+    setVerificationMessage('');
+    setPreviewPhoto(null);
   };
 
   return (
@@ -161,14 +228,14 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
       </div>
 
       {/* Header */}
-      <motion.div 
+      <motion.div
         className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <motion.button 
+            <motion.button
               onClick={onBack}
               className="p-2 hover:bg-white/10 rounded-xl transition-colors"
               whileHover={{ scale: 1.05 }}
@@ -192,7 +259,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
       </motion.div>
 
       {/* Profile Photo */}
-      <motion.div 
+      <motion.div
         className="p-6 text-center relative z-10"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -202,17 +269,17 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
           <Avatar className="w-24 h-24 mx-auto border-4 border-white/20">
             {previewPhoto ? (
               <img src={previewPhoto} alt="Profile Preview" className="w-full h-full object-cover rounded-full" />
-            ) : user.profileImage ? (
-              <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover rounded-full" />
+            ) : currentUser?.profileImage ? (
+              <img src={currentUser.profileImage} alt={currentUser?.fullName || 'Profile'} className="w-full h-full object-cover rounded-full" />
             ) : (
               <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white text-2xl">
-                {user.name.split(' ').map(n => n[0]).join('')}
+                {currentUser?.fullName ? currentUser.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
               </AvatarFallback>
             )}
           </Avatar>
           {isEditing && (
             <>
-              <motion.button 
+              <motion.button
                 onClick={handlePhotoUpload}
                 disabled={photoVerificationStatus === 'uploading' || photoVerificationStatus === 'verifying'}
                 className="absolute bottom-0 right-0 w-10 h-10 bg-[#f44708] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#ff5722] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -234,10 +301,10 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
               />
             </>
           )}
-          
+
           {/* Verification Status Indicator */}
           {photoVerificationStatus !== 'idle' && (
-            <motion.div 
+            <motion.div
               className="absolute -bottom-2 -right-2"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -263,13 +330,13 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
         <p className="text-gray-400 text-sm mt-3">
           {isEditing ? 'Tap to change photo' : 'Profile Photo'}
         </p>
-        
+
         {/* Verification Message */}
         {verificationMessage && (
-          <motion.div 
+          <motion.div
             className={`mt-3 p-3 rounded-xl text-sm border ${
-              photoVerificationStatus === 'success' 
-                ? 'bg-green-500/20 text-green-400 border-green-500/30' 
+              photoVerificationStatus === 'success'
+                ? 'bg-green-500/20 text-green-400 border-green-500/30'
                 : photoVerificationStatus === 'failed'
                   ? 'bg-red-500/20 text-red-400 border-red-500/30'
                   : 'bg-blue-500/20 text-blue-400 border-blue-500/30'
@@ -280,10 +347,10 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
             {verificationMessage}
           </motion.div>
         )}
-        
+
         {/* ID Verification Notice */}
         {isEditing && (
-          <motion.div 
+          <motion.div
             className="mt-3 p-3 bg-yellow-500/20 text-yellow-400 text-xs rounded-xl border border-yellow-500/30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -298,7 +365,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
       <div className="flex-1 overflow-y-auto px-6 pb-32 relative z-10">
         <div className="space-y-4">
           {/* Personal Information */}
-          <motion.div 
+          <motion.div
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -308,14 +375,38 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
               <User size={20} className="mr-2 text-[#f44708]" />
               Personal Information
             </h3>
-            
+
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name" className="text-gray-300">Full Name</Label>
+                <Label htmlFor="firstName" className="text-gray-300">First Name</Label>
                 <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                  className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 disabled:opacity-50"
+                  disabled={!isEditing}
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="lastName" className="text-gray-300">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                  className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 disabled:opacity-50"
+                  disabled={!isEditing}
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="userName" className="text-gray-300">Username</Label>
+                <Input
+                  id="userName"
+                  value={formData.userName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, userName: e.target.value }))}
                   className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 disabled:opacity-50"
                   disabled={!isEditing}
                   required
@@ -357,7 +448,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
           </motion.div>
 
           {/* Address Information */}
-          <motion.div 
+          <motion.div
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -367,7 +458,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
               <MapPin size={20} className="mr-2 text-[#f44708]" />
               Address Information
             </h3>
-            
+
             <div>
               <Label htmlFor="address" className="text-gray-300">Home Address</Label>
               <Textarea
@@ -385,21 +476,21 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
           </motion.div>
 
           {/* Account Stats */}
-          <motion.div 
+          <motion.div
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
             <h3 className="text-white mb-4 font-semibold">Account Statistics</h3>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/5 rounded-xl p-4 text-center">
-                <p className="text-3xl text-[#f44708] font-bold">{user.rating}</p>
+                <p className="text-3xl text-[#f44708] font-bold">{currentUser?.rating || 0}</p>
                 <p className="text-xs text-gray-400 mt-1">Rating</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 text-center">
-                <p className="text-3xl text-[#f44708] font-bold">12</p>
+                <p className="text-3xl text-[#f44708] font-bold">{currentUser?.totalDeliveries || 0}</p>
                 <p className="text-xs text-gray-400 mt-1">Deliveries</p>
               </div>
             </div>
@@ -409,7 +500,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
 
       {/* Action Buttons - Fixed at bottom */}
       {isEditing && (
-        <motion.div 
+        <motion.div
           className="fixed bottom-0 left-0 right-0 p-6 bg-[#2f2f2f] border-t border-white/10 z-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -418,7 +509,7 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
             <motion.button
               onClick={handleCancel}
               className="flex-1 bg-white/10 border border-white/20 text-white hover:bg-white/20 rounded-xl py-3 px-4 font-medium transition-all duration-300"
-              disabled={isSaving}
+              disabled={updateLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -427,11 +518,11 @@ export function ProfileInformationScreen({ user, onBack, onUpdateUser }: Profile
             <motion.button
               onClick={handleSave}
               className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
-              disabled={isSaving || !formData.name || !formData.email}
+              disabled={updateLoading || !formData.firstName || !formData.lastName || !formData.email}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {isSaving ? (
+              {updateLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
                   Saving...

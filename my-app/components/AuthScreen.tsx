@@ -1,9 +1,11 @@
+"use client"
 import React, { useState } from 'react';
-import { ArrowRight, Package, Shield, Zap, Mail, Lock, User as UserIcon, ArrowLeft } from 'lucide-react';
+import { ArrowRight, Package, Shield, Zap, Mail, Lock, User as UserIcon, ArrowLeft, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from './ui/input';
 import { User } from '../types';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../utils/apiHooks';
 // Using a placeholder for the logo - you can replace this with your actual logo
 // import prawnboxLogo from '../public/prawnbox-logo.png';
 
@@ -15,76 +17,77 @@ interface AuthScreenProps {
 
 export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps) {
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState(''); // Can be email or username
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const { login, register, loading, error: authError } = useAuth();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (isLoading) return;
-    setIsLoading(true);
+    if (loading) return;
     setError('');
 
+    // Validate required fields for signup
+    if (!isLogin) {
+      if (!firstName.trim() || !lastName.trim() || !userName.trim() || !phoneNumber.trim()) {
+        setError('Please fill in all required fields');
+        return;
+      }
+      if (phoneNumber.trim().length < 10) {
+        setError('Please enter a valid phone number');
+        return;
+      }
+    }
+
+    if (!identifier.trim() || !password.trim()) {
+      setError('Please fill in all required fields');
+      return;
+    }
+
+    if (!isLogin && password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
+      let result;
+      if (isLogin) {
+        result = await login(identifier, password);
+      } else {
+        result = await register({
+          firstName,
+          lastName,
+          userName,
+          email: identifier, // Use identifier as email for registration
+          phone: phoneNumber,
           password,
-          ...(isLogin ? {} : { name }),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(isLogin ? 'Login failed' : 'Registration failed');
+          role: 'pal' // Default role for new users
+        });
       }
 
-      const userData = await response.json();
-
-      // Transform server response to User interface if needed
-      const user: User = {
-        id: userData.id,
-        name: userData.name,
-        email: userData.email,
-        phone: userData.phone || '',
-        role: userData.role,
-        rating: userData.rating || 4.8,
-        isVerified: userData.isVerified || false,
-        walletBalance: userData.walletBalance || 0,
-        totalDeliveries: userData.totalDeliveries || 0,
-        vehicleType: userData.vehicleType,
-        preferences: userData.preferences || {
-          notifications: {
-            push: true,
-            email: true,
-            sms: false
-          },
-          privacy: {
-            shareLocation: false,
-            shareProfile: false
-          },
-          delivery: {
-            autoAcceptRadius: 5,
-            preferredVehicles: ['Car']
-          }
+      if (result.success && result.user) {
+        // For registration, show email verification screen first
+        if (!isLogin) {
+          // Store user data temporarily and navigate to email verification
+          localStorage.setItem('pendingUser', JSON.stringify(result.user));
+          router.push('/email-verification');
+        } else {
+          // For login, proceed directly to dashboard
+          onLogin(result.user);
+          router.push('/dashboard');
         }
-      };
-
-      onLogin(user);
+      } else {
+        setError(result.error || (isLogin ? 'Login failed' : 'Registration failed'));
+      }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -94,70 +97,43 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
       event.stopPropagation();
     }
 
-    if (isLoading) return;
-    setIsLoading(true);
+    if (loading) return;
     setError('');
 
-    try {
-      // OAuth flow would be handled here
-      // For now, this would redirect to provider or use OAuth library
-      const response = await fetch(`/api/auth/social/${provider}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    // For now, show a message that social login is not implemented
+    setError(`${provider} login is not yet implemented. Please use email/password.`);
+    return;
 
-      if (!response.ok) {
-        throw new Error(`${provider} login failed`);
-      }
+    // TODO: Implement OAuth flow when backend is ready
+    // try {
+    //   const response = await fetch(`/auth/social/${provider}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
 
-      const userData = await response.json();
-      const user: User = {
-        id: userData.id,
-        name: userData.name,
-        email: userData.email,
-        phone: userData.phone || '',
-        role: userData.role,
-        rating: userData.rating || 4.8,
-        isVerified: userData.isVerified || false,
-        walletBalance: userData.walletBalance || 0,
-        totalDeliveries: userData.totalDeliveries || 0,
-        vehicleType: userData.vehicleType,
-        preferences: userData.preferences || {
-          notifications: {
-            push: true,
-            email: true,
-            sms: false
-          },
-          privacy: {
-            shareLocation: false,
-            shareProfile: false
-          },
-          delivery: {
-            autoAcceptRadius: 5,
-            preferredVehicles: ['Car']
-          }
-        }
-      };
+    //   if (!response.ok) {
+    //     throw new Error(`${provider} login failed`);
+    //   }
 
-      onLogin(user);
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+    //   const userData = await response.json();
+    //   const user: User = { /* transform userData to User interface */ };
+    //   onLogin(user);
+    // } catch (error) {
+    //   setError(error instanceof Error ? error.message : 'An error occurred');
+    // }
   };
 
-  const handleDemoLogin = (userType: 'sender' | 'pal' | 'receiver' | 'proxy') => {
-    if (onDemoLogin) {
-      setIsLoading(true);
-      setTimeout(() => {
-        onDemoLogin(userType);
-        setIsLoading(false);
-      }, 800);
-    }
-  };
+  // const handleDemoLogin = (userType: 'sender' | 'pal' | 'receiver' | 'proxy') => {
+  //   if (onDemoLogin) {
+  //     setIsLoading(true);
+  //     setTimeout(() => {
+  //       onDemoLogin(userType);
+  //       setIsLoading(false);
+  //     }, 800);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col overflow-hidden">
@@ -248,37 +224,92 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
                 </div>
               )}
 
+              {authError && (
+                <div className="bg-red-500/20 border border-red-500/30 text-red-300 p-3 rounded-xl text-sm">
+                  {authError}
+                </div>
+              )}
+
               <AnimatePresence mode="wait">
                 {!isLogin && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
+                    className="space-y-4"
                   >
-                    <label className="text-sm text-gray-400 mb-2 block">Full Name</label>
-                    <div className="relative">
-                      <UserIcon size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <Input
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="John Doe"
-                        className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
-                        required={!isLogin}
-                      />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-sm text-gray-400 mb-2 block">First Name</label>
+                        <div className="relative">
+                          <UserIcon size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                          <Input
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="John"
+                            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                            required={!isLogin}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-400 mb-2 block">Last Name</label>
+                        <div className="relative">
+                          <UserIcon size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                          <Input
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder="Doe"
+                            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                            required={!isLogin}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm text-gray-400 mb-2 block">Username</label>
+                      <div className="relative">
+                        <UserIcon size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Input
+                          value={userName}
+                          onChange={(e) => setUserName(e.target.value)}
+                          placeholder="johndoe123"
+                          className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                          required={!isLogin}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm text-gray-400 mb-2 block">Phone Number</label>
+                      <div className="relative">
+                        <Phone size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Input
+                          type="tel"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          placeholder="+234 123 456 7890"
+                          className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                          required={!isLogin}
+                        />
+                      </div>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
 
               <div>
-                <label className="text-sm text-gray-400 mb-2 block">Email</label>
+                <label className="text-sm text-gray-400 mb-2 block">
+                  {isLogin ? 'Email or Username' : 'Email Address'}
+                </label>
                 <div className="relative">
                   <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                   <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
+                    type="text"
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
+                    placeholder={isLogin ? "Enter email or username" : "you@example.com"}
                     className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
                     required
                   />
@@ -311,12 +342,12 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
 
               <motion.button
                 type="submit"
-                disabled={isLoading}
+                disabled={loading}
                 className="w-full bg-gradient-to-r from-[#f44708] to-[#ff5722] hover:from-[#ff5722] hover:to-[#f44708] text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 shadow-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {isLoading ? (
+                {loading ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     <span>Please wait...</span>
@@ -341,7 +372,7 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
             <div>
               <motion.button
                 onClick={(e) => handleSocialLogin('google', e)}
-                disabled={isLoading}
+                disabled={loading}
                 className="w-full flex items-center justify-center space-x-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white py-3 rounded-xl font-medium disabled:opacity-50"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -358,7 +389,7 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
           </div>
 
           {/* Demo Login */}
-          {onDemoLogin && (
+          {/* {onDemoLogin && (
             <motion.div
               className="mt-6"
               initial={{ opacity: 0, y: 20 }}
@@ -405,10 +436,10 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
                 </motion.button>
               </div>
             </motion.div>
-          )}
+          )} */}
 
           {/* Features */}
-          <motion.div
+          {/* <motion.div
             className="mt-8 grid grid-cols-3 gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -432,7 +463,7 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
               </div>
               <p className="text-xs text-gray-400">Reliable</p>
             </div>
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </div>
