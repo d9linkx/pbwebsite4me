@@ -161,20 +161,20 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center shadow-lg">
                 <span className="text-white text-xl font-bold">
-                  {user.name.split(' ').map(n => n[0]).join('')}
+                  {user.name?.split(' ').map(n => n[0]).join('') || 'U'}
                 </span>
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
-                  <h3 className="text-white text-lg font-semibold">{user.name}</h3>
+                  <h3 className="text-white text-lg font-semibold">{user.name || 'User'}</h3>
                   {user.isVerified && (
                     <CheckCircle size={16} className="text-green-400" />
                   )}
                 </div>
-                <p className="text-gray-400 text-sm">{user.email}</p>
+                <p className="text-gray-400 text-sm">{user.email || 'No email'}</p>
                 <div className="flex items-center mt-1">
                   <span className="text-sm text-gray-400">Rating: </span>
-                  <span className="text-sm text-[#f44708] ml-1 font-medium">⭐ {user.rating}</span>
+                  <span className="text-sm text-[#f44708] ml-1 font-medium">⭐ {typeof user.rating === 'number' ? user.rating.toFixed(1) : '0.0'}</span>
                 </div>
               </div>
               <ChevronRight size={20} className="text-gray-400" />

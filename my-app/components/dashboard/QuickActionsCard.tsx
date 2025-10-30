@@ -396,8 +396,8 @@ export function QuickActionsCard({
                     <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg">
                       <div className="absolute inset-0 bg-gradient-to-t from-prawnbox-accent/80 to-transparent flex items-end">
                         <div className="p-6 text-white w-full">
-                          <h4 className="font-bold text-xl mb-2">Send with Confidence</h4>
-                          <p className="text-sm opacity-90">Post your delivery, receive competitive bids from trusted Pals, and track your package every step of the way with real-time updates.</p>
+                          <h4 className="font-bold text-xl mb-2">{roleInstructions.title}</h4>
+                          <p className="text-sm text-gray-600">{roleInstructions.description}</p>
                         </div>
                       </div>
                     </div>
@@ -466,6 +466,14 @@ export function QuickActionsCard({
                 <>
                   <div className="mb-6">
                     {/* Pal content here */}
+                    <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+                      <div className="absolute inset-0 bg-gradient-to-t from-prawnbox-accent/80 to-transparent flex items-end">
+                        <div className="p-6 text-white w-full">
+                          <h4 className="font-bold text-xl mb-2">{roleInstructions.title}</h4>
+                          <p className="text-sm text-gray-600">{roleInstructions.description}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-6 flex flex-col items-center relative z-40">
                     <div className="w-full flex flex-row space-x-3">
@@ -502,7 +510,14 @@ export function QuickActionsCard({
               {activeRole === 'receiver' && (
                 <>
                   <div className="mb-6">
-                    {/* Receiver content */}
+                    <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+                      <div className="absolute inset-0 bg-gradient-to-t from-prawnbox-accent/80 to-transparent flex items-end">
+                        <div className="p-6 text-white w-full">
+                          <h4 className="font-bold text-xl mb-2">{roleInstructions.title}</h4>
+                          <p className="text-sm text-gray-600">{roleInstructions.description}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-6">
                     <Button
@@ -520,7 +535,14 @@ export function QuickActionsCard({
               {activeRole === 'proxy' && (
                 <>
                   <div className="mb-6">
-                    {/* Proxy content */}
+                    <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg">
+                      <div className="absolute inset-0 bg-gradient-to-t from-prawnbox-accent/80 to-transparent flex items-end">
+                        <div className="p-6 text-white w-full">
+                          <h4 className="font-bold text-xl mb-2">{roleInstructions.title}</h4>
+                          <p className="text-sm text-gray-600">{roleInstructions.description}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-6">
                     <Button

@@ -128,26 +128,7 @@ export function DashboardHeader({
         {/* Header Action Buttons */}
         <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
           {/* User Profile Button */}
-          <motion.button
-            onClick={onProfileClick}
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200 overflow-hidden"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {user?.profileImage ? (
-              <img
-                src={user.profileImage}
-                alt={user.fullName || 'Profile'}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-7 h-7 rounded-full bg-[#f44708] text-white flex items-center justify-center">
-                <span className="text-xs font-bold">
-                  {user?.name ? user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'U'}
-                </span>
-              </div>
-            )}
-          </motion.button>
+          
 
           {/* Time-Sensitive Alerts Button */}
           {onAlertsClick && getUrgentNotificationsCount() > 0 && (
@@ -186,10 +167,31 @@ export function DashboardHeader({
             })()}
           </motion.button>
 
-          {/* Hamburger Menu Button */}
+          <motion.button
+            onClick={onProfileClick}
+            className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200 overflow-hidden"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt={user.fullName || 'Profile'}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-[#f44708] text-white flex items-center justify-center">
+                <span className="text-xs font-bold">
+                  {user?.name ? user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'U'}
+                </span>
+              </div>
+            )}
+          </motion.button>
+
+          {/* Hamburger Menu Button - Hidden on desktop (xl and above) */}
           <motion.button
             onClick={onMenuToggle}
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200"
+            className="xl:hidden w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

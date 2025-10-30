@@ -170,7 +170,7 @@ export function BecomeProxyPage({ onNavigate }: BecomeProxyPageProps) {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-[0px] pt-[56px] pr-[28px] pb-[112px] pl-[28px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-[0px] p-[0px] mx-[-20px] my-[0px] mr-[-15px] mb-[0px] ml-[-15px] mt-[-30px] lg:mt-[-13px] lg:ml-[-25px] lg:mr-[-25px]">
-            <div className="pt-[50px] pr-[0px] pb-[0px] pl-[0px]">
+            <div className="pt-[80px] pr-[0px] pb-[0px] pl-[0px]">
               <div className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-4 py-2 rounded-full mb-6">
                 <Store className="w-4 h-4 text-[#f44708]" />
                 <span className="text-sm font-medium text-[#f44708]">Join 2,000+ Trusted Proxies</span>
@@ -214,7 +214,7 @@ export function BecomeProxyPage({ onNavigate }: BecomeProxyPageProps) {
             </div>
 
             {/* Hero Image */}
-            <div className="relative">
+            <div className="relative hidden lg:block lg:mt-[80px]">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src='/proxy.jpg'

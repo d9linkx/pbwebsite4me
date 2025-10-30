@@ -6,6 +6,16 @@ export const API_CONFIG = {
   RETRY_DELAY: 1000, // 1 second
 } as const;
 
+// Public endpoints that don't require authentication tokens
+const PUBLIC_ENDPOINTS = [
+  '/user/register',
+  '/user/login',
+  '/auth/login',
+  '/auth/register',
+  '/user/verify-verification-code',
+  '/auth/refresh',
+] as const;
+
 // Type for JSON-serializable data
 export type RequestData = Record<string, unknown> | unknown[] | string | number | boolean | null;
 
@@ -99,9 +109,12 @@ export class ApiClient {
     const url = `${this.baseURL}${endpoint}`;
 
     // Create headers object with proper typing
-    const headers: Record<string, string> = {
-      ...this.defaultHeaders,
-    };
+    const headers: Record<string, string> = {};
+
+    // Only add default headers if body is not FormData
+    if (!(options.body instanceof FormData)) {
+      Object.assign(headers, this.defaultHeaders);
+    }
 
     // Handle different types of options.headers
     if (options.headers) {
@@ -125,10 +138,21 @@ export class ApiClient {
       }
     }
 
-    // Add auth token if available
+    // Add auth token if available (skip token check for public endpoints)
+    const isPublicEndpoint = PUBLIC_ENDPOINTS.some(publicPath => endpoint.startsWith(publicPath));
     const token = this.getAuthToken();
+
+    if (!isPublicEndpoint) {
+      console.log('🔍 Checking token for request to', endpoint, ':', token ? 'Token found' : 'No token');
+    }
+
     if (token && token !== 'undefined' && token !== 'null') {
       headers.Authorization = `Bearer ${token}`;
+      if (!isPublicEndpoint) {
+        console.log('🔑 Adding Authorization header to request');
+      }
+    } else if (!isPublicEndpoint) {
+      console.warn('⚠️ No valid token available for request to', endpoint);
     }
 
     const config: RequestInit = {
@@ -149,28 +173,40 @@ export class ApiClient {
     const contentType = response.headers.get('content-type');
 
     if (contentType && contentType.includes('application/json')) {
-      const data = await response.json();
+      const data = await response.json() as ApiResponse<T>;
 
       if (!response.ok) {
-        throw {
+        // Log detailed error information for debugging
+        console.error('❌ API Error Response:', {
+          status: response.status,
+          statusText: response.statusText,
+          url: response.url,
+          message: data.message,
+          errors: data.errors,
+          data: data.data
+        });
+
+        const error: ApiError = {
           message: data.message || 'An error occurred',
           status: response.status,
           errors: data.errors,
-        } as ApiError;
+        };
+        throw error;
       }
 
       // Handle different response structures
       let extractedData: T;
-
-      if (data.data && typeof data.data === 'object') {
-        // Check if it's the nested user structure
-        if (data.data.user && typeof data.data.user === 'object') {
-          extractedData = data.data.user as T;
+      
+      if (data.data) {
+        // Handle nested user object if present
+        if (typeof data.data === 'object' && data.data !== null && 'user' in data.data) {
+          extractedData = (data.data as { user: T }).user;
         } else {
           extractedData = data.data as T;
         }
       } else {
-        extractedData = data as T;
+        // Fallback to the entire response if no data property exists
+        extractedData = data as unknown as T;
       }
 
       return {
@@ -219,10 +255,13 @@ export class ApiClient {
       const token = localStorage.getItem('auth_token');
       // Don't return invalid token strings
       if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
+        console.log('🔑 Retrieved token from localStorage:', token.substring(0, 10) + '...');
         return token;
       }
+      console.warn('⚠️ No valid token found in localStorage');
       return null;
     }
+    console.warn('⚠️ getAuthToken called on server side');
     return null;
   }
 
@@ -233,25 +272,72 @@ export class ApiClient {
     });
   }
 
-  async post<T>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
+  async post<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+    const requestOptions: RequestInit = {
       method: 'POST',
-      body: serializeData(data),
-    });
+      ...options,
+    };
+
+    // Handle FormData separately (don't JSON.stringify it)
+    if (data instanceof FormData) {
+      requestOptions.body = data;
+      // Remove Content-Type header to let browser set it with boundary
+      if (requestOptions.headers) {
+        const headers = new Headers(requestOptions.headers);
+        if (headers.has('Content-Type')) {
+          headers.delete('Content-Type');
+        }
+        requestOptions.headers = headers;
+      }
+    } else {
+      requestOptions.body = serializeData(data);
+    }
+
+    return this.request<T>(endpoint, requestOptions);
   }
 
-  async put<T>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
+  async put<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+    const requestOptions: RequestInit = {
       method: 'PUT',
-      body: serializeData(data),
-    });
+      ...options,
+    };
+
+    if (data instanceof FormData) {
+      requestOptions.body = data;
+      if (requestOptions.headers) {
+        const headers = new Headers(requestOptions.headers);
+        if (headers.has('Content-Type')) {
+          headers.delete('Content-Type');
+        }
+        requestOptions.headers = headers;
+      }
+    } else {
+      requestOptions.body = serializeData(data);
+    }
+
+    return this.request<T>(endpoint, requestOptions);
   }
 
-  async patch<T>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, {
+  async patch<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+    const requestOptions: RequestInit = {
       method: 'PATCH',
-      body: serializeData(data),
-    });
+      ...options,
+    };
+
+    if (data instanceof FormData) {
+      requestOptions.body = data;
+      if (requestOptions.headers) {
+        const headers = new Headers(requestOptions.headers);
+        if (headers.has('Content-Type')) {
+          headers.delete('Content-Type');
+        }
+        requestOptions.headers = headers;
+      }
+    } else {
+      requestOptions.body = serializeData(data);
+    }
+
+    return this.request<T>(endpoint, requestOptions);
   }
 
   async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
@@ -262,7 +348,17 @@ export class ApiClient {
 
   setAuthToken(token: string) {
     if (typeof window !== 'undefined') {
+      console.log('🔒 Setting auth token in localStorage:', token ? token.substring(0, 10) + '...' : 'empty');
       localStorage.setItem('auth_token', token);
+      // Verify the token was set correctly
+      const storedToken = localStorage.getItem('auth_token');
+      if (storedToken !== token) {
+        console.error('❌ Token was not stored correctly in localStorage');
+      } else {
+        console.log('✅ Token stored successfully in localStorage');
+      }
+    } else {
+      console.warn('⚠️ setAuthToken called on server side');
     }
   }
 

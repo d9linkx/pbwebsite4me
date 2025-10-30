@@ -127,45 +127,170 @@ export class ApiService {
 //     );
 //   }
 
-//   // Delivery Jobs
-//   async getJobs(params?: {
-//     status?: DeliveryStatus[];
-//     role?: UserRole;
-//     userId?: string;
-//     page?: number;
-//     limit?: number;
-//     dateRange?: { start: string; end: string };
-//   }): Promise<ApiResponse<JobsResponse>> {
-//     return retry(() => apiClient.get<JobsResponse>('/jobs', params));
-//   }
+  // Package/Delivery Jobs Management
+  /**
+   * Create a new package/delivery job
+   * Backend: POST /package/ (not /package/new!)
+   * @param packageData - Package details including pickup, dropoff, item info
+   * @param images - Optional array of image files to upload
+   */
+  async createPackage(packageData: {
+    title: string;
+    description?: string;
+    pickupLocation: string;
+    dropoffLocation: string;
+    senderState: string;
+    receiverName: string;
+    receiverPhone: string;
+    receiverCity: string;
+    receiverState: string;
+    itemSize: string;
+    category?: string;
+    weight?: string;
+    value: number;
+    pickupDate: string;
+    notes?: string;
+  }, images?: File[]): Promise<ApiResponse<any>> {
+    const formData = new FormData();
 
-//   async getJobById(jobId: string): Promise<ApiResponse<DeliveryJob>> {
-//     return retry(() => apiClient.get<DeliveryJob>(`/jobs/${jobId}`));
-//   }
+    // Append package data with ALL required fields
+    formData.append('title', packageData.title);
+    if (packageData.description) formData.append('description', packageData.description);
 
-//   async createJob(jobData: CreateDeliveryJobRequest): Promise<ApiResponse<DeliveryJob>> {
-//     return retry(() => apiClient.post<DeliveryJob>('/jobs', jobData));
-//   }
+    // Location fields
+    formData.append('pickupLocation', packageData.pickupLocation);
+    formData.append('dropoffLocation', packageData.dropoffLocation);
+    formData.append('senderState', packageData.senderState);
 
-//   async updateJob(jobId: string, updates: UpdateDeliveryJobRequest): Promise<ApiResponse<DeliveryJob>> {
-//     return retry(() => apiClient.put<DeliveryJob>(`/jobs/${jobId}`, updates));
-//   }
+    // Receiver fields (all required by backend)
+    formData.append('receiverName', packageData.receiverName);
+    formData.append('receiverPhone', packageData.receiverPhone);
+    formData.append('receiverCity', packageData.receiverCity);
+    formData.append('receiverState', packageData.receiverState);
 
-//   async deleteJob(jobId: string): Promise<ApiResponse<void>> {
-//     return retry(() => apiClient.delete<void>(`/jobs/${jobId}`));
-//   }
+    // Item details
+    formData.append('itemSize', packageData.itemSize);
+    if (packageData.category) formData.append('category', packageData.category);
+    if (packageData.weight) formData.append('weight', packageData.weight);
+    formData.append('value', packageData.value.toString());
 
-//   async getUserJobs(userId: string, role: UserRole, params?: {
-//     status?: DeliveryStatus[];
-//     page?: number;
-//     limit?: number;
-//   }): Promise<ApiResponse<JobsResponse>> {
-//     return retry(() => apiClient.get<JobsResponse>(`/users/${userId}/jobs`, { role, ...params }));
-//   }
+    // Dates and notes
+    formData.append('pickupDate', packageData.pickupDate);
+    if (packageData.notes) formData.append('notes', packageData.notes);
 
-//   async getJobBids(jobId: string): Promise<ApiResponse<BidsResponse>> {
-//     return retry(() => apiClient.get<BidsResponse>(`/jobs/${jobId}/bids`));
-//   }
+    // Append images if provided
+    if (images && images.length > 0) {
+      images.forEach((image) => {
+        formData.append('images', image);
+      });
+    }
+
+    return retry(() =>
+      apiClient.post<any>('/package/', formData, {
+        headers: {
+          // Don't set Content-Type - let browser set it with boundary for FormData
+        } as any
+      })
+    );
+  }
+
+  /**
+   * Get all packages for the current user (sender, receiver, pal, or proxy)
+   * Backend returns all packages where user is involved in any role
+   * Backend: GET /package/user
+   */
+  async getAllPackages(): Promise<ApiResponse<any[]>> {
+    return retry(() => apiClient.get<any[]>('/package/user'));
+  }
+
+  /**
+   * Get packages sent by user (as sender)
+   * Backend doesn't have separate endpoint - we get all and filter on frontend
+   */
+  async getSentPackages(): Promise<ApiResponse<any[]>> {
+    const response = await this.getAllPackages();
+    if (response.success && response.data) {
+      // Filter packages where user is sender
+      // Backend returns packages with sender.senderId
+      return {
+        ...response,
+        data: response.data
+      };
+    }
+    return response;
+  }
+
+  /**
+   * Get packages received by user (as receiver)
+   * Backend doesn't have separate endpoint - we get all and filter on frontend
+   */
+  async getReceivedPackages(): Promise<ApiResponse<any[]>> {
+    return this.getAllPackages();
+  }
+
+  /**
+   * Get packages for pal (deliverer)
+   * Backend doesn't have separate endpoint - we get all and filter on frontend
+   */
+  async getPalPackages(): Promise<ApiResponse<any[]>> {
+    return this.getAllPackages();
+  }
+
+  /**
+   * Get package by ID
+   */
+  async getPackageById(packageId: string): Promise<ApiResponse<any>> {
+    return retry(() => apiClient.get<any>(`/package/${packageId}`));
+  }
+
+  /**
+   * Update package
+   */
+  async updatePackage(packageId: string, updates: any): Promise<ApiResponse<any>> {
+    return retry(() => apiClient.patch<any>(`/package/${packageId}`, updates));
+  }
+
+  /**
+   * Delete package
+   */
+  async deletePackage(packageId: string): Promise<ApiResponse<void>> {
+    return retry(() => apiClient.delete<void>(`/package/${packageId}`));
+  }
+
+  /**
+   * Place a bid on a package
+   */
+  async placeBid(packageId: string, bidAmount: number): Promise<ApiResponse<any>> {
+    return retry(() => apiClient.post<any>(`/package/${packageId}/bid`, { price: bidAmount }));
+  }
+
+  /**
+   * Accept a bid on a package
+   */
+  async acceptBid(packageId: string, bidId: string): Promise<ApiResponse<any>> {
+    return retry(() => apiClient.patch<any>(`/package/${packageId}/accept-bid`, { bidId }));
+  }
+
+  /**
+   * Update package status
+   */
+  async updatePackageStatus(packageId: string, status: string): Promise<ApiResponse<any>> {
+    return retry(() => apiClient.patch<any>(`/package/${packageId}/status`, { status }));
+  }
+
+  /**
+   * Upload delivery proof
+   */
+  async uploadDeliveryProof(packageId: string, proofImage: File): Promise<ApiResponse<any>> {
+    const formData = new FormData();
+    formData.append('proof', proofImage);
+
+    return retry(() =>
+      apiClient.post<any>(`/package/${packageId}/proof`, formData, {
+        headers: {} as any
+      })
+    );
+  }
 
 //   // Bids
 //   async createBid(bidData: CreateBidRequest): Promise<ApiResponse<Bid>> {

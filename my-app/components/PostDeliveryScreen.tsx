@@ -567,7 +567,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
       <div className="flex-1 overflow-y-auto">
         <form onSubmit={handleSubmit} className="w-full p-4 sm:p-6 lg:p-8">
           <motion.div
-            className="bg-white rounded-2xl shadow-lg border border-gray-200 space-y-6 w-full"
+            className="bg-white rounded-2xl shadow-lg border border-gray-200 space-y-6 w-full p-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -1106,7 +1106,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
 
       {/* Success Dialog */}
       <Dialog open={showSuccessPopup} onOpenChange={setShowSuccessPopup}>
-        <DialogContent className="sm:max-w-md mx-4 rounded-2xl">
+        <DialogContent className="sm:max-w-md rounded-2xl">
           <DialogHeader className="text-center space-y-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <CheckCircle size={32} className="text-green-600" />

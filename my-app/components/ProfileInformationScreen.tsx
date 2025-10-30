@@ -6,17 +6,23 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Textarea } from './ui/textarea';
-import { User as UserType } from '../types';
+import { User as UserType, Screen } from '../types';
 import { useUserProfile, useUpdateProfile } from '../utils/apiHooks';
 import { toast } from 'sonner';
 
 interface ProfileInformationScreenProps {
+  user: UserType | null;
+  onNavigate?: (screen: Screen) => void;
   onBack: () => void;
-  onUpdateUser: (user: UserType) => void;
-  // Removed: currentUser prop - now always fetches from API
+  onSave: (updates: Partial<UserType>) => void;
 }
 
-export function ProfileInformationScreen({ onBack, onUpdateUser }: ProfileInformationScreenProps) {
+export function ProfileInformationScreen({ 
+  user,
+  onBack, 
+  onSave,
+  onNavigate 
+}: ProfileInformationScreenProps) {
   const { user: apiCurrentUser, loading: apiUserLoading, error: apiUserError, refetch } = useUserProfile();
   const { updateProfile, loading: updateLoading } = useUpdateProfile();
   const [isEditing, setIsEditing] = useState(false);

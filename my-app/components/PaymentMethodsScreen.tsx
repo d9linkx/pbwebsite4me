@@ -6,33 +6,35 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
-import { PaymentMethod } from '../types';
+import { PaymentMethod, Screen } from '../types';
 
 interface PaymentMethodsScreenProps {
+  user?: {
+    bankAccounts?: BankAccount[];
+    cards?: PaymentCard[];
+  } | null;
+  onNavigate?: (screen: Screen) => void;
   onBack: () => void;
+  onAddPaymentMethod?: (method: Omit<PaymentMethod, 'id' | 'isDefault'> & { type: 'card' | 'bank' }) => void;
+  onRemovePaymentMethod?: (methodId: string) => void;
 }
 
-export function PaymentMethodsScreen({ onBack }: PaymentMethodsScreenProps) {
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([
-    {
-      id: '1',
-      type: 'card',
-      last4: '4242',
-      brand: 'Visa',
-      isDefault: true,
-      expiryMonth: 12,
-      expiryYear: 2027
-    },
-    {
-      id: '2',
-      type: 'card',
-      last4: '8888',
-      brand: 'Mastercard',
-      isDefault: false,
-      expiryMonth: 8,
-      expiryYear: 2026
-    }
-  ]);
+export function PaymentMethodsScreen({ 
+  user,
+  onBack, 
+  onAddPaymentMethod,
+  onRemovePaymentMethod 
+}: PaymentMethodsScreenProps) {
+  const paymentMethods: PaymentMethod[] = [
+    ...(user?.bankAccounts?.map(acc => ({
+      ...acc,
+      type: 'bank' as const
+    })) || []),
+    ...(user?.cards?.map(card => ({
+      ...card,
+      type: 'card' as const
+    })) || [])
+  ].sort((a, b) => (a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1));
 
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newCardData, setNewCardData] = useState({

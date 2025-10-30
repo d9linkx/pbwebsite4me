@@ -109,14 +109,14 @@ export function SentDeliveriesHistoryScreen({
               <p className="text-sm text-gray-500">Your delivery history</p>
             </div>
           </div>
-          <motion.button
+          {/* <motion.button
             onClick={() => onNavigate('dashboard')}
             className="px-4 py-2 bg-[#2f2f2f] hover:bg-[#404040] text-white rounded-xl font-medium transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Dashboard
-          </motion.button>
+          </motion.button> */}
         </div>
       </motion.div>
 

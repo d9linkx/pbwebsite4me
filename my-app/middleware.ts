@@ -5,31 +5,69 @@ export function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   const url = request.nextUrl.clone()
 
-  // Check if this is the app subdomain
-  const isAppSubdomain = hostname.startsWith('app.')
+  // Check if this is localhost
+  const isLocalhost = hostname.startsWith('localhost') || hostname.startsWith('127.0.0.1')
+  
+  // Check if this is the app subdomain (only in production)
+  const isAppSubdomain = !isLocalhost && hostname.startsWith('app.')
 
   // Don't modify paths for static files from public folder
-  // These should be served directly by Next.js
   if (url.pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|webp|woff|woff2)$/)) {
     return NextResponse.next()
   }
 
-  // For app subdomain, we don't need to modify paths
-  // Next.js App Router handles /app directory automatically
+  // For local development, don't use subdomains
+  if (isLocalhost) {
+    // Dashboard/App routes that should NOT be rewritten to /website
+    const appRoutes = [
+      '/auth',
+      '/email-verification',
+      '/dashboard',
+      '/jobs',
+      '/wallet',
+      '/settings',
+      '/chat',
+      '/notifications',
+      '/proxy',
+      '/help',
+      '/sponsorship',
+      '/referrals',
+      '/ratings',
+    ];
+
+    // Check if this is an app route (root / now shows website landing page)
+    const isAppRoute = appRoutes.some(route => url.pathname.startsWith(route));
+
+    if (isAppRoute) {
+      const response = NextResponse.next()
+      response.headers.set('x-subdomain', 'app')
+      return response
+    }
+
+    // For website routes, rewrite to /website if not already
+    if (!url.pathname.startsWith('/website') && !url.pathname.startsWith('/api') && !url.pathname.startsWith('/_next')) {
+      url.pathname = `/website${url.pathname}`
+      const response = NextResponse.rewrite(url)
+      response.headers.set('x-subdomain', 'website')
+      return response
+    }
+
+    return NextResponse.next()
+  }
+
+  // For production app subdomain
   if (isAppSubdomain) {
-    // Just set headers for app subdomain context
     const response = NextResponse.next()
     response.headers.set('x-subdomain', 'app')
     response.headers.set('x-pathname', url.pathname)
     return response
   }
 
-  // For website domain, prefix routes with /website
+  // For production website domain
   if (!url.pathname.startsWith('/website') && !url.pathname.startsWith('/api')) {
     url.pathname = `/website${url.pathname}`
   }
 
-  // Set a custom header to indicate which subdomain we're on
   const response = NextResponse.rewrite(url)
   response.headers.set('x-subdomain', 'website')
   response.headers.set('x-pathname', url.pathname)

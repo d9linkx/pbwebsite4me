@@ -288,6 +288,7 @@ export interface DispurteResolution {
 
 export interface DeliveryJob {
   id: string;
+  orderNumber: string;
   senderId: string;
   senderName: string;
   senderPhone?: string;
@@ -310,6 +311,7 @@ export interface DeliveryJob {
   weight?: string;
   value: number;
   pickupDate: string;
+  pickupTime: string;
   notes?: string;
   images?: string[];
   description?: string;
@@ -423,6 +425,9 @@ export interface ChatThread {
   id: string;
   jobId: string;
   participants: string[]; // User IDs
+  otherUserName?: string; // Display name of the other user in the chat
+  otherUserPhone?: string; // Phone number of the other user
+  jobTitle?: string; // Title of the related job
   lastActivity: string;
   messages: ChatMessage[];
   awaitingUserChoice?: boolean;
@@ -431,6 +436,7 @@ export interface ChatThread {
 
 export interface ChatMessage {
   id: string;
+  threadId: string; // Links message to a specific chat thread
   senderId: string; // Can be 'system' for system messages
   senderName: string;
   senderRole: UserRole | 'system';
@@ -494,6 +500,7 @@ export interface Notification {
   id: string;
   userId: string;
   type: 'bid-placed' | 'delivery-assigned' | 'delivery-completed' | 'payment-received' | 'item-edit-request' | 'dispute-flagged' | 'rating-received' | 'system-message' | 'promo-offer' | 'delivery-update' | 'item-verified' | 'wallet-topup' | 'delivery-posted' | 'payment-processed' | 'tip-payment'| 'delivery-picked-up';
+  actionUrl?: string; // Optional URL to navigate to when the notification is clicked
   title: string;
   message: string;
   timestamp: string;

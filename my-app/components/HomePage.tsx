@@ -155,7 +155,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
             {/* Hero Image */}
             <motion.div
-              className="relative"
+              className="relative hidden lg:block"
               initial="hidden"
               animate="visible"
               variants={fadeInRight}

@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { ArrowLeft, Shield, CheckCircle, Upload, Camera, FileText, AlertCircle, User, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from './ui/badge';
-import { User as UserType } from '../types';
+import { User as UserType, Screen } from '../types';
 
 interface VerificationScreenProps {
   user: UserType | null;
+  onNavigate?: (screen: Screen) => void;
   onBack: () => void;
-  onUpdateUser: (user: UserType) => void;
+  onSubmit: (idUrl: string) => void;
+  onUpdateUser?: (user: UserType) => void; // Keeping for backward compatibility
 }
 
 type VerificationStep = {
@@ -20,7 +22,13 @@ type VerificationStep = {
   required: boolean;
 };
 
-export function VerificationScreen({ user, onBack, onUpdateUser }: VerificationScreenProps) {
+export function VerificationScreen({ 
+  user, 
+  onBack, 
+  onSubmit,
+  onNavigate,
+  onUpdateUser 
+}: VerificationScreenProps) {
   const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>([
     {
       id: 'identity',

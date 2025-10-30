@@ -33,15 +33,17 @@ export function WebsiteHeader({ onNavigate }: WebsiteHeaderProps) {
 
   // Helper function to navigate and scroll to top
   const handleNavigate = (route: string, screen: string) => {
-    router.push(route);
+    // If onNavigate is provided, use it for navigation
+    if (onNavigate) {
+      onNavigate(screen);
+    } else {
+      // Fallback to router.push if onNavigate is not provided
+      router.push(route);
+    }
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsMobileMenuOpen(false);
     setIsGetStartedOpen(false);
-
-    // Call the optional onNavigate callback if provided
-    if (onNavigate) {
-      onNavigate(screen);
-    }
   };
 
   // Close dropdown when clicking outside

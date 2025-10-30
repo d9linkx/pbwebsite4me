@@ -218,15 +218,15 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
 
             {/* Form */}
             <form onSubmit={handleFormSubmit} className="space-y-4">
-              {error && (
+              {(error || authError) && (
                 <div className="bg-red-500/20 border border-red-500/30 text-red-300 p-3 rounded-xl text-sm">
-                  {error}
-                </div>
-              )}
-
-              {authError && (
-                <div className="bg-red-500/20 border border-red-500/30 text-red-300 p-3 rounded-xl text-sm">
-                  {authError}
+                  <div className="font-semibold mb-1">
+                    {isLogin ? 'Login Failed' : 'Registration Failed'}
+                  </div>
+                  <div>{error || authError}</div>
+                  <div className="mt-2 text-xs text-red-400">
+                    Check the console for more details
+                  </div>
                 </div>
               )}
 

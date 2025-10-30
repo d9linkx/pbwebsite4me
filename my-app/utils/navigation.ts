@@ -96,18 +96,14 @@ export class NavigationManager {
     return { allowed: true };
   }
 
-  navigateWithHistory(screen: Screen, setCurrentScreen: (screen: Screen) => void): boolean {
+  navigateWithHistory(screen: Screen): Screen | null {
     console.log('🚀 NavigationManager: Navigating from', this.context.currentScreen, 'to', screen);
 
     // Check navigation guards
     const guardResult = this.canNavigateTo(screen);
     if (!guardResult.allowed) {
       console.warn('🚫 NavigationManager: Navigation blocked by guards');
-      if (guardResult.redirectTo) {
-        console.log('🔄 NavigationManager: Redirecting to', guardResult.redirectTo);
-        this.navigateWithHistory(guardResult.redirectTo, setCurrentScreen);
-      }
-      return false;
+      return guardResult.redirectTo || null;
     }
 
     try {
@@ -123,39 +119,36 @@ export class NavigationManager {
 
       this.context.previousScreen = this.context.currentScreen;
       this.context.currentScreen = screen;
-      setCurrentScreen(screen);
 
       // Log successful navigation
-      console.log('✅ NavigationManager: Successfully navigated to', screen);
-      return true;
+      console.log('✅ NavigationManager: Navigation prepared for', screen);
+      return screen;
 
     } catch (error) {
       console.error('❌ NavigationManager: Navigation failed:', error);
-      return false;
+      return null;
     }
   }
 
-  goBack(setCurrentScreen: (screen: Screen) => void): boolean {
+  goBack(): Screen | null {
     try {
       if (this.navigationHistory.length > 0) {
         const previousScreen = this.navigationHistory.pop()!;
         console.log('🔙 NavigationManager: Going back to', previousScreen);
 
         this.context.currentScreen = previousScreen;
-        setCurrentScreen(previousScreen);
-        return true;
+        return previousScreen;
       }
 
       // Fallback to default screen based on user role
       const fallbackScreen = this.getFallbackScreen();
       console.log('🔙 NavigationManager: No history, going to fallback:', fallbackScreen);
       this.context.currentScreen = fallbackScreen;
-      setCurrentScreen(fallbackScreen);
-      return false;
+      return fallbackScreen;
 
     } catch (error) {
       console.error('❌ NavigationManager: Go back failed:', error);
-      return false;
+      return null;
     }
   }
 
@@ -172,53 +165,68 @@ export class NavigationManager {
   }
 
   // Enhanced Pal job navigation with error handling
-  handlePalJobNavigation(job: DeliveryJob, setCurrentScreen: (screen: Screen) => void): boolean {
+  handlePalJobNavigation(job: DeliveryJob): Screen | null {
     try {
       console.log('🔥 NavigationManager: Pal job navigation for', job.title, 'Status:', job.status);
 
       if (!job || !job.status) {
         console.error('❌ NavigationManager: Invalid job data for navigation');
-        return false;
+        return null;
       }
 
+      let targetScreen: Screen;
+      
       switch (job.status) {
         case 'assigned':
-          return this.navigateWithHistory('pickup-confirmation', setCurrentScreen);
+          targetScreen = 'pickup-confirmation';
+          break;
         case 'picked-up':
-          return this.navigateWithHistory('delivery-progress', setCurrentScreen);
+          targetScreen = 'delivery-progress';
+          break;
         case 'in-transit':
-          return this.navigateWithHistory('delivery-confirmation', setCurrentScreen);
+          targetScreen = 'delivery-confirmation';
+          break;
         default:
           console.warn('⚠️ NavigationManager: Unknown job status, defaulting to pickup-confirmation');
-          return this.navigateWithHistory('pickup-confirmation', setCurrentScreen);
+          targetScreen = 'pickup-confirmation';
       }
+
+      return this.navigateWithHistory(targetScreen);
     } catch (error) {
       console.error('❌ NavigationManager: Pal job navigation failed:', error);
-      return false;
+      return null;
     }
   }
 
   // Enhanced role-based navigation
-  handleRoleBasedNavigation(role: UserRole, setCurrentScreen: (screen: Screen) => void): boolean {
+  handleRoleBasedNavigation(role: UserRole): Screen | null {
     try {
       console.log('🎭 NavigationManager: Role-based navigation for', role);
 
+      let targetScreen: Screen;
+      
       switch (role) {
         case 'sender':
-          return this.navigateWithHistory('dashboard', setCurrentScreen);
+          targetScreen = 'dashboard';
+          break;
         case 'pal':
-          return this.navigateWithHistory('available-jobs', setCurrentScreen);
+          targetScreen = 'available-jobs';
+          break;
         case 'receiver':
-          return this.navigateWithHistory('dashboard', setCurrentScreen);
+          targetScreen = 'dashboard';
+          break;
         case 'proxy':
-          return this.navigateWithHistory('proxy-dashboard', setCurrentScreen);
+          targetScreen = 'proxy-dashboard';
+          break;
         default:
           console.warn('⚠️ NavigationManager: Unknown role, defaulting to dashboard');
-          return this.navigateWithHistory('dashboard', setCurrentScreen);
+          targetScreen = 'dashboard';
       }
+
+      return this.navigateWithHistory(targetScreen);
     } catch (error) {
       console.error('❌ NavigationManager: Role-based navigation failed:', error);
-      return false;
+      return null;
     }
   }
 

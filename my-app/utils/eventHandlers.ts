@@ -1,4 +1,4 @@
-import { DeliveryJob, User, UserRole } from '../types';
+import { DeliveryJob, User, UserRole, Screen } from '../types';
 
 export interface EventContext {
   user: User | null;
@@ -95,8 +95,8 @@ export class EventHandlers {
 
   // Enhanced navigation handler
   createNavigationHandler(
-    targetScreen: string,
-    navigationCallback: (screen: string) => void,
+    targetScreen: Screen,
+    navigationCallback: (screen: Screen) => void,
     options: {
       requireRole?: UserRole;
       requireJob?: boolean;

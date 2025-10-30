@@ -3,18 +3,22 @@ import React, { useState } from 'react';
 import { ArrowLeft, Package, Clock, Phone, CheckCircle, AlertCircle, Users, MessageCircle, DollarSign, QrCode } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Badge } from './ui/badge';
-import { ProxyItem, User, ProxyStatus } from '../types';
+import { ProxyItem, User, ProxyStatus, Screen } from '../types';
 
 type FilterType = ProxyStatus | 'all';
 
 interface ProxyDashboardProps {
   onBack: () => void;
   proxyItems: ProxyItem[];
+  selectedRoute?: string | null;  // Add this
+  onRouteSelect?: (route: string | null) => void;  // Add this
+  onItemSelect?: (item: ProxyItem) => void;  // Add this
+  onNavigate?: (screen: Screen) => void;
   onItemUpdate: (item: ProxyItem) => void;
   onNotifyReceiver?: (item: ProxyItem) => void;
   onHandoverToReceiver?: (item: ProxyItem) => void;
   onOpenChat?: (item: ProxyItem) => void;
-  onCall?: (phoneNumber: string) => void;
+  onCall?: (phoneNumber: string) => void;  // Note the name is 'onCall'
   user: User | null;
   onStartScan?: (item: ProxyItem) => void;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, DeliveryJob, UserRole, ProxyItem, Notification } from '../../types';
+import { User, DeliveryJob, UserRole, ProxyItem, Notification, Screen } from '../../types';
 import { filterNotificationsByRole } from '../../utils/helpers';
 import { RoleSpecificContent } from '../dashboard/RoleSpecificContent';
 import { 
@@ -15,7 +15,7 @@ interface DashboardScreenProps {
   activeRole: UserRole;
   onJobSelect: (job: DeliveryJob) => void;
   onRoleChange: (role: UserRole) => void;
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: Screen) => void;
   userJobs: DeliveryJob[];
   allJobs: DeliveryJob[];
   proxyItems: ProxyItem[];
@@ -62,7 +62,7 @@ export function DashboardScreen({
     
     // Fallback to direct navigation mapping if no onActionClick handler provided
     console.log('🔄 Fallback: Using direct navigation for:', action);
-    const navigationMap: Record<string, string> = {
+    const navigationMap: Record<string, Screen> = {
       'post-delivery': 'post-delivery',
       'available-jobs': 'available-jobs',
       'accepted-bids': 'accepted-bids',
@@ -73,7 +73,7 @@ export function DashboardScreen({
       'wallet-add-funds': 'wallet-add-funds',
       'referral': 'referral',
       'tape-distributor': 'tape-distributor',
-    };
+    } as const;
 
     const targetScreen = navigationMap[action];
     if (targetScreen) {
