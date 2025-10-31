@@ -22,7 +22,7 @@ export default function WithdrawPage() {
     updateUser,
   } = useAppStore()
 
-  const handleWithdrawComplete = (amount: number, bankDetails?: any) => {
+  const handleWithdrawComplete = (amount: number, bankDetails?: { bank: string; accountNumber: string; accountName: string }) => {
     if (!user) {
       toast.error('You must be logged in')
       return
