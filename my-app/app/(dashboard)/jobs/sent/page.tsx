@@ -83,6 +83,7 @@ interface PackageResponse {
     palId: string;
     palName: string;
     palRating: number;
+    vehicleType?: 'car' | 'motorcycle' | 'bike' | 'truck' | 'van' | 'bicycle';
     estimatedTime: string;
     amount: number;
     message: string;
@@ -158,7 +159,14 @@ export default function SentDeliveriesPage() {
               pickupTime: '12:00', // Default value since it's required
               notes: pkg.notes || '',
               images: pkg.items?.[0]?.images?.map(img => img.url) || [],
-              bids: pkg.bids || [],
+              bids: pkg.bids?.map(bid => ({
+                ...bid,
+                vehicleType: bid.vehicleType || 'car', // Provide a default value if not present
+                canEdit: bid.canEdit || false,
+                isAccepted: bid.isAccepted || false,
+                placedAt: bid.placedAt || new Date().toISOString(),
+                createdAt: bid.createdAt || new Date().toISOString()
+              })) || [],
               isLive: true,
               createdAt: pkg.createdAt || new Date().toISOString(),
               distance: 0,

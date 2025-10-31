@@ -178,7 +178,7 @@ export interface User {
   rating?: number;
   totalDeliveries?: number;
   joinedDate?: string;
-  // vehicleType?: VehicleType;
+  vehicleType?: 'car' | 'motorcycle' | 'bike' | 'truck' | 'van' | 'bicycle';
   isVerified?: boolean;
   governmentIdUrl?: string;
   governmentIdStatus?: 'pending' | 'verified' | 'rejected';
@@ -208,7 +208,7 @@ export interface UserPreferences {
   };
   delivery: {
     autoAcceptRadius: number;
-    // preferredVehicles: VehicleType[];
+    preferredVehicles: VehicleType[];
   };
   emailUpdate?: boolean;
   smsUpdate?: boolean;
@@ -247,18 +247,24 @@ export interface PaymentCard {
   isDefault: boolean;
 }
 
-export interface PaymentMethod {
-  id: string;
-  type: 'card' | 'bank';
-  last4: string;
-  isDefault: boolean;
-  brand?: string;
-  bankName?: string;
-  expiryMonth?: number;
-  expiryYear?: number;
-  accountNumber?: string;
-  accountName?: string;
-}
+export type PaymentMethod = 
+  | {
+      type: 'card';
+      id: string;
+      last4: string;
+      brand: string;
+      expiryMonth: number;
+      expiryYear: number;
+      isDefault: boolean;
+    }
+  | {
+      type: 'bank';
+      id: string;
+      bankName: string;
+      accountNumber: string;
+      accountName: string;
+      isDefault: boolean;
+    };
 
 export interface Transaction {
   id: string;
@@ -383,12 +389,14 @@ export interface DeliveryJob {
   };
 }
 
+export type VehicleType = 'car' | 'motorcycle' | 'bike' | 'truck' | 'van' | 'bicycle';
+
 export interface Bid {
   id: string;
   palId: string;
   palName: string;
   palRating: number;
-  // vehicleType: VehicleType;
+  vehicleType: VehicleType;
   estimatedTime: string;
   amount: number;
   message: string;

@@ -318,8 +318,14 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
     
     setIsSubmitting(true);
     
+    // Generate a random 6-digit order number
+    const generateOrderNumber = () => {
+      return 'ORD' + Math.floor(100000 + Math.random() * 900000).toString();
+    };
+
     const newJob: DeliveryJob = {
       id: Date.now().toString(),
+      orderNumber: generateOrderNumber(),
       senderId: userId,
       senderName: 'John Doe',
       receiverName: formData.receiverName,
@@ -328,6 +334,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
       pickupLocation: formData.pickupLocation,
       dropoffLocation: formData.dropoffLocation,
       itemSize: formData.itemSize as ItemSize,
+      pickupTime: formData.pickupTime || new Date().toISOString(), // Use provided time or current time if not specified
       category: formData.category,
       itemColor: scanData?.color,
       weight: scanData?.estimatedWeight || formData.weight,

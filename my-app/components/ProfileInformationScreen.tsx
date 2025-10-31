@@ -109,7 +109,7 @@ export function ProfileInformationScreen({
 
       if (response.success && response.profile) {
         toast.success('Profile updated successfully!');
-        onUpdateUser(response.profile);
+        onSave(response.profile);
         setIsEditing(false);
       } else {
         toast.error(response.error || 'Failed to update profile');
@@ -175,7 +175,7 @@ export function ProfileInformationScreen({
           ...currentUser,
           ...(previewPhoto && { profileImage: previewPhoto })
         };
-        onUpdateUser(updatedUser);
+        onSave(updatedUser);
 
         // Reset verification states after success but keep the photo
         setTimeout(() => {

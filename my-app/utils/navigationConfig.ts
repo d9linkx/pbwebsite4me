@@ -51,6 +51,13 @@ export const SCREEN_CONFIGS: Record<Screen, ScreenConfig> = {
     requiresAuth: false
   },
 
+  'email-verification': {
+    id: 'email-verification',
+    title: 'Email Verification',
+    category: 'auth',
+    requiresAuth: false
+  },
+
   // Delivery management screens
   'my-deliveries': {
     id: 'my-deliveries',

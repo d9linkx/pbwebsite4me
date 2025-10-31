@@ -35,7 +35,7 @@ export const enhanceUserWithDefaults = (userData: User): User => {
     totalDeliveries: userData.totalDeliveries ?? 12,
     rating: userData.rating ?? 4.8,
     isVerified: userData.isVerified ?? true,
-    vehicleType: userData.vehicleType || (userData.role === 'pal' ? 'Car' : undefined),
+    vehicleType: userData.vehicleType || (userData.role === 'pal' ? 'car' : undefined),
     // address: userData.address || 'Lagos, Nigeria',
     preferences: userData.preferences || {
       notifications: {
@@ -49,7 +49,7 @@ export const enhanceUserWithDefaults = (userData: User): User => {
       },
       delivery: {
         autoAcceptRadius: 5,
-        preferredVehicles: ['Car']
+        preferredVehicles: ['car']
       },
       emailUpdate: true,
       smsUpdate: false

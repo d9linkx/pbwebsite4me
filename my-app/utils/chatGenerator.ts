@@ -11,6 +11,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Initial system message
     {
       id: `system-start-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: 'system',
       senderName: 'System',
       senderRole: 'sender',
@@ -23,6 +24,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Initial coordination between Sender and Pal
     {
       id: `msg-1-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.senderId,
       senderName: senderFirstName,
       senderRole: 'sender',
@@ -34,6 +36,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-2-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',
@@ -45,6 +48,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-3-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.senderId,
       senderName: senderFirstName,
       senderRole: 'sender',
@@ -57,6 +61,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Pickup confirmation
     {
       id: `msg-4-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',
@@ -68,6 +73,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-5-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',
@@ -79,6 +85,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-6-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.senderId,
       senderName: senderFirstName,
       senderRole: 'sender',
@@ -91,6 +98,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Transit updates
     {
       id: `msg-7-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',
@@ -102,6 +110,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-8-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',
@@ -114,6 +123,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Receiver joins notification
     {
       id: `join-receiver-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: 'system',
       senderName: 'System',
       senderRole: 'sender',
@@ -126,6 +136,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Recent conversation as Receiver joins
     {
       id: `msg-9-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: user?.id || '',
       senderName: receiverFirstName,
       senderRole: 'receiver',
@@ -137,6 +148,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-10-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',
@@ -148,6 +160,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-11-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: user?.id || '',
       senderName: receiverFirstName,
       senderRole: 'receiver',
@@ -159,6 +172,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     
     {
       id: `msg-12-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.senderId,
       senderName: senderFirstName,
       senderRole: 'sender',
@@ -171,6 +185,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     // Current delivery status
     {
       id: `msg-13-${Date.now()}`,
+      threadId: `thread-${job.id || 'default'}`,
       senderId: job.selectedPalId || '',
       senderName: palFirstName,
       senderRole: 'pal',

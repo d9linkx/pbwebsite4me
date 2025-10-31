@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
-import { PaymentMethod, Screen } from '../types';
+import { PaymentMethod, Screen, BankAccount, PaymentCard } from '../types';
 
 interface PaymentMethodsScreenProps {
   user?: {
@@ -15,7 +15,10 @@ interface PaymentMethodsScreenProps {
   } | null;
   onNavigate?: (screen: Screen) => void;
   onBack: () => void;
-  onAddPaymentMethod?: (method: Omit<PaymentMethod, 'id' | 'isDefault'> & { type: 'card' | 'bank' }) => void;
+  onAddPaymentMethod?: (method: (
+    | (Omit<Extract<PaymentMethod, { type: 'card' }>, 'id' | 'isDefault'> & { type: 'card' })
+    | (Omit<Extract<PaymentMethod, { type: 'bank' }>, 'id' | 'isDefault'> & { type: 'bank' })
+  ) & { isDefault?: boolean }) => void;
   onRemovePaymentMethod?: (methodId: string) => void;
 }
 
@@ -45,20 +48,39 @@ export function PaymentMethodsScreen({
   });
 
   const handleSetDefault = (id: string) => {
-    setPaymentMethods(prev => prev.map(method => ({
-      ...method,
-      isDefault: method.id === id
-    })));
+    // Find the method to set as default
+    const methodToUpdate = paymentMethods.find(method => method.id === id);
+    if (!methodToUpdate) return;
+
+    // Call the appropriate callback based on method type
+    if (methodToUpdate.type === 'card' && onAddPaymentMethod) {
+      const { id: _, ...cardData } = methodToUpdate;
+      onAddPaymentMethod({
+        ...cardData,
+        type: 'card',
+        isDefault: true
+      });
+    } else if (methodToUpdate.type === 'bank' && onAddPaymentMethod) {
+      const { id: _, ...bankData } = methodToUpdate;
+      onAddPaymentMethod({
+        ...bankData,
+        type: 'bank',
+        isDefault: true
+      });
+    }
   };
 
   const handleRemoveMethod = (id: string) => {
-    setPaymentMethods(prev => prev.filter(method => method.id !== id));
+    if (onRemovePaymentMethod) {
+      onRemovePaymentMethod(id);
+    }
   };
 
   const handleAddCard = () => {
-    const newMethod: PaymentMethod = {
-      id: Date.now().toString(),
-      type: 'card',
+    if (!onAddPaymentMethod) return;
+    
+    const newMethod = {
+      type: 'card' as const,
       last4: newCardData.number.slice(-4),
       brand: 'Visa',
       isDefault: paymentMethods.length === 0,
@@ -66,7 +88,16 @@ export function PaymentMethodsScreen({
       expiryYear: parseInt('20' + newCardData.expiry.split('/')[1])
     };
 
-    setPaymentMethods(prev => [...prev, newMethod]);
+    onAddPaymentMethod({
+      ...newMethod,
+      // Ensure we're not including any undefined values that might cause type issues
+      brand: newMethod.brand || 'Visa',
+      last4: newMethod.last4 || '0000',
+      expiryMonth: newMethod.expiryMonth || 12,
+      expiryYear: newMethod.expiryYear || new Date().getFullYear() + 1,
+      isDefault: newMethod.isDefault || false
+    });
+    
     setIsAddingCard(false);
     setNewCardData({ number: '', expiry: '', cvv: '', name: '' });
   };
@@ -219,7 +250,7 @@ export function PaymentMethodsScreen({
                         <h4 className="font-semibold text-gray-900">
                           {method.type === 'card' 
                             ? `${method.brand} •••• ${method.last4}`
-                            : `Bank •••• ${method.last4}`
+                            : `${method.bankName} •••• ${method.accountNumber.slice(-4)}`
                           }
                         </h4>
                         {method.isDefault && (

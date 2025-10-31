@@ -259,17 +259,24 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
                 <motion.button
                   onClick={() => {
                     // Convert candidate data to User object format
+                    const [firstName, ...lastNameParts] = candidate.name.split(' ');
+                    const lastName = lastNameParts.join(' ') || 'User';
+                    const userName = `${firstName.toLowerCase()}${lastNameParts.length > 0 ? lastNameParts[0].toLowerCase() : ''}`;
+                    
                     const userObject: User = {
                       id: candidate.id,
+                      userName: userName,
+                      firstName: firstName,
+                      lastName: lastName,
                       name: candidate.name,
-                      email: `${candidate.name.toLowerCase().replace(' ', '.')}@example.com`,
+                      email: `${candidate.name.toLowerCase().replace(/\s+/g, '.')}@example.com`,
                       phone: `+234${Math.floor(Math.random() * 900000000) + 100000000}`,
                       role: candidate.role.toLowerCase() as 'pal' | 'sender',
                       rating: candidate.rating,
                       totalDeliveries: candidate.deliveriesCompleted,
-                      vehicleType: candidate.role === 'Pal' ? 'Motorcycle' : undefined,
-                      isVerified: candidate.verified,
                       walletBalance: 0,
+                      profileImage: '',
+                      isVerified: candidate.verified,
                       governmentIdUrl: '',
                       governmentIdStatus: 'pending',
                       activeEscrows: [],
@@ -288,7 +295,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
                         },
                         delivery: {
                           autoAcceptRadius: 5,
-                          preferredVehicles: ['Car'],
+                          preferredVehicles: ['car'],
                         },
                       },
                     };
