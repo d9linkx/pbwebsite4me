@@ -1,6 +1,6 @@
 # API Integration Setup
 
-This document describes how to set up and use the API integration for the Prawnbox delivery application.
+This document describe to set up and use the API integration for the Prawnbox delivery application.
 
 ## Overview
 
