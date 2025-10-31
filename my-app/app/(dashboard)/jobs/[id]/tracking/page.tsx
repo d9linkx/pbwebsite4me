@@ -11,7 +11,6 @@ import React, { useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { TrackingScreen } from '@/components/TrackingScreen'
 import { useAppStore } from '@/stores/appStore'
-import type { Screen } from '@/types/index'
 
 export default function JobTrackingPage() {
   const params = useParams()
@@ -40,14 +39,6 @@ export default function JobTrackingPage() {
     )
   }
 
-  const handleNavigate = (screen: Screen) => {
-    if (screen === 'dashboard') {
-      router.push('/')
-    } else {
-      router.push(`/jobs/${jobId}`)
-    }
-  }
-
   const handleBack = () => {
     router.back()
   }
@@ -59,14 +50,31 @@ export default function JobTrackingPage() {
     }
   }
 
+  const handleDeliveryComplete = (job: { id: string }) => {
+    // Handle delivery completion logic here
+    console.log('Delivery completed:', job)
+    router.push(`/jobs/${jobId}/complete`)
+  }
+
+  const handleOpenChat = () => {
+    // Open chat logic here
+    console.log('Opening chat for job:', jobId)
+  }
+
+  // Determine user role based on job and current user
+  const userRole = user?.id === job.senderId ? 'sender' : 
+                  user?.id === job.selectedPalId ? 'pal' : 
+                  'receiver'
+
   return (
     <div className="container mx-auto px-4 py-6">
       <TrackingScreen
         job={job}
-        onNavigate={handleNavigate}
         onBack={handleBack}
-        handleCall={handleCall}
-        user={user}
+        onDeliveryComplete={handleDeliveryComplete}
+        onOpenChat={handleOpenChat}
+        onCall={handleCall}
+        userRole={userRole}
       />
     </div>
   )
