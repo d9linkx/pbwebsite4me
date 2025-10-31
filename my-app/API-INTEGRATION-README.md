@@ -1,6 +1,6 @@
 # API Integration Setup
 
-This document describes how to set up and use the API integration for the Prawnbox delivery application.
+This document describe to set up and use the API integration for the Prawnbox delivery application.
 
 ## Overview
 
@@ -16,7 +16,7 @@ The API integration replaces the mock data approach with real HTTP API calls. Th
 
 ### 1. Environment Variables
 
-Update your `.env.local` file with the following variables:
+Update your `.env.local` file with variables:
 
 ```bash
 # API Configuration
