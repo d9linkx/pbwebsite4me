@@ -64,6 +64,34 @@ export function middleware(request: NextRequest) {
   }
 
   // For production website domain
+  // Dashboard/App routes that should NOT be rewritten to /website
+  const appRoutes = [
+    '/auth',
+    '/email-verification',
+    '/dashboard',
+    '/jobs',
+    '/wallet',
+    '/settings',
+    '/chat',
+    '/notifications',
+    '/proxy',
+    '/help',
+    '/sponsorship',
+    '/referrals',
+    '/ratings',
+  ];
+
+  // Check if this is an app route
+  const isAppRoute = appRoutes.some(route => url.pathname.startsWith(route));
+
+  if (isAppRoute) {
+    const response = NextResponse.next()
+    response.headers.set('x-subdomain', 'app')
+    response.headers.set('x-pathname', url.pathname)
+    return response
+  }
+
+  // For website routes, rewrite to /website if not already
   if (!url.pathname.startsWith('/website') && !url.pathname.startsWith('/api')) {
     url.pathname = `/website${url.pathname}`
   }
