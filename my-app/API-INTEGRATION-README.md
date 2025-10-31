@@ -16,7 +16,7 @@ The API integration replaces the mock data approach with real HTTP API calls. Th
 
 ### 1. Environment Variables
 
-Update your `.env.local` file with the following variables:
+Update your `.env.local` file with variables:
 
 ```bash
 # API Configuration
