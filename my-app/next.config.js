@@ -37,7 +37,7 @@ const nextConfig = {
   },
   async headers() {
     const allowedOrigins = [
-      'https://prawn-front.vercel.app/',
+      'https://prawn-front.vercel.app',
       'https://prawnbox.com',
       'http://localhost:3000',
       'http://localhost:4000'
