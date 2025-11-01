@@ -6,7 +6,7 @@ Your dashboard has been fully migrated from a 6,586-line monolith to a modern Ne
 
 ---
 
-## 🎯 Start Testing Now
+## Start Testing Now
 
 ### **Dev Server is Running**
 
