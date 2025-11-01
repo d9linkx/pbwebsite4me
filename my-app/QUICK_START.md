@@ -1,4 +1,4 @@
-# 🚀 Quick Start - New Dashboard Architecture
+# Quick Start - New Dashboard Architecture
 
 ## Migration Complete!
 
