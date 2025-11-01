@@ -4,7 +4,13 @@ const nextConfig = {
     domains: ['prawnbox.com', 'app.prawnbox.com', 'prawnboxx.vercel.app', 'app.prawnboxx.vercel.app', 'https://prawn-front.vercel.app/'],
   },
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+    // In production, use NEXT_PUBLIC_API_BASE_URL, fallback to localhost:4000 for development
+    const isProduction = process.env.NODE_ENV === 'production';
+    const backendUrl = isProduction 
+      ? process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api-prawnbox.onrender.com'
+      : 'http://localhost:4000';
+    
+    console.log('Using backend URL:', backendUrl);
     
     return [
       {
@@ -30,14 +36,21 @@ const nextConfig = {
     ];
   },
   async headers() {
+    const allowedOrigins = [
+      'https://prawn-front.vercel.app/',
+      'https://prawnbox.com',
+      'http://localhost:3000',
+      'http://localhost:4000'
+    ];
+
     return [
       {
         source: '/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: 'https://prawn-front.vercel.app/' },
+          { key: 'Access-Control-Allow-Origin', value: allowedOrigins.join(', ') },
           { key: 'Access-Control-Allow-Methods', value: 'GET, POST, PUT, DELETE, OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization, X-Requested-With' },
+          { key: 'Access-Control-Allow-Headers', value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization' },
         ],
       },
     ];
