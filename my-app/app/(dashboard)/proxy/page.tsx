@@ -32,7 +32,7 @@ export default function ProxyDashboardPage() {
 
   const handleNavigate = (screen: Screen) => {
     const routeMap: Partial<Record<Screen, string>> = {
-      'dashboard': '/',
+      'dashboard': '/dashboard',
       'settings': '/settings',
       'route-ads-management': '/proxy/route-ads',
     }
@@ -42,7 +42,7 @@ export default function ProxyDashboardPage() {
   }
 
   const handleBack = () => {
-    router.push('/')
+    router.push('/dashboard')
   }
 
   const handleCall = (phone: string) => {

@@ -150,7 +150,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
 
   const getQuickReplies = (message: ChatMessage, userRole: UserRole) => {
     const replies: string[] = [];
-    const msgLower = message.message.toLowerCase();
+    const msgLower = (message.message || '').toLowerCase();
     
     if (message.senderId === 'support-agent') {
       if (msgLower.includes('what specific challenges') || msgLower.includes('what issue')) {

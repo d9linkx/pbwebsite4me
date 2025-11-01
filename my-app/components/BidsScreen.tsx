@@ -28,7 +28,7 @@ export function BidsScreen({ job, onBack, onBidSelect, onAcceptBid, onViewProfil
   };
 
   const getVehicleIcon = (vehicleType: string) => {
-    switch (vehicleType.toLowerCase()) {
+    switch ((vehicleType || '').toLowerCase()) {
       case 'car':
         return <Car size={16} className="text-[#f44708]" />;
       case 'motorcycle':

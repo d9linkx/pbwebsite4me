@@ -1,28 +1,151 @@
 /**
- * Dashboard Redirect
+ * Dashboard Home Page
  *
- * Redirects /dashboard to / (where the new migrated dashboard lives)
- * The old monolithic dashboard has been moved to app/dashboard-OLD-BACKUP.tsx
+ * Main dashboard landing page showing role-specific stats and quick actions.
+ * Uses Zustand for state management instead of props drilling.
  */
 
 'use client'
 
-import { useEffect } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { DashboardScreen } from '@/components/dashboard/DashboardScreen'
+import { useAppStore } from '@/stores/appStore'
+import type { DeliveryJob, Screen } from '@/types/index'
 
-export default function DashboardRedirect() {
+export default function DashboardPage() {
   const router = useRouter()
 
-  useEffect(() => {
-    router.replace('/')
-  }, [router])
+  // Get state from global store
+  const {
+    user,
+    activeRole,
+    deliveryJobs,
+    proxyItems,
+    notifications,
+    setSelectedJob,
+    setActiveRole,
+  } = useAppStore()
+
+  // Local state for route selection (used by proxy dashboard)
+  const [selectedRoute, setSelectedRoute] = useState<string | null>(null)
+
+  // Navigation handler - maps old Screen types to new routes
+  const handleNavigate = (screen: Screen) => {
+    const screenToRouteMap: Partial<Record<Screen, string>> = {
+      // Jobs
+      'post-delivery': '/jobs/post',
+      'available-jobs': '/jobs',
+      'my-deliveries': '/jobs/my-deliveries',
+      'sent-deliveries-history': '/jobs/sent',
+      'received-deliveries': '/jobs/received',
+      'receiver-dashboard': '/jobs/received',
+      'accepted-bids': '/jobs/accepted-bids',
+      'bids': '/jobs/bids',
+      'tracking': '/jobs/tracking',
+
+      // Wallet
+      'wallet': '/wallet',
+      'wallet-add-funds': '/wallet/add-funds',
+      'wallet-withdraw': '/wallet/withdraw',
+
+      // Settings
+      'settings': '/settings',
+      'profile-information': '/settings/profile',
+
+      // Other
+      'referral': '/referrals',
+      'proxy-dashboard': '/proxy',
+      'tape-distributor': '/tape-distributor',
+      'notifications': '/notifications',
+      'chat': '/chat',
+    }
+
+    const route = screenToRouteMap[screen]
+    if (route) {
+      router.push(route)
+    } else {
+      console.warn('No route mapping for screen:', screen)
+      // Fallback to dashboard
+      router.push('/dashboard')
+    }
+  }
+
+  // Job selection handler
+  const handleJobSelect = (job: DeliveryJob) => {
+    setSelectedJob(job)
+    // Navigate to job detail page
+    router.push(`/jobs/${job.id}`)
+  }
+
+  // Call handler (opens phone dialer or WhatsApp)
+  const handleCall = (phone: string) => {
+    // Remove any non-numeric characters
+    const cleanPhone = phone.replace(/\D/g, '')
+
+    // Try WhatsApp first, fallback to phone
+    if (typeof window !== 'undefined') {
+      // Format for WhatsApp (international format)
+      const whatsappUrl = `https://wa.me/${cleanPhone}`
+      window.open(whatsappUrl, '_blank')
+    }
+  }
+
+  // Action click handler (for dashboard buttons)
+  const handleActionClick = (action: string) => {
+    console.log('Dashboard action clicked:', action)
+
+    // Map actions to routes
+    const actionRoutes: Record<string, string> = {
+      'post-delivery': '/jobs/post',
+      'available-jobs': '/jobs',
+      'accepted-bids': '/jobs/accepted-bids',
+      'accepted-bids-completed': '/jobs/my-deliveries?filter=completed',
+      'my-deliveries': '/jobs/my-deliveries',
+      'wallet': '/wallet',
+      'wallet-add-funds': '/wallet/add-funds',
+      'settings': '/settings',
+      'referral': '/referrals',
+      'tape-distributor': '/tape-distributor',
+      'proxy-dashboard': '/proxy',
+    }
+
+    const route = actionRoutes[action]
+    if (route) {
+      router.push(route)
+    } else {
+      // Fallback to screen navigation
+      handleNavigate(action as Screen)
+    }
+  }
+
+  // Get user-specific jobs
+  const userJobs = user
+    ? deliveryJobs.filter(
+        (job) =>
+          job.senderId === user.id ||
+          job.receiverId === user.id
+      )
+    : []
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 border-4 border-[#f44708] border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p className="text-gray-600">Redirecting to dashboard...</p>
-      </div>
+    <div className="container mx-auto">
+      <DashboardScreen
+        user={user}
+        activeRole={activeRole}
+        onJobSelect={handleJobSelect}
+        onRoleChange={setActiveRole}
+        onNavigate={handleNavigate}
+        userJobs={userJobs}
+        allJobs={deliveryJobs}
+        proxyItems={proxyItems}
+        selectedRoute={selectedRoute}
+        onRouteSelect={setSelectedRoute}
+        onBack={() => router.back()}
+        handleCall={handleCall}
+        notifications={notifications}
+        onActionClick={handleActionClick}
+      />
     </div>
   )
 }

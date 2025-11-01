@@ -34,9 +34,9 @@ export function SentDeliveriesHistoryScreen({
 
   const filteredJobs = useMemo(() => {
     return userJobs.filter(job => {
-      const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.pickupLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.dropoffLocation.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = (job.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (job.pickupLocation || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (job.dropoffLocation || '').toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesStatus = filterStatus === 'all' || job.status === filterStatus;
 

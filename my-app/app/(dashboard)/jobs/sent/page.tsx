@@ -104,10 +104,8 @@ export default function SentDeliveriesPage() {
   const [selectedJob, setSelectedJob] = useState<DeliveryJob | null>(null)
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
 
-  const { user, setDeliveryJobs } = useAppStore((state) => ({
-    user: state.user,
-    setDeliveryJobs: state.setDeliveryJobs
-  }))
+  const user = useAppStore((state) => state.user)
+  const setDeliveryJobs = useAppStore((state) => state.setDeliveryJobs)
 
   // Fetch sent packages from backend on component mount
   useEffect(() => {
@@ -231,19 +229,19 @@ export default function SentDeliveriesPage() {
   }, [user, router, setDeliveryJobs]);
 
   const handleBack = () => {
-    router.push('/')
+    router.push('/dashboard')
   }
 
   const handleNavigate = (screen: Screen) => {
     const screenToRouteMap: Partial<Record<Screen, string>> = {
-      'dashboard': '/',
+      'dashboard': '/dashboard',
       'post-delivery': '/jobs/post',
       'tracking': '/jobs/tracking',
       'chat': '/chat',
       'bids': '/jobs/bids',
     }
 
-    const route = screenToRouteMap[screen] || '/'
+    const route = screenToRouteMap[screen] || '/dashboard'
     router.push(route)
   }
 

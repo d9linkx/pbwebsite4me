@@ -129,10 +129,15 @@ export function AvailableJobsScreen({
   };
 
   // Helper functions
-  const getLocationSummary = (location: string) => location.split(',')[0];
-  const getJobRoute = (job: DeliveryJob) => `${getLocationSummary(job.pickupLocation)} → ${getLocationSummary(job.dropoffLocation)}`;
+  const getLocationSummary = (location: string) => location ? location.split(',')[0] : 'Unknown';
+  const getJobRoute = (job: DeliveryJob) => {
+    const pickup = job.pickupLocation ? getLocationSummary(job.pickupLocation) : 'Unknown';
+    const dropoff = job.dropoffLocation ? getLocationSummary(job.dropoffLocation) : 'Unknown';
+    return `${pickup} → ${dropoff}`;
+  };
   
   const getJobCategory = (job: DeliveryJob) => {
+    if (!job.title) return 'General';
     const title = job.title.toLowerCase();
     if (title.includes('food') || title.includes('grocery')) return 'Food & Groceries';
     if (title.includes('laptop') || title.includes('phone') || title.includes('tech')) return 'Electronics';
@@ -142,6 +147,7 @@ export function AvailableJobsScreen({
   };
 
   const getAreaFromLocation = (location: string) => {
+    if (!location) return 'Unknown';
     const area = location.split(',')[0];
     return nigerianAreas.find(a => area.toLowerCase().includes(a.toLowerCase())) || area;
   };
@@ -240,9 +246,9 @@ export function AvailableJobsScreen({
 
     // Route filter
     if (routeFilter) {
-      jobs = jobs.filter(job => 
-        job.pickupLocation.toLowerCase().includes(routeFilter.toLowerCase()) ||
-        job.dropoffLocation.toLowerCase().includes(routeFilter.toLowerCase())
+      jobs = jobs.filter(job =>
+        (job.pickupLocation || '').toLowerCase().includes(routeFilter.toLowerCase()) ||
+        (job.dropoffLocation || '').toLowerCase().includes(routeFilter.toLowerCase())
       );
     }
 
@@ -273,7 +279,7 @@ export function AvailableJobsScreen({
 
     // Size filter
     if (sizeFilter) {
-      jobs = jobs.filter(job => job.itemSize.toLowerCase() === sizeFilter.toLowerCase());
+      jobs = jobs.filter(job => (job.itemSize || '').toLowerCase() === sizeFilter.toLowerCase());
     }
 
     // Category filter

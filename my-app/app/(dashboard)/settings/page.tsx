@@ -27,7 +27,7 @@ export default function SettingsPage() {
       'contact-support': '/help/contact',
       'ratings': '/ratings',
       'referral': '/referrals',
-      'dashboard': '/',
+      'dashboard': '/dashboard',
     }
 
     const route = routeMap[screen] || '/'

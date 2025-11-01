@@ -22,7 +22,7 @@ export default function ProfilePage() {
   const handleNavigate = (screen: Screen) => {
     const routeMap: Partial<Record<Screen, string>> = {
       'settings': '/settings',
-      'dashboard': '/',
+      'dashboard': '/dashboard',
     }
 
     const route = routeMap[screen] || '/settings'

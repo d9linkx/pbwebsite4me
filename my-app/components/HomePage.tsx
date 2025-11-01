@@ -62,6 +62,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               initial="hidden"
               animate="visible"
               variants={fadeInLeft}
+              className="pr-[8px] pb-[0px] pl-[8px]"
             >
               <motion.div
                 className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-4 py-2 rounded-full mb-6"

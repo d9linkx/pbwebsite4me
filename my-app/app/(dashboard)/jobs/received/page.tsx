@@ -21,17 +21,17 @@ export default function ReceivedDeliveriesPage() {
   const receivedJobs = deliveryJobs.filter(job => job.receiverId === user?.id)
 
   const handleBack = () => {
-    router.push('/')
+    router.push('/dashboard')
   }
 
   const handleNavigate = (screen: Screen) => {
     const screenToRouteMap: Partial<Record<Screen, string>> = {
-      'dashboard': '/',
+      'dashboard': '/dashboard',
       'tracking': '/jobs/tracking',
       'chat': '/chat',
     }
 
-    const route = screenToRouteMap[screen] || '/'
+    const route = screenToRouteMap[screen] || '/dashboard'
     router.push(route)
   }
 

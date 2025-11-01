@@ -35,8 +35,8 @@ export function ReceivedDeliveriesScreen({
 
   const filteredJobs = useMemo(() => {
     return receivedJobs.filter(job => {
-      const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.senderName.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = (job.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (job.senderName || '').toLowerCase().includes(searchQuery.toLowerCase());
 
       let matchesStatus: boolean = false;
       if (filterStatus === 'all') {
