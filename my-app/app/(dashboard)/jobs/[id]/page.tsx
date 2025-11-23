@@ -7,33 +7,181 @@
 
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
-import type { DeliveryJob } from '@/types/index'
+import { apiService } from '@/utils/apiService'
+import { ConfirmDialog, useConfirmDialog } from '@/components/ConfirmDialog'
+import type { DeliveryJob, DeliveryStatus } from '@/types/index'
+import { toast } from 'sonner'
 
 export default function JobDetailPage() {
   const params = useParams()
   const router = useRouter()
   const jobId = params.id as string
+  const [isLoading, setIsLoading] = useState(true)
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false)
+  const [pendingStatusUpdate, setPendingStatusUpdate] = useState<string | null>(null)
 
   const {
     user,
     activeRole,
     deliveryJobs,
-    selectedJob,
+    setDeliveryJobs,
     setSelectedJob,
   } = useAppStore()
 
-  // Find job by ID
-  const job = deliveryJobs.find((j) => j.id === jobId)
+  const [job, setJob] = useState<DeliveryJob | null>(
+    deliveryJobs.find((j) => j.id === jobId) || null
+  )
 
-  // Set selected job in store
+  // Confirmation dialog for status updates
+  const confirmDialog = useConfirmDialog()
+
+  // Fetch job details from backend on mount
   useEffect(() => {
-    if (job) {
-      setSelectedJob(job)
+    const fetchJobDetails = async () => {
+      const currentUser = user
+      if (!currentUser) {
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        setIsLoading(true)
+        const response = await apiService.getPackageById(jobId)
+
+        if (response.success && response.data) {
+          const pkg = response.data
+
+          // Map backend package to frontend DeliveryJob format
+          const fetchedJob: DeliveryJob = {
+            id: pkg._id || pkg.id,
+            title: pkg.title,
+            description: pkg.description || '',
+            pickupLocation: pkg.sender?.formattedAddress || pkg.pickupLocation || '',
+            dropoffLocation: pkg.receiver?.formattedAddress || pkg.dropoffLocation || '',
+            itemSize: pkg.items?.[0]?.size || pkg.itemSize || 'Medium',
+            category: pkg.items?.[0]?.category || pkg.category || 'general',
+            weight: pkg.items?.[0]?.weight?.toString() || pkg.weight || '1kg',
+            value: pkg.price || pkg.value || 0,
+            receiverName: pkg.receiver?.name || '',
+            receiverPhone: pkg.receiver?.phone || '',
+            receiverId: pkg.receiver?.receiverId || '',
+            senderId: pkg.sender?.senderId || '',
+            senderName: pkg.sender?.name || '',
+            senderPhone: pkg.sender?.phone || '',
+            selectedPalId: pkg.pal?.palId,
+            selectedPalName: pkg.pal?.name,
+            selectedPalPhone: pkg.pal?.phone,
+            status: (pkg.status || 'pending') as DeliveryStatus,
+            pickupDate: pkg.pickupDate || new Date().toISOString(),
+            pickupTime: pkg.pickupTime || '',
+            notes: pkg.notes || '',
+            images: pkg.items?.[0]?.images?.map((img: { url: string }) => img.url) || [],
+            escrowAmount: pkg.escrowAmount || 0,
+            bids: pkg.bids || [],
+            isLive: true,
+            createdAt: pkg.createdAt || new Date().toISOString(),
+            orderNumber: pkg.orderNumber,
+          }
+
+          setJob(fetchedJob)
+          setSelectedJob(fetchedJob)
+
+          // Update in store - get latest state at the time of update
+          const jobExists = deliveryJobs.some(j => j.id === jobId)
+          if (jobExists) {
+            setDeliveryJobs(deliveryJobs.map(j => j.id === jobId ? fetchedJob : j))
+          } else {
+            setDeliveryJobs([...deliveryJobs, fetchedJob])
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching job details:', error)
+        toast.error('Failed to load job details. Please try again.')
+      } finally {
+        setIsLoading(false)
+      }
     }
-  }, [job, setSelectedJob])
+
+    fetchJobDetails()
+    // Only run on mount or when jobId changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jobId])
+
+  // Show confirmation dialog for status update
+  const showStatusUpdateConfirmation = (newStatus: string) => {
+    setPendingStatusUpdate(newStatus)
+    confirmDialog.open()
+  }
+
+  // Handle confirmed status update
+  const handleConfirmedStatusUpdate = async () => {
+    if (!user || !job || !pendingStatusUpdate) {
+      toast.error('Unable to update status')
+      return
+    }
+
+    if (isUpdatingStatus) return
+
+    const newStatus = pendingStatusUpdate
+    confirmDialog.setIsLoading(true)
+    setIsUpdatingStatus(true)
+
+    try {
+      console.log('Updating job status:', { jobId: job.id, newStatus })
+
+      const response = await apiService.updatePackageStatus(job.id, newStatus)
+
+      if (response.success && response.data) {
+        toast.success(`Status updated to ${newStatus}`)
+
+        // Update local state
+        const updatedJob: DeliveryJob = { ...job, status: newStatus as DeliveryStatus }
+        setJob(updatedJob)
+        setSelectedJob(updatedJob)
+
+        // Update store
+        setDeliveryJobs(deliveryJobs.map(j => j.id === job.id ? updatedJob : j))
+      } else {
+        throw new Error(response.message || 'Failed to update status')
+      }
+    } catch (error: unknown) {
+      console.error('Error updating status:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update status. Please try again.'
+      toast.error(errorMessage)
+      throw error
+    } finally {
+      setIsUpdatingStatus(false)
+      confirmDialog.setIsLoading(false)
+      setPendingStatusUpdate(null)
+    }
+  }
+
+  // Get confirmation message for status update
+  const getStatusUpdateMessage = (status: string): string => {
+    const messages: Record<string, string> = {
+      'picked-up': 'Mark this delivery as picked up? This will notify the sender and receiver.',
+      'in-transit': 'Mark this delivery as in transit? The sender and receiver will be notified of your progress.',
+      'delivered': 'Mark this delivery as delivered? This action confirms the package has reached its destination.',
+      'cancelled': 'Cancel this delivery? This action cannot be undone and all parties will be notified.',
+    }
+    return messages[status] || `Update status to ${status}?`
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading job details...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (!job) {
     return (
@@ -185,6 +333,51 @@ export default function JobDetailPage() {
             </div>
           )}
 
+          {/* Status Update (for Pal) */}
+          {activeRole === 'pal' && job.selectedPalId === user?.id && (
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">Update Status</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {job.status === 'assigned' && (
+                  <button
+                    onClick={() => showStatusUpdateConfirmation('picked-up')}
+                    disabled={isUpdatingStatus}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUpdatingStatus ? 'Updating...' : 'Mark as Picked Up'}
+                  </button>
+                )}
+                {job.status === 'picked-up' && (
+                  <button
+                    onClick={() => showStatusUpdateConfirmation('in-transit')}
+                    disabled={isUpdatingStatus}
+                    className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUpdatingStatus ? 'Updating...' : 'Mark as In Transit'}
+                  </button>
+                )}
+                {job.status === 'in-transit' && (
+                  <button
+                    onClick={() => showStatusUpdateConfirmation('arrived')}
+                    disabled={isUpdatingStatus}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUpdatingStatus ? 'Updating...' : 'Mark as Arrived'}
+                  </button>
+                )}
+                {job.status === 'arrived' && (
+                  <button
+                    onClick={() => showStatusUpdateConfirmation('delivered')}
+                    disabled={isUpdatingStatus}
+                    className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUpdatingStatus ? 'Updating...' : 'Mark as Delivered'}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="flex gap-3">
             {canViewBids && (
@@ -206,6 +399,19 @@ export default function JobDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={confirmDialog.close}
+        onConfirm={handleConfirmedStatusUpdate}
+        title="Confirm Status Update"
+        message={pendingStatusUpdate ? getStatusUpdateMessage(pendingStatusUpdate) : ''}
+        confirmText="Update Status"
+        cancelText="Cancel"
+        variant={pendingStatusUpdate === 'cancelled' ? 'danger' : 'warning'}
+        isLoading={confirmDialog.isLoading}
+      />
     </div>
   )
 }

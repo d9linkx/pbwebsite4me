@@ -121,6 +121,7 @@ export function DashboardScreen({
           onActionClick={onActionClick || handleEnhancedActionClick}
           onSpecialActionClick={handleEnhancedSpecialActionClick}
           onNavigateToSponsorship={handleNavigateToSponsorship}
+          onJobSelect={onJobSelect}
         />
       </div>
     </div>

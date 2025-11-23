@@ -256,7 +256,6 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
   });
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [createdJob, setCreatedJob] = useState<DeliveryJob | null>(null);
   const [scanCompleted, setScanCompleted] = useState(false);
   const [scanData, setScanData] = useState<ScanData | null>(null);
@@ -365,7 +364,8 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
     setTimeout(() => {
       setIsSubmitting(false);
       setCreatedJob(newJob);
-      setShowSuccessPopup(true);
+      // Navigate to processing page via parent component
+      onSubmit(newJob);
     }, 1000);
   };
 
@@ -484,13 +484,6 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
     }
   };
 
-  const handleSuccessPopupClose = () => {
-    setShowSuccessPopup(false);
-    if (createdJob) {
-      onSubmit(createdJob);
-      onNavigateToMyDeliveries();
-    }
-  };
 
   const handleChooseFavoritePal = () => {
     if (!isFormValid()) return;
@@ -1111,58 +1104,6 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
         </div>
       </div>
 
-      {/* Success Dialog */}
-      <Dialog open={showSuccessPopup} onOpenChange={setShowSuccessPopup}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
-          <DialogHeader className="text-center space-y-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle size={32} className="text-green-600" />
-            </div>
-            <DialogTitle className="text-xl font-semibold text-gray-900">
-              Delivery Request Posted Successfully! 🎉
-            </DialogTitle>
-            <DialogDescription asChild>
-              <div className="text-base text-gray-600 space-y-3">
-                <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <Users size={16} className="text-[#f44708]" />
-                    <span className="font-medium">Available Pals in your area will start bidding</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <MapIcon size={16} className="text-[#f44708]" />
-                    <span>We&apos;re notifying Pals near <strong>{createdJob?.pickupLocation}</strong></span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <DollarSign size={16} className="text-[#f44708]" />
-                    <span>Item value: <strong>{createdJob?.value ? formatAmount(createdJob.value) : 'N/A'}</strong></span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500">
-                  You&apos;ll receive notifications as Pals place bids. Your item has been scanned and verified!
-                </p>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col space-y-3 pt-4">
-            <motion.button
-              onClick={handleSuccessPopupClose}
-              className="w-full bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl h-12 font-medium"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View My Sent Deliveries
-            </motion.button>
-            <motion.button
-              onClick={handleSuccessPopupClose}
-              className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl h-12 font-medium"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Return to Dashboard
-            </motion.button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* AI Scanner Modal */}
       <AnimatePresence>

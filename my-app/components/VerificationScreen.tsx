@@ -63,28 +63,28 @@ export function VerificationScreen({
   const getStatusBadge = (status: string, required: boolean) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Verified</Badge>;
+        return <Badge className="bg-green-100 text-green-700 border-0">Verified</Badge>;
       case 'in-progress':
-        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">In Review</Badge>;
+        return <Badge className="bg-blue-100 text-blue-700 border-0">In Review</Badge>;
       case 'failed':
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Failed</Badge>;
+        return <Badge className="bg-red-100 text-red-700 border-0">Failed</Badge>;
       default:
-        return required 
-          ? <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Required</Badge>
-          : <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Optional</Badge>;
+        return required
+          ? <Badge className="bg-yellow-100 text-yellow-700 border-0">Required</Badge>
+          : <Badge className="bg-gray-100 text-gray-700 border-0">Optional</Badge>;
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle size={24} className="text-green-400" />;
+        return <CheckCircle size={24} className="text-green-600" />;
       case 'in-progress':
-        return <div className="w-6 h-6 border-3 border-blue-400 border-t-transparent rounded-full animate-spin" />;
+        return <div className="w-6 h-6 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />;
       case 'failed':
-        return <AlertCircle size={24} className="text-red-400" />;
+        return <AlertCircle size={24} className="text-red-600" />;
       default:
-        return <div className="w-6 h-6 border-2 border-gray-500 rounded-full" />;
+        return <div className="w-6 h-6 border-2 border-gray-400 rounded-full" />;
     }
   };
 
@@ -133,16 +133,10 @@ export function VerificationScreen({
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500 rounded-full opacity-10 blur-3xl"></div>
-        <div className="absolute bottom-0 -left-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
-      </div>
-
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+      <motion.div
+        className="bg-white border-b border-gray-200 p-6 sticky top-0 z-20 shadow-sm"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -150,18 +144,18 @@ export function VerificationScreen({
           <div className="flex items-center space-x-4">
             <motion.button
               onClick={onBack}
-              className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowLeft size={20} className="text-white" />
+              <ArrowLeft size={20} className="text-gray-700" />
             </motion.button>
             <div>
-              <h1 className="text-lg font-semibold text-white">Account Verification</h1>
-              <p className="text-sm text-gray-400">Complete verification to unlock features</p>
+              <h1 className="text-lg font-semibold text-gray-900">Account Verification</h1>
+              <p className="text-sm text-gray-500">Complete verification to unlock features</p>
             </div>
           </div>
-          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 flex items-center space-x-1">
+          <Badge className="bg-green-100 text-green-700 border-0 flex items-center space-x-1">
             <Shield size={14} />
             <span>{completedCount}/{verificationSteps.length}</span>
           </Badge>
@@ -171,23 +165,23 @@ export function VerificationScreen({
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {/* Progress Card */}
-        <motion.div 
-          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
+        <motion.div
+          className="bg-gray-50 border border-gray-200 rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-white font-semibold mb-1">Verification Progress</h3>
-              <p className="text-gray-400 text-sm">{Math.round(overallProgress)}% complete</p>
+              <h3 className="text-gray-900 font-semibold mb-1">Verification Progress</h3>
+              <p className="text-gray-600 text-sm">{Math.round(overallProgress)}% complete</p>
             </div>
-            <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center">
-              <Shield size={32} className="text-green-400" />
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <Shield size={32} className="text-green-600" />
             </div>
           </div>
-          
-          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-            <motion.div 
+
+          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <motion.div
               className="h-full bg-gradient-to-r from-green-500 to-blue-500 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${overallProgress}%` }}
@@ -201,16 +195,16 @@ export function VerificationScreen({
           {verificationSteps.map((step, index) => {
             const Icon = step.icon;
             const isSelected = selectedStep === step.id;
-            
+
             return (
               <motion.div
                 key={step.id}
-                className={`bg-white/10 backdrop-blur-sm border rounded-2xl p-6 cursor-pointer transition-all ${
-                  isSelected 
-                    ? 'border-[#f44708] bg-white/15 scale-[1.02]' 
+                className={`bg-white border rounded-2xl p-6 cursor-pointer transition-all ${
+                  isSelected
+                    ? 'border-[#f44708] bg-[#f44708]/5 scale-[1.02]'
                     : step.status === 'completed'
-                    ? 'border-green-500/30'
-                    : 'border-white/20 hover:border-white/40'
+                    ? 'border-green-200'
+                    : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => handleStepClick(step.id)}
                 initial={{ opacity: 0, x: -20 }}
@@ -222,23 +216,23 @@ export function VerificationScreen({
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center space-x-3">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                      step.status === 'completed' 
-                        ? 'bg-green-500/20' 
+                      step.status === 'completed'
+                        ? 'bg-green-100'
                         : step.status === 'in-progress'
-                        ? 'bg-blue-500/20'
-                        : 'bg-white/10'
+                        ? 'bg-blue-100'
+                        : 'bg-gray-100'
                     }`}>
                       <Icon size={24} className={
-                        step.status === 'completed' 
-                          ? 'text-green-400' 
+                        step.status === 'completed'
+                          ? 'text-green-600'
                           : step.status === 'in-progress'
-                          ? 'text-blue-400'
-                          : 'text-gray-400'
+                          ? 'text-blue-600'
+                          : 'text-gray-600'
                       } />
                     </div>
                     <div>
-                      <h4 className="text-white font-semibold">{step.title}</h4>
-                      <p className="text-sm text-gray-400">{step.description}</p>
+                      <h4 className="text-gray-900 font-semibold">{step.title}</h4>
+                      <p className="text-sm text-gray-600">{step.description}</p>
                     </div>
                   </div>
                   {getStatusIcon(step.status)}
@@ -257,7 +251,7 @@ export function VerificationScreen({
                 <AnimatePresence>
                   {isSelected && (
                     <motion.div
-                      className="mt-4 pt-4 border-t border-white/20 space-y-4"
+                      className="mt-4 pt-4 border-t border-gray-200 space-y-4"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
@@ -265,7 +259,7 @@ export function VerificationScreen({
                       {/* Upload Preview */}
                       {uploadedFile ? (
                         <div className="space-y-3">
-                          <div className="relative w-full h-48 rounded-xl overflow-hidden">
+                          <div className="relative w-full h-48 rounded-xl overflow-hidden border border-gray-200">
                             <img
                               src={uploadedFile}
                               alt="Uploaded document"
@@ -273,7 +267,7 @@ export function VerificationScreen({
                             />
                             <motion.button
                               onClick={() => setUploadedFile(null)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center"
+                              className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center shadow-sm"
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                             >
@@ -283,7 +277,7 @@ export function VerificationScreen({
                           <motion.button
                             onClick={handleSubmit}
                             disabled={isUploading}
-                            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center"
+                            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center shadow-sm"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                           >
@@ -311,7 +305,7 @@ export function VerificationScreen({
                             />
                             <motion.label
                               htmlFor={`camera-${step.id}`}
-                              className="flex flex-col items-center justify-center bg-[#f44708] hover:bg-[#ff5722] text-white p-6 rounded-xl cursor-pointer"
+                              className="flex flex-col items-center justify-center bg-[#f44708] hover:bg-[#ff5722] text-white p-6 rounded-xl cursor-pointer shadow-sm"
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                             >
@@ -331,7 +325,7 @@ export function VerificationScreen({
                             />
                             <motion.label
                               htmlFor={`file-${step.id}`}
-                              className="flex flex-col items-center justify-center bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-xl cursor-pointer"
+                              className="flex flex-col items-center justify-center bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-xl cursor-pointer shadow-sm"
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                             >
@@ -342,7 +336,7 @@ export function VerificationScreen({
                         </div>
                       )}
 
-                      <p className="text-xs text-gray-400 text-center">
+                      <p className="text-xs text-gray-600 text-center">
                         Accepted: JPG, PNG, PDF • Max 5MB
                       </p>
                     </motion.div>
@@ -354,14 +348,14 @@ export function VerificationScreen({
         </div>
 
         {/* Info Section */}
-        <motion.div 
-          className="bg-blue-500/20 border border-blue-500/30 rounded-2xl p-4"
+        <motion.div
+          className="bg-blue-50 border border-blue-200 rounded-2xl p-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h4 className="font-medium text-blue-300 mb-2">Why Verify?</h4>
-          <ul className="text-sm text-blue-200 space-y-1 list-disc list-inside">
+          <h4 className="font-medium text-blue-900 mb-2">Why Verify?</h4>
+          <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
             <li>Increase trust with other users</li>
             <li>Access higher transaction limits</li>
             <li>Unlock premium features</li>
@@ -370,14 +364,14 @@ export function VerificationScreen({
         </motion.div>
 
         {/* Guidelines */}
-        <motion.div 
-          className="bg-yellow-500/20 border border-yellow-500/30 rounded-2xl p-4"
+        <motion.div
+          className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <h4 className="font-medium text-yellow-300 mb-2">Document Guidelines:</h4>
-          <ul className="text-sm text-yellow-200 space-y-1 list-disc list-inside">
+          <h4 className="font-medium text-yellow-900 mb-2">Document Guidelines:</h4>
+          <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
             <li>Ensure document is clear and readable</li>
             <li>All corners of the document must be visible</li>
             <li>No glare or shadows</li>

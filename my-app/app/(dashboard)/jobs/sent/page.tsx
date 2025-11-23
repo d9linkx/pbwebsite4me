@@ -6,7 +6,7 @@
 
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { SentDeliveriesHistoryScreen } from '@/components/SentDeliveriesHistoryScreen'
 import { useAppStore } from '@/stores/appStore'
@@ -53,6 +53,7 @@ interface SenderInfo {
 }
 
 interface ReceiverInfo {
+  receiverId?: string;
   name?: string;
   phone?: string;
   formattedAddress?: string;  // For the display address string
@@ -93,6 +94,16 @@ interface PackageResponse {
     status?: string;
     createdAt: string;
   }>;
+  pal?: {
+    palId?: string;
+    name?: string;
+    phone?: string;
+  };
+  proxy?: {
+    proxyId?: string;
+    name?: string;
+    phone?: string;
+  };
   createdAt?: string;
   orderNumber?: string;
 }
@@ -100,11 +111,11 @@ interface PackageResponse {
 export default function SentDeliveriesPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-  const [userJobs, setUserJobs] = useState<DeliveryJob[]>([])
   const [selectedJob, setSelectedJob] = useState<DeliveryJob | null>(null)
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
 
   const user = useAppStore((state) => state.user)
+  const deliveryJobs = useAppStore((state) => state.deliveryJobs)
   const setDeliveryJobs = useAppStore((state) => state.setDeliveryJobs)
 
   // Fetch sent packages from backend on component mount
@@ -150,8 +161,14 @@ export default function SentDeliveriesPage() {
               category: pkg.items?.[0]?.category || '',
               weight: pkg.items?.[0]?.weight?.toString() || '',
               value: pkg.price || pkg.items?.[0]?.value || 0,
+              receiverId: pkg.receiver?.receiverId,
               receiverName: pkg.receiver?.name || '',
               receiverPhone: pkg.receiver?.phone || '',
+              selectedPalId: pkg.pal?.palId,
+              selectedPalName: pkg.pal?.name,
+              selectedPalPhone: pkg.pal?.phone,
+              proxyId: pkg.proxy?.proxyId,
+              proxyName: pkg.proxy?.name,
               status: (pkg.status as DeliveryStatus) || 'pending',
               pickupDate: pkg.pickupDate || new Date().toISOString(),
               pickupTime: '12:00', // Default value since it's required
@@ -187,39 +204,18 @@ export default function SentDeliveriesPage() {
             return job;
           });
 
-          // Filter packages where user is the sender
-          const sentJobs = allMappedJobs
-            .filter(job => {
-              const jobSenderId = job.senderId?.toString();
-              const currentUserId = user?.id?.toString();
-              console.log('Comparing senderId:', jobSenderId, 'with userId:', currentUserId);
-              return jobSenderId === currentUserId;
-            })
-            .map(job => ({
-              ...job,
-              orderNumber: job.orderNumber || `ORD-${job.id.slice(0, 8).toUpperCase()}`,
-              pickupTime: job.pickupTime || '12:00',
-              bids: job.bids || [],
-              value: job.value || 0,
-              status: job.status || 'pending',
-              createdAt: job.createdAt || new Date().toISOString(),
-              pickupDate: job.pickupDate || new Date().toISOString()
-            }));
+          console.log('📦 Total packages fetched:', allMappedJobs.length);
 
-          console.log('📦 Filtered sent packages:', sentJobs.length, 'out of', allMappedJobs.length, 'total');
-          setUserJobs(sentJobs);
-
-          // Update Zustand store with ALL fetched jobs (not just sent)
+          // Update Zustand store with ALL fetched jobs
+          // The userJobs will be computed from this via useMemo
           setDeliveryJobs(allMappedJobs);
         } else {
-          console.warn('⚠️ No sent packages found or request failed');
-          setUserJobs([]);
+          console.warn('⚠️ No packages found or request failed');
         }
       } catch (error: unknown) {
-        console.error('❌ Error fetching sent packages:', error);
+        console.error('❌ Error fetching packages:', error);
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-        toast.error(`Failed to load sent deliveries: ${errorMessage}`);
-        setUserJobs([]);
+        toast.error(`Failed to load deliveries: ${errorMessage}`);
       } finally {
         setIsLoading(false);
       }
@@ -227,6 +223,30 @@ export default function SentDeliveriesPage() {
 
     fetchSentPackages();
   }, [user, router, setDeliveryJobs]);
+
+  // Filter sent packages from the global store
+  // This will automatically update when new packages are added
+  const userJobs = useMemo(() => {
+    if (!user) return [];
+
+    return deliveryJobs
+      .filter(job => {
+        const jobSenderId = job.senderId?.toString();
+        const currentUserId = user.id?.toString();
+        return jobSenderId === currentUserId;
+      })
+      .map(job => ({
+        ...job,
+        orderNumber: job.orderNumber || `ORD-${job.id.slice(0, 8).toUpperCase()}`,
+        pickupTime: job.pickupTime || '12:00',
+        bids: job.bids || [],
+        value: job.value || 0,
+        status: job.status || 'pending',
+        createdAt: job.createdAt || new Date().toISOString(),
+        pickupDate: job.pickupDate || new Date().toISOString()
+      }))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [user, deliveryJobs]);
 
   const handleBack = () => {
     router.push('/dashboard')

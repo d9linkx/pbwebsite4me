@@ -65,9 +65,9 @@ export function NotificationsScreen({
   };
 
   const getNotificationIcon = (type: string, actionRequired?: boolean) => {
-    const iconProps = { 
-      size: 20, 
-      className: actionRequired ? 'text-[#f44708]' : 'text-white'
+    const iconProps = {
+      size: 20,
+      className: actionRequired ? 'text-[#f44708]' : 'text-gray-700'
     };
 
     switch (type) {
@@ -104,16 +104,10 @@ export function NotificationsScreen({
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] pt-safe-top pb-safe-bottom">
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
-      </div>
-
+    <div className="min-h-screen w-full bg-white pt-safe-top pb-safe-bottom">
       {/* Header */}
-      <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 sticky top-0 z-10"
+      <motion.div
+        className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -121,15 +115,15 @@ export function NotificationsScreen({
           <div className="flex items-center space-x-3">
             <motion.button
               onClick={onBack}
-              className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowLeft size={20} className="text-white" />
+              <ArrowLeft size={20} className="text-gray-700" />
             </motion.button>
             <div>
-              <h1 className="text-xl text-white">Notifications</h1>
-              <p className="text-sm text-gray-400">Stay updated</p>
+              <h1 className="text-xl text-gray-900">Notifications</h1>
+              <p className="text-sm text-gray-500">Stay updated</p>
             </div>
           </div>
 
@@ -146,13 +140,13 @@ export function NotificationsScreen({
         </div>
 
         {/* Tabs */}
-        <div className="flex px-4 pb-2">
+        <div className="flex px-4 pb-2 space-x-2">
           <motion.button
             onClick={() => setActiveTab('alerts')}
             className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 relative flex items-center justify-center ${
-              activeTab === 'alerts' 
-                ? 'bg-[#f44708] text-white' 
-                : 'bg-white/10 text-gray-400 hover:bg-white/15'
+              activeTab === 'alerts'
+                ? 'bg-[#f44708] text-white shadow-sm'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -164,13 +158,12 @@ export function NotificationsScreen({
               </span>
             )}
           </motion.button>
-          <div className="w-2"></div>
           <motion.button
             onClick={() => setActiveTab('general')}
             className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 relative flex items-center justify-center ${
-              activeTab === 'general' 
-                ? 'bg-[#f44708] text-white' 
-                : 'bg-white/10 text-gray-400 hover:bg-white/15'
+              activeTab === 'general'
+                ? 'bg-[#f44708] text-white shadow-sm'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -188,24 +181,24 @@ export function NotificationsScreen({
       {/* Notifications List */}
       <div className="w-full px-4 py-4 space-y-3 relative z-10">
         {currentNotifications.length === 0 ? (
-          <motion.div 
-            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-12 text-center"
+          <motion.div
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-12 text-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            <Bell size={48} className="text-gray-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">No {activeTab} notifications</h3>
-            <p className="text-gray-400">You&apos;re all caught up!</p>
+            <Bell size={48} className="text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No {activeTab} notifications</h3>
+            <p className="text-gray-500">You&apos;re all caught up!</p>
           </motion.div>
         ) : (
           currentNotifications.map((notification, index) => (
             <motion.div
               key={notification.id}
-              className={`bg-white/10 backdrop-blur-sm border ${
-                !notification.read 
-                  ? 'border-[#f44708]/40 bg-[#f44708]/10' 
-                  : 'border-white/20'
-              } rounded-xl p-4 cursor-pointer hover:bg-white/15 transition-all duration-300`}
+              className={`bg-white border ${
+                !notification.read
+                  ? 'border-[#f44708]/40 bg-[#f44708]/5'
+                  : 'border-gray-200'
+              } rounded-xl p-4 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-sm relative`}
               onClick={() => handleNotificationClick(notification)}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -215,20 +208,20 @@ export function NotificationsScreen({
             >
               <div className="flex space-x-3">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                  notification.actionRequired 
-                    ? 'bg-[#f44708]/20' 
-                    : 'bg-white/10'
+                  notification.actionRequired
+                    ? 'bg-[#f44708]/20'
+                    : 'bg-gray-100'
                 }`}>
                   {getNotificationIcon(notification.type, notification.actionRequired)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between mb-1">
-                    <h3 className="font-semibold text-white">{notification.title}</h3>
-                    <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
+                    <h3 className="font-semibold text-gray-900">{notification.title}</h3>
+                    <span className="text-xs text-gray-500 whitespace-nowrap ml-2">
                       {formatTimestamp(notification.timestamp)}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-300 mb-2">{notification.message}</p>
+                  <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
                   {notification.actionRequired && (
                     <div className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-3 py-1 rounded-full">
                       <Zap size={14} className="text-[#f44708]" />

@@ -81,54 +81,25 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1]
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-        />
-        <motion.div
-          className="absolute bottom-0 -left-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.1, 0.2, 0.1]
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 0.5
-          }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 flex-shrink-0 z-20 shadow-lg"
+      <motion.div
+        className="bg-white border-b border-gray-200 p-6 flex-shrink-0 z-20 shadow-sm"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center space-x-4">
           <motion.button
             onClick={handleBack}
-            className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <ArrowLeft size={20} className="text-white" />
+            <ArrowLeft size={20} className="text-gray-700" />
           </motion.button>
           <div>
-            <h1 className="text-lg font-semibold text-white">AI Item Scanner</h1>
-            <p className="text-sm text-gray-400">Scan your item for details</p>
+            <h1 className="text-lg font-semibold text-gray-900">AI Item Scanner</h1>
+            <p className="text-sm text-gray-500">Scan your item for details</p>
           </div>
         </div>
       </motion.div>
@@ -144,17 +115,17 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               exit={{ opacity: 0, y: -20 }}
             >
               {/* AI Info Card */}
-              <div className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-2xl p-4 sm:p-6">
+              <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4 sm:p-6">
                 <div className="flex items-center space-x-3 mb-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#f44708] flex items-center justify-center flex-shrink-0">
                     <Sparkles size={20} className="text-white sm:w-6 sm:h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-white font-semibold text-sm sm:text-base">AI-Powered Scanning</h3>
-                    <p className="text-purple-200 text-xs sm:text-sm">Instant item detection</p>
+                    <h3 className="text-gray-900 font-semibold text-sm sm:text-base">AI-Powered Scanning</h3>
+                    <p className="text-gray-600 text-xs sm:text-sm">Instant item detection</p>
                   </div>
                 </div>
-                <p className="text-purple-100 text-xs sm:text-sm">
+                <p className="text-gray-700 text-xs sm:text-sm">
                   Our AI analyzes your item photo to automatically detect size, weight, category, and special handling requirements.
                 </p>
               </div>
@@ -162,16 +133,16 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               {/* Scan Button */}
               <motion.button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full bg-white/10 backdrop-blur-sm border-2 border-dashed border-white/30 hover:border-purple-500/50 rounded-2xl p-8 sm:p-12 transition-all"
+                className="w-full bg-gray-50 border-2 border-dashed border-gray-300 hover:border-[#f44708] hover:bg-orange-50 rounded-2xl p-8 sm:p-12 transition-all"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="text-center">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#f44708] flex items-center justify-center mx-auto mb-3 sm:mb-4">
                     <Camera size={32} className="text-white sm:w-10 sm:h-10" />
                   </div>
-                  <h3 className="text-white font-semibold mb-1 sm:mb-2">Take or Upload Photo</h3>
-                  <p className="text-gray-400 text-xs sm:text-sm">Click to scan your item with AI</p>
+                  <h3 className="text-gray-900 font-semibold mb-1 sm:mb-2">Take or Upload Photo</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm">Click to scan your item with AI</p>
                 </div>
               </motion.button>
 
@@ -185,12 +156,12 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               />
 
               {/* Features - Collapsible */}
-              <details className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden group">
-                <summary className="p-4 sm:p-6 cursor-pointer hover:bg-white/5 transition-colors list-none">
+              <details className="bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden group">
+                <summary className="p-4 sm:p-6 cursor-pointer hover:bg-gray-100 transition-colors list-none">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-white font-semibold text-sm sm:text-base">What AI Detects:</h4>
+                    <h4 className="text-gray-900 font-semibold text-sm sm:text-base">What AI Detects:</h4>
                     <motion.div
-                      className="text-white"
+                      className="text-gray-700"
                       animate={{ rotate: 0 }}
                       whileHover={{ scale: 1.1 }}
                     >
@@ -210,10 +181,10 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
                     const Icon = feature.icon;
                     return (
                       <div key={index} className="flex items-center space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                          <Icon size={18} className="text-purple-400 sm:w-5 sm:h-5" />
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                          <Icon size={18} className="text-[#f44708] sm:w-5 sm:h-5" />
                         </div>
-                        <p className="text-gray-300 text-xs sm:text-sm">{feature.text}</p>
+                        <p className="text-gray-700 text-xs sm:text-sm">{feature.text}</p>
                       </div>
                     );
                   })}
@@ -230,7 +201,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               exit={{ opacity: 0, scale: 0.9 }}
             >
               <motion.div
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center mb-4 sm:mb-6"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-[#f44708] flex items-center justify-center mb-4 sm:mb-6"
                 animate={{
                   rotate: 360
                 }}
@@ -243,19 +214,19 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
                 <Sparkles size={48} className="text-white sm:w-16 sm:h-16" />
               </motion.div>
 
-              <h3 className="text-white font-semibold mb-2">Scanning Item...</h3>
-              <p className="text-gray-400 text-sm mb-4 sm:mb-6">AI is analyzing your photo</p>
+              <h3 className="text-gray-900 font-semibold mb-2">Scanning Item...</h3>
+              <p className="text-gray-600 text-sm mb-4 sm:mb-6">AI is analyzing your photo</p>
 
               <div className="w-full max-w-xs px-4">
-                <div className="h-2 sm:h-3 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-2 sm:h-3 bg-gray-200 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-purple-500 to-blue-500"
+                    className="h-full bg-[#f44708]"
                     initial={{ width: 0 }}
                     animate={{ width: `${scanProgress}%` }}
                     transition={{ duration: 0.3 }}
                   />
                 </div>
-                <p className="text-center text-white text-sm mt-2">{scanProgress}%</p>
+                <p className="text-center text-gray-900 text-sm mt-2">{scanProgress}%</p>
               </div>
             </motion.div>
           )}
@@ -269,49 +240,49 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               {/* Success */}
               <div className="text-center">
                 <motion.div
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center mx-auto mb-3 sm:mb-4"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 flex items-center justify-center mx-auto mb-3 sm:mb-4"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 200 }}
                 >
                   <CheckCircle size={32} className="text-white sm:w-10 sm:h-10" />
                 </motion.div>
-                <h3 className="text-white font-semibold mb-1 sm:mb-2">Scan Complete!</h3>
-                <p className="text-gray-400 text-sm">AI confidence: {scannedData.confidence}%</p>
+                <h3 className="text-gray-900 font-semibold mb-1 sm:mb-2">Scan Complete!</h3>
+                <p className="text-gray-600 text-sm">AI confidence: {scannedData.confidence}%</p>
               </div>
 
               {/* Results */}
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4">
-                <h4 className="text-white font-semibold text-sm sm:text-base">Detected Information:</h4>
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <h4 className="text-gray-900 font-semibold text-sm sm:text-base">Detected Information:</h4>
 
                 <div className="space-y-2.5 sm:space-y-3">
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Item Name</p>
-                    <p className="text-white font-medium text-sm sm:text-base">{scannedData.itemName}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Item Name</p>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base">{scannedData.itemName}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Category</p>
-                    <p className="text-white font-medium text-sm sm:text-base">{scannedData.category}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Category</p>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base">{scannedData.category}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Estimated Weight</p>
-                    <p className="text-white font-medium text-sm sm:text-base">{scannedData.estimatedWeight}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Estimated Weight</p>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base">{scannedData.estimatedWeight}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Size</p>
-                    <p className="text-white font-medium text-sm sm:text-base">{scannedData.size}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Size</p>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base">{scannedData.size}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Color</p>
-                    <p className="text-white font-medium text-sm sm:text-base">{scannedData.color}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Color</p>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base">{scannedData.color}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Special Handling</p>
-                    <p className="text-white font-medium text-sm sm:text-base">{scannedData.fragile ? 'Fragile - Handle with Care' : 'Standard Handling'}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Special Handling</p>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base">{scannedData.fragile ? 'Fragile - Handle with Care' : 'Standard Handling'}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs sm:text-sm mb-1">Description</p>
-                    <p className="text-white text-sm sm:text-base">{scannedData.description}</p>
+                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Description</p>
+                    <p className="text-gray-900 text-sm sm:text-base">{scannedData.description}</p>
                   </div>
                 </div>
               </div>
@@ -320,7 +291,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               <div className="space-y-2.5 sm:space-y-3">
                 <motion.button
                   onClick={handleAccept}
-                  className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base"
+                  className="w-full bg-[#f44708] hover:bg-[#d63a00] text-white py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -330,7 +301,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
 
                 <motion.button
                   onClick={handleRescan}
-                  className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base"
+                  className="w-full bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-900 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >

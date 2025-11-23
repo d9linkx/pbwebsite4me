@@ -11,6 +11,7 @@ interface RoleSpecificContentProps {
   onActionClick: (action: string) => void;
   onSpecialActionClick: (action: string) => void;
   onNavigateToSponsorship: () => void;
+  onJobSelect?: (job: DeliveryJob) => void;
 }
 
 export function RoleSpecificContent({
@@ -20,7 +21,8 @@ export function RoleSpecificContent({
   allJobs,
   onActionClick,
   onSpecialActionClick,
-  onNavigateToSponsorship
+  onNavigateToSponsorship,
+  onJobSelect
 }: RoleSpecificContentProps) {
   return (
     <div className="w-full">
@@ -34,6 +36,7 @@ export function RoleSpecificContent({
           onActionClick={onActionClick}
           onSpecialActionClick={onSpecialActionClick}
           onNavigateToSponsorship={onNavigateToSponsorship}
+          onJobSelect={onJobSelect}
         />
       </div>
     </div>

@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Plus, Package, Truck, Wallet, Settings, Bell, Gift, Package2, Star, TrendingUp, MapPin, Send, Activity, Handshake, Zap, Check, Lock, Users, Heart, Info, X
 } from 'lucide-react';
 
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
+import { RecentActivity } from '../RecentActivity';
 import { UserRole, User, DeliveryJob } from '../../types';
 import {
   ACTION_BUTTON_CONFIGS,
@@ -23,6 +24,7 @@ interface QuickActionsCardProps {
   onActionClick: (action: string) => void;
   onSpecialActionClick: (action: string) => void;
   onNavigateToSponsorship: () => void;
+  onJobSelect?: (job: DeliveryJob) => void;
 }
 
 const ICON_COMPONENTS = {
@@ -46,9 +48,31 @@ export function QuickActionsCard({
   allJobs,
   onActionClick,
   onSpecialActionClick,
-  onNavigateToSponsorship
+  onNavigateToSponsorship,
+  onJobSelect
 }: QuickActionsCardProps) {
   const config = ACTION_BUTTON_CONFIGS[activeRole.toUpperCase() as keyof typeof ACTION_BUTTON_CONFIGS];
+
+  // Filter sent packages for the current user (sender role)
+  const sentPackages = useMemo(() => {
+    if (!user) return [];
+    return allJobs.filter(job => job.senderId === user.id);
+  }, [allJobs, user]);
+
+  // Filter jobs where pal has placed bids or been accepted (pal role)
+  const palJobs = useMemo(() => {
+    if (!user) return [];
+    return allJobs.filter(job =>
+      job.bids?.some(bid => bid.palId === user.id) ||
+      job.selectedPalId === user.id
+    );
+  }, [allJobs, user]);
+
+  // Filter jobs where user is the receiver (receiver role)
+  const receivedPackages = useMemo(() => {
+    if (!user) return [];
+    return allJobs.filter(job => job.receiverName === user.name || job.receiverPhone === user.phone);
+  }, [allJobs, user]);
 
   const [lastActivity, setLastActivity] = useState(Date.now());
   const [showVibration, setShowVibration] = useState(false);
@@ -459,6 +483,21 @@ export function QuickActionsCard({
                       </Button>
                     </div>
                   </div>
+
+                  {/* Recent Activity Section - Shows packages sent in last 24 hours */}
+                  <div className="mt-6">
+                    <RecentActivity
+                      packages={sentPackages}
+                      onViewPackage={(job) => {
+                        if (onJobSelect) {
+                          onJobSelect(job);
+                        } else {
+                          // Fallback to navigation
+                          onActionClick(`job-${job.id}`);
+                        }
+                      }}
+                    />
+                  </div>
                 </>
               )}
 
@@ -504,6 +543,20 @@ export function QuickActionsCard({
                       </Button>
                     </div>
                   </div>
+
+                  {/* Recent Activity Section - Shows jobs pal has bid on or accepted in last 24 hours */}
+                  <div className="mt-6">
+                    <RecentActivity
+                      packages={palJobs}
+                      onViewPackage={(job) => {
+                        if (onJobSelect) {
+                          onJobSelect(job);
+                        } else {
+                          onActionClick(`job-${job.id}`);
+                        }
+                      }}
+                    />
+                  </div>
                 </>
               )}
 
@@ -529,6 +582,20 @@ export function QuickActionsCard({
                       <span className="font-medium">Incoming/Received Items</span>
                     </Button>
                   </div>
+
+                  {/* Recent Activity Section - Shows packages received in last 24 hours */}
+                  <div className="mt-6">
+                    <RecentActivity
+                      packages={receivedPackages}
+                      onViewPackage={(job) => {
+                        if (onJobSelect) {
+                          onJobSelect(job);
+                        } else {
+                          onActionClick(`job-${job.id}`);
+                        }
+                      }}
+                    />
+                  </div>
                 </>
               )}
 
@@ -553,6 +620,20 @@ export function QuickActionsCard({
                       <Package size={20} className="text-white" />
                       <span className="font-medium">Manage Store</span>
                     </Button>
+                  </div>
+
+                  {/* Recent Activity Section - Shows proxy-related packages in last 24 hours */}
+                  <div className="mt-6">
+                    <RecentActivity
+                      packages={sentPackages}
+                      onViewPackage={(job) => {
+                        if (onJobSelect) {
+                          onJobSelect(job);
+                        } else {
+                          onActionClick(`job-${job.id}`);
+                        }
+                      }}
+                    />
                   </div>
                 </>
               )}

@@ -130,96 +130,92 @@ export function ReceivedDeliveriesScreen({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowLeft size={20} className="text-prawnbox-primary" />
+              <ArrowLeft size={20} className="text-gray-700" />
             </motion.button>
             <div>
-              <h1 className="text-lg font-semibold text-prawnbox-primary">Received Items</h1>
-              <p className="text-sm text-gray-500">Track your packages</p>
+              <h1 className="text-lg font-semibold text-gray-900">Received Items</h1>
+              <p className="text-sm text-gray-600">Track your packages</p>
             </div>
           </div>
-          {/* <motion.button
-            onClick={() => onNavigate('dashboard')}
-            className="px-4 py-2 bg-[#2f2f2f] hover:bg-[#404040] text-white rounded-xl font-medium transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Dashboard
-          </motion.button> */}
         </div>
       </motion.div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            { label: 'Total', value: stats.total, color: 'bg-blue-100', textColor: 'text-blue-600' },
-            { label: 'Incoming', value: stats.incoming, color: 'bg-orange-100', textColor: 'text-orange-600' },
-            { label: 'With Proxy', value: stats.withProxy, color: 'bg-purple-100', textColor: 'text-purple-600' },
-            { label: 'Confirming', value: stats.confirming, color: 'bg-green-100', textColor: 'text-green-600' }
-          ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              className={`${stat.color} border border-gray-200 rounded-2xl p-4`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <p className="text-gray-600 text-sm">{stat.label}</p>
-              <p className={`text-2xl font-bold ${stat.textColor}`}>{stat.value}</p>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-4 gap-3">
+          <motion.div
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+            <p className="text-xs text-gray-600">Total</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+          >
+            <Clock size={24} className="text-orange-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.incoming}</p>
+            <p className="text-xs text-gray-600">Incoming</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Package size={24} className="text-purple-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.withProxy}</p>
+            <p className="text-xs text-gray-600">With Proxy</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <CheckCircle size={24} className="text-green-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
+            <p className="text-xs text-gray-600">Completed</p>
+          </motion.div>
         </div>
 
-        {/* Search & Filters */}
+        {/* Filters */}
         <motion.div
-          className="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-4"
+          className="flex overflow-x-auto gap-2 pb-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <div className="flex space-x-3">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search items..."
-                className="pl-10 bg-white border-gray-300 text-prawnbox-primary"
-              />
-            </div>
+          {[
+            { key: 'all', label: 'All' },
+            { key: 'incoming', label: 'Incoming' },
+            { key: 'with-proxy', label: 'With Proxy' },
+            { key: 'confirming', label: 'Confirming' },
+            { key: 'completed', label: 'Completed' }
+          ].map((filter) => (
             <motion.button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`px-4 py-2 rounded-xl font-medium flex items-center space-x-2 transition-colors ${showFilters ? 'bg-[#2f2f2f] text-white' : 'bg-white text-prawnbox-primary border border-gray-300'
-                }`}
+              key={filter.key}
+              onClick={() => setFilterStatus(filter.key as FilterStatus)}
+              className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
+                filterStatus === filter.key
+                  ? 'bg-[#f44708] text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Filter size={18} />
-              <span>Filter</span>
+              {filter.label}
             </motion.button>
-          </div>
-
-          {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              className="pt-4 border-t border-gray-200"
-            >
-              <label className="block text-gray-600 text-sm mb-2">Status</label>
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
-                className="w-full p-2 bg-white border border-gray-300 rounded-xl text-prawnbox-primary"
-              >
-                <option value="all">All Items</option>
-                <option value="incoming">Incoming</option>
-                <option value="with-proxy">With Proxy</option>
-                <option value="confirming">Confirming</option>
-                <option value="completed">Completed</option>
-              </select>
-            </motion.div>
-          )}
+          ))}
         </motion.div>
 
         {/* Items List */}
@@ -231,8 +227,8 @@ export function ReceivedDeliveriesScreen({
             transition={{ delay: 0.3 }}
           >
             <Package size={48} className="text-gray-400 mx-auto mb-4" />
-            <h3 className="text-prawnbox-primary font-semibold mb-2">No Items Found</h3>
-            <p className="text-gray-500 text-sm">
+            <h3 className="text-gray-900 font-semibold mb-2">No Items Found</h3>
+            <p className="text-gray-600 text-sm">
               {searchQuery || filterStatus !== 'all'
                 ? 'Try adjusting your search or filters'
                 : 'Your received deliveries will appear here'}
@@ -247,7 +243,7 @@ export function ReceivedDeliveriesScreen({
               return (
                 <motion.div
                   key={job.id}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-prawnbox-accent hover:shadow-md transition-all cursor-pointer"
+                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#f44708] hover:shadow-md transition-all cursor-pointer"
                   onClick={() => handleJobAction(job)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -255,7 +251,7 @@ export function ReceivedDeliveriesScreen({
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-prawnbox-primary font-semibold">{job.title}</h3>
+                    <h3 className="text-gray-900 font-semibold">{job.title}</h3>
                     <Badge className={`${statusInfo.bg} ${statusInfo.color} border-0`}>
                       <StatusIcon size={14} className="mr-1" />
                       {statusInfo.label}
@@ -264,29 +260,29 @@ export function ReceivedDeliveriesScreen({
 
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="flex items-center space-x-2 text-sm">
-                      <User size={16} className="text-purple-500" />
-                      <span className="text-gray-500">From:</span>
-                      <span className="text-prawnbox-primary">{job.senderName}</span>
+                      <User size={16} className="text-purple-600" />
+                      <span className="text-gray-600">From:</span>
+                      <span className="text-gray-900">{job.senderName}</span>
                     </div>
                     <div className="flex items-center space-x-2 text-sm">
-                      <MapPin size={16} className="text-blue-500" />
-                      <span className="text-gray-500">To:</span>
-                      <span className="text-prawnbox-primary truncate">{job.dropoffLocation}</span>
+                      <MapPin size={16} className="text-[#f44708]" />
+                      <span className="text-gray-600">To:</span>
+                      <span className="text-gray-900 truncate">{job.dropoffLocation}</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-3 mb-4">
                     <div>
-                      <p className="text-xs text-gray-500">Value</p>
-                      <p className="text-prawnbox-primary font-medium">{formatAmount(job.acceptedBidAmount || job.value)}</p>
+                      <p className="text-xs text-gray-600">Value</p>
+                      <p className="text-gray-900 font-medium">{formatAmount(job.acceptedBidAmount || job.value)}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Size</p>
-                      <p className="text-prawnbox-primary font-medium">{job.itemSize}</p>
+                      <p className="text-xs text-gray-600">Size</p>
+                      <p className="text-gray-900 font-medium">{job.itemSize}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Pal</p>
-                      <p className="text-prawnbox-primary font-medium truncate">{job.selectedPalName || 'N/A'}</p>
+                      <p className="text-xs text-gray-600">Pal</p>
+                      <p className="text-gray-900 font-medium truncate">{job.selectedPalName || 'N/A'}</p>
                     </div>
                   </div>
 
@@ -296,7 +292,7 @@ export function ReceivedDeliveriesScreen({
                         e.stopPropagation();
                         handleJobAction(job);
                       }}
-                      className="px-4 py-2 bg-[#2f2f2f] hover:bg-[#404040] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                      className="px-4 py-2 bg-[#f44708] hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -311,7 +307,7 @@ export function ReceivedDeliveriesScreen({
                             e.stopPropagation();
                             onOpenChat(job);
                           }}
-                          className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-prawnbox-primary rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                          className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-900 rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
@@ -325,7 +321,7 @@ export function ReceivedDeliveriesScreen({
                               e.stopPropagation();
                               onCall(job.selectedPalPhone!);
                             }}
-                            className="px-4 py-2 bg-green-100 hover:bg-green-200 border border-green-300 text-green-700 rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                            className="px-4 py-2 bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
@@ -343,7 +339,7 @@ export function ReceivedDeliveriesScreen({
                           onJobSelect(job);
                           onNavigate('ratings');
                         }}
-                        className="px-4 py-2 bg-yellow-100 hover:bg-yellow-200 border border-yellow-300 text-yellow-700 rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                        className="px-4 py-2 bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 text-yellow-700 rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -359,7 +355,7 @@ export function ReceivedDeliveriesScreen({
         )}
 
         {filteredJobs.length > 0 && (
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-gray-600">
             Showing {filteredJobs.length} of {receivedJobs.length} items
           </p>
         )}

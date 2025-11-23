@@ -7,35 +7,28 @@
 
 'use client'
 
+import { Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
 import { ChatListScreen } from '@/components/ChatListScreen'
+import { PageLoader } from '@/components/LoadingStates'
 import type { ChatThread } from '@/types/index'
 
-export default function ChatPage() {
+function ChatContent() {
   const router = useRouter()
-
-  const {
-    user,
-    chatThreads,
-    setSelectedChatThread,
-  } = useAppStore()
+  const { chatThreads, setSelectedChatThread } = useAppStore()
 
   const handleThreadSelect = (thread: ChatThread) => {
-    setSelectedChatThread(thread);
-    router.push(`/chat/${thread.id}`);
-  };
-
-  const handleNavigate = (screen: string) => {
-    router.push(`/${screen}`);
-  };
+    setSelectedChatThread(thread)
+    router.push(`/chat/${thread.id}`)
+  }
 
   const handleBack = () => {
-    router.push('/dashboard');
-  };
+    router.push('/dashboard')
+  }
 
   if (!chatThreads) {
-    return <div>Loading...</div>;
+    return <PageLoader message="Loading chats..." />
   }
 
   return (
@@ -44,5 +37,13 @@ export default function ChatPage() {
       onThreadSelect={handleThreadSelect}
       onBack={handleBack}
     />
+  )
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<PageLoader message="Loading chats..." />}>
+      <ChatContent />
+    </Suspense>
   )
 }

@@ -9,22 +9,149 @@
 
 'use client'
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
-import type { DeliveryJob } from '@/types/index'
+import { apiService } from '@/utils/apiService'
+import type { DeliveryJob, DeliveryStatus, ItemSize, VehicleType, Bid } from '@/types/index'
+
+// Use the Bid type from types/index.ts
+
+interface PackageResponse {
+  _id: string;
+  id?: string;
+  title: string;
+  description?: string;
+  sender?: {
+    senderId?: string | { _id: string };
+    name?: string;
+    phone?: string;
+    formattedAddress?: string;
+    address?: string;
+  };
+  receiver?: {
+    receiverId?: string;
+    name?: string;
+    phone?: string;
+    formattedAddress?: string;
+  };
+  items?: Array<{
+    size?: string;
+    category?: string;
+    weight?: string | number;
+    images?: Array<{ url: string }>;
+  }>;
+  price?: number;
+  value?: number;
+  status?: string;
+  pickupDate?: string;
+  pickupTime?: string;
+  notes?: string;
+  escrowAmount?: number;
+  bids?: Bid[];
+  pal?: {
+    palId?: string;
+    name?: string;
+    phone?: string;
+  };
+  proxy?: {
+    proxyId?: string;
+    name?: string;
+    phone?: string;
+  };
+  createdAt?: string;
+  orderNumber?: string;
+  // Add any other properties that might be present in the API response
+  pickupLocation?: string;
+  dropoffLocation?: string;
+  category?: string;
+  weight?: string;
+  itemSize?: string;
+}
+import { toast } from 'sonner'
 
 export default function MyDeliveriesPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const filter = searchParams.get('filter') // 'active', 'completed', etc.
+  const [isLoading, setIsLoading] = useState(true)
 
   const {
     user,
     activeRole,
     deliveryJobs,
+    setDeliveryJobs,
     setSelectedJob,
   } = useAppStore()
+
+  // Fetch user's deliveries from backend
+  useEffect(() => {
+    const fetchMyDeliveries = async () => {
+      if (!user) {
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        setIsLoading(true)
+        const response = await apiService.getAllPackages()
+
+        if (response.success && response.data) {
+          // Map backend packages to frontend DeliveryJob format
+          const jobs = response.data.map((pkg: PackageResponse): DeliveryJob => ({
+            id: pkg._id || pkg.id || '',
+            title: pkg.title,
+            description: pkg.description || '',
+            pickupLocation: pkg.sender?.formattedAddress || pkg.pickupLocation || '',
+            dropoffLocation: pkg.receiver?.formattedAddress || pkg.dropoffLocation || '',
+            itemSize: (pkg.items?.[0]?.size as ItemSize) || 'Medium',
+            category: pkg.items?.[0]?.category || pkg.category || 'general',
+            weight: pkg.items?.[0]?.weight?.toString() || pkg.weight || '1kg',
+            value: pkg.price || pkg.value || 0,
+            receiverName: pkg.receiver?.name || '',
+            receiverPhone: pkg.receiver?.phone || '',
+            receiverId: pkg.receiver?.receiverId || '',
+            senderId: typeof pkg.sender?.senderId === 'object' 
+              ? pkg.sender.senderId._id 
+              : (pkg.sender?.senderId || ''),
+            senderName: pkg.sender?.name || '',
+            senderPhone: pkg.sender?.phone || '',
+            selectedPalId: pkg.pal?.palId,
+            selectedPalName: pkg.pal?.name,
+            selectedPalPhone: pkg.pal?.phone,
+            proxyId: pkg.proxy?.proxyId,
+            proxyName: pkg.proxy?.name,
+            status: (pkg.status as DeliveryStatus) || 'pending',
+            pickupDate: pkg.pickupDate || new Date().toISOString(),
+            pickupTime: pkg.pickupTime || '',
+            notes: pkg.notes || '',
+            images: pkg.items?.[0]?.images?.map((img: { url: string }) => img.url) || [],
+            escrowAmount: pkg.escrowAmount || 0,
+            bids: (pkg.bids?.map(bid => ({
+              ...bid,
+              vehicleType: bid.vehicleType || 'car',
+              canEdit: bid.canEdit || false,
+              isAccepted: bid.isAccepted || false,
+              placedAt: bid.placedAt || new Date().toISOString(),
+              createdAt: bid.createdAt || new Date().toISOString()
+            })) || []) as import('@/types/index').Bid[],
+            distance: 0,
+            createdAt: pkg.createdAt || new Date().toISOString(),
+            orderNumber: pkg.orderNumber || `ORD-${(pkg._id || '').slice(0, 8).toUpperCase()}`,
+          }))
+
+          setDeliveryJobs(jobs)
+        }
+      } catch (error) {
+        console.error('Error fetching deliveries:', error)
+        toast.error('Failed to load your deliveries. Please try again.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchMyDeliveries()
+  }, [user, setDeliveryJobs])
 
   // Filter deliveries based on user role and filter param
   const myDeliveries = useMemo(() => {
@@ -35,9 +162,11 @@ export default function MyDeliveriesPage() {
         case 'sender':
           return job.senderId === user.id
         case 'pal':
-          return job.senderId === user.id
+          return job.selectedPalId === user.id
         case 'receiver':
           return job.receiverId === user.id
+        case 'proxy':
+          return job.proxyId === user.id
         default:
           return false
       }
@@ -65,6 +194,19 @@ export default function MyDeliveriesPage() {
 
   const handleBack = () => {
     router.back()
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your deliveries...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const getStatusBadgeColor = (status: string) => {

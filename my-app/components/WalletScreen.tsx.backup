@@ -113,44 +113,49 @@ export function WalletScreen({
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-gray-600">Please log in to view your wallet</p>
+      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex items-center justify-center">
+        <p className="text-gray-300">Please log in to view your wallet</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+      </div>
 
       {/* Header */}
-      <motion.div
-        className="bg-white border-b border-gray-200 relative z-10 sticky top-0 shadow-sm"
+      <motion.div 
+        className="bg-[#2f2f2f] border-b border-white/10 relative z-10 sticky top-0"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-4">
-            <motion.button
+            <motion.button 
               onClick={onBack}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowLeft size={20} className="text-gray-700" />
+              <ArrowLeft size={20} className="text-white" />
             </motion.button>
             <div>
-              <h1 className="text-xl text-gray-900">Wallet</h1>
-              <p className="text-sm text-gray-500">Manage your funds</p>
+              <h1 className="text-xl text-white">Wallet</h1>
+              <p className="text-sm text-gray-400">Manage your funds</p>
             </div>
           </div>
-
+          
           <motion.button
             onClick={onManagePaymentMethods}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            className="p-2 hover:bg-white/10 rounded-xl transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <CreditCard size={20} className="text-gray-600" />
+            <CreditCard size={20} className="text-gray-400" />
           </motion.button>
         </div>
       </motion.div>
@@ -203,7 +208,7 @@ export function WalletScreen({
             <div className="grid grid-cols-2 gap-3">
               <motion.button
                 onClick={onAddFunds}
-                className="bg-white hover:bg-white/90 text-[#f44708] rounded-xl py-3 px-4 font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
+                className="bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl py-3 px-4 font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -225,19 +230,19 @@ export function WalletScreen({
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <motion.div
-            className="bg-gray-50 border border-gray-200 rounded-xl p-4"
+          <motion.div 
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                <ArrowDownLeft size={18} className="text-green-600" />
+              <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                <ArrowDownLeft size={18} className="text-green-400" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Earned</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-400">Total Earned</p>
+                <p className="text-lg font-semibold text-white">
                   {formatAmount(mockTransactions
                     .filter(t => t.type === 'credit' && t.status === 'completed')
                     .reduce((sum, t) => sum + t.amount, 0)
@@ -247,19 +252,19 @@ export function WalletScreen({
             </div>
           </motion.div>
 
-          <motion.div
-            className="bg-gray-50 border border-gray-200 rounded-xl p-4"
+          <motion.div 
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                <ArrowUpRight size={18} className="text-blue-600" />
+              <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                <ArrowUpRight size={18} className="text-blue-400" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Spent</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-400">Total Spent</p>
+                <p className="text-lg font-semibold text-white">
                   {formatAmount(mockTransactions
                     .filter(t => t.type === 'debit' && t.status === 'completed')
                     .reduce((sum, t) => sum + t.amount, 0)
@@ -271,25 +276,25 @@ export function WalletScreen({
         </div>
 
         {/* Recent Transactions */}
-        <motion.div
+        <motion.div 
           className="space-y-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Transactions</h2>
+            <h2 className="text-lg font-semibold text-white">Recent Transactions</h2>
             <button className="text-sm text-[#f44708] hover:text-[#ff5722] transition-colors">
               View All
             </button>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl overflow-hidden">
             {mockTransactions.slice(0, 5).map((transaction, index) => (
               <motion.div
                 key={transaction.id}
-                className={`p-4 hover:bg-gray-50 transition-colors ${
-                  index !== mockTransactions.slice(0, 5).length - 1 ? 'border-b border-gray-200' : ''
+                className={`p-4 hover:bg-white/5 transition-colors ${
+                  index !== mockTransactions.slice(0, 5).length - 1 ? 'border-b border-white/10' : ''
                 }`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -298,20 +303,20 @@ export function WalletScreen({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
+                      transaction.type === 'credit' ? 'bg-green-500/20' : 'bg-red-500/20'
                     }`}>
                       {getTransactionIcon(transaction.type)}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 text-sm">{transaction.description}</p>
+                      <p className="font-medium text-white text-sm">{transaction.description}</p>
                       <div className="flex items-center space-x-2 mt-1">
-                        <p className="text-xs text-gray-500">{formatDate(transaction.date)}</p>
+                        <p className="text-xs text-gray-400">{formatDate(transaction.date)}</p>
                         <Badge className={`text-xs px-2 py-0.5 rounded-lg border-0 ${
-                          transaction.status === 'completed'
-                            ? 'bg-green-100 text-green-700'
+                          transaction.status === 'completed' 
+                            ? 'bg-green-500/20 text-green-400' 
                             : transaction.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-gray-100 text-gray-700'
+                            ? 'bg-yellow-500/20 text-yellow-400'
+                            : 'bg-gray-500/20 text-gray-400'
                         }`}>
                           {transaction.status}
                         </Badge>
@@ -320,7 +325,7 @@ export function WalletScreen({
                   </div>
                   <div className="text-right">
                     <p className={`font-semibold ${
-                      transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
+                      transaction.type === 'credit' ? 'text-green-400' : 'text-red-400'
                     }`}>
                       {transaction.type === 'credit' ? '+' : '-'}{formatAmount(transaction.amount)}
                     </p>
@@ -333,42 +338,42 @@ export function WalletScreen({
 
         {/* Role-specific insights */}
         {userRole === 'pal' && (
-          <motion.div
-            className="bg-blue-50 border border-blue-200 rounded-xl p-4"
+          <motion.div 
+            className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-sm border border-blue-500/30 rounded-xl p-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
             <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                <TrendingUp size={18} className="text-blue-600" />
+              <div className="w-10 h-10 rounded-lg bg-blue-500/30 flex items-center justify-center">
+                <TrendingUp size={18} className="text-blue-400" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-1">Pal Earnings Insight</h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <h3 className="font-semibold text-white mb-1">Pal Earnings Insight</h3>
+                <p className="text-sm text-gray-300 mb-2">
                   You&apos;ve earned {formatAmount(getTotalThisMonth())} this month from {mockTransactions.filter(t => t.type === 'credit' && t.status === 'completed').length} deliveries.
                 </p>
-                <p className="text-xs text-blue-600">Keep up the great work!</p>
+                <p className="text-xs text-blue-400">Keep up the great work! 🚀</p>
               </div>
             </div>
           </motion.div>
         )}
 
         {/* Payment Methods Quick Access */}
-        <motion.div
-          className="bg-gray-50 border border-gray-200 rounded-xl p-4"
+        <motion.div 
+          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                <CreditCard size={18} className="text-gray-600" />
+              <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+                <CreditCard size={18} className="text-gray-400" />
               </div>
               <div>
-                <p className="font-medium text-gray-900">Payment Methods</p>
-                <p className="text-sm text-gray-600">Manage cards and bank accounts</p>
+                <p className="font-medium text-white">Payment Methods</p>
+                <p className="text-sm text-gray-400">Manage cards and bank accounts</p>
               </div>
             </div>
             <motion.button

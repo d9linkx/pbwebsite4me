@@ -119,13 +119,29 @@ export default function DashboardPage() {
     }
   }
 
-  // Get user-specific jobs
+  // Get user-specific jobs based on active role
+  // Filter packages by user's relationship to the package
   const userJobs = user
-    ? deliveryJobs.filter(
-        (job) =>
-          job.senderId === user.id ||
-          job.receiverId === user.id
-      )
+    ? deliveryJobs.filter((job) => {
+        switch (activeRole) {
+          case 'sender':
+            return job.senderId === user.id
+          case 'pal':
+            return job.selectedPalId === user.id
+          case 'receiver':
+            return job.receiverId === user.id
+          case 'proxy':
+            return job.proxyId === user.id
+          default:
+            // If no role selected, show all related jobs
+            return (
+              job.senderId === user.id ||
+              job.selectedPalId === user.id ||
+              job.receiverId === user.id ||
+              job.proxyId === user.id
+            )
+        }
+      })
     : []
 
   return (

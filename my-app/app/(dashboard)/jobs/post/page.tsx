@@ -162,8 +162,8 @@ export default function PostDeliveryPage() {
         // Show success message
         toast.success('Delivery posted successfully!')
 
-        // Navigate to sent deliveries page
-        router.push('/jobs/sent')
+        // Navigate to processing page to show order confirmation and real-time bid updates
+        router.push(`/jobs/${newJob.id}/processing`)
       } else {
         throw new Error(response.message || 'Failed to create package')
       }

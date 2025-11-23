@@ -10,7 +10,7 @@ interface BidsScreenProps {
   job: DeliveryJob | null;
   onBack: () => void;
   onBidSelect: (bid: Bid, job: DeliveryJob) => void;
-  onAcceptBid: () => void;
+  onAcceptBid: (bid: Bid) => void | Promise<void>;
   onViewProfile: (bid: Bid) => void;
   onOpenChat: (job: DeliveryJob) => void;
 }
@@ -41,7 +41,7 @@ export function BidsScreen({ job, onBack, onBidSelect, onAcceptBid, onViewProfil
 
   const handleAcceptBid = (bid: Bid) => {
     onBidSelect(bid, job);
-    onAcceptBid();
+    onAcceptBid(bid);
   };
 
   const handleViewProfile = (bid: Bid) => {

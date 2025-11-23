@@ -20,7 +20,11 @@ import { MobileMenu } from '@/components/dashboard/MobileMenu'
 import { DesktopSidebar } from '@/components/dashboard/DesktopSidebar'
 import { useAppStore } from '@/stores/appStore'
 import { useAuth } from '@/utils/apiHooks'
-import type { UserRole, Screen } from '@/types/index'
+import { socketService } from '@/utils/socket'
+import { useConnectionStatus, useSocketEvent } from '@/utils/useSocket'
+import { useOfflineBanner } from '@/utils/useOffline'
+import type { UserRole, Screen, Notification as NotificationType, DeliveryJob } from '@/types/index'
+import { toast } from 'sonner'
 
 export default function DashboardLayout({
   children,
@@ -40,9 +44,18 @@ export default function DashboardLayout({
     setUser,
     setActiveRole,
     notifications,
+    setNotifications,
+    deliveryJobs,
+    updateDeliveryJob,
     isMobileMenuOpen,
     setMobileMenuOpen,
   } = useAppStore()
+
+  // Connection status
+  const { showStatus, statusMessage, statusColor } = useConnectionStatus()
+
+  // Offline detection
+  const { showBanner: showOfflineBanner, isOffline, wasOffline } = useOfflineBanner()
 
   // Sync auth user with global state
   useEffect(() => {
@@ -50,6 +63,102 @@ export default function DashboardLayout({
       setUser(authUser)
     }
   }, [authUser, setUser])
+
+  // Initialize WebSocket connection when user is authenticated
+  useEffect(() => {
+    if (authUser) {
+      console.log('🔌 Initializing WebSocket connection for user:', authUser.id)
+
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+
+      socketService.connect(token || undefined)
+        .then(() => {
+          console.log('✅ WebSocket connected successfully')
+          toast.success('Connected to server', { duration: 2000 })
+        })
+        .catch((error) => {
+          console.error('❌ Failed to connect WebSocket:', error)
+          toast.error('Failed to connect to server')
+        })
+
+      // Cleanup on unmount or user logout
+      return () => {
+        console.log('🔌 Cleaning up WebSocket connection')
+        socketService.disconnect()
+      }
+    }
+  }, [authUser])
+
+  // Listen for real-time notifications
+  useSocketEvent('notification:new', (notification: NotificationType) => {
+    console.log('🔔 New notification received:', notification)
+
+    // Add notification to store
+    setNotifications([notification, ...notifications])
+
+    // Show toast notification
+    toast.info(notification.message, {
+      duration: 5000,
+      action: notification.actionUrl ? {
+        label: 'View',
+        onClick: () => router.push(notification.actionUrl!)
+      } : undefined
+    })
+  })
+
+  // Listen for job status updates
+  useSocketEvent('job:status-update', (data: { jobId: string; status: string; updatedAt: string }) => {
+    console.log('📦 Job status update:', data)
+
+    // Update job in store
+    updateDeliveryJob(data.jobId, {
+      status: data.status as any,
+      updatedAt: data.updatedAt
+    })
+
+    // Show toast notification
+    const job = deliveryJobs.find(j => j.id === data.jobId)
+    if (job) {
+      toast.info(`Job "${job.title}" status updated to ${data.status}`, {
+        duration: 4000,
+        action: {
+          label: 'View',
+          onClick: () => router.push(`/jobs/${data.jobId}`)
+        }
+      })
+    }
+  })
+
+  // Listen for new bids
+  useSocketEvent('job:new-bid', (data: { jobId: string; bid: any }) => {
+    console.log('💰 New bid received:', data)
+
+    // Show toast notification to sender
+    const job = deliveryJobs.find(j => j.id === data.jobId)
+    if (job && job.senderId === user?.id) {
+      toast.success('New bid received on your delivery', {
+        duration: 4000,
+        action: {
+          label: 'View Bids',
+          onClick: () => router.push(`/jobs/${data.jobId}/bids`)
+        }
+      })
+    }
+  })
+
+  // Listen for bid acceptance
+  useSocketEvent('job:bid-accepted', (data: { jobId: string; bidId: string }) => {
+    console.log('✅ Bid accepted:', data)
+
+    // Show toast notification
+    toast.success('Your bid was accepted!', {
+      duration: 5000,
+      action: {
+        label: 'View Job',
+        onClick: () => router.push(`/jobs/${data.jobId}`)
+      }
+    })
+  })
 
   // Auth guard - redirect to auth if not logged in
   useEffect(() => {
@@ -195,6 +304,26 @@ export default function DashboardLayout({
         currentScreen={pathnameToScreen()}
         onAlertsClick={handleAlertsClick}
       />
+
+      {/* Connection Status Indicator - Below header */}
+      {showStatus && (
+        <div className={`sticky top-0 left-0 right-0 z-30 ${statusColor} text-white py-2 px-4 text-center text-sm font-medium transition-all duration-300 shadow-md`}>
+          <div className="flex items-center justify-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${statusColor === 'bg-yellow-500' || statusColor === 'bg-red-500' ? 'animate-pulse' : ''} bg-white`}></div>
+            {statusMessage}
+          </div>
+        </div>
+      )}
+
+      {/* Offline Banner - Below connection status */}
+      {showOfflineBanner && (
+        <div className={`sticky top-0 left-0 right-0 z-30 ${isOffline ? 'bg-gray-800' : 'bg-green-600'} text-white py-2 px-4 text-center text-sm font-medium transition-all duration-300 shadow-md`}>
+          <div className="flex items-center justify-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${isOffline ? 'bg-gray-400' : 'bg-white'}`}></div>
+            {isOffline ? 'You are offline. Some features may be unavailable.' : 'Back online!'}
+          </div>
+        </div>
+      )}
 
       {/* Main Content Area with Sidebar - Below Header */}
       <div className="flex-1 flex overflow-hidden">

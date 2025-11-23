@@ -403,6 +403,7 @@ export interface Bid {
   placedAt: string;
   canEdit: boolean;
   isAccepted?: boolean;
+  createdAt: string;
 }
 
 export interface ProxyItem {

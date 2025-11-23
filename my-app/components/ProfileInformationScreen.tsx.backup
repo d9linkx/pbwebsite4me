@@ -70,9 +70,9 @@ export function ProfileInformationScreen({
   // Show loading state while fetching user data
   if (apiUserLoading) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#f44708] border-t-transparent"></div>
-        <p className="text-gray-900 mt-4">Loading profile...</p>
+        <p className="text-white mt-4">Loading profile...</p>
       </div>
     );
   }
@@ -80,12 +80,12 @@ export function ProfileInformationScreen({
   // Show error state if user data fails to load
   if (apiUserError || !isValidUser) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <div className="text-gray-900 text-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
+        <div className="text-white text-center">
           <p className="mb-4">Failed to load profile information</p>
           <button
             onClick={() => refetch()}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-gray-900 px-4 py-2 rounded-xl"
+            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl"
           >
             Try Again
           </button>
@@ -226,10 +226,16 @@ export function ProfileInformationScreen({
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+      </div>
+
       {/* Header */}
       <motion.div
-        className="bg-white border-b border-gray-200 p-6 sticky top-0 z-10 shadow-sm"
+        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -237,18 +243,18 @@ export function ProfileInformationScreen({
           <div className="flex items-center space-x-4">
             <motion.button
               onClick={onBack}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowLeft size={24} className="text-gray-700" />
+              <ArrowLeft size={24} className="text-white" />
             </motion.button>
-            <h1 className="text-xl text-gray-700">Profile Information</h1>
+            <h1 className="text-xl text-white">Profile Information</h1>
           </div>
           {!isEditing && (
             <motion.button
               onClick={() => setIsEditing(true)}
-              className="bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-xl px-4 py-2 transition-all duration-300"
+              className="bg-white/10 border border-white/20 text-white hover:bg-white/20 rounded-xl px-4 py-2 transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -266,13 +272,13 @@ export function ProfileInformationScreen({
         transition={{ delay: 0.1 }}
       >
         <div className="relative inline-block">
-          <Avatar className="w-24 h-24 mx-auto border-4 border-gray-200">
+          <Avatar className="w-24 h-24 mx-auto border-4 border-white/20">
             {previewPhoto ? (
               <img src={previewPhoto} alt="Profile Preview" className="w-full h-full object-cover rounded-full" />
             ) : currentUser?.profileImage ? (
               <img src={currentUser.profileImage} alt={currentUser?.fullName || 'Profile'} className="w-full h-full object-cover rounded-full" />
             ) : (
-              <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-gray-900 text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white text-2xl">
                 {currentUser?.fullName ? currentUser.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
               </AvatarFallback>
             )}
@@ -282,7 +288,7 @@ export function ProfileInformationScreen({
               <motion.button
                 onClick={handlePhotoUpload}
                 disabled={photoVerificationStatus === 'uploading' || photoVerificationStatus === 'verifying'}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-[#f44708] text-gray-900 rounded-full flex items-center justify-center shadow-sm hover:bg-[#ff5722] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 w-10 h-10 bg-[#f44708] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#ff5722] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -310,24 +316,24 @@ export function ProfileInformationScreen({
               animate={{ scale: 1 }}
             >
               {photoVerificationStatus === 'success' && (
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
-                  <CheckCircle size={16} className="text-gray-900" />
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                  <CheckCircle size={16} className="text-white" />
                 </div>
               )}
               {photoVerificationStatus === 'failed' && (
-                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-sm">
-                  <XCircle size={16} className="text-gray-900" />
+                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                  <XCircle size={16} className="text-white" />
                 </div>
               )}
               {(photoVerificationStatus === 'uploading' || photoVerificationStatus === 'verifying') && (
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-sm">
-                  <Loader2 size={14} className="text-gray-900 animate-spin" />
+                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                  <Loader2 size={14} className="text-white animate-spin" />
                 </div>
               )}
             </motion.div>
           )}
         </div>
-        <p className="text-gray-500 text-sm mt-3">
+        <p className="text-gray-400 text-sm mt-3">
           {isEditing ? 'Tap to change photo' : 'Profile Photo'}
         </p>
 
@@ -366,71 +372,71 @@ export function ProfileInformationScreen({
         <div className="space-y-4">
           {/* Personal Information */}
           <motion.div
-            className="bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-2xl p-6"
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h3 className="text-gray-900 mb-4 flex items-center font-semibold">
+            <h3 className="text-white mb-4 flex items-center font-semibold">
               <User size={20} className="mr-2 text-[#f44708]" />
               Personal Information
             </h3>
 
             <div className="space-y-4">
               <div>
-                <Label htmlFor="firstName" className="text-gray-600">First Name</Label>
+                <Label htmlFor="firstName" className="text-gray-300">First Name</Label>
                 <Input
                   id="firstName"
                   value={formData.firstName}
                   onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
-                  className="mt-1 rounded-xl h-12 bg-white/5 border-gray-200 text-gray-900 placeholder:text-gray-500 disabled:opacity-50"
+                  className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 disabled:opacity-50"
                   disabled={!isEditing}
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="lastName" className="text-gray-600">Last Name</Label>
+                <Label htmlFor="lastName" className="text-gray-300">Last Name</Label>
                 <Input
                   id="lastName"
                   value={formData.lastName}
                   onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
-                  className="mt-1 rounded-xl h-12 bg-white/5 border-gray-200 text-gray-900 placeholder:text-gray-500 disabled:opacity-50"
+                  className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 disabled:opacity-50"
                   disabled={!isEditing}
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="userName" className="text-gray-600">Username</Label>
+                <Label htmlFor="userName" className="text-gray-300">Username</Label>
                 <Input
                   id="userName"
                   value={formData.userName}
                   onChange={(e) => setFormData(prev => ({ ...prev, userName: e.target.value }))}
-                  className="mt-1 rounded-xl h-12 bg-white/5 border-gray-200 text-gray-900 placeholder:text-gray-500 disabled:opacity-50"
+                  className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 disabled:opacity-50"
                   disabled={!isEditing}
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="email" className="text-gray-600">Email Address</Label>
+                <Label htmlFor="email" className="text-gray-300">Email Address</Label>
                 <div className="relative">
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    className="mt-1 rounded-xl h-12 bg-white/5 border-gray-200 text-gray-900 placeholder:text-gray-500 pl-10 disabled:opacity-50"
+                    className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 pl-10 disabled:opacity-50"
                     disabled={!isEditing}
                     required
                   />
-                  <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 mt-0.5" />
+                  <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 mt-0.5" />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="phone" className="text-gray-600">Phone Number</Label>
+                <Label htmlFor="phone" className="text-gray-300">Phone Number</Label>
                 <div className="relative">
                   <Input
                     id="phone"
@@ -438,10 +444,10 @@ export function ProfileInformationScreen({
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="+234 (XXX) XXX-XXXX"
-                    className="mt-1 rounded-xl h-12 bg-white/5 border-gray-200 text-gray-900 placeholder:text-gray-500 pl-10 disabled:opacity-50"
+                    className="mt-1 rounded-xl h-12 bg-white/5 border-white/20 text-white placeholder:text-gray-500 pl-10 disabled:opacity-50"
                     disabled={!isEditing}
                   />
-                  <Phone size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 mt-0.5" />
+                  <Phone size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 mt-0.5" />
                 </div>
               </div>
             </div>
@@ -449,27 +455,27 @@ export function ProfileInformationScreen({
 
           {/* Address Information */}
           <motion.div
-            className="bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-2xl p-6"
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <h3 className="text-gray-900 mb-4 flex items-center font-semibold">
+            <h3 className="text-white mb-4 flex items-center font-semibold">
               <MapPin size={20} className="mr-2 text-[#f44708]" />
               Address Information
             </h3>
 
             <div>
-              <Label htmlFor="address" className="text-gray-600">Home Address</Label>
+              <Label htmlFor="address" className="text-gray-300">Home Address</Label>
               <Textarea
                 id="address"
                 value={formData.address}
                 onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
                 placeholder="Street, City, State"
-                className="mt-1 rounded-xl bg-white/5 border-gray-200 text-gray-900 placeholder:text-gray-500 min-h-20 disabled:opacity-50"
+                className="mt-1 rounded-xl bg-white/5 border-white/20 text-white placeholder:text-gray-500 min-h-20 disabled:opacity-50"
                 disabled={!isEditing}
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-400 mt-2">
                 This helps Pals find you for deliveries and pickups
               </p>
             </div>
@@ -477,21 +483,21 @@ export function ProfileInformationScreen({
 
           {/* Account Stats */}
           <motion.div
-            className="bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-2xl p-6"
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <h3 className="text-gray-900 mb-4 font-semibold">Account Statistics</h3>
+            <h3 className="text-white mb-4 font-semibold">Account Statistics</h3>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/5 rounded-xl p-4 text-center">
                 <p className="text-3xl text-[#f44708] font-bold">{currentUser?.rating || 0}</p>
-                <p className="text-xs text-gray-500 mt-1">Rating</p>
+                <p className="text-xs text-gray-400 mt-1">Rating</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 text-center">
                 <p className="text-3xl text-[#f44708] font-bold">{currentUser?.totalDeliveries || 0}</p>
-                <p className="text-xs text-gray-500 mt-1">Deliveries</p>
+                <p className="text-xs text-gray-400 mt-1">Deliveries</p>
               </div>
             </div>
           </motion.div>
@@ -501,14 +507,14 @@ export function ProfileInformationScreen({
       {/* Action Buttons - Fixed at bottom */}
       {isEditing && (
         <motion.div
-          className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200 z-20"
+          className="fixed bottom-0 left-0 right-0 p-6 bg-[#2f2f2f] border-t border-white/10 z-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex space-x-3">
             <motion.button
               onClick={handleCancel}
-              className="flex-1 bg-gray-100 border border-gray-200 text-gray-900 hover:bg-gray-200 rounded-xl py-3 px-4 font-medium transition-all duration-300"
+              className="flex-1 bg-white/10 border border-white/20 text-white hover:bg-white/20 rounded-xl py-3 px-4 font-medium transition-all duration-300"
               disabled={updateLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -517,7 +523,7 @@ export function ProfileInformationScreen({
             </motion.button>
             <motion.button
               onClick={handleSave}
-              className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-gray-900 rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
+              className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
               disabled={updateLoading || !formData.firstName || !formData.lastName || !formData.email}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

@@ -103,31 +103,25 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
-        <div className="absolute bottom-0 -left-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
-      </div>
-
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+      <motion.div
+        className="bg-white border-b border-gray-200 p-6 sticky top-0 z-20 shadow-sm"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center space-x-4">
           <motion.button
             onClick={onBack}
-            className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <ArrowLeft size={20} className="text-white" />
+            <ArrowLeft size={20} className="text-gray-700" />
           </motion.button>
           <div>
-            <h1 className="text-lg font-semibold text-white">Help Center</h1>
-            <p className="text-sm text-gray-400">Find answers to common questions</p>
+            <h1 className="text-lg font-semibold text-gray-900">Help Center</h1>
+            <p className="text-sm text-gray-500">Find answers to common questions</p>
           </div>
         </div>
       </motion.div>
@@ -135,22 +129,22 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {/* Search Bar */}
-        <motion.div 
+        <motion.div
           className="relative"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for help..."
-            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-12"
+            className="pl-12 bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-[#f44708] h-12"
           />
         </motion.div>
 
         {/* Categories */}
-        <motion.div 
+        <motion.div
           className="flex overflow-x-auto gap-2 pb-2 -mx-6 px-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -163,7 +157,7 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 selectedCategory === category.id
                   ? 'bg-[#f44708] text-white'
-                  : 'bg-white/10 text-gray-400 hover:bg-white/20'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -182,35 +176,35 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
             filteredFAQs.map((faq, index) => (
               <motion.div
                 key={faq.id}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl overflow-hidden"
+                className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
                 <motion.button
                   onClick={() => setExpandedFAQ(expandedFAQ === faq.id ? null : faq.id)}
-                  className="w-full p-5 flex items-center justify-between hover:bg-white/5 transition-colors"
+                  className="w-full p-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                 >
-                  <span className="text-white font-medium text-left">{faq.question}</span>
+                  <span className="text-gray-900 font-medium text-left">{faq.question}</span>
                   <motion.div
                     animate={{ rotate: expandedFAQ === faq.id ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <ChevronDown size={20} className="text-gray-400" />
+                    <ChevronDown size={20} className="text-gray-600" />
                   </motion.div>
                 </motion.button>
 
                 <AnimatePresence>
                   {expandedFAQ === faq.id && (
                     <motion.div
-                      className="px-5 pb-5"
+                      className="px-5 pb-5 border-t border-gray-200"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-gray-600 text-sm leading-relaxed pt-4">
                         {faq.answer}
                       </p>
                     </motion.div>
@@ -224,25 +218,25 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <HelpCircle size={48} className="text-gray-500 mx-auto mb-4" />
-              <h3 className="text-white font-semibold mb-2">No results found</h3>
-              <p className="text-gray-400">Try a different search term or category</p>
+              <HelpCircle size={48} className="text-gray-400 mx-auto mb-4" />
+              <h3 className="text-gray-900 font-semibold mb-2">No results found</h3>
+              <p className="text-gray-600">Try a different search term or category</p>
             </motion.div>
           )}
         </div>
 
         {/* Contact Support */}
-        <motion.div 
-          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6"
+        <motion.div
+          className="bg-gray-50 border border-gray-200 rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h3 className="text-white font-semibold mb-4">Still need help?</h3>
+          <h3 className="text-gray-900 font-semibold mb-4">Still need help?</h3>
           <div className="grid grid-cols-1 gap-3">
             <motion.button
               onClick={onContactSupport}
-              className="flex items-center justify-between bg-[#f44708] hover:bg-[#ff5722] text-white p-4 rounded-xl"
+              className="flex items-center justify-between bg-[#f44708] hover:bg-[#ff5722] text-white p-4 rounded-xl shadow-sm"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -255,7 +249,7 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
 
             <motion.a
               href="tel:+2348012345678"
-              className="flex items-center justify-between bg-green-500 hover:bg-green-600 text-white p-4 rounded-xl"
+              className="flex items-center justify-between bg-green-500 hover:bg-green-600 text-white p-4 rounded-xl shadow-sm"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -268,7 +262,7 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
 
             <motion.a
               href="mailto:support@prawnbox.com"
-              className="flex items-center justify-between bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-xl"
+              className="flex items-center justify-between bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-xl shadow-sm"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
