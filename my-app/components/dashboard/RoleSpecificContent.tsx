@@ -25,9 +25,9 @@ export function RoleSpecificContent({
   onJobSelect
 }: RoleSpecificContentProps) {
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
       {/* Quick Actions Card */}
-      <div className="w-full">
+      <div className="w-full overflow-x-hidden">
         <QuickActionsCard
           activeRole={activeRole}
           stats={stats}

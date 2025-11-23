@@ -181,25 +181,27 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Full-Width Dashboard Header - Spans entire width */}
-      <DashboardHeader
-        activeRole={activeRole}
-        onRoleChange={handleRoleChange}
-        onNotificationsClick={handleNotificationsClick}
-        onMenuToggle={() => setMobileMenuOpen(!isMobileMenuOpen)}
-        onProfileClick={handleProfileClick}
-        onNavigate={handleNavigate}
-        isMenuOpen={isMobileMenuOpen}
-        notifications={notifications}
-        user={user || undefined}
-        currentScreen={pathnameToScreen()}
-        onAlertsClick={handleAlertsClick}
-      />
+      {/* Full-Width Dashboard Header - Fixed at top */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white">
+        <DashboardHeader
+          activeRole={activeRole}
+          onRoleChange={handleRoleChange}
+          onNotificationsClick={handleNotificationsClick}
+          onMenuToggle={() => setMobileMenuOpen(!isMobileMenuOpen)}
+          onProfileClick={handleProfileClick}
+          onNavigate={handleNavigate}
+          isMenuOpen={isMobileMenuOpen}
+          notifications={notifications}
+          user={user || undefined}
+          currentScreen={pathnameToScreen()}
+          onAlertsClick={handleAlertsClick}
+        />
+      </div>
 
-      {/* Main Content Area with Sidebar - Below Header */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Desktop Sidebar - Only visible on xl screens and above */}
-        <div className="hidden xl:block">
+      {/* Main Content Area with Sidebar - Below Header with padding for fixed header */}
+      <div className="flex-1 flex overflow-hidden pt-32 md:pt-28">
+        {/* Desktop Sidebar - Fixed position, only visible on xl screens and above */}
+        <div className="hidden xl:block xl:fixed xl:left-0 xl:top-24 xl:bottom-0 xl:w-64 xl:overflow-y-auto xl:border-r xl:border-gray-200 xl:bg-white">
           <DesktopSidebar
             user={user}
             activeRole={activeRole}
@@ -207,8 +209,8 @@ export default function DashboardLayout({
           />
         </div>
 
-        {/* Main Content - Takes remaining space */}
-        <div className="flex-1 overflow-y-auto bg-white">
+        {/* Main Content - Takes remaining space, with left margin for sidebar on xl screens */}
+        <div className="flex-1 xl:ml-64 overflow-y-auto overflow-x-hidden bg-white">
           {/* Mobile Menu - Only for screens below xl */}
           <MobileMenu
             isOpen={isMobileMenuOpen}
@@ -219,12 +221,12 @@ export default function DashboardLayout({
           />
 
           {/* Breadcrumb Navigation */}
-          <div className="xl:max-w-[896px] xl:mx-auto">
+          <div className="xl:max-w-[896px] xl:mx-auto px-4">
             <Breadcrumbs />
           </div>
 
           {/* Page Content - Centered on desktop with tablet max-width */}
-          <main className="pb-24 xl:pb-6">
+          <main className="pb-24 xl:pb-8 pt-4">
             <div className="xl:max-w-[896px] xl:mx-auto">
               {children}
             </div>
@@ -232,8 +234,8 @@ export default function DashboardLayout({
         </div>
       </div>
 
-      {/* Dashboard Footer - Only visible on mobile */}
-      <div className=" fixed bottom-0 left-0 right-0 z-40">
+      {/* Dashboard Footer - Fixed at bottom, only visible on mobile */}
+      <div className="fixed bottom-0 left-0 right-0 z-40">
         <DashboardFooter
           activeRole={activeRole}
           onActionClick={handleActionClick}

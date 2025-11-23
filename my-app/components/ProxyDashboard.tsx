@@ -87,14 +87,14 @@ export function ProxyDashboard({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ArrowLeft size={20} className="text-prawnbox-primary" />
+              <ArrowLeft size={20} className="text-gray-700" />
             </motion.button>
             <div>
-              <h1 className="text-lg font-semibold text-prawnbox-primary">Proxy Dashboard</h1>
-              <p className="text-sm text-gray-500">{user?.name || 'Proxy'}</p>
+              <h1 className="text-lg font-semibold text-gray-900">Proxy Dashboard</h1>
+              <p className="text-sm text-gray-600">{user?.name || 'Proxy'}</p>
             </div>
           </div>
-          <Badge className="bg-green-100 text-green-600 border-0 flex items-center space-x-1">
+          <Badge className="bg-green-50 text-green-700 border-green-200 flex items-center space-x-1">
             <Users size={14} />
             <span>{proxyItems.length} items</span>
           </Badge>
@@ -104,60 +104,48 @@ export function ProxyDashboard({
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-4 gap-3">
           <motion.div
-            className="bg-green-100 border border-gray-200 rounded-2xl p-5"
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">Total Earnings</span>
-              {/* <DollarSign size={20} className="text-green-600" /> */}
-            </div>
-            <p className="text-2xl font-bold text-green-600">
-              ₦{totalEarnings.toLocaleString()}
-            </p>
+            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.incoming + stats.stored}</p>
+            <p className="text-xs text-gray-600">Active</p>
           </motion.div>
 
           <motion.div
-            className="bg-blue-100 border border-gray-200 rounded-2xl p-5"
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">Active Items</span>
-              {/* <Package size={20} className="text-blue-600" /> */}
-            </div>
-            <p className="text-2xl font-bold text-blue-600">
-              {stats.incoming + stats.stored}
-            </p>
+            <Clock size={24} className="text-yellow-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.incoming}</p>
+            <p className="text-xs text-gray-600">Incoming</p>
           </motion.div>
 
           <motion.div
-            className="bg-yellow-100 border border-gray-200 rounded-2xl p-5"
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">Incoming</span>
-              {/* <Clock size={20} className="text-yellow-600" /> */}
-            </div>
-            <p className="text-2xl font-bold text-yellow-600">{stats.incoming}</p>
+            <CheckCircle size={24} className="text-green-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
+            <p className="text-xs text-gray-600">Completed</p>
           </motion.div>
 
           <motion.div
-            className="bg-emerald-100 border border-gray-200 rounded-2xl p-5"
+            className="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">Completed</span>
-              {/* <CheckCircle size={20} className="text-emerald-600" /> */}
-            </div>
-            <p className="text-2xl font-bold text-emerald-600">{stats.completed}</p>
+            <DollarSign size={24} className="text-green-600 mx-auto mb-2" />
+            <p className="text-2xl font-bold text-gray-900">₦{(totalEarnings / 1000).toFixed(1)}k</p>
+            <p className="text-xs text-gray-600">Earnings</p>
           </motion.div>
         </div>
 
@@ -173,8 +161,8 @@ export function ProxyDashboard({
               key={filter}
               onClick={() => setActiveFilter(filter as FilterType)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${activeFilter === filter
-                  ? 'bg-[#2f2f2f] text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-[#f44708] text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -190,7 +178,7 @@ export function ProxyDashboard({
             filteredItems.map((item, index) => (
               <motion.div
                 key={item.id}
-                className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-prawnbox-accent hover:shadow-md transition-all"
+                className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-[#f44708] hover:shadow-md transition-all"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -199,10 +187,10 @@ export function ProxyDashboard({
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-2">
-                      <h3 className="text-prawnbox-primary font-semibold">{item.title || 'Package'}</h3>
+                      <h3 className="text-gray-900 font-semibold">{item.title || 'Package'}</h3>
                       {getStatusBadge(item.status)}
                     </div>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-600">
                       ID: #{item.id.slice(0, 8)} • {item.size || 'Medium'}
                     </p>
                   </div>
@@ -211,23 +199,23 @@ export function ProxyDashboard({
                 {/* Item Details */}
                 <div className="space-y-3 mb-4">
                   <div className="flex items-center space-x-2 text-sm">
-                    <Users size={14} className="text-blue-500" />
-                    <span className="text-gray-500">Receiver:</span>
-                    <span className="text-prawnbox-primary">{item.receiverName}</span>
+                    <Users size={14} className="text-blue-600" />
+                    <span className="text-gray-600">Receiver:</span>
+                    <span className="text-gray-900">{item.receiverName}</span>
                   </div>
 
                   {item.status === 'stored' && item.storedDate && (
                     <div className="flex items-center space-x-2 text-sm">
-                      <Clock size={14} className="text-yellow-500" />
-                      <span className="text-gray-500">Stored:</span>
-                      <span className="text-prawnbox-primary">{getDaysStored(item.storedDate)} days</span>
+                      <Clock size={14} className="text-yellow-600" />
+                      <span className="text-gray-600">Stored:</span>
+                      <span className="text-gray-900">{getDaysStored(item.storedDate)} days</span>
                     </div>
                   )}
 
                   {item.storageEarnings && (
                     <div className="flex items-center space-x-2 text-sm">
-                      <DollarSign size={14} className="text-green-500" />
-                      <span className="text-gray-500">Earnings:</span>
+                      <DollarSign size={14} className="text-green-600" />
+                      <span className="text-gray-600">Earnings:</span>
                       <span className="text-green-600 font-semibold">
                         ₦{item.storageEarnings.toLocaleString()}
                       </span>
@@ -241,7 +229,7 @@ export function ProxyDashboard({
                     <>
                       <motion.button
                         onClick={() => onStartScan?.(item)}
-                        className="flex items-center justify-center space-x-2 bg-[#2f2f2f] hover:bg-[#404040] text-white py-2.5 rounded-xl transition-colors"
+                        className="flex items-center justify-center space-x-2 bg-[#f44708] hover:bg-[#d63a00] text-white py-2.5 rounded-xl transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -250,7 +238,7 @@ export function ProxyDashboard({
                       </motion.button>
                       <motion.button
                         onClick={() => onCall?.(item.receiverPhone || '')}
-                        className="flex items-center justify-center space-x-2 border-2 border-gray-300 text-prawnbox-primary py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
+                        className="flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-900 py-2.5 rounded-xl transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -264,7 +252,7 @@ export function ProxyDashboard({
                     <>
                       <motion.button
                         onClick={() => onNotifyReceiver?.(item)}
-                        className="flex items-center justify-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-xl transition-colors"
+                        className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -273,7 +261,7 @@ export function ProxyDashboard({
                       </motion.button>
                       <motion.button
                         onClick={() => onHandoverToReceiver?.(item)}
-                        className="flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-xl transition-colors"
+                        className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -284,8 +272,8 @@ export function ProxyDashboard({
                   )}
 
                   {item.status === 'completed' && (
-                    <div className="col-span-2 bg-green-100 border border-green-200 rounded-xl p-3 text-center">
-                      <p className="text-green-600 text-sm font-medium">
+                    <div className="col-span-2 bg-green-50 border border-green-200 rounded-xl p-3 text-center">
+                      <p className="text-green-700 text-sm font-medium">
                         ✓ Completed • Earned ₦{item.storageEarnings?.toLocaleString()}
                       </p>
                     </div>
@@ -300,8 +288,8 @@ export function ProxyDashboard({
               animate={{ opacity: 1 }}
             >
               <Package size={48} className="text-gray-400 mx-auto mb-4" />
-              <h3 className="text-prawnbox-primary font-semibold mb-2">No Items</h3>
-              <p className="text-gray-500">
+              <h3 className="text-gray-900 font-semibold mb-2">No Items</h3>
+              <p className="text-gray-600">
                 {activeFilter === 'all'
                   ? 'No proxy items yet'
                   : `No ${activeFilter} items`

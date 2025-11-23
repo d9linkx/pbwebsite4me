@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
       // Other
       'referral': '/referrals',
-      'proxy-dashboard': '/proxy',
+      'proxy-dashboard': '/jobs/proxy',
       'tape-distributor': '/tape-distributor',
       'notifications': '/notifications',
       'chat': '/chat',
@@ -107,7 +107,7 @@ export default function DashboardPage() {
       'settings': '/settings',
       'referral': '/referrals',
       'tape-distributor': '/tape-distributor',
-      'proxy-dashboard': '/proxy',
+      'proxy-dashboard': '/jobs/proxy',
     }
 
     const route = actionRoutes[action]
@@ -145,7 +145,7 @@ export default function DashboardPage() {
     : []
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto overflow-x-hidden">
       <DashboardScreen
         user={user}
         activeRole={activeRole}

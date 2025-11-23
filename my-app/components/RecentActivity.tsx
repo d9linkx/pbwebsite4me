@@ -72,7 +72,7 @@ export function RecentActivity({ packages, onViewPackage }: RecentActivityProps)
 
   if (sortedPackages.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white rounded-lg">
         <div className="flex items-center gap-2 mb-4">
           <Clock className="w-5 h-5 text-[#f44708]" />
           <h2 className="text-lg font-semibold text-gray-900">Recent Activity (24h)</h2>
@@ -87,7 +87,7 @@ export function RecentActivity({ packages, onViewPackage }: RecentActivityProps)
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-lg">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Clock className="w-5 h-5 text-[#f44708]" />

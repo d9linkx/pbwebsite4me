@@ -110,9 +110,9 @@ export function DashboardScreen({
 
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white overflow-x-hidden">
       {/* Main Content - Responsive container */}
-      <div className="w-full">
+      <div className="w-full overflow-x-hidden">
         <RoleSpecificContent
           activeRole={activeRole}
           stats={stats}
