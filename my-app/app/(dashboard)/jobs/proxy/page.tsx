@@ -10,12 +10,14 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
-import type { DeliveryJob, Screen, ItemSize, DeliveryStatus, Bid } from '@/types/index'
+import type { DeliveryJob, ItemSize, DeliveryStatus, Bid } from '@/types/index'
 import { apiService } from '@/utils/apiService'
 import { toast } from 'sonner'
-import { ArrowLeft, Package, Clock, CheckCircle, MapPin, Eye, MessageCircle, User } from 'lucide-react'
+import { ArrowLeft, Package, Clock, CheckCircle, Eye, MessageCircle, User } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
+import { getProxyPackages, PackageFilters, filterPackages } from '@/utils/packageFilters'
+import { calculateProxyStats } from '@/utils/packageStats'
 
 type FilterStatus = 'all' | 'incoming' | 'stored' | 'picked-up' | 'completed'
 
@@ -36,11 +38,13 @@ interface PackageResponse {
     name?: string
     phone?: string
     formattedAddress?: string
+    address?: string
   }
   items?: Array<{
     size?: string
     category?: string
     weight?: string | number
+    value?: number
     images?: Array<{ url: string }>
   }>
   price?: number
@@ -73,7 +77,7 @@ interface PackageResponse {
 export default function ProxyJobsPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all')
 
   const user = useAppStore((state) => state.user)
@@ -168,12 +172,7 @@ export default function ProxyJobsPage() {
   const proxyJobs = useMemo(() => {
     if (!user) return []
 
-    return deliveryJobs
-      .filter(job => {
-        const jobProxyId = job.proxyId?.toString()
-        const currentUserId = user.id?.toString()
-        return jobProxyId === currentUserId
-      })
+    return getProxyPackages(deliveryJobs, user.id)
       .map(job => ({
         ...job,
         orderNumber: job.orderNumber || `ORD-${job.id.slice(0, 8).toUpperCase()}`,
@@ -189,35 +188,28 @@ export default function ProxyJobsPage() {
 
   // Filter jobs based on search and status
   const filteredJobs = useMemo(() => {
-    return proxyJobs.filter(job => {
-      const matchesSearch = (job.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.pickupLocation || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.dropoffLocation || '').toLowerCase().includes(searchQuery.toLowerCase())
+    const filters = [
+      PackageFilters.bySearchQuery(searchQuery)
+    ];
 
-      let matchesStatus = true
+    // Add status filter if not 'all'
+    if (filterStatus !== 'all') {
       if (filterStatus === 'incoming') {
-        matchesStatus = ['assigned', 'picked-up'].includes(job.status)
+        filters.push(PackageFilters.proxy.incoming);
       } else if (filterStatus === 'stored') {
-        matchesStatus = job.status === 'delivered'
+        filters.push(PackageFilters.proxy.stored);
       } else if (filterStatus === 'picked-up') {
-        matchesStatus = job.status === 'in-transit'
+        filters.push(PackageFilters.proxy.pickedUp);
       } else if (filterStatus === 'completed') {
-        matchesStatus = job.status === 'completed'
-      } else if (filterStatus !== 'all') {
-        matchesStatus = job.status === filterStatus
+        filters.push(PackageFilters.proxy.completed);
       }
+    }
 
-      return matchesSearch && matchesStatus
-    })
+    return filterPackages(proxyJobs, filters);
   }, [proxyJobs, searchQuery, filterStatus])
 
   const stats = useMemo(() => {
-    const total = proxyJobs.length
-    const incoming = proxyJobs.filter(job => ['assigned', 'picked-up'].includes(job.status)).length
-    const stored = proxyJobs.filter(job => job.status === 'delivered').length
-    const completed = proxyJobs.filter(job => job.status === 'completed').length
-
-    return { total, incoming, stored, completed }
+    return calculateProxyStats(proxyJobs);
   }, [proxyJobs])
 
   const getStatusInfo = (job: DeliveryJob) => {
@@ -243,7 +235,15 @@ export default function ProxyJobsPage() {
 
   const handleOpenChat = (job: DeliveryJob) => {
     setSelectedJob(job)
-    router.push('/chat')
+    // Open WhatsApp with the selected pal if available
+    if (job.selectedPalPhone) {
+      const cleanPhone = job.selectedPalPhone.replace(/[^\d+]/g, '');
+      const whatsappUrl = `https://wa.me/${cleanPhone}`;
+      window.open(whatsappUrl, '_blank');
+    } else {
+      // Fallback: navigate to chat page to see all contacts
+      router.push('/chat');
+    }
   }
 
   const handleBack = () => {

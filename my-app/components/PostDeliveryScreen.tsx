@@ -1,13 +1,11 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, ArrowRight, MapPin, Package, Calendar, DollarSign, Camera, Upload, X, CheckCircle, Users, MapIcon, Heart, User, Phone, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MapPin, Package, Camera, X, CheckCircle, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/Select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/Dialog';
 import { DeliveryJob, ItemSize } from '../types';
 import { AIItemScanner } from './AIItemScanner';
 
@@ -26,29 +24,9 @@ interface ScanData {
   detectionDetails?: unknown;
 }
 
-interface FavoritePalJobData {
-  title: string;
-  pickupLocation: string;
-  dropoffLocation: string;
-  receiverName: string;
-  receiverPhone: string;
-  itemSize: string;
-  weight: string;
-  value: number;
-  pickupDate: string;
-  pickupTime?: string;
-  notes?: string;
-  images: string[];
-  userId: string;
-}
-
 interface PostDeliveryScreenProps {
-  onBack: () => void;
   onSubmit: (job: DeliveryJob) => void;
-  onLocationSelect: (type: 'pickup' | 'dropoff') => void;
   userId: string;
-  onNavigateToMyDeliveries: () => void;
-  onChooseFavoritePal: (jobData: FavoritePalJobData) => void;
 }
 
 // Comprehensive list of real Lagos and Oyo State locations
@@ -225,7 +203,7 @@ const LAGOS_OYO_LOCATIONS = [
   'Lanlate, Oyo'
 ];
 
-export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId, onNavigateToMyDeliveries, onChooseFavoritePal }: PostDeliveryScreenProps) {
+export function PostDeliveryScreen({ onSubmit, userId }: PostDeliveryScreenProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<{
     title: string;
@@ -256,7 +234,6 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
   });
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [createdJob, setCreatedJob] = useState<DeliveryJob | null>(null);
   const [scanCompleted, setScanCompleted] = useState(false);
   const [scanData, setScanData] = useState<ScanData | null>(null);
   const [showAIScanner, setShowAIScanner] = useState(false);
@@ -288,24 +265,6 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
   }, []);
 
   const totalSteps = 3;
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const result = e.target?.result as string;
-          setImages(prev => [...prev, result]);
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -363,7 +322,6 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
     
     setTimeout(() => {
       setIsSubmitting(false);
-      setCreatedJob(newJob);
       // Navigate to processing page via parent component
       onSubmit(newJob);
     }, 1000);
@@ -504,16 +462,12 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
       userId: userId
     };
     
-    onChooseFavoritePal(jobData);
+    // Navigate to favorite-pal page with job data
+    const jobDataParam = encodeURIComponent(JSON.stringify(jobData));
+    window.location.href = `/dashboard/job/favorite-pal?jobData=${jobDataParam}`;
   };
 
-  const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
@@ -657,6 +611,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                     onChange={(e) => updateFormData('value', e.target.value)}
                     placeholder="e.g. 350000 (for iPhone), 25000 (for cake)"
                     className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                    onWheel={(e) => e.currentTarget.blur()}
                     required
                   />
                   <p className="text-xs text-gray-500 mt-1">
@@ -677,7 +632,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                           <Camera size={32} className="text-white" />
                         </div>
                         <h4 className="text-lg font-semibold text-blue-900 mb-2">
-                          Scan Your Item with AI Camera
+                          Scan Your Item with AI
                         </h4>
                         <p className="text-sm text-blue-700 mb-6 max-w-md mx-auto">
                           Our AI will scan and verify your item&apos;s unique features. This ensures your Pal picks up exactly what you
@@ -1016,7 +971,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                 <motion.button
                   type="button"
                   onClick={handlePrevious}
-                  className="flex-1 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl h-14 font-medium flex items-center justify-center"
+                  className="flex-1 border-2 border-[#f44708] text-gray-700 hover:bg-gray-50 hover:border-[#f44708] rounded-xl h-14 font-medium flex items-center justify-center"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -1029,7 +984,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                 type="button"
                 onClick={handleNext}
                 disabled={!isCurrentStepValid()}
-                className={`${currentStep === 1 ? 'w-full' : 'flex-1'} bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all mb-10`}
+                className={`${currentStep === 1 ? 'w-full' : 'flex-1'} bg-[#f44708] hover:bg-[#f44708] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all mb-10`}
                 whileHover={isCurrentStepValid() ? { scale: 1.02 } : {}}
                 whileTap={isCurrentStepValid() ? { scale: 0.98 } : {}}
               >
@@ -1043,7 +998,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                 <motion.button
                   type="button"
                   onClick={handlePrevious}
-                  className="flex-1 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl h-14 font-medium flex items-center justify-center"
+                  className="flex-1 border-2 border-[#f44708] text-gray-700 hover:bg-gray-50 hover:border-[#f44708] rounded-xl h-14 font-medium flex items-center justify-center"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -1055,7 +1010,7 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                   type="button"
                   onClick={handleSubmit}
                   disabled={!isFormValid() || isSubmitting}
-                  className="flex-1 bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex-1 bg-[#f44708] hover:bg-[#f44708] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   whileHover={isFormValid() && !isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={isFormValid() && !isSubmitting ? { scale: 0.98 } : {}}
                 >
@@ -1066,14 +1021,14 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                     </>
                   ) : (
                     <>
-                      Find Delivery Agents
+                      Find Pal
                       <ArrowRight size={20} className="ml-2" />
                     </>
                   )}
                 </motion.button>
               </div>
 
-              <div className="flex items-center my-4">
+              {/* <div className="flex items-center my-4">
                 <div className="flex-1 h-px bg-gray-300"></div>
                 <span className="text-gray-500 text-sm font-medium px-4">OR</span>
                 <div className="flex-1 h-px bg-gray-300"></div>
@@ -1088,9 +1043,9 @@ export function PostDeliveryScreen({ onBack, onSubmit, onLocationSelect, userId,
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  choose delivery person you know
+                  Choose delivery person you know
                 </motion.button>
-              </div>
+              </div> */}
             </>
           )}
           

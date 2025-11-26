@@ -1,9 +1,10 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, ArrowDown, CreditCard, TrendingUp, ArrowUpRight, ArrowDownLeft, Wallet, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Badge } from './ui/badge';
 import { User, UserRole } from '../types';
+import { apiService } from '@/utils/apiService';
 
 interface WalletScreenProps {
   user: User | null;
@@ -12,6 +13,31 @@ interface WalletScreenProps {
   onWithdraw: () => void;
   onManagePaymentMethods: () => void;
   userRole: UserRole;
+}
+
+interface Transaction {
+  _id: string;
+  type: 'deposit' | 'withdrawal' | 'escrow_lock' | 'escrow_release' | 'commission' | 'refund';
+  amount: number;
+  currency: string;
+  status: 'pending' | 'success' | 'failed';
+  balanceAfter?: number;
+  description: string;
+  createdAt: string | Date;
+  metadata?: {
+    paymentId?: string;
+    reference?: string;
+    provider?: string;
+    providerReference?: string;
+  };
+}
+
+interface AccountResponse {
+  accountBalance: number;
+  totalEscrowAmount: number;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export function WalletScreen({
@@ -23,51 +49,102 @@ export function WalletScreen({
   userRole
 }: WalletScreenProps) {
   const [showBalance, setShowBalance] = React.useState(true);
+  const [walletData, setWalletData] = useState({
+    balance: 0,
+    transactions: [] as Transaction[]
+  });
+  const [loading, setLoading] = useState(true);
 
-  const mockTransactions = [
-    {
-      id: '1',
-      type: 'credit',
-      amount: 25000,
-      description: 'Delivery payment received',
-      date: '2025-01-15T14:30:00Z',
-      status: 'completed'
-    },
-    {
-      id: '2',
-      type: 'debit',
-      amount: 5000,
-      description: 'Delivery fee payment',
-      date: '2025-01-15T10:15:00Z',
-      status: 'completed'
-    },
-    {
-      id: '3',
-      type: 'credit',
-      amount: 50000,
-      description: 'Wallet top-up',
-      date: '2025-01-14T16:45:00Z',
-      status: 'completed'
-    },
-    {
-      id: '4',
-      type: 'debit',
-      amount: 15000,
-      description: 'Withdrawal to bank',
-      date: '2025-01-14T09:20:00Z',
-      status: 'pending'
-    },
-    {
-      id: '5',
-      type: 'credit',
-      amount: 18000,
-      description: 'Delivery payment received',
-      date: '2025-01-13T18:10:00Z',
-      status: 'completed'
-    }
-  ];
+  // Fetch real wallet data from backend
+  useEffect(() => {
+    const fetchWalletData = async () => {
+      if (!user) return;
+      
+      try {
+        setLoading(true);
+        
+        // Fetch account balance
+        const accountResponse = await apiService.get<AccountResponse>('/account/');
+        const balance = accountResponse.data?.accountBalance || 0;
+        
+        // Fetch transactions using user endpoint
+        const transactionsResponse = await apiService.get<{ transactions: Transaction[]; total: number }>('/user/transactions');
+        const transactions = transactionsResponse.data?.transactions || [];
+        
+        console.log('📊 Raw transactions from backend:', transactionsResponse.data);
+        console.log('📊 Processed transactions:', transactions);
+        console.log('📊 Transaction details:', transactions.map(t => ({
+          id: t._id,
+          type: t.type,
+          amount: t.amount,
+          status: t.status,
+          description: t.description,
+          createdAt: t.createdAt
+        })));
+        
+        setWalletData({
+          balance,
+          transactions
+        });
+        
+        console.log('💰 Real wallet data loaded:', { balance, transactionCount: transactions.length });
+      } catch (error) {
+        console.error('❌ Error fetching wallet data:', error);
+        // Set default values on error
+        setWalletData({
+          balance: 0,
+          transactions: []
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWalletData();
+
+    // Listen for wallet refresh events (e.g., after payment success)
+    const handleWalletRefresh = () => {
+      console.log('🔄 Wallet refresh triggered - fetching fresh data');
+      fetchWalletData();
+    };
+
+    // Listen for storage changes (payment success)
+    const handleStorageChange = (e: StorageEvent) => {
+      console.log('🔄 Storage change detected:', { key: e.key, oldValue: e.oldValue, newValue: e.newValue });
+      if (e.key === 'walletRefresh') {
+        console.log('🔄 Wallet refresh flag detected - triggering refresh');
+        handleWalletRefresh();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check for immediate refresh (same tab)
+    const checkRefresh = () => {
+      const refreshFlag = localStorage.getItem('walletRefresh');
+      console.log('🔄 Checking for refresh flag:', refreshFlag);
+      if (refreshFlag) {
+        console.log('🔄 Refresh flag found - removing and triggering refresh');
+        localStorage.removeItem('walletRefresh');
+        handleWalletRefresh();
+      }
+    };
+
+    // Check immediately and set up interval for same-tab updates
+    checkRefresh();
+    const interval = setInterval(checkRefresh, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [user]);
 
   const formatAmount = (amount: number) => {
+    if (amount === 0) {
+      return '₦-.--';
+    }
+    
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: 'NGN',
@@ -76,17 +153,29 @@ export function WalletScreen({
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-NG', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const formatDate = (dateString: string | Date) => {
+    try {
+      const date = new Date(dateString);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return 'Invalid date';
+      }
+      
+      return date.toLocaleDateString('en-NG', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Invalid date';
+    }
   };
 
   const getTransactionIcon = (type: string) => {
-    return type === 'credit' ? (
+    return type === 'deposit' ? (
       <ArrowDownLeft size={16} className="text-green-600" />
     ) : (
       <ArrowUpRight size={16} className="text-red-600" />
@@ -97,24 +186,46 @@ export function WalletScreen({
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
     
-    return mockTransactions
+    return walletData.transactions
       .filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+        const transactionDate = new Date(transaction.createdAt);
         return transactionDate.getMonth() === currentMonth && 
                transactionDate.getFullYear() === currentYear &&
-               transaction.status === 'completed';
+               transaction.type === 'deposit' &&
+               transaction.status === 'success';
       })
       .reduce((total, transaction) => {
-        return transaction.type === 'credit' 
-          ? total + transaction.amount 
-          : total - transaction.amount;
+        return total + transaction.amount;
       }, 0);
+  };
+
+  const getTotalEarned = () => {
+    return walletData.transactions
+      .filter(t => t.type === 'deposit' && t.status === 'success')
+      .reduce((sum, t) => sum + t.amount, 0);
+  };
+
+  const getTotalSpent = () => {
+    return walletData.transactions
+      .filter(t => t.type === 'withdrawal' && t.status === 'success')
+      .reduce((sum, t) => sum + t.amount, 0);
   };
 
   if (!user) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <p className="text-gray-600">Please log in to view your wallet</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading wallet data...</p>
+        </div>
       </div>
     );
   }
@@ -190,7 +301,7 @@ export function WalletScreen({
 
             <div className="mb-6">
               <p className="text-4xl font-bold text-white mb-2">
-                {showBalance ? formatAmount(user.walletBalance || 0) : '****'}
+                {showBalance ? formatAmount(walletData.balance) : '****'}
               </p>
               <div className="flex items-center space-x-2">
                 <TrendingUp size={14} className="text-white/90" />
@@ -236,12 +347,9 @@ export function WalletScreen({
                 <ArrowDownLeft size={18} className="text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Earned</p>
+                <p className="text-sm text-gray-600">Total Earn</p>
                 <p className="text-lg font-semibold text-gray-900">
-                  {formatAmount(mockTransactions
-                    .filter(t => t.type === 'credit' && t.status === 'completed')
-                    .reduce((sum, t) => sum + t.amount, 0)
-                  )}
+                  {formatAmount(getTotalEarned())}
                 </p>
               </div>
             </div>
@@ -260,10 +368,7 @@ export function WalletScreen({
               <div>
                 <p className="text-sm text-gray-600">Total Spent</p>
                 <p className="text-lg font-semibold text-gray-900">
-                  {formatAmount(mockTransactions
-                    .filter(t => t.type === 'debit' && t.status === 'completed')
-                    .reduce((sum, t) => sum + t.amount, 0)
-                  )}
+                  {formatAmount(getTotalSpent())}
                 </p>
               </div>
             </div>
@@ -285,49 +390,59 @@ export function WalletScreen({
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-            {mockTransactions.slice(0, 5).map((transaction, index) => (
-              <motion.div
-                key={transaction.id}
-                className={`p-4 hover:bg-gray-50 transition-colors ${
-                  index !== mockTransactions.slice(0, 5).length - 1 ? 'border-b border-gray-200' : ''
-                }`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.05 }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'
-                    }`}>
-                      {getTransactionIcon(transaction.type)}
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900 text-sm">{transaction.description}</p>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <p className="text-xs text-gray-500">{formatDate(transaction.date)}</p>
-                        <Badge className={`text-xs px-2 py-0.5 rounded-lg border-0 ${
-                          transaction.status === 'completed'
-                            ? 'bg-green-100 text-green-700'
-                            : transaction.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-gray-100 text-gray-700'
-                        }`}>
-                          {transaction.status}
-                        </Badge>
+            {walletData.transactions.length === 0 ? (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                  <Wallet size={24} className="text-gray-400" />
+                </div>
+                <p className="text-gray-600 mb-2">No transactions yet</p>
+                <p className="text-sm text-gray-500">Your transaction history will appear here</p>
+              </div>
+            ) : (
+              walletData.transactions.slice(0, 5).map((transaction, index) => (
+                <motion.div
+                  key={transaction._id}
+                  className={`p-4 hover:bg-gray-50 transition-colors ${
+                    index !== walletData.transactions.slice(0, 5).length - 1 ? 'border-b border-gray-200' : ''
+                  }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + index * 0.05 }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        transaction.type === 'deposit' ? 'bg-green-100' : 'bg-red-100'
+                      }`}>
+                        {getTransactionIcon(transaction.type)}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm">{transaction.description}</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <p className="text-xs text-gray-500">{formatDate(transaction.createdAt)}</p>
+                          <Badge className={`text-xs px-2 py-0.5 rounded-lg border-0 ${
+                            transaction.status === 'success' 
+                              ? 'bg-green-100 text-green-700' 
+                              : transaction.status === 'pending'
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}>
+                            {transaction.status === 'success' ? 'Completed' : transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
+                    <div className="text-right">
+                      <p className={`font-semibold ${
+                        transaction.type === 'deposit' ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {transaction.type === 'deposit' ? '+' : '-'}{formatAmount(transaction.amount)}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className={`font-semibold ${
-                      transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {transaction.type === 'credit' ? '+' : '-'}{formatAmount(transaction.amount)}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))
+            )}
           </div>
         </motion.div>
 
@@ -346,7 +461,7 @@ export function WalletScreen({
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">Pal Earnings Insight</h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  You&apos;ve earned {formatAmount(getTotalThisMonth())} this month from {mockTransactions.filter(t => t.type === 'credit' && t.status === 'completed').length} deliveries.
+                  You&apos;ve earned {formatAmount(getTotalThisMonth())} this month from {walletData.transactions.filter(t => t.type === 'deposit').length} transactions.
                 </p>
                 <p className="text-xs text-blue-600">Keep up the great work!</p>
               </div>

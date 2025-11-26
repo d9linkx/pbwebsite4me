@@ -26,8 +26,9 @@ interface RouteAd {
 interface AvailableJobsScreenProps {
   onBack: () => void;
   onJobSelect: (job: DeliveryJob) => void;
-  onPlaceBid: (job: DeliveryJob, bidAmount: number, message: string) => void;
+  onPlaceBid: (job: DeliveryJob, bidAmount: number) => void;
   availableJobs: DeliveryJob[];
+  myBids?: DeliveryJob[];
   selectedRoute?: string | null;
   currentUser?: UserType | null;
   allJobs?: DeliveryJob[];
@@ -47,6 +48,7 @@ export function AvailableJobsScreen({
   onJobSelect, 
   onPlaceBid, 
   availableJobs,
+  myBids = [],
   selectedRoute,
   currentUser,
   allJobs = [],
@@ -176,14 +178,8 @@ export function AvailableJobsScreen({
     });
   };
 
-  // Get jobs where Pal has placed bids
-  const myBiddedJobs = useMemo(() => {
-    if (!currentUser) return [];
-    return allJobs.filter(job => 
-      job.bids?.some(bid => bid.palId === currentUser.id) && 
-      job.status === 'bidding'
-    );
-  }, [allJobs, currentUser]);
+  // Get jobs where Pal has placed bids (now passed as prop)
+  const myBiddedJobs = myBids;
 
   const formatAmount = (amount: number) => {
     return new Intl.NumberFormat('en-NG', {
@@ -244,6 +240,9 @@ export function AvailableJobsScreen({
   const filteredJobs = useMemo(() => {
     let jobs = activeTab === 'available' ? availableJobs : myBiddedJobs;
 
+    // Sort by newest first (descending order by createdAt)
+    jobs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
     // Route filter
     if (routeFilter) {
       jobs = jobs.filter(job =>
@@ -301,17 +300,21 @@ export function AvailableJobsScreen({
       return;
     }
 
-    if (!currentUser?.walletBalance || currentUser.walletBalance < bidAmount) {
-      if (onNavigateToWallet) {
-        onNavigateToWallet(job, bidAmount);
-      }
-      return;
-    }
+    // Temporarily disable wallet balance check for testing
+    // if (!currentUser?.walletBalance || currentUser.walletBalance < bidAmount) {
+    //   if (onNavigateToWallet) {
+    //     onNavigateToWallet(job, bidAmount);
+    //   }
+    //   return;
+    // }
 
-    onPlaceBid(job, bidAmount, '');
-    setBidSubmittedJobs(new Set(bidSubmittedJobs).add(job.id));
-    setBidTimestamps({...bidTimestamps, [job.id]: Date.now()});
-    setBidAmounts({...bidAmounts, [job.id]: ''});
+    onPlaceBid(job, bidAmount);
+    
+    // Remove state updates that might cause infinite loops
+    // The parent component will handle the state updates
+    // setBidSubmittedJobs(new Set(bidSubmittedJobs).add(job.id));
+    // setBidTimestamps({...bidTimestamps, [job.id]: Date.now()});
+    // setBidAmounts({...bidAmounts, [job.id]: ''});
   };
 
   const handleEditBid = (job: DeliveryJob, e: React.FormEvent) => {
@@ -324,7 +327,7 @@ export function AvailableJobsScreen({
       return;
     }
 
-    onPlaceBid(job, newBidAmount, '');
+    onPlaceBid(job, newBidAmount);
     setEditingBidJobId(null);
     setEditBidAmounts({...editBidAmounts, [job.id]: ''});
   };
@@ -387,7 +390,7 @@ export function AvailableJobsScreen({
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center ${
                 activeTab === tab
-                ? 'bg-[#2f2f2f] text-white shadow-sm'
+                ? 'bg-[#f44708] text-white shadow-sm'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.02 }}
@@ -761,7 +764,7 @@ export function AvailableJobsScreen({
 
                       <motion.button
                         type="submit"
-                        className="w-full bg-[#2f2f2f] hover:bg-[#2f2f2f] text-white rounded-xl py-3 font-semibold transition-all"
+                        className="w-full bg-[#f44708] hover:bg-[#f44708] text-white rounded-xl py-3 font-semibold transition-all"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >

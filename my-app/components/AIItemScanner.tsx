@@ -38,6 +38,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
     const file = e.target.files?.[0];
     if (!file) return;
 
+    console.log('AI Scanner: Image selected', file.name);
     setIsScanning(true);
     setScanProgress(0);
 
@@ -55,8 +56,10 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
             color: 'Black',
             fragile: true,
             confidence: 92,
-            description: 'Appears to be a boxed electronic device, possibly a smartphone or tablet. Handle with care.'
+            description: 'Appears to be a boxed electronic device, possibly a smartphone or tablet. Handle with care.',
+            images: [URL.createObjectURL(file)] // Add the actual image
           };
+          console.log('AI Scanner: Scan completed', mockData);
           setScannedData(mockData);
           setIsScanning(false);
           return 100;
@@ -68,7 +71,10 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
 
   const handleAccept = () => {
     if (scannedData) {
+      console.log('AI Scanner: Accepting scan data', scannedData);
       onScanComplete(scannedData);
+    } else {
+      console.error('AI Scanner: No scan data to accept');
     }
   };
 

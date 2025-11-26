@@ -31,19 +31,13 @@ import {
 
 import {   
 AuthResponse,
+BackendPackageResponse,
 } from '../types/api';
 
 import { ApiResponse } from '../utils/apiClient';
 import {
   LoginRequest,
   RegisterRequest,
-//   CreateDeliveryJobRequest,
-//   UpdateDeliveryJobRequest,
-//   CreateBidRequest,
-//   UpdateBidRequest,
-//   SendMessageRequest,
-//   CreateNotificationRequest,
-//   UpdateUserRequest,
 //   AddPaymentMethodRequest,
 //   CreateTransactionRequest,
 //   DisputeRequest,
@@ -59,6 +53,8 @@ import {
   VerifyEmailRequest,
   VerifyEmailResponse,
   UpdateUserRequest,
+  PricingSuggestionRequest,
+  PricingSuggestionResponse,
 } from '../types/api';
 
 export class ApiService {
@@ -150,7 +146,7 @@ export class ApiService {
     value: number;
     pickupDate: string;
     notes?: string;
-  }, images?: File[]): Promise<ApiResponse<any>> {
+  }, images?: File[]): Promise<ApiResponse<BackendPackageResponse>> {
     const formData = new FormData();
 
     // Append package data with ALL required fields
@@ -186,28 +182,27 @@ export class ApiService {
     }
 
     return retry(() =>
-      apiClient.post<any>('/package/', formData, {
+      apiClient.post<BackendPackageResponse>('/package/', formData, {
         headers: {
           // Don't set Content-Type - let browser set it with boundary for FormData
-        } as any
+        } as Record<string, string>
       })
     );
   }
 
   /**
-   * Get all packages for the current user (sender, receiver, pal, or proxy)
-   * Backend returns all packages where user is involved in any role
-   * Backend: GET /package/user
+   * Get all packages available for bidding
+   * Backend: GET /package (returns all packages, not just user's)
    */
-  async getAllPackages(): Promise<ApiResponse<any[]>> {
-    return retry(() => apiClient.get<any[]>('/package/user'));
+  async getAllPackages(): Promise<ApiResponse<BackendPackageResponse[]>> {
+    return retry(() => apiClient.get<BackendPackageResponse[]>('/package'));
   }
 
   /**
    * Get packages sent by user (as sender)
    * Backend doesn't have separate endpoint - we get all and filter on frontend
    */
-  async getSentPackages(): Promise<ApiResponse<any[]>> {
+  async getSentPackages(): Promise<ApiResponse<BackendPackageResponse[]>> {
     const response = await this.getAllPackages();
     if (response.success && response.data) {
       // Filter packages where user is sender
@@ -224,7 +219,7 @@ export class ApiService {
    * Get packages received by user (as receiver)
    * Backend doesn't have separate endpoint - we get all and filter on frontend
    */
-  async getReceivedPackages(): Promise<ApiResponse<any[]>> {
+  async getReceivedPackages(): Promise<ApiResponse<BackendPackageResponse[]>> {
     return this.getAllPackages();
   }
 
@@ -232,22 +227,22 @@ export class ApiService {
    * Get packages for pal (deliverer)
    * Backend doesn't have separate endpoint - we get all and filter on frontend
    */
-  async getPalPackages(): Promise<ApiResponse<any[]>> {
+  async getPalPackages(): Promise<ApiResponse<BackendPackageResponse[]>> {
     return this.getAllPackages();
   }
 
   /**
    * Get package by ID
    */
-  async getPackageById(packageId: string): Promise<ApiResponse<any>> {
-    return retry(() => apiClient.get<any>(`/package/${packageId}`));
+  async getPackageById(packageId: string): Promise<ApiResponse<BackendPackageResponse>> {
+    return retry(() => apiClient.get<BackendPackageResponse>(`/package/${packageId}`));
   }
 
   /**
    * Update package
    */
-  async updatePackage(packageId: string, updates: any): Promise<ApiResponse<any>> {
-    return retry(() => apiClient.patch<any>(`/package/${packageId}`, updates));
+  async updatePackage(packageId: string, updates: Partial<BackendPackageResponse>): Promise<ApiResponse<BackendPackageResponse>> {
+    return retry(() => apiClient.patch<BackendPackageResponse>(`/package/${packageId}`, updates));
   }
 
   /**
@@ -258,36 +253,44 @@ export class ApiService {
   }
 
   /**
-   * Place a bid on a package
+   * Test backend connectivity
    */
-  async placeBid(packageId: string, bidAmount: number): Promise<ApiResponse<any>> {
-    return retry(() => apiClient.post<any>(`/package/${packageId}/bid`, { price: bidAmount }));
+  async healthCheck(): Promise<ApiResponse<{ status: string }>> {
+    return retry(() => apiClient.get<{ status: string }>('/health'));
   }
 
   /**
+   * Place a bid on a package
+   */
+  async placeBid(packageId: string, bidAmount: number): Promise<ApiResponse<Bid>> {
+    return retry(() => apiClient.post<Bid>(`/package/${packageId}/bid/test`, { bidAmount }));
+  }
+  /**
    * Accept a bid on a package
    */
-  async acceptBid(packageId: string, bidId: string): Promise<ApiResponse<any>> {
-    return retry(() => apiClient.patch<any>(`/package/${packageId}/accept-bid`, { bidId }));
+  async acceptBid(packageId: string, bidId: string): Promise<ApiResponse<BackendPackageResponse>> {
+    return retry(() => apiClient.patch<BackendPackageResponse>(`/package/${packageId}/accept-bid`, { bidId }));
   }
 
   /**
    * Update package status
    */
-  async updatePackageStatus(packageId: string, status: string): Promise<ApiResponse<any>> {
-    return retry(() => apiClient.patch<any>(`/package/${packageId}/status`, { status }));
+  async updatePackageStatus(packageId: string, status: string): Promise<ApiResponse<BackendPackageResponse>> {
+    return retry(() => apiClient.patch<BackendPackageResponse>(`/package/${packageId}/status`, { status }));
   }
 
   /**
    * Upload delivery proof
    */
-  async uploadDeliveryProof(packageId: string, proofImage: File): Promise<ApiResponse<any>> {
+  async uploadDeliveryProof(packageId: string, proofImage: File): Promise<ApiResponse<BackendPackageResponse>> {
     const formData = new FormData();
     formData.append('proof', proofImage);
 
     return retry(() =>
-      apiClient.post<any>(`/package/${packageId}/proof`, formData, {
-        headers: {} as any
+      apiClient.post<BackendPackageResponse>(`/package/${packageId}/proof`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
     );
   }
@@ -576,6 +579,509 @@ export class ApiService {
 //   async updateSupportTicket(ticketId: string, updates: { message: string; status?: string }): Promise<ApiResponse<any>> {
 //     return retry(() => apiClient.put<any>(`/support-tickets/${ticketId}`, updates));
 //   }
+
+  // ==========================================
+  // BIDDING SYSTEM APIs (Server-Side)
+  // ==========================================
+
+  /**
+   * Get pricing suggestion for a delivery job
+   * Server calculates price based on distance, size, urgency, traffic, weather
+   */
+  async getPricingSuggestion(params: PricingSuggestionRequest): Promise<ApiResponse<PricingSuggestionResponse>> {
+    const queryParams: Record<string, string> = {};
+    if (params.pickupLocation) queryParams.pickupLocation = params.pickupLocation;
+    if (params.dropoffLocation) queryParams.dropoffLocation = params.dropoffLocation;
+    if (params.packageSize) queryParams.packageSize = params.packageSize;
+    if (params.urgency) queryParams.urgency = params.urgency;
+    if (params.pickupTime) queryParams.pickupTime = params.pickupTime;
+    
+    return retry(() => apiClient.get<PricingSuggestionResponse>('/pricing/suggest', queryParams));
+  }
+
+  /**
+   * Get all bids for a package (server-ranked with scores)
+   * Server returns bids already scored and ranked
+   */
+  async getBidsForPackage(packageId: string): Promise<ApiResponse<{ bids: Bid[] }>> {
+    return retry(() => apiClient.get<{ bids: Bid[] }>(`/package/${packageId}/bids/enhanced`));
+  }
+
+  /**
+   * Place a bid on a package with full validation
+   * Server validates: wallet balance, bid amount, eligibility
+   */
+  async createBid(packageId: string, bidData: {
+    amount: number;
+    estimatedTime: string;
+    estimatedPickupTime?: string;
+    message?: string;
+    vehicleType: string;
+  }): Promise<ApiResponse<Bid>> {
+    return retry(() => apiClient.post<Bid>(`/package/${packageId}/bid`, bidData));
+  }
+
+  /**
+   * Update an existing bid (if allowed)
+   * Server checks if bid is still editable
+   */
+  async updateBid(packageId: string, bidId: string, updates: {
+    amount?: number;
+    estimatedTime?: string;
+    message?: string;
+  }): Promise<ApiResponse<Bid>> {
+    return retry(() => apiClient.patch<Bid>(`/package/${packageId}/bid/${bidId}`, updates));
+  }
+
+  /**
+   * Withdraw a bid
+   */
+  async withdrawBid(packageId: string, bidId: string): Promise<ApiResponse<void>> {
+    return retry(() => apiClient.delete<void>(`/package/${packageId}/bid/${bidId}`));
+  }
+
+  /**
+   * Accept a bid (with wallet & escrow validation)
+   * Server validates:
+   * - Sender has sufficient wallet balance
+   * - Bid is still valid
+   * - Creates escrow transaction
+   * - Locks funds in escrow
+   * - Notifies Pal
+   */
+  async acceptBidSecure(packageId: string, bidId: string): Promise<ApiResponse<{
+    job: DeliveryJob;
+    escrowTransaction: Transaction;
+    walletBalance: number;
+  }>> {
+    return retry(() => apiClient.post<{
+      job: DeliveryJob;
+      escrowTransaction: Transaction;
+      walletBalance: number;
+    }>(`/package/${packageId}/bid/${bidId}/accept`));
+  }
+
+  /**
+   * Initialize payment with Monnify
+   * - Gets payment reference and redirect URL
+   * - Creates payment record
+   */
+  async initializePayment(paymentData: {
+    amount: number;
+    customerName: string;
+    customerEmail: string;
+    paymentDescription: string;
+  }): Promise<ApiResponse<{
+    paymentReference: string;
+    checkoutUrl: string;
+    apiKey: string;
+    contractCode: string;
+  }>> {
+    return retry(() => apiClient.post<{
+      paymentReference: string;
+      checkoutUrl: string;
+      apiKey: string;
+      contractCode: string;
+    }>('/payment/initiate', paymentData));
+  }
+
+  /**
+   * Fund wallet directly (for quick funding)
+   * - Creates payment and returns checkout URL
+   */
+  async fundWallet(amount: number, paymentDescription: string): Promise<ApiResponse<{
+    paymentReference: string;
+    checkoutUrl: string;
+    amount: number;
+  }>> {
+    return retry(() => apiClient.post<{
+      paymentReference: string;
+      checkoutUrl: string;
+      amount: number;
+    }>('/payment/fund-wallet', {
+      amount,
+      paymentDescription
+    }));
+  }
+
+  /**
+   * Verify payment and credit wallet
+   * - Called after payment completion
+   */
+  async verifyPayment(paymentReference: string, transactionReference: string): Promise<ApiResponse<{
+    status: string;
+    amount: number;
+    newBalance: number;
+    transactionId: string;
+  }>> {
+    return retry(() => apiClient.post<{
+      status: string;
+      amount: number;
+      newBalance: number;
+      transactionId: string;
+    }>('/payment/verify', {
+      paymentReference,
+      transactionReference
+    }));
+  }
+
+  /**
+   * Get wallet balance
+   */
+  async getWalletBalance(): Promise<ApiResponse<{
+    balance: number;
+    currency: string;
+    lastUpdated: string;
+  }>> {
+    return retry(() => apiClient.get<{
+      balance: number;
+      currency: string;
+      lastUpdated: string;
+    }>('/payment/balance'));
+  }
+
+  /**
+   * Get transaction history
+   */
+  async getTransactionHistory(filters?: {
+    type?: string;
+    status?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse<{
+    transactions: Array<{
+      id: string;
+      type: string;
+      amount: number;
+      status: string;
+      description: string;
+      createdAt: string;
+      balanceAfter: number;
+    }>;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+    summary: {
+      totalDeposits: number;
+      totalWithdrawals: number;
+      totalTransactions: number;
+    };
+  }>> {
+    // Convert number filters to strings for API client and filter out undefined values
+    const stringFilters: Record<string, string> | undefined = filters ? 
+      (() => {
+        const entries = Object.entries({
+          type: filters.type,
+          status: filters.status,
+          page: filters.page?.toString(),
+          limit: filters.limit?.toString()
+        });
+        const filteredEntries = entries.filter(([, value]) => value !== undefined) as [string, string][];
+        return Object.fromEntries(filteredEntries);
+      })() : undefined;
+
+    return retry(() => apiClient.get<{
+      transactions: Array<{
+        id: string;
+        type: string;
+        amount: number;
+        status: string;
+        description: string;
+        createdAt: string;
+        balanceAfter: number;
+      }>;
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        pages: number;
+      };
+      summary: {
+        totalDeposits: number;
+        totalWithdrawals: number;
+        totalTransactions: number;
+      };
+    }>('/payment/history', stringFilters));
+  }
+
+  /**
+   * Request withdrawal to bank account
+   */
+  async requestWithdrawal(withdrawalData: {
+    amount: number;
+    bankCode: string;
+    accountNumber: string;
+    accountName: string;
+    description?: string;
+  }): Promise<ApiResponse<{
+    withdrawalId: string;
+    amount: number;
+    status: string;
+    estimatedProcessingTime: string;
+  }>> {
+    return retry(() => apiClient.post<{
+      withdrawalId: string;
+      amount: number;
+      status: string;
+      estimatedProcessingTime: string;
+    }>('/payment/withdraw', withdrawalData));
+  }
+
+  /**
+   * Get bid statistics for a job
+   * Server calculates: average bid, lowest, highest, total bids
+   */
+  async getBidStatistics(packageId: string): Promise<ApiResponse<{
+    totalBids: number;
+    averageAmount: number;
+    lowestAmount: number;
+    highestAmount: number;
+    averageRating: number;
+  }>> {
+    return retry(() => apiClient.get<{
+      totalBids: number;
+      averageAmount: number;
+      lowestAmount: number;
+      highestAmount: number;
+      averageRating: number;
+    }>(`/package/${packageId}/bids/statistics`));
+  }
+
+  /**
+   * Get recommended bids (top 3 by server scoring)
+   */
+  async getRecommendedBids(packageId: string, limit: number = 3): Promise<ApiResponse<{ bids: Bid[] }>> {
+    return retry(() => apiClient.get<{ bids: Bid[] }>(`/package/${packageId}/bids/recommended`, { limit: limit.toString() }));
+  }
+
+  // ==========================================
+  // WALLET & PAYMENT APIs
+  // ==========================================
+
+  /**
+   * Check if user can afford a bid acceptance
+   * Server validates wallet balance + escrow requirements
+   */
+  async validateBidAcceptance(packageId: string, bidId: string): Promise<ApiResponse<{
+    canAccept: boolean;
+    walletBalance: number;
+    requiredAmount: number;
+    escrowAmount: number;
+    insufficientFunds: boolean;
+  }>> {
+    return retry(() => apiClient.post<{
+      canAccept: boolean;
+      walletBalance: number;
+      requiredAmount: number;
+      escrowAmount: number;
+      insufficientFunds: boolean;
+    }>(`/package/${packageId}/bid/${bidId}/validate`));
+  }
+
+  /**
+   * Add funds to wallet
+   */
+  async addFundsToWallet(amount: number, paymentMethod: string): Promise<ApiResponse<Transaction>> {
+    return retry(() => apiClient.post<Transaction>('/wallet/add-funds', { amount, paymentMethod }));
+  }
+
+  /**
+   * Get wallet transactions
+   */
+  async getWalletTransactions(params?: {
+    page?: number;
+    limit?: number;
+    type?: 'credit' | 'debit' | 'escrow';
+  }): Promise<ApiResponse<{ transactions: Transaction[]; total: number }>> {
+    const queryParams: Record<string, string> = {};
+    if (params?.page !== undefined) queryParams.page = params.page.toString();
+    if (params?.limit !== undefined) queryParams.limit = params.limit.toString();
+    if (params?.type !== undefined) queryParams.type = params.type;
+    
+    return retry(() => apiClient.get<{ transactions: Transaction[]; total: number }>('/wallet/transactions', Object.keys(queryParams).length > 0 ? queryParams : undefined));
+  }
+
+  /**
+   * Get escrow details for a job
+   */
+  async getEscrowDetails(packageId: string): Promise<ApiResponse<{
+    escrowAmount: number;
+    status: string;
+    createdAt: string;
+    releaseConditions: string[];
+  }>> {
+    return retry(() => apiClient.get<{
+      escrowAmount: number;
+      status: string;
+      createdAt: string;
+      releaseConditions: string[];
+    }>(`/package/${packageId}/escrow`));
+  }
+
+  // ==========================================
+  // NOTIFICATIONS API
+  async getNotifications(params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    type?: string;
+    unreadOnly?: boolean;
+  }): Promise<ApiResponse<{ notifications: Notification[]; total: number; unreadCount: number }>> {
+    // Convert params to strings for API client
+    const stringParams = params ? Object.fromEntries(
+      Object.entries(params).map(([key, value]) => [key, value?.toString()])
+    ) : undefined;
+    
+    return retry(() => apiClient.get<{ notifications: Notification[]; total: number; unreadCount: number }>('/notifications', stringParams));
+  }
+
+  async getUnreadCount(): Promise<ApiResponse<{ count: number }>> {
+    return retry(() => apiClient.get<{ count: number }>('/notifications/unread-count'));
+  }
+
+  async markNotificationAsRead(notificationId: string): Promise<ApiResponse<void>> {
+    return retry(() => apiClient.patch(`/notifications/${notificationId}/read`));
+  }
+
+  async markAllNotificationsAsRead(): Promise<ApiResponse<void>> {
+    return retry(() => apiClient.put('/notifications/read-all'));
+  }
+
+  async createTestNotification(data: {
+    title: string;
+    message: string;
+    type: string;
+    priority?: string;
+    category?: string;
+    actionRequired?: boolean;
+  }): Promise<ApiResponse<Notification>> {
+    return retry(() => apiClient.post<Notification>('/notifications/test', data));
+  }
+
+  // BROADCAST & NOTIFICATIONS
+  // ==========================================
+
+  /**
+   * Manually re-broadcast a job to wider radius
+   * Server finds Pals in expanded radius and sends push notifications
+   */
+  async rebroadcastJob(packageId: string, radius: number): Promise<ApiResponse<{
+    palsNotified: number;
+    newRadius: number;
+  }>> {
+    return retry(() => apiClient.post<{ palsNotified: number; newRadius: number }>(`/package/${packageId}/broadcast`, { radius }));
+  }
+
+  /**
+   * Get bidding-related notifications
+   */
+  async getBiddingNotifications(params?: {
+    page?: number;
+    limit?: number;
+    unreadOnly?: boolean;
+  }): Promise<ApiResponse<{ notifications: Notification[]; unreadCount: number }>> {
+    const stringParams: Record<string, string> = {};
+    if (params?.page !== undefined) stringParams.page = params.page.toString();
+    if (params?.limit !== undefined) stringParams.limit = params.limit.toString();
+    if (params?.unreadOnly !== undefined) stringParams.unreadOnly = params.unreadOnly.toString();
+    
+    return retry(() => apiClient.get<{ notifications: Notification[]; unreadCount: number }>('/notifications/bidding', Object.keys(stringParams).length > 0 ? stringParams : undefined));
+  }
+
+  // Document Verification Methods
+  async getVerificationStatus(): Promise<ApiResponse<{
+    isVerified: boolean;
+    documents: {
+      governmentId: { uploaded: boolean; url?: string };
+      nin: { uploaded: boolean; verified: boolean; number?: string };
+      additionalDocument: { uploaded: boolean; type?: string };
+      bvn: { verified: boolean };
+    };
+    canBid: boolean;
+  }>> {
+    return retry(() => apiClient.get('/user/documents/status'));
+  }
+
+  async uploadGovernmentId(file: File): Promise<ApiResponse<{
+    message: string;
+    documentUrl: { url: string; public_id: string };
+  }>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    return retry(() => 
+      apiClient.patch('/user/documents/government-id', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    );
+  }
+
+  async verifyNin(ninNumber: string): Promise<ApiResponse<{
+    message: string;
+    nin: { number: string; verified: boolean };
+  }>> {
+    return retry(() => apiClient.post('/user/documents/nin', { ninNumber }));
+  }
+
+  async verifyBvn(bvnNumber: string): Promise<ApiResponse<{
+    message: string;
+    bvn: { bvn: string; verified: boolean; firstName: string; lastName: string };
+  }>> {
+    return retry(() => apiClient.post('/user/documents/bvn', { bvnNumber }));
+  }
+
+  async uploadAdditionalDocument(file: File, docType?: string): Promise<ApiResponse<{
+    message: string;
+    otherDocument: { docType: string; docUrl: string };
+  }>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (docType) formData.append('docType', docType);
+    
+    return retry(() => 
+      apiClient.patch('/user/documents/additional', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    );
+  }
+
+  // Generic POST method for custom requests
+  async post<T = unknown>(url: string, data?: unknown): Promise<ApiResponse<T>> {
+    return retry(() => apiClient.post<T>(url, data));
+  }
+
+  // Generic GET method for custom requests
+  async get<T = unknown>(url: string, params?: Record<string, unknown>): Promise<ApiResponse<T>> {
+    // Convert unknown values to strings for query parameters
+    const stringParams = params ? 
+      Object.fromEntries(
+        Object.entries(params).map(([key, value]) => [key, String(value)])
+      ) : undefined;
+    
+    return retry(() => apiClient.get<T>(url, stringParams));
+  }
+
+  // Generic PUT method for custom requests
+  async put<T = unknown>(url: string, data?: unknown): Promise<ApiResponse<T>> {
+    return retry(() => apiClient.put<T>(url, data));
+  }
+
+  // Generic PATCH method for custom requests
+  async patch<T = unknown>(url: string, data?: unknown): Promise<ApiResponse<T>> {
+    return retry(() => apiClient.patch<T>(url, data));
+  }
+
+  // Generic DELETE method for custom requests
+  async delete<T = unknown>(url: string): Promise<ApiResponse<T>> {
+    return retry(() => apiClient.delete<T>(url));
+  }
 }
 
 // // Create and export a default API service instance

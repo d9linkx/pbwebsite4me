@@ -46,13 +46,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <ProfileInformationScreen
-        user={user}
-        onNavigate={handleNavigate}
-        onBack={handleBack}
-        onSave={handleProfileUpdate}
-      />
-    </div>
+    <ProfileInformationScreen
+      user={user}
+      onNavigate={handleNavigate}
+      onBack={handleBack}
+      onSave={handleProfileUpdate}
+    />
   )
 }

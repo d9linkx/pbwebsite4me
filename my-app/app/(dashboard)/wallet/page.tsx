@@ -11,7 +11,6 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { WalletScreen } from '@/components/WalletScreen'
 import { useAppStore } from '@/stores/appStore'
-import type { Screen } from '@/types/index'
 
 export default function WalletPage() {
   const router = useRouter()
@@ -19,7 +18,6 @@ export default function WalletPage() {
   const {
     user,
     activeRole,
-    updateUser,
   } = useAppStore()
 
   const handleAddFunds = () => {
@@ -35,7 +33,7 @@ export default function WalletPage() {
   }
 
   const handleBack = () => {
-    router.push('/')
+    router.push('/dashboard')
   }
 
   return (

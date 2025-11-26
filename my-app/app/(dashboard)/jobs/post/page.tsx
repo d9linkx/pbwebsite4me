@@ -11,7 +11,8 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PostDeliveryScreen } from '@/components/PostDeliveryScreen'
 import { useAppStore } from '@/stores/appStore'
-import type { DeliveryJob } from '@/types/index'
+import type { DeliveryJob, ItemSize, DeliveryStatus, Bid } from '@/types/index'
+import type { BackendPackageResponse } from '@/types/api'
 import { toast } from 'sonner'
 import { apiService } from '@/utils/apiService'
 
@@ -127,32 +128,64 @@ export default function PostDeliveryPage() {
         console.log('✅ Package created successfully:', response.data)
 
         // Map backend response to frontend DeliveryJob format
-        const backendPackage = response.data
+        const backendPackage = response.data as BackendPackageResponse
+        // Helper function to validate ItemSize
+        const validateItemSize = (size?: string): ItemSize => {
+          const validSizes: ItemSize[] = ['Small', 'Medium', 'Large']
+          return validSizes.includes(size as ItemSize) ? (size as ItemSize) : 'Medium'
+        }
+
+        // Helper function to validate DeliveryStatus
+        const validateDeliveryStatus = (status?: string): DeliveryStatus => {
+          const validStatuses: DeliveryStatus[] = ['pending', 'bidding', 'assigned', 'picked-up', 'in-transit', 'arrived', 'delivered', 'completed', 'cancelled', 'disputed']
+          return validStatuses.includes(status as DeliveryStatus) ? (status as DeliveryStatus) : 'pending'
+        }
+
+        // Helper function to map backend bids to frontend Bid type
+        const mapBackendBids = (backendBids?: BackendPackageResponse['bids']): Bid[] => {
+          if (!backendBids) return []
+          return backendBids.map(backendBid => ({
+            id: backendBid._id || backendBid.id || `bid-${Date.now()}-${Math.random()}`,
+            palId: backendBid.palId,
+            palName: backendBid.palName || 'Unknown Pal',
+            palRating: 0, // Default rating since backend doesn't provide it
+            vehicleType: 'car', // Default vehicle type since backend doesn't provide it
+            estimatedTime: '30 mins', // Default time since backend doesn't provide it
+            amount: backendBid.amount,
+            message: backendBid.message || '',
+            placedAt: backendBid.placedAt || new Date().toISOString(),
+            canEdit: true, // Default to editable
+            createdAt: backendBid.placedAt || new Date().toISOString(),
+          }))
+        }
+
         const newJob: DeliveryJob = {
-          id: backendPackage._id || backendPackage.id,
+          id: backendPackage._id || backendPackage.id || `temp-${Date.now()}`,
           title: backendPackage.title,
           description: backendPackage.description || '',
           pickupLocation: backendPackage.sender?.formattedAddress || backendPackage.pickupLocation,
           dropoffLocation: backendPackage.receiver?.formattedAddress || backendPackage.dropoffLocation,
-          itemSize: backendPackage.items?.[0]?.size || backendPackage.itemSize,
+          itemSize: validateItemSize(backendPackage.items?.[0]?.size || backendPackage.itemSize),
           category: backendPackage.items?.[0]?.category || backendPackage.category,
           weight: backendPackage.items?.[0]?.weight?.toString() || backendPackage.weight,
           value: backendPackage.price || backendPackage.value || 0,
           receiverName: backendPackage.receiver?.name || '',
           receiverPhone: backendPackage.receiver?.phone || '',
-          senderId: backendPackage.sender?.senderId || user.id,
+          senderId: backendPackage.sender?.senderId 
+            ? (typeof backendPackage.sender.senderId === 'object' ? backendPackage.sender.senderId._id : backendPackage.sender.senderId)
+            : user.id,
           senderName: backendPackage.sender?.name || user.name,
           senderPhone: backendPackage.sender?.phone || user.phone,
-          status: backendPackage.status || 'pending',
+          status: validateDeliveryStatus(backendPackage.status),
           pickupDate: backendPackage.pickupDate || new Date().toISOString(),
           pickupTime: jobData.pickupTime || '',
           notes: backendPackage.notes || '',
           images: backendPackage.items?.[0]?.images?.map((img: { url: string }) => img.url) || [],
           escrowAmount: jobData.escrowAmount || 0,
-          bids: backendPackage.bids || [],
+          bids: mapBackendBids(backendPackage.bids),
           isLive: true,
           createdAt: backendPackage.createdAt || new Date().toISOString(),
-          orderNumber: backendPackage.orderNumber,
+          orderNumber: backendPackage.orderNumber || `ORD-${Date.now()}`,
         }
 
         // Add to store
@@ -163,7 +196,8 @@ export default function PostDeliveryPage() {
         toast.success('Delivery posted successfully!')
 
         // Navigate to processing page to show order confirmation and real-time bid updates
-        router.push(`/jobs/${newJob.id}/processing`)
+        // Add autoMinimize=true query param to trigger auto-minimize after 5 seconds
+        router.push(`/jobs/${newJob.id}/processing?autoMinimize=true`)
       } else {
         throw new Error(response.message || 'Failed to create package')
       }

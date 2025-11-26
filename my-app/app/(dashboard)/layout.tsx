@@ -18,12 +18,13 @@ import { DashboardFooter } from '@/components/dashboard/DashboardFooter'
 import { Breadcrumbs } from '@/components/dashboard/Breadcrumbs'
 import { MobileMenu } from '@/components/dashboard/MobileMenu'
 import { DesktopSidebar } from '@/components/dashboard/DesktopSidebar'
+import { ProcessingMinimizedBar } from '@/components/dashboard/ProcessingMinimizedBar'
 import { useAppStore } from '@/stores/appStore'
 import { useAuth } from '@/utils/apiHooks'
 import { socketService } from '@/utils/socket'
 import { useConnectionStatus, useSocketEvent } from '@/utils/useSocket'
 import { useOfflineBanner } from '@/utils/useOffline'
-import type { UserRole, Screen, Notification as NotificationType, DeliveryJob } from '@/types/index'
+import type { UserRole, Screen, Notification as NotificationType, DeliveryJob, Bid, DeliveryStatus } from '@/types/index'
 import { toast } from 'sonner'
 
 export default function DashboardLayout({
@@ -45,10 +46,14 @@ export default function DashboardLayout({
     setActiveRole,
     notifications,
     setNotifications,
+    initializeNotifications,
+    cleanupNotifications,
     deliveryJobs,
     updateDeliveryJob,
     isMobileMenuOpen,
     setMobileMenuOpen,
+    processingJob,
+    isProcessingMinimized,
   } = useAppStore()
 
   // Connection status
@@ -64,17 +69,17 @@ export default function DashboardLayout({
     }
   }, [authUser, setUser])
 
-  // Initialize WebSocket connection when user is authenticated
+  // Initialize WebSocket connection and notifications when user is authenticated
   useEffect(() => {
     if (authUser) {
-      console.log('🔌 Initializing WebSocket connection for user:', authUser.id)
-
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
 
       socketService.connect(token || undefined)
         .then(() => {
-          console.log('✅ WebSocket connected successfully')
           toast.success('Connected to server', { duration: 2000 })
+          
+          // Initialize real-time notifications
+          initializeNotifications(authUser)
         })
         .catch((error) => {
           console.error('❌ Failed to connect WebSocket:', error)
@@ -83,16 +88,14 @@ export default function DashboardLayout({
 
       // Cleanup on unmount or user logout
       return () => {
-        console.log('🔌 Cleaning up WebSocket connection')
         socketService.disconnect()
+        cleanupNotifications()
       }
     }
-  }, [authUser])
+  }, [authUser, initializeNotifications, cleanupNotifications])
 
   // Listen for real-time notifications
   useSocketEvent('notification:new', (notification: NotificationType) => {
-    console.log('🔔 New notification received:', notification)
-
     // Add notification to store
     setNotifications([notification, ...notifications])
 
@@ -112,7 +115,7 @@ export default function DashboardLayout({
 
     // Update job in store
     updateDeliveryJob(data.jobId, {
-      status: data.status as any,
+      status: data.status as DeliveryStatus,
       updatedAt: data.updatedAt
     })
 
@@ -130,8 +133,14 @@ export default function DashboardLayout({
   })
 
   // Listen for new bids
-  useSocketEvent('job:new-bid', (data: { jobId: string; bid: any }) => {
+  useSocketEvent('job:new-bid', (data: { jobId: string; bid: Bid }) => {
     console.log('💰 New bid received:', data)
+
+    // Update processing bid count if this is the processing job
+    const { processingJob, processingBidCount, setProcessingBidCount } = useAppStore.getState()
+    if (processingJob && processingJob.id === data.jobId) {
+      setProcessingBidCount(processingBidCount + 1)
+    }
 
     // Show toast notification to sender
     const job = deliveryJobs.find(j => j.id === data.jobId)
@@ -149,6 +158,12 @@ export default function DashboardLayout({
   // Listen for bid acceptance
   useSocketEvent('job:bid-accepted', (data: { jobId: string; bidId: string }) => {
     console.log('✅ Bid accepted:', data)
+
+    // Clear processing job if this was the one being processed
+    const { processingJob, clearProcessingJob } = useAppStore.getState()
+    if (processingJob && processingJob.id === data.jobId) {
+      clearProcessingJob()
+    }
 
     // Show toast notification
     toast.success('Your bid was accepted!', {
@@ -288,10 +303,25 @@ export default function DashboardLayout({
     return 'dashboard'
   }
 
+  // Determine if header should be hidden for full-screen pages
+  const shouldHideHeader = () => {
+    const hideHeaderRoutes = ['/notifications', '/settings/profile']
+    return hideHeaderRoutes.some(route => pathname.startsWith(route))
+  }
+
+  // Calculate if processing bar is visible
+  const isProcessingBarVisible = !!(processingJob && isProcessingMinimized && !isMobileMenuOpen && !shouldHideHeader())
+  const processingBarHeight = isProcessingBarVisible ? 60 : 0
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Full-Width Dashboard Header - Spans entire width */}
-      <DashboardHeader
+      {/* Global Processing Minimized Bar - TOPMOST position - Hidden for full-screen pages or when mobile menu is open */}
+      {!shouldHideHeader() && !isMobileMenuOpen && <ProcessingMinimizedBar />}
+
+      {/* Full-Width Dashboard Header - Spans entire width - Hidden for full-screen pages */}
+      {!shouldHideHeader() && (
+      <div className="fixed top-0 left-0 right-0 z-40 bg-white transition-all duration-300" style={{ top: `${processingBarHeight}px` }}>
+        <DashboardHeader
         activeRole={activeRole}
         onRoleChange={handleRoleChange}
         onNotificationsClick={handleNotificationsClick}
@@ -304,6 +334,8 @@ export default function DashboardLayout({
         currentScreen={pathnameToScreen()}
         onAlertsClick={handleAlertsClick}
       />
+      </div>
+      )}
 
       {/* Connection Status Indicator - Below header */}
       {showStatus && (
@@ -330,30 +362,35 @@ export default function DashboardLayout({
         {/* Desktop Sidebar - Only visible on xl screens and above */}
         <div className="hidden xl:block">
           <DesktopSidebar
-            user={user}
-            activeRole={activeRole}
             currentPath={pathname}
           />
         </div>
 
         {/* Main Content - Takes remaining space */}
-        <div className="flex-1 overflow-y-auto bg-white">
+        <div className="flex-1 overflow-hidden bg-white flex flex-col overflow-x-hidden">
+
           {/* Mobile Menu - Only for screens below xl */}
-          <MobileMenu
-            isOpen={isMobileMenuOpen}
-            onClose={() => setMobileMenuOpen(false)}
-            user={user}
-            activeRole={activeRole}
-            currentPath={pathname}
-          />
+          {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-50 xl:hidden">
+            <MobileMenu
+              isOpen={isMobileMenuOpen}
+              onClose={() => setMobileMenuOpen(false)}
+              user={user}
+              activeRole={activeRole}
+              currentPath={pathname}
+            />
+          </div>
+          )}
 
           {/* Breadcrumb Navigation */}
+          {!shouldHideHeader() && (
           <div className="xl:max-w-[896px] xl:mx-auto">
             <Breadcrumbs />
           </div>
+          )}
 
           {/* Page Content - Centered on desktop with tablet max-width */}
-          <main className="pb-24 xl:pb-6">
+          <main className={`flex-1 overflow-y-auto overflow-x-hidden ${shouldHideHeader() ? "pb-6" : "pb-24 xl:pb-6"}`} style={{ paddingTop: shouldHideHeader() ? '0px' : `${processingBarHeight + 80}px` }}>
             <div className="xl:max-w-[896px] xl:mx-auto">
               {children}
             </div>
@@ -361,13 +398,15 @@ export default function DashboardLayout({
         </div>
       </div>
 
-      {/* Dashboard Footer - Only visible on mobile */}
+      {/* Dashboard Footer - Only visible on mobile - Hidden for full-screen pages */}
+      {!shouldHideHeader() && (
       <div className=" fixed bottom-0 left-0 right-0 z-40">
         <DashboardFooter
           activeRole={activeRole}
           onActionClick={handleActionClick}
         />
       </div>
+      )}
     </div>
   )
 }

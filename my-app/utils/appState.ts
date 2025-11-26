@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { 
   Screen, User, DeliveryJob, Bid, ProxyItem, ChatThread, ChatMessage, 
-  NigerianLocation, UserRole, DisputeResolution, Notification 
+  NigerianLocation, UserRole, DisputeResolution, Notification, 
+  FavoritePalJobData, FavoritePalData
 } from '../types';
 
 // Custom hook to manage app state
@@ -18,7 +19,7 @@ export const useAppState = () => {
   const [selectedChatThread, setSelectedChatThread] = useState<ChatThread | null>(null);
   const [selectedProxyItem, setSelectedProxyItem] = useState<ProxyItem | null>(null);
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
-  const [selectedProxyReceiver, setSelectedProxyReceiver] = useState<any>(null);
+  const [selectedProxyReceiver, setSelectedProxyReceiver] = useState<User | null>(null);
   
   // Data state
   const [deliveryJobs, setDeliveryJobs] = useState<DeliveryJob[]>([]);
@@ -43,8 +44,8 @@ export const useAppState = () => {
   const [verificationRetries, setVerificationRetries] = useState(0);
   const [scanContext, setScanContext] = useState<'pickup' | 'delivery' | 'proxy-handover' | 'receiver-unavailable'>('pickup');
   const [scanningProxyItem, setScanningProxyItem] = useState<ProxyItem | null>(null);
-  const [favoritePalJobData, setFavoritePalJobData] = useState<any>(null);
-  const [selectedFavoritePal, setSelectedFavoritePal] = useState<any>(null);
+  const [favoritePalJobData, setFavoritePalJobData] = useState<FavoritePalJobData | null>(null);
+  const [selectedFavoritePal, setSelectedFavoritePal] = useState<FavoritePalData | null>(null);
   const [showCompletedDeliveries, setShowCompletedDeliveries] = useState(false);
 
   // Dispute and violation state

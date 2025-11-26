@@ -1,9 +1,11 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Package, MapPin, Clock, Phone, MessageCircle, Navigation, CheckCircle, ChevronDown, ChevronUp, Calendar, User as UserIcon, Hash, Building } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from './ui/badge';
 import { DeliveryJob, User } from '../types';
+import { PackageFilters } from '../utils/packageFilters';
+import { calculatePalStats } from '../utils/packageStats';
 
 type DeliveryFilter = 'all' | 'assigned' | 'in-transit' | 'delivered';
 
@@ -52,22 +54,23 @@ export function AcceptedBidsScreen({
     }
   };
 
-  const filteredJobs = activeFilter === 'all' 
-    ? acceptedJobs 
-    : acceptedJobs.filter(job => {
-        if (activeFilter === 'in-transit') {
-          return job.status === 'in-transit' || job.status === 'picked-up';
-        }
-        return job.status === activeFilter;
-      });
+  const filteredJobs = useMemo(() => {
+    if (activeFilter === 'all') return acceptedJobs;
 
-  const stats = {
-    total: acceptedJobs.length,
-    inTransit: acceptedJobs.filter(j => j.status === 'in-transit' || j.status === 'picked-up').length,
-    awaitingPickup: acceptedJobs.filter(j => j.status === 'assigned').length,
-    delivered: acceptedJobs.filter(j => j.status === 'delivered').length,
-    totalEarnings: acceptedJobs.reduce((sum, j) => sum + (j.acceptedBidAmount || 0), 0)
-  };
+    if (activeFilter === 'in-transit') {
+      return acceptedJobs.filter(PackageFilters.pal.inTransit);
+    } else if (activeFilter === 'assigned') {
+      return acceptedJobs.filter(PackageFilters.pal.awaiting);
+    } else if (activeFilter === 'delivered') {
+      return acceptedJobs.filter(PackageFilters.pal.delivered);
+    }
+
+    return acceptedJobs;
+  }, [acceptedJobs, activeFilter]);
+
+  const stats = useMemo(() => {
+    return calculatePalStats(acceptedJobs);
+  }, [acceptedJobs]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">

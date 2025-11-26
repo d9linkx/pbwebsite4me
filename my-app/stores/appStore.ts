@@ -20,6 +20,7 @@ import type {
   FavoritePalData,
   ProxyUserData,
 } from '@/types/index'
+import { notificationListener } from '@/utils/notificationListener'
 
 interface AppState {
   // ========================================
@@ -64,6 +65,11 @@ interface AppState {
   setProxyItems: (items: ProxyItem[]) => void
   setChatThreads: (threads: ChatThread[]) => void
   setNotifications: (notifications: Notification[]) => void
+  addNotification: (notification: Notification) => void
+  markNotificationAsRead: (notificationId: string) => void
+  markAllNotificationsAsRead: () => void
+  initializeNotifications: (user: User) => void
+  cleanupNotifications: () => void
   addDeliveryJob: (job: DeliveryJob) => void
   updateDeliveryJob: (jobId: string, updates: Partial<DeliveryJob>) => void
   removeDeliveryJob: (jobId: string) => void
@@ -80,6 +86,18 @@ interface AppState {
   setShowCompletedDeliveries: (show: boolean) => void
 
   // ========================================
+  // Processing Job State (minimized bar)
+  // ========================================
+  processingJob: DeliveryJob | null
+  isProcessingMinimized: boolean
+  processingBidCount: number
+
+  setProcessingJob: (job: DeliveryJob | null) => void
+  setProcessingMinimized: (minimized: boolean) => void
+  setProcessingBidCount: (count: number) => void
+  clearProcessingJob: () => void
+
+  // ========================================
   // Flow Context (for multi-step flows)
   // ========================================
   locationSelectionContext: {
@@ -91,6 +109,7 @@ interface AppState {
     amount: number
     purpose: string
     returnScreen: Screen
+    paymentReference?: string
   } | null
 
   scanContext: 'pickup' | 'delivery' | 'proxy-handover' | 'receiver-unavailable'
@@ -185,6 +204,11 @@ const initialState = {
   notificationTab: 'alerts' as const,
   showCompletedDeliveries: false,
 
+  // Processing Job State
+  processingJob: null,
+  isProcessingMinimized: false,
+  processingBidCount: 0,
+
   // Flow Context
   locationSelectionContext: null,
   paymentContext: null,
@@ -212,7 +236,7 @@ const initialState = {
 export const useAppStore = create<AppState>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         ...initialState,
 
         // ========================================
@@ -222,6 +246,44 @@ export const useAppStore = create<AppState>()(
         setActiveRole: (activeRole) => set({ activeRole }),
         updateUser: (updates) => set((state) => ({
           user: state.user ? { ...state.user, ...updates } : null,
+        })),
+
+        // ========================================
+        // Notification Actions
+        // ========================================
+        initializeNotifications: async (user) => {
+          try {
+            await notificationListener.initialize(user)
+            
+            // Set up real-time notification handler
+            notificationListener.onNotification((notification) => {
+              set((state) => ({
+                notifications: [notification, ...state.notifications]
+              }))
+            })
+            
+            console.log('✅ Notifications initialized for user:', user.userName)
+          } catch (error) {
+            console.error('❌ Failed to initialize notifications:', error)
+          }
+        },
+        
+        cleanupNotifications: () => {
+          notificationListener.disconnect()
+        },
+
+        addNotification: (notification) => set((state) => ({
+          notifications: [notification, ...state.notifications]
+        })),
+
+        markNotificationAsRead: (notificationId) => set((state) => ({
+          notifications: state.notifications.map((notif) =>
+            notif.id === notificationId ? { ...notif, read: true } : notif
+          )
+        })),
+
+        markAllNotificationsAsRead: () => set((state) => ({
+          notifications: state.notifications.map((notif) => ({ ...notif, read: true }))
         })),
 
         // ========================================
@@ -266,6 +328,18 @@ export const useAppStore = create<AppState>()(
         setShowCompletedDeliveries: (showCompletedDeliveries) => set({ showCompletedDeliveries }),
 
         // ========================================
+        // Processing Job Actions
+        // ========================================
+        setProcessingJob: (processingJob) => set({ processingJob }),
+        setProcessingMinimized: (isProcessingMinimized) => set({ isProcessingMinimized }),
+        setProcessingBidCount: (processingBidCount) => set({ processingBidCount }),
+        clearProcessingJob: () => set({
+          processingJob: null,
+          isProcessingMinimized: false,
+          processingBidCount: 0
+        }),
+
+        // ========================================
         // Flow Context Actions
         // ========================================
         setLocationSelectionContext: (locationSelectionContext) => set({ locationSelectionContext }),
@@ -306,7 +380,11 @@ export const useAppStore = create<AppState>()(
         // ========================================
         // Utility Actions
         // ========================================
-        reset: () => set(initialState),
+        reset: () => {
+          // Cleanup notifications before resetting
+          notificationListener.disconnect()
+          set(initialState)
+        },
       }),
       {
         name: 'prawnbox-app-store',
@@ -316,6 +394,10 @@ export const useAppStore = create<AppState>()(
           activeRole: state.activeRole,
           deliveryJobs: state.deliveryJobs,
           notifications: state.notifications,
+          // Persist processing job state so it survives page refresh
+          processingJob: state.processingJob,
+          isProcessingMinimized: state.isProcessingMinimized,
+          processingBidCount: state.processingBidCount,
         }),
       }
     )

@@ -112,7 +112,7 @@ export function MobileMenu({ isOpen, onClose, user, activeRole, currentPath }: M
                       <div className="flex items-center text-yellow-400">
                         <span className="text-lg">⭐</span>
                         <span className="ml-1 font-medium text-sm">
-                          {typeof user.rating === 'number' ? user.rating.toFixed(1) : '0.0'}
+                          {typeof user.rating === 'number' && user.rating > 0 ? user.rating.toFixed(1) : '5.0'}
                         </span>
                       </div>
                       <span className="text-gray-500">•</span>

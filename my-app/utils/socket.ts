@@ -9,7 +9,7 @@
  */
 
 import { io, Socket } from 'socket.io-client'
-import type { ChatMessage, Notification, DeliveryJob } from '@/types/index'
+import type { ChatMessage, Notification, Bid } from '@/types/index'
 
 // Socket.IO connection configuration
 const SOCKET_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
@@ -23,9 +23,97 @@ interface SocketEvents {
   'notification:new': (notification: Notification) => void
   'notification:read': (notificationId: string) => void
 
-  // Job/Delivery events
+  // Package events
+  'package:created': (data: {
+    packageId: string
+    orderNumber: string
+    senderId: string
+    senderName: string
+    receiverId: string
+    title: string
+    pickupLocation: string
+    dropoffLocation: string
+    value: number
+    status: string
+  }) => void
+  'package:status-update': (data: {
+    packageId: string
+    orderNumber: string
+    status: string
+    oldStatus?: string
+    senderId?: string
+    receiverId?: string
+    palId?: string
+    proxyId?: string
+    actionRequired?: boolean
+    urgent?: boolean
+  }) => void
+
+  // Bid events
+  'bid:placed': (data: {
+    packageId: string
+    bidId: string
+    bidderId: string
+    bidderName: string
+    amount: number
+    senderId: string
+    packageTitle: string
+  }) => void
+  'bid:accepted': (data: {
+    packageId: string
+    orderNumber: string
+    palId: string
+    pickupLocation: string
+    deliveryCode?: string
+  }) => void
+  'bid:rejected': (data: {
+    packageId: string
+    orderNumber: string
+    palId: string
+  }) => void
+
+  // Delivery events
+  'delivery:assigned': (data: {
+    packageId: string
+    packageTitle: string
+    palId: string
+    pickupLocation: string
+    deliveryCode?: string
+  }) => void
+  'delivery:started': (data: {
+    packageId: string
+    receiverId: string
+    palName: string
+    estimatedArrival?: string
+  }) => void
+  'delivery:completed': (data: {
+    packageId: string
+    orderNumber: string
+    senderId?: string
+    receiverId?: string
+    palId?: string
+    receiverName?: string
+  }) => void
+
+  // Payment events
+  'payment:processed': (data: {
+    paymentId: string
+    userId: string
+    amount: number
+    type: 'received' | 'sent'
+  }) => void
+
+  // System events
+  'system:maintenance': (data: {
+    message?: string
+    urgent?: boolean
+    scheduledTime?: string
+    duration?: string
+  }) => void
+
+  // Job/Delivery events (legacy)
   'job:status-update': (data: { jobId: string; status: string; updatedAt: string }) => void
-  'job:new-bid': (data: { jobId: string; bid: any }) => void
+  'job:new-bid': (data: { jobId: string; bid: Bid }) => void
   'job:bid-accepted': (data: { jobId: string; bidId: string }) => void
   'job:location-update': (data: { jobId: string; location: { lat: number; lng: number } }) => void
 
@@ -44,7 +132,7 @@ class SocketService {
   private connectionPromise: Promise<Socket> | null = null
   private reconnectAttempts = 0
   private maxReconnectAttempts = 5
-  private listeners: Map<keyof SocketEvents, Set<(...args: any[]) => void>> = new Map()
+  private listeners: Map<string, Set<(...args: unknown[]) => void>> = new Map()
 
   /**
    * Initialize Socket.IO connection
@@ -169,7 +257,7 @@ class SocketService {
   /**
    * Emit an event to the server
    */
-  emit(event: string, data?: any): void {
+  emit(event: string, data?: unknown): void {
     if (!this.socket?.connected) {
       console.warn('⚠️ Socket not connected, cannot emit event:', event)
       return
@@ -191,7 +279,7 @@ class SocketService {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set())
     }
-    this.listeners.get(event)!.add(callback)
+    this.listeners.get(event)!.add(callback as (...args: unknown[]) => void)
 
     this.socket.on(event as string, callback)
   }
@@ -204,7 +292,7 @@ class SocketService {
 
     if (callback) {
       this.socket.off(event as string, callback)
-      this.listeners.get(event)?.delete(callback)
+      this.listeners.get(event)?.delete(callback as (...args: unknown[]) => void)
     } else {
       // Remove all listeners for this event
       this.socket.off(event as string)
@@ -213,19 +301,21 @@ class SocketService {
   }
 
   /**
-   * Join a room (e.g., chat thread, job tracking)
+   * Join a room
    */
   joinRoom(room: string): void {
-    this.emit('join-room', { room })
-    console.log('📨 Joined room:', room)
+    if (this.socket?.connected) {
+      this.socket.emit('join-room', room)
+    }
   }
 
   /**
    * Leave a room
    */
   leaveRoom(room: string): void {
-    this.emit('leave-room', { room })
-    console.log('📤 Left room:', room)
+    if (this.socket?.connected) {
+      this.socket.emit('leave-room', room)
+    }
   }
 
   /**

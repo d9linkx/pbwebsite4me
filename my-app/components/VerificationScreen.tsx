@@ -1,16 +1,25 @@
 'use client';
-import React, { useState } from 'react';
-import { ArrowLeft, Shield, CheckCircle, Upload, Camera, FileText, AlertCircle, User, Phone } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ArrowLeft, Shield, CheckCircle, Upload, Camera, FileText, AlertCircle, User, Phone, CreditCard, FileCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from './ui/badge';
-import { User as UserType, Screen } from '../types';
+import { apiService } from '@/utils/apiService';
+import { toast } from 'sonner';
+
+interface VerificationStatus {
+  isVerified: boolean;
+  documents: {
+    governmentId: { uploaded: boolean; url?: string };
+    nin: { uploaded: boolean; verified: boolean; number?: string };
+    additionalDocument: { uploaded: boolean; type?: string };
+    bvn: { verified: boolean };
+  };
+  canBid: boolean;
+}
 
 interface VerificationScreenProps {
-  user: UserType | null;
-  onNavigate?: (screen: Screen) => void;
   onBack: () => void;
-  onSubmit: (idUrl: string) => void;
-  onUpdateUser?: (user: UserType) => void; // Keeping for backward compatibility
+  onNavigate?: (screen: string) => void;
 }
 
 type VerificationStep = {
@@ -20,45 +29,122 @@ type VerificationStep = {
   icon: React.ComponentType<{ size?: number; className?: string }>;
   status: 'pending' | 'in-progress' | 'completed' | 'failed';
   required: boolean;
+  key: keyof VerificationStatus['documents'];
 };
 
-export function VerificationScreen({ 
-  user, 
-  onBack, 
-  onSubmit,
-  onNavigate,
-  onUpdateUser 
-}: VerificationScreenProps) {
-  const [verificationSteps, setVerificationSteps] = useState<VerificationStep[]>([
-    {
-      id: 'identity',
-      title: 'Identity Verification',
-      description: 'Upload a government-issued ID (NIN, Passport, Driver\'s License)',
-      icon: User,
-      status: user?.isVerified ? 'completed' : 'pending',
-      required: true
-    },
-    {
-      id: 'phone',
-      title: 'Phone Verification',
-      description: 'Verify your Nigerian phone number with OTP',
-      icon: Phone,
-      status: user?.phone ? 'completed' : 'pending',
-      required: true
-    },
-    {
-      id: 'address',
-      title: 'Address Verification',
-      description: 'Verify your address with a utility bill',
-      icon: FileText,
-      status: user?.location?.address ? 'in-progress' : 'pending',
-      required: false
-    }
-  ]);
-
-  const [selectedStep, setSelectedStep] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+export function VerificationScreen({ onBack, onNavigate }: VerificationScreenProps) {
+  const [verificationStatus, setVerificationStatus] = useState<VerificationStatus | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedStep, setSelectedStep] = useState<string | null>('governmentId');
+  const [uploading, setUploading] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+  const [ninInput, setNinInput] = useState('');
+  const [bvnInput, setBvnInput] = useState('');
+
+  useEffect(() => {
+    fetchVerificationStatus();
+  }, []);
+
+  const getVerificationSteps = useCallback((): VerificationStep[] => {
+    // Always return steps, even if verificationStatus is loading
+    const defaultSteps = [
+      {
+        id: 'governmentId',
+        title: 'Government ID',
+        description: 'Upload a government-issued ID (Passport, Driver\'s License, etc.)',
+        icon: FileText,
+        status: 'pending' as const,
+        required: true,
+        key: 'governmentId' as const
+      },
+      {
+        id: 'nin',
+        title: 'NIN Verification',
+        description: 'Verify your National Identification Number',
+        icon: CreditCard,
+        status: 'pending' as const,
+        required: true,
+        key: 'nin' as const
+      },
+      {
+        id: 'bvn',
+        title: 'BVN Verification',
+        description: 'Verify your Bank Verification Number',
+        icon: User,
+        status: 'pending' as const,
+        required: true,
+        key: 'bvn' as const
+      },
+      {
+        id: 'additionalDocument',
+        title: 'Additional Document',
+        description: 'Upload utility bill or other supporting document',
+        icon: FileCheck,
+        status: 'pending' as const,
+        required: false,
+        key: 'additionalDocument' as const
+      }
+    ];
+
+    if (!verificationStatus || !verificationStatus.documents) {
+      return defaultSteps;
+    }
+
+    return defaultSteps.map(step => {
+      switch (step.id) {
+        case 'governmentId':
+          return {
+            ...step,
+            status: verificationStatus.documents.governmentId.uploaded ? 'completed' : 'pending'
+          };
+        case 'nin':
+          return {
+            ...step,
+            status: verificationStatus.documents.nin.verified ? 'completed' : 
+                   verificationStatus.documents.nin.uploaded ? 'in-progress' : 'pending'
+          };
+        case 'bvn':
+          return {
+            ...step,
+            status: verificationStatus.documents.bvn.verified ? 'completed' : 'pending'
+          };
+        case 'additionalDocument':
+          return {
+            ...step,
+            status: verificationStatus.documents.additionalDocument.uploaded ? 'completed' : 'pending'
+          };
+        default:
+          return step;
+      }
+    });
+  }, [verificationStatus]);
+
+  useEffect(() => {
+    // Auto-select the first incomplete required step
+    if (verificationStatus && !selectedStep && !loading) {
+      const steps = getVerificationSteps();
+      const firstIncompleteStep = steps.find(step => 
+        step.required && step.status !== 'completed'
+      );
+      if (firstIncompleteStep) {
+        console.log('Auto-selecting step:', firstIncompleteStep.id);
+        setSelectedStep(firstIncompleteStep.id);
+      }
+    }
+  }, [verificationStatus, selectedStep, loading, getVerificationSteps]);
+
+  const fetchVerificationStatus = async () => {
+    try {
+      const response = await apiService.getVerificationStatus();
+      if (response.success && response.data) {
+        setVerificationStatus(response.data);
+      }
+    } catch (error) {
+      toast.error('Failed to fetch verification status');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusBadge = (status: string, required: boolean) => {
     switch (status) {
@@ -88,49 +174,119 @@ export function VerificationScreen({
     }
   };
 
-  const getOverallProgress = () => {
-    const completed = verificationSteps.filter(step => step.status === 'completed').length;
-    return (completed / verificationSteps.length) * 100;
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, stepId: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(stepId);
+    
+    try {
+      let response;
+      
+      if (stepId === 'governmentId') {
+        response = await apiService.uploadGovernmentId(file);
+      } else if (stepId === 'additionalDocument') {
+        response = await apiService.uploadAdditionalDocument(file, 'utility_bill');
+      }
+
+      if (response?.success && response.data) {
+        toast.success(response.data.message);
+        await fetchVerificationStatus(); // Refresh status
+        setSelectedStep(null);
+        setUploadedFile(null);
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      toast.error(errorMessage);
+    } finally {
+      setUploading(null);
+    }
+  };
+
+  const handleNinVerification = async () => {
+    if (!ninInput.trim()) {
+      toast.error('Please enter your NIN number');
+      return;
+    }
+
+    setUploading('nin');
+    
+    try {
+      const response = await apiService.verifyNin(ninInput.trim());
+      if (response.success && response.data) {
+        toast.success(response.data.message);
+        setNinInput('');
+        await fetchVerificationStatus();
+        setSelectedStep(null);
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'NIN verification failed';
+      toast.error(errorMessage);
+    } finally {
+      setUploading(null);
+    }
+  };
+
+  const handleBvnVerification = async () => {
+    if (!bvnInput.trim()) {
+      toast.error('Please enter your BVN number');
+      return;
+    }
+
+    setUploading('bvn');
+    
+    try {
+      const response = await apiService.verifyBvn(bvnInput.trim());
+      if (response.success && response.data) {
+        toast.success(response.data.message);
+        setBvnInput('');
+        await fetchVerificationStatus();
+        setSelectedStep(null);
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'BVN verification failed';
+      toast.error(errorMessage);
+    } finally {
+      setUploading(null);
+    }
   };
 
   const handleStepClick = (stepId: string) => {
-    const step = verificationSteps.find(s => s.id === stepId);
+    const steps = getVerificationSteps();
+    const step = steps.find(s => s.id === stepId);
     if (step && step.status !== 'completed') {
       setSelectedStep(stepId);
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUploadedFile(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const verificationSteps = getVerificationSteps();
+  const overallProgress = verificationSteps.length > 0 
+    ? (verificationSteps.filter(step => step.status === 'completed').length / verificationSteps.length) * 100 
+    : 0;
+  const completedCount = verificationSteps.filter(step => step.status === 'completed').length;
 
-  const handleSubmit = () => {
-    if (!selectedStep || !uploadedFile) return;
-    
-    setIsUploading(true);
-    setTimeout(() => {
-      setVerificationSteps(prev => prev.map(step => 
-        step.id === selectedStep 
-          ? { ...step, status: 'in-progress' as const }
-          : step
-      ));
-      setIsUploading(false);
-      setSelectedStep(null);
-      setUploadedFile(null);
-    }, 2000);
-  };
+  // Debug log
+  console.log('selectedStep:', selectedStep);
+  console.log('verificationSteps:', verificationSteps);
 
-  const overallProgress = getOverallProgress();
-  const completedCount = verificationSteps.filter(s => s.status === 'completed').length;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
-  if (!user) return null;
+  if (!verificationStatus) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle size={48} className="text-red-500 mx-auto mb-4" />
+          <p className="text-gray-600">Failed to load verification status</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -152,18 +308,37 @@ export function VerificationScreen({
             </motion.button>
             <div>
               <h1 className="text-lg font-semibold text-gray-900">Account Verification</h1>
-              <p className="text-sm text-gray-500">Complete verification to unlock features</p>
+              <p className="text-sm text-gray-500">Complete verification to unlock bidding features</p>
             </div>
           </div>
-          <Badge className="bg-green-100 text-green-700 border-0 flex items-center space-x-1">
+          <Badge className={verificationStatus.canBid ? "bg-green-100 text-green-700 border-0" : "bg-yellow-100 text-yellow-700 border-0"}>
             <Shield size={14} />
-            <span>{completedCount}/{verificationSteps.length}</span>
+            <span className="ml-1">
+              {verificationSteps.length > 0 ? `${completedCount}/${verificationSteps.length}` : 'Loading...'}
+            </span>
           </Badge>
         </div>
       </motion.div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
+        {/* Status Banner */}
+        {verificationStatus.canBid && (
+          <motion.div
+            className="bg-green-50 border border-green-200 rounded-2xl p-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center space-x-3">
+              <CheckCircle size={24} className="text-green-600" />
+              <div>
+                <h4 className="font-medium text-green-900">Verification Complete!</h4>
+                <p className="text-sm text-green-800">You can now bid on packages and make deliveries.</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Progress Card */}
         <motion.div
           className="bg-gray-50 border border-gray-200 rounded-2xl p-6"
@@ -195,6 +370,8 @@ export function VerificationScreen({
           {verificationSteps.map((step, index) => {
             const Icon = step.icon;
             const isSelected = selectedStep === step.id;
+            
+            console.log(`Step ${step.id} isSelected:`, isSelected);
 
             return (
               <motion.div
@@ -256,81 +433,116 @@ export function VerificationScreen({
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
-                      {/* Upload Preview */}
-                      {uploadedFile ? (
+                      {step.id === 'nin' && (
                         <div className="space-y-3">
-                          <div className="relative w-full h-48 rounded-xl overflow-hidden border border-gray-200">
-                            <img
-                              src={uploadedFile}
-                              alt="Uploaded document"
-                              className="w-full h-full object-cover"
-                            />
-                            <motion.button
-                              onClick={() => setUploadedFile(null)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center shadow-sm"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <AlertCircle size={16} className="text-white" />
-                            </motion.button>
-                          </div>
+                          <input
+                            type="text"
+                            value={ninInput}
+                            onChange={(e) => setNinInput(e.target.value)}
+                            placeholder="Enter your 11-digit NIN number"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            maxLength={11}
+                          />
                           <motion.button
-                            onClick={handleSubmit}
-                            disabled={isUploading}
-                            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center shadow-sm"
+                            onClick={handleNinVerification}
+                            disabled={uploading === 'nin' || !ninInput.trim()}
+                            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                           >
-                            {isUploading ? (
+                            {uploading === 'nin' ? (
                               <span className="flex items-center justify-center">
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                                Submitting...
+                                Verifying...
                               </span>
                             ) : (
-                              'Submit for Verification'
+                              'Verify NIN'
                             )}
                           </motion.button>
                         </div>
-                      ) : (
+                      )}
+
+                      {step.id === 'bvn' && (
+                        <div className="space-y-3">
+                          <input
+                            type="text"
+                            value={bvnInput}
+                            onChange={(e) => setBvnInput(e.target.value)}
+                            placeholder="Enter your 11-digit BVN number"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            maxLength={11}
+                          />
+                          <motion.button
+                            onClick={handleBvnVerification}
+                            disabled={uploading === 'bvn' || !bvnInput.trim()}
+                            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            {uploading === 'bvn' ? (
+                              <span className="flex items-center justify-center">
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                                Verifying...
+                              </span>
+                            ) : (
+                              'Verify BVN'
+                            )}
+                          </motion.button>
+                        </div>
+                      )}
+
+                      {(step.id === 'governmentId' || step.id === 'additionalDocument') && (
                         <div className="grid grid-cols-2 gap-3">
-                          {/* Camera Upload */}
                           <div>
                             <input
                               type="file"
                               id={`camera-${step.id}`}
-                              accept="image/*"
+                              accept="image/*,.pdf"
                               capture="environment"
-                              onChange={handleFileUpload}
+                              onChange={(e) => handleFileUpload(e, step.id)}
                               className="hidden"
+                              disabled={uploading === step.id}
                             />
                             <motion.label
                               htmlFor={`camera-${step.id}`}
-                              className="flex flex-col items-center justify-center bg-[#f44708] hover:bg-[#ff5722] text-white p-6 rounded-xl cursor-pointer shadow-sm"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
+                              className="flex flex-col items-center justify-center bg-blue-50 border-2 border-blue-500 text-blue-600 p-6 rounded-xl cursor-pointer disabled:opacity-50 hover:bg-blue-100"
+                              whileHover={{ scale: uploading === step.id ? 1 : 1.02 }}
+                              whileTap={{ scale: uploading === step.id ? 1 : 0.98 }}
                             >
-                              <Camera size={32} className="mb-2" />
-                              <span className="font-medium text-sm">Take Photo</span>
+                              {uploading === step.id ? (
+                                <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>
+                              ) : (
+                                <Camera size={32} className="mb-2" />
+                              )}
+                              <span className="font-medium text-sm">
+                                {uploading === step.id ? 'Uploading...' : 'Take Photo'}
+                              </span>
                             </motion.label>
                           </div>
 
-                          {/* File Upload */}
                           <div>
                             <input
                               type="file"
                               id={`file-${step.id}`}
                               accept="image/*,.pdf"
-                              onChange={handleFileUpload}
+                              onChange={(e) => handleFileUpload(e, step.id)}
                               className="hidden"
+                              disabled={uploading === step.id}
                             />
                             <motion.label
                               htmlFor={`file-${step.id}`}
-                              className="flex flex-col items-center justify-center bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-xl cursor-pointer shadow-sm"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
+                              className="flex flex-col items-center justify-center bg-blue-50 border-2 border-blue-500 text-blue-600 p-6 rounded-xl cursor-pointer disabled:opacity-50 hover:bg-blue-100"
+                              whileHover={{ scale: uploading === step.id ? 1 : 1.02 }}
+                              whileTap={{ scale: uploading === step.id ? 1 : 0.98 }}
                             >
-                              <Upload size={32} className="mb-2" />
-                              <span className="font-medium text-sm">Upload File</span>
+                              {uploading === step.id ? (
+                                <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>
+                              ) : (
+                                <Upload size={32} className="mb-2" />
+                              )}
+                              <span className="font-medium text-sm">
+                                {uploading === step.id ? 'Uploading...' : 'Upload File'}
+                              </span>
                             </motion.label>
                           </div>
                         </div>
@@ -357,25 +569,9 @@ export function VerificationScreen({
           <h4 className="font-medium text-blue-900 mb-2">Why Verify?</h4>
           <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
             <li>Increase trust with other users</li>
+            <li>Bid on packages and make deliveries</li>
             <li>Access higher transaction limits</li>
-            <li>Unlock premium features</li>
             <li>Priority support access</li>
-          </ul>
-        </motion.div>
-
-        {/* Guidelines */}
-        <motion.div
-          className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <h4 className="font-medium text-yellow-900 mb-2">Document Guidelines:</h4>
-          <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
-            <li>Ensure document is clear and readable</li>
-            <li>All corners of the document must be visible</li>
-            <li>No glare or shadows</li>
-            <li>Information must match your profile</li>
           </ul>
         </motion.div>
       </div>

@@ -11,6 +11,7 @@ interface JobProcessingScreenProps {
   isMinimized: boolean;
   onMinimize: () => void;
   bidCount?: number;
+  autoMinimize?: boolean; // Only auto-minimize on initial post
 }
 
 export function JobProcessingScreen({
@@ -19,16 +20,19 @@ export function JobProcessingScreen({
   onClose,
   isMinimized,
   onMinimize,
-  bidCount = 0
+  bidCount = 0,
+  autoMinimize = false
 }: JobProcessingScreenProps) {
   useEffect(() => {
-    // Auto-minimize after 5 seconds
+    // Only auto-minimize if explicitly requested (on initial post)
+    if (!autoMinimize) return;
+
     const timer = setTimeout(() => {
       onMinimize();
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [onMinimize]);
+  }, [onMinimize, autoMinimize]);
 
   // Minimized status bar at top
   if (isMinimized) {

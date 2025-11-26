@@ -12,29 +12,31 @@ import { useRouter } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
 import { ChatListScreen } from '@/components/ChatListScreen'
 import { PageLoader } from '@/components/LoadingStates'
-import type { ChatThread } from '@/types/index'
 
 function ChatContent() {
   const router = useRouter()
-  const { chatThreads, setSelectedChatThread } = useAppStore()
+  const { chatThreads } = useAppStore()
 
-  const handleThreadSelect = (thread: ChatThread) => {
-    setSelectedChatThread(thread)
-    router.push(`/chat/${thread.id}`)
-  }
+  // Debug: Log what we're getting from the store
+  console.log('🔔 Chat page - chatThreads from store:', chatThreads)
+  console.log('🔔 Chat page - chatThreads length:', chatThreads?.length || 0)
 
   const handleBack = () => {
     router.push('/dashboard')
   }
 
   if (!chatThreads) {
+    console.log('🔔 Chat page - No chatThreads, showing loader')
     return <PageLoader message="Loading chats..." />
+  }
+
+  if (chatThreads.length === 0) {
+    console.log('🔔 Chat page - Empty chatThreads array')
   }
 
   return (
     <ChatListScreen
       threads={chatThreads}
-      onThreadSelect={handleThreadSelect}
       onBack={handleBack}
     />
   )

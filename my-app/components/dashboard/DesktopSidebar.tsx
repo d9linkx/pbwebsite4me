@@ -9,17 +9,13 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { Home, Wallet, Settings, Heart, Users, Plus, Zap, Mail, Store } from 'lucide-react'
-import { User, UserRole } from '@/types'
+import { Home, Wallet, Settings, Heart, Users } from 'lucide-react'
 
 interface DesktopSidebarProps {
-  user: User | null
-  activeRole: UserRole
   currentPath: string
 }
 
-export function DesktopSidebar({ user, activeRole, currentPath }: DesktopSidebarProps) {
+export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
   const router = useRouter()
 
   const handleNavigation = (path: string) => {
@@ -71,7 +67,7 @@ export function DesktopSidebar({ user, activeRole, currentPath }: DesktopSidebar
                 <div className="flex items-center text-yellow-400">
                   <span className="text-sm">⭐</span>
                   <span className="ml-1 text-xs font-medium">
-                    {typeof user.rating === 'number' ? user.rating.toFixed(1) : '0.0'}
+                    {typeof user.rating === 'number' && user.rating > 0 ? user.rating.toFixed(1) : '5.0'}
                   </span>
                 </div>
                 <span className="text-gray-500 text-xs">•</span>

@@ -12,7 +12,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
 import { apiService } from '@/utils/apiService'
 import { ConfirmDialog, useConfirmDialog } from '@/components/ConfirmDialog'
-import type { DeliveryJob, DeliveryStatus } from '@/types/index'
+import type { DeliveryJob, DeliveryStatus, ItemSize, User, VehicleType } from '@/types/index'
 import { toast } from 'sonner'
 
 export default function JobDetailPage() {
@@ -56,34 +56,76 @@ export default function JobDetailPage() {
 
           // Map backend package to frontend DeliveryJob format
           const fetchedJob: DeliveryJob = {
-            id: pkg._id || pkg.id,
+            id: pkg._id || pkg.id || jobId,
             title: pkg.title,
             description: pkg.description || '',
             pickupLocation: pkg.sender?.formattedAddress || pkg.pickupLocation || '',
             dropoffLocation: pkg.receiver?.formattedAddress || pkg.dropoffLocation || '',
-            itemSize: pkg.items?.[0]?.size || pkg.itemSize || 'Medium',
+            itemSize: (pkg.items?.[0]?.size || pkg.itemSize || 'Medium') as ItemSize,
             category: pkg.items?.[0]?.category || pkg.category || 'general',
             weight: pkg.items?.[0]?.weight?.toString() || pkg.weight || '1kg',
             value: pkg.price || pkg.value || 0,
             receiverName: pkg.receiver?.name || '',
             receiverPhone: pkg.receiver?.phone || '',
-            receiverId: pkg.receiver?.receiverId || '',
-            senderId: pkg.sender?.senderId || '',
+            receiverId: pkg.receiver?.id || '',
+            senderId: pkg.sender?.id || '',
             senderName: pkg.sender?.name || '',
             senderPhone: pkg.sender?.phone || '',
-            selectedPalId: pkg.pal?.palId,
-            selectedPalName: pkg.pal?.name,
-            selectedPalPhone: pkg.pal?.phone,
+            selectedPalId: (() => {
+              const palId = pkg.pal?.palId;
+              if (!palId) return '';
+              if (typeof palId === 'string') return palId;
+              if (typeof palId === 'object' && palId !== null && '_id' in palId) {
+                return String((palId as { _id: unknown })._id);
+              }
+              return String(palId);
+            })(),
+            selectedPalName: pkg.pal?.palId ? 
+              (typeof pkg.pal.palId === 'object' && pkg.pal.palId !== null ? 
+                `${(pkg.pal.palId as User).firstName || ''} ${(pkg.pal.palId as User).lastName || ''}`.trim() : 
+                pkg.pal.palId.toString()) : undefined,
+            selectedPalPhone: pkg.pal?.palId ? 
+              (typeof pkg.pal.palId === 'object' && pkg.pal.palId !== null ? 
+                (pkg.pal.palId as User).phone : 
+                pkg.pal.palId.toString()) : undefined,
             status: (pkg.status || 'pending') as DeliveryStatus,
             pickupDate: pkg.pickupDate || new Date().toISOString(),
             pickupTime: pkg.pickupTime || '',
             notes: pkg.notes || '',
             images: pkg.items?.[0]?.images?.map((img: { url: string }) => img.url) || [],
             escrowAmount: pkg.escrowAmount || 0,
-            bids: pkg.bids || [],
+            bids: (pkg.bids || []).map((bid: {
+              _id: string;
+              id?: string;
+              amount: number;
+              palId: string;
+              palName?: string;
+              message?: string;
+              placedAt?: string;
+              status?: string;
+              palRating?: number;
+              vehicleType?: string;
+              estimatedTime?: string;
+              canEdit?: boolean;
+              createdAt?: string;
+            }) => ({
+              id: bid._id || bid.id || '',
+              palId: bid.palId || '',
+              palName: bid.palName || '',
+              palRating: bid.palRating || 0,
+              vehicleType: (bid.vehicleType || 'car') as VehicleType,
+              estimatedTime: bid.estimatedTime || '30 mins',
+              amount: bid.amount || 0,
+              message: bid.message || '',
+              placedAt: bid.placedAt || bid.createdAt || new Date().toISOString(),
+              canEdit: bid.canEdit ?? true,
+              createdAt: bid.createdAt || bid.placedAt || new Date().toISOString(),
+              isAccepted: bid.status === 'accepted',
+              bidStatus: (bid.status || 'pending') as 'pending' | 'rejected' | 'accepted' | 'withdrawn' | 'expired'
+            })),
             isLive: true,
             createdAt: pkg.createdAt || new Date().toISOString(),
-            orderNumber: pkg.orderNumber,
+            orderNumber: pkg.orderNumber || '',
           }
 
           setJob(fetchedJob)
@@ -222,6 +264,17 @@ export default function JobDetailPage() {
 
   const canViewBids = user && (user.id === job.senderId || activeRole === 'pal')
   const canTrack = job.status !== 'pending' && job.status !== 'bidding'
+
+  // Debug logging for permissions
+  console.log('🔐 Job Details Permissions:', {
+    userId: user?.id,
+    jobSenderId: job?.senderId,
+    isSender: user?.id === job?.senderId,
+    activeRole,
+    canViewBids,
+    jobStatus: job?.status,
+    canTrack
+  })
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">

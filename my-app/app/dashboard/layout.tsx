@@ -18,6 +18,7 @@ import { DashboardFooter } from '@/components/dashboard/DashboardFooter'
 import { Breadcrumbs } from '@/components/dashboard/Breadcrumbs'
 import { MobileMenu } from '@/components/dashboard/MobileMenu'
 import { DesktopSidebar } from '@/components/dashboard/DesktopSidebar'
+import { ProcessingMinimizedBar } from '@/components/dashboard/ProcessingMinimizedBar'
 import { useAppStore } from '@/stores/appStore'
 import { useAuth } from '@/utils/apiHooks'
 import type { UserRole, Screen } from '@/types/index'
@@ -42,7 +43,13 @@ export default function DashboardLayout({
     notifications,
     isMobileMenuOpen,
     setMobileMenuOpen,
+    processingJob,
+    isProcessingMinimized,
   } = useAppStore()
+
+  // Calculate if processing bar is visible
+  const isProcessingBarVisible = !!(processingJob && isProcessingMinimized)
+  const processingBarHeight = isProcessingBarVisible ? 60 : 0
 
   // Sync auth user with global state
   useEffect(() => {
@@ -181,8 +188,14 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      {/* Global Processing Minimized Bar - Renders as fixed overlay */}
+      <ProcessingMinimizedBar />
+
       {/* Full-Width Dashboard Header - Fixed at top */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white">
+      <div
+        className="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300"
+        style={{ top: `${processingBarHeight}px` }}
+      >
         <DashboardHeader
           activeRole={activeRole}
           onRoleChange={handleRoleChange}
@@ -199,7 +212,10 @@ export default function DashboardLayout({
       </div>
 
       {/* Main Content Area with Sidebar - Below Header with padding for fixed header */}
-      <div className="flex-1 flex overflow-hidden pt-32 md:pt-28">
+      <div
+        className="flex-1 flex overflow-hidden transition-all duration-300"
+        style={{ paddingTop: `${128 + processingBarHeight}px` }}
+      >
         {/* Desktop Sidebar - Fixed position, only visible on xl screens and above */}
         <div className="hidden xl:block xl:fixed xl:left-0 xl:top-24 xl:bottom-0 xl:w-64 xl:overflow-y-auto xl:border-r xl:border-gray-200 xl:bg-white">
           <DesktopSidebar

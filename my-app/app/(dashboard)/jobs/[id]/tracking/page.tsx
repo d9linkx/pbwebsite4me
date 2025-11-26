@@ -57,8 +57,15 @@ export default function JobTrackingPage() {
   }
 
   const handleOpenChat = () => {
-    // Open chat logic here
-    console.log('Opening chat for job:', jobId)
+    // Open WhatsApp with the pal if phone number is available
+    if (job.selectedPalPhone) {
+      const cleanPhone = job.selectedPalPhone.replace(/[^\d+]/g, '');
+      const whatsappUrl = `https://wa.me/${cleanPhone}`;
+      window.open(whatsappUrl, '_blank');
+    } else {
+      // Fallback: navigate to chat page
+      router.push('/chat');
+    }
   }
 
   // Determine user role based on job and current user

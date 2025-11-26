@@ -173,7 +173,15 @@ export class ApiClient {
     const contentType = response.headers.get('content-type');
 
     if (contentType && contentType.includes('application/json')) {
-      const data = await response.json() as ApiResponse<T>;
+      let data: ApiResponse<T>;
+      try {
+        data = await response.json() as ApiResponse<T>;
+      } catch (parseError) {
+        console.error('❌ Failed to parse JSON response:', parseError);
+        const responseText = await response.text();
+        console.error('❌ Response text:', responseText);
+        data = { success: false, message: `Invalid JSON response from server: ${responseText.substring(0, 200)}` } as ApiResponse<T>;
+      }
 
       if (!response.ok) {
         // Log detailed error information for debugging
@@ -181,9 +189,11 @@ export class ApiClient {
           status: response.status,
           statusText: response.statusText,
           url: response.url,
+          contentType: contentType,
           message: data.message,
           errors: data.errors,
-          data: data.data
+          data: data.data,
+          responseHeaders: Object.fromEntries(response.headers.entries())
         });
 
         const error: ApiError = {
@@ -216,9 +226,19 @@ export class ApiClient {
         pagination: data.pagination,
       };
     } else {
+      // Handle non-JSON responses
+      const responseText = await response.text();
+      console.error('❌ Non-JSON Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.url,
+        contentType: contentType,
+        responseText: responseText.substring(0, 500)
+      });
+      
       if (!response.ok) {
         throw {
-          message: response.statusText || 'An error occurred',
+          message: `Server returned ${response.status}: ${response.statusText}. Response: ${responseText.substring(0, 200)}`,
           status: response.status,
         } as ApiError;
       }

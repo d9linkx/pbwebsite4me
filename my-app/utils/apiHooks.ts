@@ -131,7 +131,16 @@ export function useAuth() {
       const response = await apiService.getCurrentUser();
 
       if (response.success && response.data) {
-        setUser(response.data);
+        // Normalize user object - ensure id is set from _id if needed
+        const normalizedUser = {
+          ...response.data,
+          id: response.data.id || response.data._id || '',
+          phone: response.data.phone || response.data.phoneNumber || '',
+          name: response.data.name || `${response.data.firstName} ${response.data.lastName}`.trim()
+        };
+
+        console.log('👤 Normalized user from getCurrentUser:', normalizedUser);
+        setUser(normalizedUser);
       } else {
         setUser(null);
         apiClient.clearAuthToken();
@@ -201,10 +210,19 @@ export function useAuth() {
         console.log('👤 Extracted user:', user);
 
         if (token && user) {
-          setUser(user);
+          // Normalize user object - ensure id is set from _id if needed
+          const normalizedUser = {
+            ...user,
+            id: user.id || user._id || '',
+            phone: user.phone || user.phoneNumber || '',
+            name: user.name || `${user.firstName} ${user.lastName}`.trim()
+          };
+
+          console.log('👤 Normalized user:', normalizedUser);
+          setUser(normalizedUser);
           apiClient.setAuthToken(token);
           console.log('✅ Login successful, token stored');
-          return { success: true, user };
+          return { success: true, user: normalizedUser };
         } else {
           console.error('❌ Token or user missing from response');
           setError('Login response missing required data');

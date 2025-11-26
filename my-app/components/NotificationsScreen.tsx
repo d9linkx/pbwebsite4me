@@ -2,11 +2,10 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Bell, Package, DollarSign, MessageCircle, Star, Gift, AlertCircle, CheckCircle, Edit3, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { User, Notification, UserRole, Screen } from '../types';
+import { Notification, UserRole, Screen } from '../types';
 import { filterNotificationsByRole } from '../utils/helpers';
 
 interface NotificationsScreenProps {
-  user: User | null;
   notifications: Notification[];
   activeRole: UserRole;
   onBack: () => void;
@@ -15,12 +14,12 @@ interface NotificationsScreenProps {
   onMarkAllAsRead: () => void;
   onNotificationAction: (notification: Notification) => void;
   initialTab?: 'alerts' | 'general';
+  loading?: boolean;
 }
 
 type TabType = 'alerts' | 'general';
 
 export function NotificationsScreen({ 
-  user, 
   notifications, 
   activeRole,
   onBack, 
@@ -28,29 +27,54 @@ export function NotificationsScreen({
   onMarkAsRead,
   onMarkAllAsRead,
   onNotificationAction,
-  initialTab = 'alerts'
+  initialTab = 'alerts',
+  loading = false
 }: NotificationsScreenProps) {
   const [activeTab, setActiveTab] = useState<TabType>(initialTab);
 
-  const filteredNotifications = filterNotificationsByRole(notifications, activeRole);
+  // Debug: Log what notifications we received
+  console.log('🔔 NotificationsScreen received notifications:', notifications.length, notifications)
+  console.log('🔔 Active role:', activeRole)
+  
+  // Debug: Check first notification structure if any exist
+  if (notifications.length > 0) {
+    console.log('🔔 First notification structure:', notifications[0])
+    console.log('🔔 First notification full details:', JSON.stringify(notifications[0], null, 2))
+  }
 
-  const alertNotifications = filteredNotifications.filter(n => 
+  const filteredNotifications = filterNotificationsByRole(notifications, activeRole);
+  console.log('🔔 Filtered notifications for role:', activeRole, filteredNotifications.length)
+  
+  // Temporarily bypass role filtering to test
+  const bypassedNotifications = notifications; // Use all notifications for testing
+  console.log('🔔 Bypassed notifications count:', bypassedNotifications.length)
+
+  const alertNotifications = bypassedNotifications.filter(n => 
     n.category === 'alert' ||
     n.priority === 'urgent' ||
     n.actionRequired ||
-    ['bid-placed', 'delivery-assigned', 'item-edit-request', 'dispute-flagged', 'delivery-update'].includes(n.type)
+    ['bid-placed', 'bid_accepted', 'delivery-assigned', 'item-edit-request', 'dispute-flagged', 'delivery-update'].includes(n.type)
   );
 
-  const generalNotifications = filteredNotifications.filter(n => 
+  const generalNotifications = bypassedNotifications.filter(n => 
     n.category === 'general' ||
-    ((!n.category && !n.priority) || n.priority === 'low' || n.priority === 'normal') &&
+    ((!n.category && !n.priority) || n.priority === 'low' || n.priority === 'medium') &&
     !n.actionRequired &&
-    ['promo-offer', 'system-message', 'rating-received', 'payment-received', 'delivery-completed', 'payment-processed', 'wallet-topup', 'delivery-posted'].includes(n.type)
+    ['promo-offer', 'system-message', 'rating-received', 'payment-received', 'delivery-completed', 'payment-processed', 'wallet-topup', 'delivery-posted', 'package-created'].includes(n.type)
   );
 
   const currentNotifications = activeTab === 'alerts' ? alertNotifications : generalNotifications;
   const totalUnreadAlerts = alertNotifications.filter(n => !n.read).length;
   const totalUnreadGeneral = generalNotifications.filter(n => !n.read).length;
+
+  console.log('🔔 Current notifications for tab:', activeTab, currentNotifications.length)
+  console.log('🔔 Alert notifications:', alertNotifications.length, 'Unread alerts:', totalUnreadAlerts)
+  console.log('🔔 General notifications:', generalNotifications.length, 'Unread general:', totalUnreadGeneral)
+  
+  // Debug: Check first notification structure if any exist
+  if (notifications.length > 0) {
+    console.log('🔔 First notification structure:', notifications[0])
+  }
 
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -178,7 +202,22 @@ export function NotificationsScreen({
         </div>
       </motion.div>
 
+      {/* Loading State */}
+      {loading && (
+        <motion.div
+          className="w-full px-4 py-8 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading notifications...</p>
+          </div>
+        </motion.div>
+      )}
+
       {/* Notifications List */}
+      {!loading && (
       <div className="w-full px-4 py-4 space-y-3 relative z-10">
         {currentNotifications.length === 0 ? (
           <motion.div
@@ -237,6 +276,7 @@ export function NotificationsScreen({
           ))
         )}
       </div>
+      )}
     </div>
   );
 }

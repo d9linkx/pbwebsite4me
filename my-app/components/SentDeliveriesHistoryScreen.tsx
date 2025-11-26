@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { Badge } from './ui/badge';
 import { Input } from './ui/input';
 import { DeliveryJob, User, Bid, Screen } from '../types';
+import { PackageFilters, filterPackages } from '../utils/packageFilters';
+import { calculateSenderStats } from '../utils/packageStats';
 
 interface SentDeliveriesHistoryScreenProps {
   user: User | null;
@@ -33,15 +35,26 @@ export function SentDeliveriesHistoryScreen({
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredJobs = useMemo(() => {
-    return userJobs.filter(job => {
-      const matchesSearch = (job.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.pickupLocation || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.dropoffLocation || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const filters = [
+      PackageFilters.bySearchQuery(searchQuery)
+    ];
 
-      const matchesStatus = filterStatus === 'all' || job.status === filterStatus;
+    // Add status filter if not 'all'
+    if (filterStatus !== 'all') {
+      if (filterStatus === 'bidding' || filterStatus === 'pending') {
+        filters.push(PackageFilters.sender.bidding);
+      } else if (filterStatus === 'assigned') {
+        filters.push(PackageFilters.sender.assigned);
+      } else if (['in-transit', 'picked-up'].includes(filterStatus)) {
+        filters.push((job) => ['in-transit', 'picked-up'].includes(job.status));
+      } else if (filterStatus === 'delivered') {
+        filters.push(PackageFilters.sender.delivered);
+      } else if (filterStatus === 'completed') {
+        filters.push(PackageFilters.sender.completed);
+      }
+    }
 
-      return matchesSearch && matchesStatus;
-    });
+    return filterPackages(userJobs, filters);
   }, [userJobs, searchQuery, filterStatus]);
 
   const getStatusInfo = (job: DeliveryJob) => {
@@ -64,13 +77,7 @@ export function SentDeliveriesHistoryScreen({
   };
 
   const stats = useMemo(() => {
-    const total = userJobs.length;
-    const bidding = userJobs.filter(job => ['pending', 'bidding'].includes(job.status)).length;
-    const active = userJobs.filter(job => ['assigned', 'picked-up', 'in-transit'].includes(job.status)).length;
-    const delivered = userJobs.filter(job => job.status === 'delivered').length;
-    const completed = userJobs.filter(job => job.status === 'completed').length;
-
-    return { total, bidding, active, delivered, completed };
+    return calculateSenderStats(userJobs);
   }, [userJobs]);
 
   const handleJobAction = (job: DeliveryJob) => {

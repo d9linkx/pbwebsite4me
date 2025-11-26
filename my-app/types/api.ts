@@ -1,18 +1,11 @@
 import {
   User,
   DeliveryJob,
-  Bid,
   ProxyItem,
-  ChatThread,
-  ChatMessage,
-  Notification,
-  Transaction,
   UserRole,
   DeliveryStatus,
   ItemSize,
 //   VehicleType,
-  ProxyStatus,
-  DisputeStatus,
 } from './index';
 
 // API Request/Response Types
@@ -432,4 +425,108 @@ export interface ReferralStatsResponse {
     status: 'active' | 'completed';
     earnings: number;
   }>;
+}
+
+// Pricing Types
+export interface PricingSuggestionRequest {
+  pickupLocation: string;
+  dropoffLocation: string;
+  packageSize: string;
+  urgency?: 'low' | 'medium' | 'high';
+  pickupTime?: string;
+}
+
+export interface PricingSuggestionResponse {
+  suggestedPrice: number;
+  currency: string;
+  breakdown: {
+    basePrice: number;
+    distanceFee: number;
+    sizeFee: number;
+    urgencyFee?: number;
+    weatherAdjustment?: number;
+    trafficAdjustment?: number;
+  };
+  estimatedDeliveryTime: string;
+  confidence: number;
+  factors: {
+    distance: number;
+    estimatedDuration: number;
+    difficulty: 'easy' | 'medium' | 'hard';
+  };
+}
+
+// Backend Package Response Types (MongoDB format)
+export interface BackendPackageResponse {
+  _id: string; // MongoDB ObjectId
+  id?: string; // Optional alternative field
+  title: string;
+  description?: string;
+  pickupLocation: string;
+  dropoffLocation: string;
+  itemSize: string;
+  category?: string;
+  weight?: string;
+  value: number;
+  price?: number; // Backend may use price instead of value
+  pickupDate: string;
+  notes?: string;
+  status: string;
+  createdAt: string;
+  orderNumber?: string;
+  pickupTime?: string;
+  escrowAmount?: number;
+  
+  // Nested objects from backend
+  sender?: {
+    id?: string;
+    senderId?: string | { _id: string }; // Can be string or object with _id
+    name?: string;
+    phone?: string;
+    formattedAddress?: string;
+  };
+  receiver?: {
+    id?: string;
+    name?: string;
+    phone?: string;
+    formattedAddress?: string;
+  };
+  items?: Array<{
+    size?: string;
+    category?: string;
+    weight?: string;
+    images?: Array<{ url: string }>;
+  }>;
+  bids?: Array<{
+    _id: string;
+    id?: string;
+    amount: number;
+    palId: string;
+    palName?: string;
+    message?: string;
+    placedAt?: string;
+    status?: string;
+  }>;
+  pal?: {
+    palId?: string;
+    name?: string;
+    phone?: string;
+    location?: {
+      type: string;
+      coordinates?: number[];
+    };
+    lockedEscrowAmount?: number;
+    acceptedBid?: number;
+  };
+  proxy?: {
+    proxyId?: string;
+    name?: string;
+    phone?: string;
+    location?: {
+      type: string;
+      coordinates?: number[];
+    };
+    lockedEscrowAmount?: number;
+    acceptedBid?: number;
+  };
 }

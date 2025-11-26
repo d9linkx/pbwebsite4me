@@ -15,6 +15,7 @@ import {
   MOBILE_GRID_CONFIG
 } from '../../constants/dashboard';
 import { DashboardStats, formatAmount, getAvailableJobsCount } from '../../utils/dashboard';
+import { getSenderPackages, getPalPackages, getReceiverPackages, getProxyPackages, PackageFilters } from '../../utils/packageFilters';
 
 interface QuickActionsCardProps {
   activeRole: UserRole;
@@ -56,22 +57,33 @@ export function QuickActionsCard({
   // Filter sent packages for the current user (sender role)
   const sentPackages = useMemo(() => {
     if (!user) return [];
-    return allJobs.filter(job => job.senderId === user.id);
+    const filtered = getSenderPackages(allJobs, user.id);
+    console.log('📤 Sender packages filter:', {
+      userId: user.id,
+      allJobsCount: allJobs.length,
+      filteredCount: filtered.length,
+      allJobs: allJobs.map(j => ({ id: j.id, senderId: j.senderId })),
+      filtered: filtered.map(j => ({ id: j.id, senderId: j.senderId }))
+    });
+    return filtered;
   }, [allJobs, user]);
 
-  // Filter jobs where pal has placed bids or been accepted (pal role)
+  // Filter jobs where user is the accepted pal (pal role)
   const palJobs = useMemo(() => {
     if (!user) return [];
-    return allJobs.filter(job =>
-      job.bids?.some(bid => bid.palId === user.id) ||
-      job.selectedPalId === user.id
-    );
+    return getPalPackages(allJobs, user.id);
   }, [allJobs, user]);
 
   // Filter jobs where user is the receiver (receiver role)
   const receivedPackages = useMemo(() => {
     if (!user) return [];
-    return allJobs.filter(job => job.receiverName === user.name || job.receiverPhone === user.phone);
+    return getReceiverPackages(allJobs, user.id);
+  }, [allJobs, user]);
+
+  // Filter jobs where user is the proxy (proxy role)
+  const proxyPackages = useMemo(() => {
+    if (!user) return [];
+    return getProxyPackages(allJobs, user.id);
   }, [allJobs, user]);
 
   const [lastActivity, setLastActivity] = useState(Date.now());
@@ -209,7 +221,7 @@ export function QuickActionsCard({
         isolation: 'isolate',
         pointerEvents: 'auto'
       }}>
-        <div className="mb-6 border-b-0">
+        <div className=" border-b-0">
           {/* Wallet Balance and In-Escrow Section - Side by Side */}
           {/* <div className="grid grid-cols-2 gap-4 mb-8">
            
@@ -420,19 +432,14 @@ export function QuickActionsCard({
                 WebkitTapHighlightColor: 'transparent'
               }}
             >
-              <div className="flex items-center space-x-1.5">
-                {/* <span className="text-gray-900 font-bold text-base">₦</span> */}
-                <span className="text-gray-900 font-bold text-base">
-                  {formatAmount(user?.walletBalance || 0)}
-                </span>
-              </div>
+             
               <div className="w-9 h-9 rounded-lg bg-[#f44708] flex items-center justify-center">
                 <Wallet size={18} className="text-white" />
               </div>
             </button>
           </div>
 
-          <p className="text-prawnbox-text-light text-left leading-relaxed text-[15px] mb-6">
+          <p className="text-prawnbox-text-light text-left leading-relaxed text-[15px]">
             {activeRole === 'sender' && 'Let Pals (our verified delivery agents) bid to deliver your item. Or, choose a Pal you know.'}
             {activeRole === 'pal' && 'Pick up & deliver packages, whether you own a vehicle, or are a passenger.'}
             {activeRole === 'receiver' && 'Track your incoming deliveries and confirm receipt when they arrive safely.'}
@@ -595,7 +602,7 @@ export function QuickActionsCard({
 
           {activeRole === 'proxy' && (
             <RecentActivity
-              packages={sentPackages}
+              packages={proxyPackages}
               onViewPackage={(job) => {
                 if (onJobSelect) {
                   onJobSelect(job);

@@ -60,8 +60,12 @@ export const enhanceUserWithDefaults = (userData: User): User => {
 // 🔥 NOTIFICATION TYPE TO ROLE MAPPING
 const notificationTypeToRoles: Record<Notification['type'], UserRole[]> = {
   // Sender-specific notifications
+  'package-created': ['sender'],
+  'package-update': ['sender'],
   'item-edit-request': ['sender'],
   'bid-placed': ['sender'],
+  'bid_accepted': ['sender'], // Add bid_accepted for sender (matches server schema)
+  'bid-rejected': ['sender'],
   'dispute-flagged': ['sender'],
 
   // Pal-specific notifications

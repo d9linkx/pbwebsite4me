@@ -1,30 +1,46 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
 import { JobProcessingScreen } from '@/components/JobProcessingScreen'
 import { apiService } from '@/utils/apiService'
 import { io, Socket } from 'socket.io-client'
-import { DeliveryJob } from '@/types'
+import { DeliveryJob, ItemSize, DeliveryStatus } from '@/types'
+import { BackendPackageResponse } from '@/types/api'
 
 export default function JobProcessingPage() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const jobId = params.id as string
-  const { deliveryJobs, setDeliveryJobs } = useAppStore()
+  const shouldAutoMinimize = searchParams.get('autoMinimize') === 'true'
+  const {
+    deliveryJobs,
+    setDeliveryJobs,
+    processingJob,
+    isProcessingMinimized,
+    processingBidCount,
+    setProcessingJob,
+    setProcessingMinimized,
+    setProcessingBidCount
+  } = useAppStore()
   const [job, setJob] = useState(deliveryJobs.find(j => j.id === jobId) || null)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [bidCount, setBidCount] = useState(0)
   const [socket, setSocket] = useState<Socket | null>(null)
 
-  // Fetch job details on mount
+  // Expand the view when this page loads (un-minimize)
+  useEffect(() => {
+    setProcessingMinimized(false)
+  }, [setProcessingMinimized])
+
+  // Initialize processing job in global store on mount
   useEffect(() => {
     if (!job) {
       apiService.getPackageById(jobId).then(response => {
         if (response.success && response.data) {
           const mappedJob = mapPackageToDeliveryJob(response.data)
           setJob(mappedJob)
-          setBidCount(response.data.bids?.length || 0)
+          setProcessingJob(mappedJob)
+          setProcessingBidCount(response.data.bids?.length || 0)
         } else {
           console.error('Failed to fetch job:', response.message)
           router.push('/dashboard')
@@ -34,10 +50,13 @@ export default function JobProcessingPage() {
         router.push('/dashboard')
       })
     } else {
-      setBidCount(job.bids?.length || 0)
+      // If job exists, set it as the processing job
+      setProcessingJob(job)
+      setProcessingBidCount(job.bids?.length || 0)
     }
     // Only run once on mount or when jobId changes
-  }, [jobId, router])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jobId])
 
   // Initialize WebSocket connection separately
   useEffect(() => {
@@ -58,7 +77,7 @@ export default function JobProcessingPage() {
     socketInstance.on('bid_placed', (data) => {
       if (data.packageId === jobId) {
         console.log('New bid received:', data)
-        setBidCount(data.bidCount)
+        setProcessingBidCount(data.bidCount)
 
         // Update job state with new bid
         setJob(prevJob => {
@@ -83,47 +102,76 @@ export default function JobProcessingPage() {
   }, [jobId])
 
   const handleViewDetails = useCallback(() => {
-    router.push(`/jobs/${jobId}`)
+    // Navigate directly to the bids page since sender wants to see bids and user details
+    router.push(`/jobs/${jobId}/bids`)
   }, [router, jobId])
 
   const handleClose = useCallback(() => {
-    router.push('/dashboard')
-  }, [router])
-
-  const handleMinimize = useCallback(() => {
-    setIsMinimized(true)
-    // Auto-redirect to dashboard after minimizing
+    // Just minimize and navigate back - don't clear the processing job
+    setProcessingMinimized(true)
     setTimeout(() => {
       router.push('/dashboard')
-    }, 2000) // Wait 2 seconds before redirecting
-  }, [router])
+    }, 100)
+  }, [router, setProcessingMinimized])
+
+  const handleMinimize = useCallback(() => {
+    // Set minimized state BEFORE redirecting
+    setProcessingMinimized(true)
+    // Use setTimeout to ensure state is set before navigation
+    setTimeout(() => {
+      router.push('/dashboard')
+    }, 100)
+  }, [router, setProcessingMinimized])
 
   // Helper function to map package data to DeliveryJob
-  function mapPackageToDeliveryJob(packageData: any): DeliveryJob {
+  function mapPackageToDeliveryJob(packageData: BackendPackageResponse): DeliveryJob {
+    // Handle senderId that can be string or object
+    const getSenderId = () => {
+      if (!packageData.sender?.senderId) return '';
+      if (typeof packageData.sender.senderId === 'string') return packageData.sender.senderId;
+      if (typeof packageData.sender.senderId === 'object' && packageData.sender.senderId._id) {
+        return packageData.sender.senderId._id;
+      }
+      return '';
+    };
+
     return {
       id: packageData._id,
-      orderNumber: packageData.orderNumber,
-      senderId: packageData.sender?.senderId || '',
+      orderNumber: packageData.orderNumber || '',
+      senderId: getSenderId(),
       senderName: packageData.sender?.name || '',
       senderPhone: packageData.sender?.phone || '',
-      receiverId: packageData.receiver?.receiverId,
+      receiverId: packageData.receiver?.id || '',
       receiverName: packageData.receiver?.name || '',
       receiverPhone: packageData.receiver?.phone || '',
       title: packageData.title || 'Package Delivery',
       description: packageData.description,
-      pickupLocation: packageData.sender?.formattedAddress || '',
-      dropoffLocation: packageData.receiver?.formattedAddress || '',
-      itemSize: packageData.items?.[0]?.size || 'Medium',
-      category: packageData.items?.[0]?.category || 'general',
-      weight: packageData.items?.[0]?.weight?.toString() || '1kg',
-      value: packageData.price || 0,
+      pickupLocation: packageData.pickupLocation || '',
+      dropoffLocation: packageData.dropoffLocation || '',
+      itemSize: (packageData.itemSize as ItemSize) || 'Medium',
+      category: packageData.category || 'general',
+      weight: packageData.weight || '1kg',
+      value: packageData.value || 0,
       pickupDate: packageData.pickupDate || new Date().toISOString(),
       pickupTime: packageData.pickupTime || '',
       notes: packageData.notes,
-      images: packageData.items?.[0]?.images?.map((img: any) => img.url) || [],
-      status: packageData.status || 'pending',
-      bids: packageData.bids || [],
-      escrowAmount: packageData.pal?.lockedEscrowAmount || 0,
+      images: packageData.items?.[0]?.images?.map((img) => img.url) || [],
+      status: (packageData.status as DeliveryStatus) || 'pending',
+      bids: (packageData.bids || []).map((backendBid) => ({
+        id: backendBid._id || backendBid.id || '',
+        palId: backendBid.palId || '',
+        palName: backendBid.palName || `Pal ${(backendBid.palId || '').slice(-4)}`,
+        palRating: 0, // Backend doesn't provide palRating
+        vehicleType: 'motorcycle' as const, // Backend doesn't provide vehicleType
+        estimatedTime: '30 mins', // Backend doesn't provide estimatedTime
+        amount: backendBid.amount || 0,
+        message: backendBid.message || '',
+        placedAt: backendBid.placedAt || new Date().toISOString(),
+        canEdit: backendBid.status === 'pending',
+        isAccepted: backendBid.status === 'accepted',
+        createdAt: backendBid.placedAt || new Date().toISOString(),
+      })),
+      escrowAmount: packageData.escrowAmount || 0,
       selectedPalId: packageData.pal?.palId,
       isLive: true,
       createdAt: packageData.createdAt || new Date().toISOString()
@@ -141,11 +189,12 @@ export default function JobProcessingPage() {
   return (
     <JobProcessingScreen
       job={job}
-      isMinimized={isMinimized}
+      isMinimized={isProcessingMinimized}
       onMinimize={handleMinimize}
       onViewDetails={handleViewDetails}
       onClose={handleClose}
-      bidCount={bidCount}
+      bidCount={processingBidCount}
+      autoMinimize={shouldAutoMinimize}
     />
   )
 }

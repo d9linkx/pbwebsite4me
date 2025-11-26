@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { Badge } from './ui/badge';
 import { Input } from './ui/input';
 import { DeliveryJob, User as UserType, Screen } from '../types';
+import { PackageFilters, filterPackages } from '../utils/packageFilters';
+import { calculateReceiverStats } from '../utils/packageStats';
 
 interface ReceivedDeliveriesScreenProps {
   user: UserType | null;
@@ -34,25 +36,24 @@ export function ReceivedDeliveriesScreen({
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredJobs = useMemo(() => {
-    return receivedJobs.filter(job => {
-      const matchesSearch = (job.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (job.senderName || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const filters = [
+      PackageFilters.bySearchQuery(searchQuery)
+    ];
 
-      let matchesStatus: boolean = false;
-      if (filterStatus === 'all') {
-        matchesStatus = true;
-      } else if (filterStatus === 'incoming') {
-        matchesStatus = ['assigned', 'picked-up', 'in-transit'].includes(job.status);
+    // Add status filter if not 'all'
+    if (filterStatus !== 'all') {
+      if (filterStatus === 'incoming') {
+        filters.push(PackageFilters.receiver.incoming);
       } else if (filterStatus === 'with-proxy') {
-        matchesStatus = job.status === 'delivered' && !!job.proxyId;
+        filters.push(PackageFilters.receiver.withProxy);
       } else if (filterStatus === 'confirming') {
-        matchesStatus = job.status === 'delivered' && !job.proxyId;
+        filters.push(PackageFilters.receiver.confirming);
       } else if (filterStatus === 'completed') {
-        matchesStatus = job.status === 'completed';
+        filters.push(PackageFilters.receiver.completed);
       }
+    }
 
-      return matchesSearch && matchesStatus;
-    });
+    return filterPackages(receivedJobs, filters);
   }, [receivedJobs, searchQuery, filterStatus]);
 
   const getStatusInfo = (job: DeliveryJob) => {
@@ -94,13 +95,7 @@ export function ReceivedDeliveriesScreen({
   };
 
   const stats = useMemo(() => {
-    const total = receivedJobs.length;
-    const incoming = receivedJobs.filter(job => ['assigned', 'picked-up', 'in-transit'].includes(job.status)).length;
-    const withProxy = receivedJobs.filter(job => job.status === 'delivered' && job.proxyId).length;
-    const confirming = receivedJobs.filter(job => job.status === 'delivered' && !job.proxyId).length;
-    const completed = receivedJobs.filter(job => job.status === 'completed').length;
-
-    return { total, incoming, withProxy, confirming, completed };
+    return calculateReceiverStats(receivedJobs);
   }, [receivedJobs]);
 
   const handleJobAction = (job: DeliveryJob) => {

@@ -10,7 +10,7 @@ interface WalletAddFundsScreenProps {
   onBack: () => void;
   onBankTransfer: (amount: number) => void;
   onCardPayment: (amount: number) => void;
-  onAddComplete: (amount: number) => void;
+  isLoading?: boolean;
 }
 
 export function WalletAddFundsScreen({
@@ -18,7 +18,7 @@ export function WalletAddFundsScreen({
   onBack,
   onBankTransfer,
   onCardPayment,
-  onAddComplete
+  isLoading = false
 }: WalletAddFundsScreenProps) {
   const [amount, setAmount] = useState('');
   const [selectedMethod, setSelectedMethod] = useState<'card' | 'bank' | 'mobile' | null>(null);
@@ -44,8 +44,9 @@ export function WalletAddFundsScreen({
         onCardPayment(numericAmount);
       } else if (selectedMethod === 'bank') {
         onBankTransfer(numericAmount);
-      } else {
-        onAddComplete(numericAmount);
+      } else if (selectedMethod === 'mobile') {
+        // Mobile money uses same flow as card payment (Monnify supports mobile payments)
+        onCardPayment(numericAmount);
       }
     }
   };
@@ -90,39 +91,39 @@ export function WalletAddFundsScreen({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
-      {/* Dark Header */}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Header */}
       <motion.div 
-        className="bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] border-b border-white/10 p-6 shadow-lg"
+        className="bg-white border-b border-gray-200 p-6 shadow-sm"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center space-x-4">
           <motion.button
             onClick={onBack}
-            className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <ArrowLeft size={20} className="text-white" />
+            <ArrowLeft size={20} className="text-gray-700" />
           </motion.button>
           <div>
-            <h1 className="text-lg font-semibold text-white">Add Funds</h1>
-            <p className="text-sm text-gray-400">Top up your wallet</p>
+            <h1 className="text-lg font-semibold text-gray-900">Add Funds</h1>
+            <p className="text-sm text-gray-500">Top up your wallet</p>
           </div>
         </div>
       </motion.div>
 
-      {/* White Content */}
+      {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {/* Current Balance */}
         <motion.div 
-          className="bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] rounded-2xl p-6 text-center shadow-lg"
+          className="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <p className="text-sm text-gray-400 mb-2">Current Balance</p>
-          <p className="text-3xl font-bold text-white">{formatAmount(user.walletBalance || 0)}</p>
+          <p className="text-sm text-gray-600 mb-2">Current Balance</p>
+          <p className="text-3xl font-bold text-[#f44708]">{formatAmount(user.walletBalance || 0)}</p>
         </motion.div>
 
         {/* Amount Input */}
@@ -158,8 +159,8 @@ export function WalletAddFundsScreen({
                   onClick={() => handleQuickAmount(value)}
                   className={`py-3 rounded-xl border-2 font-medium transition-all flex items-center justify-center ${
                     amount === value.toString() 
-                      ? 'bg-[#2f2f2f] text-white border-[#2f2f2f]' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#2f2f2f]'
+                      ? 'bg-[#f44708] text-white border-[#f44708]' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#f44708]'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -191,9 +192,9 @@ export function WalletAddFundsScreen({
                 <motion.div
                   key={method.id}
                   onClick={() => setSelectedMethod(method.id as 'card' | 'bank' | 'mobile')}
-                  className={`p-4 cursor-pointer transition-all rounded-2xl border-2 ${
+                  className={`p-4 cursor-pointer transition-all rounded-xl border-2 ${
                     isSelected 
-                      ? 'border-[#2f2f2f] bg-[#2f2f2f] text-white shadow-lg' 
+                      ? 'border-[#f44708] bg-[#f44708] text-white shadow-sm' 
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                   whileHover={{ scale: 1.02 }}
@@ -222,7 +223,7 @@ export function WalletAddFundsScreen({
                         : 'border-gray-300'
                     }`}>
                       {isSelected && (
-                        <div className="w-3 h-3 rounded-full bg-[#2f2f2f]"></div>
+                        <div className="w-3 h-3 rounded-full bg-[#f44708]"></div>
                       )}
                     </div>
                   </div>
@@ -235,31 +236,40 @@ export function WalletAddFundsScreen({
         {/* Summary & Proceed */}
         {amount && selectedMethod && (
           <motion.div 
-            className="bg-[#2f2f2f] text-white rounded-2xl p-6 shadow-lg"
+            className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-white/80">Amount to add:</span>
-                <span className="font-bold text-xl">{formatAmount(parseFloat(amount))}</span>
+                <span className="text-gray-600">Amount to add:</span>
+                <span className="font-bold text-xl text-[#f44708]">{formatAmount(parseFloat(amount))}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-white/80">New balance:</span>
-                <span className="font-bold text-xl">
+                <span className="text-gray-600">New balance:</span>
+                <span className="font-bold text-xl text-gray-900">
                   {formatAmount((user.walletBalance || 0) + parseFloat(amount))}
                 </span>
               </div>
-              <div className="pt-4 border-t border-white/20">
+              <div className="pt-4 border-t border-gray-200">
                 <motion.button
                   onClick={handleProceed}
-                  disabled={!amount || parseFloat(amount) <= 0 || !selectedMethod}
-                  className="w-full bg-white text-[#2f2f2f] hover:bg-gray-100 py-4 font-semibold rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={amount && selectedMethod ? { scale: 1.02 } : {}}
-                  whileTap={amount && selectedMethod ? { scale: 0.98 } : {}}
+                  disabled={!amount || parseFloat(amount) <= 0 || !selectedMethod || isLoading}
+                  className="w-full bg-[#f44708] hover:bg-[#e03d06] text-white py-4 font-semibold rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  whileHover={amount && selectedMethod && !isLoading ? { scale: 1.02 } : {}}
+                  whileTap={amount && selectedMethod && !isLoading ? { scale: 0.98 } : {}}
                 >
-                  <Plus size={20} className="mr-2" />
-                  Add {formatAmount(parseFloat(amount) || 0)}
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={20} className="mr-2" />
+                      Add {formatAmount(parseFloat(amount) || 0)}
+                    </>
+                  )}
                 </motion.button>
               </div>
             </div>

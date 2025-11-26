@@ -328,7 +328,19 @@ export interface DeliveryJob {
   acceptedBidAmount?: number;
   escrowAmount?: number;
   escrowId?: string;
-  
+
+  // Enhanced bidding configuration
+  biddingConfig?: BiddingConfig;
+  biddingStatus?: BiddingStatus;
+  lowestBidAmount?: number;
+  lowestBidId?: string;
+  totalBidsReceived?: number;
+  uniqueBiddersCount?: number;
+  broadcastRadius?: number; // km - initial radius for Pal notifications
+  assignmentMethod?: AssignmentMethod;
+  assignedAt?: string;
+  timeToAssignment?: number; // milliseconds from post to assignment
+
   isLive?: boolean;
   createdAt: string;
   updatedAt?: string;
@@ -404,6 +416,56 @@ export interface Bid {
   canEdit: boolean;
   isAccepted?: boolean;
   createdAt: string;
+
+  // Enhanced bidding fields
+  palDistance?: number; // km from pickup location
+  palCompletedJobs?: number; // Total completed deliveries
+  palCompletionRate?: number; // Percentage of successful deliveries (0-100)
+  estimatedPickupTime?: string; // "15 mins", "30 mins"
+  bidStatus?: 'pending' | 'accepted' | 'rejected' | 'withdrawn' | 'expired';
+  bidScore?: number; // Calculated matching score (0-100)
+  isLowestBid?: boolean; // Flag if this is currently the lowest bid
+  bidRank?: number; // Ranking among all bids (1 = best)
+  withdrawnAt?: string;
+  rejectedAt?: string;
+  rejectionReason?: string;
+}
+
+export type BiddingMode = 'open' | 'quick_accept' | 'direct_assign';
+export type BiddingStatus = 'not_started' | 'active' | 'ended' | 'auto_assigned' | 'manually_assigned';
+export type AssignmentMethod = 'auto' | 'manual' | 'direct';
+
+export interface BiddingConfig {
+  mode: BiddingMode;
+  duration: number; // milliseconds
+  startedAt: string;
+  endsAt: string;
+  maxPrice: number; // Sender's maximum willing to pay
+  suggestedPrice: number; // System-calculated price
+  minBidDecrement: number; // Minimum difference between bids (₦50)
+  autoAccept?: {
+    enabled: boolean;
+    maxPriceVariance: number; // e.g., 10% above suggested
+    minPalRating: number; // e.g., 4.0
+  };
+}
+
+export interface PricingSuggestion {
+  jobId?: string;
+  basePrice: number;
+  factors: {
+    distance: { value: number; impact: number }; // km and ₦
+    packageSize: { value: ItemSize; impact: number };
+    urgency: { value: 'low' | 'medium' | 'high'; impact: number };
+    timeOfDay: { value: string; impact: number }; // surge pricing
+    traffic: { value: 'light' | 'moderate' | 'heavy'; impact: number };
+    weather: { value: 'clear' | 'rain' | 'storm'; impact: number };
+  };
+  suggestedPrice: number;
+  priceRange: { min: number; max: number };
+  marketAverage: number; // Average price for similar deliveries
+  competitiveBid: number; // Price likely to attract bids quickly
+  calculatedAt: string;
 }
 
 export interface ProxyItem {
@@ -508,14 +570,14 @@ export type NotificationCategory = 'alert' | 'general';
 export interface Notification {
   id: string;
   userId: string;
-  type: 'bid-placed' | 'delivery-assigned' | 'delivery-completed' | 'payment-received' | 'item-edit-request' | 'dispute-flagged' | 'rating-received' | 'system-message' | 'promo-offer' | 'delivery-update' | 'item-verified' | 'wallet-topup' | 'delivery-posted' | 'payment-processed' | 'tip-payment'| 'delivery-picked-up';
+  type: 'package-created' | 'package-update' | 'bid-placed' | 'bid_accepted' | 'bid-rejected' | 'delivery-assigned' | 'delivery-completed' | 'payment-received' | 'item-edit-request' | 'dispute-flagged' | 'rating-received' | 'system-message' | 'promo-offer' | 'delivery-update' | 'item-verified' | 'wallet-topup' | 'delivery-posted' | 'payment-processed' | 'tip-payment'| 'delivery-picked-up';
   actionUrl?: string; // Optional URL to navigate to when the notification is clicked
   title: string;
   message: string;
   timestamp: string;
   read: boolean;
   actionRequired: boolean;
-  priority?: 'urgent' | 'normal' | 'low'; // Time-sensitive priority level
+  priority?: 'low' | 'medium' | 'high' | 'urgent'; // Time-sensitive priority level
   category?: NotificationCategory; // Categorize as alert or general
   jobId?: string;
   metadata?: {
@@ -581,6 +643,7 @@ export interface FavoritePalData {
   totalDeliveries: number;
   // vehicleType: VehicleType;
   isVerified: boolean;
+  profileImage?: string; // Pal's profile image path or URL
 }
 
 export interface ProxyUserData {

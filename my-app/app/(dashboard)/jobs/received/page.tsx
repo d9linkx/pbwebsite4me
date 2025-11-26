@@ -42,8 +42,15 @@ export default function ReceivedDeliveriesPage() {
 
   const handleOpenChat = (job: DeliveryJob) => {
     setSelectedJob(job)
-    // In a real app, you'd create/find the chat thread for this job
-    router.push('/chat')
+    // Open WhatsApp with the pal if available
+    if (job.selectedPalPhone) {
+      const cleanPhone = job.selectedPalPhone.replace(/[^\d+]/g, '');
+      const whatsappUrl = `https://wa.me/${cleanPhone}`;
+      window.open(whatsappUrl, '_blank');
+    } else {
+      // Fallback: navigate to chat page to see all contacts
+      router.push('/chat');
+    }
   }
 
   const handleCall = (phoneNumber: string) => {

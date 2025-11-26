@@ -32,6 +32,10 @@ interface SettingsScreenProps {
 export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsScreenProps) {
   if (!user) return null;
 
+  // Debug log to see user verification status
+  console.log('SettingsScreen - user.isVerified:', user.isVerified);
+  console.log('SettingsScreen - full user:', user);
+
   const settingsSections: SettingsSection[] = [
     {
       title: 'Account',
@@ -48,8 +52,8 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
           icon: Shield,
           label: 'Verification',
           hasChevron: true,
-          badge: user.isVerified ? 'Verified' : 'Verify Now',
-          badgeColor: user.isVerified ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700',
+          badge: user.isVerified ? 'Verified' : 'Not Verified',
+          badgeColor: user.isVerified ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700',
           action: () => onNavigate('verification')
         },
         { 
@@ -168,7 +172,7 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
                 <p className="text-gray-600 text-sm">{user.email || 'No email'}</p>
                 <div className="flex items-center mt-1">
                   <span className="text-sm text-gray-600">Rating: </span>
-                  <span className="text-sm text-[#f44708] ml-1 font-medium">⭐ {typeof user.rating === 'number' ? user.rating.toFixed(1) : '0.0'}</span>
+                  <span className="text-sm text-[#f44708] ml-1 font-medium">⭐ {typeof user.rating === 'number' && user.rating > 0 ? user.rating.toFixed(1) : '5.0'}</span>
                 </div>
               </div>
               <ChevronRight size={20} className="text-gray-500" />

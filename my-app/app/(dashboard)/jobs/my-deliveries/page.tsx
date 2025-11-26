@@ -14,60 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
 import { apiService } from '@/utils/apiService'
 import type { DeliveryJob, DeliveryStatus, ItemSize, VehicleType, Bid } from '@/types/index'
-
-// Use the Bid type from types/index.ts
-
-interface PackageResponse {
-  _id: string;
-  id?: string;
-  title: string;
-  description?: string;
-  sender?: {
-    senderId?: string | { _id: string };
-    name?: string;
-    phone?: string;
-    formattedAddress?: string;
-    address?: string;
-  };
-  receiver?: {
-    receiverId?: string;
-    name?: string;
-    phone?: string;
-    formattedAddress?: string;
-  };
-  items?: Array<{
-    size?: string;
-    category?: string;
-    weight?: string | number;
-    images?: Array<{ url: string }>;
-  }>;
-  price?: number;
-  value?: number;
-  status?: string;
-  pickupDate?: string;
-  pickupTime?: string;
-  notes?: string;
-  escrowAmount?: number;
-  bids?: Bid[];
-  pal?: {
-    palId?: string;
-    name?: string;
-    phone?: string;
-  };
-  proxy?: {
-    proxyId?: string;
-    name?: string;
-    phone?: string;
-  };
-  createdAt?: string;
-  orderNumber?: string;
-  // Add any other properties that might be present in the API response
-  pickupLocation?: string;
-  dropoffLocation?: string;
-  category?: string;
-  weight?: string;
-  itemSize?: string;
-}
+import type { BackendPackageResponse } from '@/types/api'
 import { toast } from 'sonner'
 
 export default function MyDeliveriesPage() {
@@ -98,7 +45,7 @@ export default function MyDeliveriesPage() {
 
         if (response.success && response.data) {
           // Map backend packages to frontend DeliveryJob format
-          const jobs = response.data.map((pkg: PackageResponse): DeliveryJob => ({
+          const jobs = response.data.map((pkg: BackendPackageResponse): DeliveryJob => ({
             id: pkg._id || pkg.id || '',
             title: pkg.title,
             description: pkg.description || '',
@@ -110,10 +57,10 @@ export default function MyDeliveriesPage() {
             value: pkg.price || pkg.value || 0,
             receiverName: pkg.receiver?.name || '',
             receiverPhone: pkg.receiver?.phone || '',
-            receiverId: pkg.receiver?.receiverId || '',
-            senderId: typeof pkg.sender?.senderId === 'object' 
+            receiverId: pkg.receiver?.id || '',
+            senderId: pkg.sender?.senderId && typeof pkg.sender.senderId === 'object' && '_id' in pkg.sender.senderId
               ? pkg.sender.senderId._id 
-              : (pkg.sender?.senderId || ''),
+              : (typeof pkg.sender?.senderId === 'string' ? pkg.sender.senderId : ''),
             senderName: pkg.sender?.name || '',
             senderPhone: pkg.sender?.phone || '',
             selectedPalId: pkg.pal?.palId,
@@ -128,12 +75,18 @@ export default function MyDeliveriesPage() {
             images: pkg.items?.[0]?.images?.map((img: { url: string }) => img.url) || [],
             escrowAmount: pkg.escrowAmount || 0,
             bids: (pkg.bids?.map(bid => ({
-              ...bid,
-              vehicleType: bid.vehicleType || 'car',
-              canEdit: bid.canEdit || false,
-              isAccepted: bid.isAccepted || false,
+              id: bid._id || bid.id || '',
+              palId: bid.palId,
+              palName: bid.palName || '',
+              palRating: 0, // Backend doesn't provide this, default to 0
+              vehicleType: 'car' as const, // Backend doesn't provide this, default to car
+              estimatedTime: '30 mins', // Backend doesn't provide this, default value
+              amount: bid.amount,
+              message: bid.message || '',
               placedAt: bid.placedAt || new Date().toISOString(),
-              createdAt: bid.createdAt || new Date().toISOString()
+              canEdit: bid.status === 'pending', // Determine editability from status
+              isAccepted: bid.status === 'accepted',
+              createdAt: bid.placedAt || new Date().toISOString()
             })) || []) as import('@/types/index').Bid[],
             distance: 0,
             createdAt: pkg.createdAt || new Date().toISOString(),
