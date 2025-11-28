@@ -9,9 +9,9 @@ interface WebsiteLayoutProps {
 
 export function WebsiteLayout({ children, onNavigate }: WebsiteLayoutProps) {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white overflow-x-hidden flex flex-col overscroll-none">
       <WebsiteHeader onNavigate={onNavigate} />
-      <main className="min-h-screen w-full">
+      <main className="min-h-screen w-full flex-1 overscroll-none">
         {children}
       </main>
       <WebsiteFooter onNavigate={onNavigate} />

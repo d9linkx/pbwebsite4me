@@ -24,7 +24,7 @@ import { useAuth } from '@/utils/apiHooks'
 import { socketService } from '@/utils/socket'
 import { useConnectionStatus, useSocketEvent } from '@/utils/useSocket'
 import { useOfflineBanner } from '@/utils/useOffline'
-import type { UserRole, Screen, Notification as NotificationType, DeliveryJob, Bid, DeliveryStatus } from '@/types/index'
+import type { UserRole, Screen, Notification as NotificationType, Bid, DeliveryStatus } from '@/types/index'
 import { toast } from 'sonner'
 
 export default function DashboardLayout({
@@ -60,7 +60,7 @@ export default function DashboardLayout({
   const { showStatus, statusMessage, statusColor } = useConnectionStatus()
 
   // Offline detection
-  const { showBanner: showOfflineBanner, isOffline, wasOffline } = useOfflineBanner()
+  const { showBanner: showOfflineBanner, isOffline } = useOfflineBanner()
 
   // Sync auth user with global state
   useEffect(() => {
@@ -360,7 +360,7 @@ export default function DashboardLayout({
       {/* Main Content Area with Sidebar - Below Header */}
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar - Only visible on xl screens and above */}
-        <div className="hidden xl:block">
+        <div className="hidden xl:block w-72 flex-shrink-0">
           <DesktopSidebar
             currentPath={pathname}
           />

@@ -30,7 +30,7 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
   }
 
   return (
-    <div className="w-72 h-full bg-[#2f2f2f] border-r border-gray-800 flex flex-col overflow-y-auto">
+    <div className="w-full h-full bg-white border-r border-gray-300 flex flex-col overflow-hidden overflow-x-hidden">
       {/* Logo Header */}
       {/* <div className="bg-gradient-to-r from-[#f44708] to-[#d63d07] p-6">
         <div className="flex items-center space-x-3">
@@ -81,14 +81,14 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
       )} */}
 
       {/* Navigation Menu */}
-      <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-6 px-4 space-y-2">
         {/* Dashboard Button */}
         <button
           onClick={() => handleNavigation('/')}
           className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
             isActive('/') && currentPath === '/'
               ? 'bg-[#f44708] text-white shadow-lg'
-              : 'text-gray-300 hover:text-white hover:bg-white/10'
+              : 'text-gray-700 hover:text-[#f44708] hover:bg-gray-100'
           }`}
         >
           <Home size={20} />
@@ -101,7 +101,7 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
           className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
             isActive('/wallet')
               ? 'bg-[#f44708] text-white shadow-lg'
-              : 'text-gray-300 hover:text-white hover:bg-white/10'
+              : 'text-gray-700 hover:text-[#f44708] hover:bg-gray-100'
           }`}
         >
           <Wallet size={20} />
@@ -114,7 +114,7 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
           className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
             isActive('/settings')
               ? 'bg-[#f44708] text-white shadow-lg'
-              : 'text-gray-300 hover:text-white hover:bg-white/10'
+              : 'text-gray-700 hover:text-[#f44708] hover:bg-gray-100'
           }`}
         >
           <Settings size={20} />
@@ -122,7 +122,7 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
         </button>
 
         {/* Divider */}
-        <div className="border-t border-white/10 my-4"></div>
+        <div className="border-t border-gray-200 my-4"></div>
 
         {/* Sponsor a User Button */}
         <button
@@ -130,7 +130,7 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
           className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
             isActive('/sponsorship')
               ? 'bg-[#f44708] text-white shadow-lg'
-              : 'text-gray-300 hover:text-white hover:bg-white/10'
+              : 'text-gray-700 hover:text-[#f44708] hover:bg-gray-100'
           }`}
         >
           <Heart size={20} />
@@ -143,7 +143,7 @@ export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
           className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
             isActive('/referrals')
               ? 'bg-[#f44708] text-white shadow-lg'
-              : 'text-gray-300 hover:text-white hover:bg-white/10'
+              : 'text-gray-700 hover:text-[#f44708] hover:bg-gray-100'
           }`}
         >
           <Users size={20} />

@@ -242,7 +242,13 @@ export const useAppStore = create<AppState>()(
         // ========================================
         // User & Auth Actions
         // ========================================
-        setUser: (user) => set({ user }),
+        setUser: (user) => set({ 
+          user, 
+          // Clear processing job when user changes (login/logout)
+          processingJob: null,
+          isProcessingMinimized: false,
+          processingBidCount: 0
+        }),
         setActiveRole: (activeRole) => set({ activeRole }),
         updateUser: (updates) => set((state) => ({
           user: state.user ? { ...state.user, ...updates } : null,

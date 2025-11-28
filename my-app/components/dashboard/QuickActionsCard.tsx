@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
-  Plus, Package, Truck, Wallet, Settings, Bell, Gift, Package2, Star, TrendingUp, MapPin, Send, Activity, Handshake, Zap, Check, Lock, Users, Heart, Info, X
+  Plus, Package, Truck, Wallet, Package2, Zap
 } from 'lucide-react';
 
 import { Button } from '../ui/button';
@@ -9,13 +9,10 @@ import { Card } from '../ui/card';
 import { RecentActivity } from '../RecentActivity';
 import { UserRole, User, DeliveryJob } from '../../types';
 import {
-  ACTION_BUTTON_CONFIGS,
-  BUTTON_THEMES,
-  COMMON_BUTTON_STYLES,
-  MOBILE_GRID_CONFIG
+  ACTION_BUTTON_CONFIGS
 } from '../../constants/dashboard';
-import { DashboardStats, formatAmount, getAvailableJobsCount } from '../../utils/dashboard';
-import { getSenderPackages, getPalPackages, getReceiverPackages, getProxyPackages, PackageFilters } from '../../utils/packageFilters';
+import { DashboardStats } from '../../utils/dashboard';
+import { getSenderPackages, getPalPackages, getReceiverPackages, getProxyPackages } from '../../utils/packageFilters';
 
 interface QuickActionsCardProps {
   activeRole: UserRole;
@@ -28,30 +25,13 @@ interface QuickActionsCardProps {
   onJobSelect?: (job: DeliveryJob) => void;
 }
 
-const ICON_COMPONENTS = {
-  Plus,
-  Package,
-  Truck,
-  Wallet,
-  Settings,
-  Bell,
-  Gift,
-  Package2,
-  Star,
-  TrendingUp,
-  MapPin
-};
-
 export function QuickActionsCard({
   activeRole,
-  stats,
   user,
   allJobs,
   onActionClick,
-  onSpecialActionClick,
-  onNavigateToSponsorship,
   onJobSelect
-}: QuickActionsCardProps) {
+}: Omit<QuickActionsCardProps, 'stats' | 'onSpecialActionClick' | 'onNavigateToSponsorship'>) {
   const config = ACTION_BUTTON_CONFIGS[activeRole.toUpperCase() as keyof typeof ACTION_BUTTON_CONFIGS];
 
   // Filter sent packages for the current user (sender role)
@@ -424,7 +404,7 @@ export function QuickActionsCard({
             {/* Wallet Display */}
             <button
               onClick={() => onActionClick('wallet')}
-              className="bg-gray-50rounded-xl px-4 py-2.5 flex items-center space-x-3 hover:bg-gray-100 hover:border-gray-300 transition-all cursor-pointer"
+              className="xl:hidden bg-gray-50rounded-xl px-4 py-2.5 flex items-center space-x-3 hover:bg-gray-100 hover:border-gray-300 transition-all cursor-pointer"
               style={{
                 pointerEvents: 'auto',
                 userSelect: 'none',

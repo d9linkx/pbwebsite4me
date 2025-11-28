@@ -44,9 +44,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
   };
 
   return (
-    <div className="pt-[70px] m-[0px] pr-[0px] pb-[0px] pl-[0px]">
+    <div className="pt-20 min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-black text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-black text-white overflow-hidden min-h-[calc(100vh-5rem)]">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -56,13 +56,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
           }}></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-[0px] pt-[56px] pr-[28px] pb-[112px] pl-[28px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-[0px] p-[0px] mx-[-20px] my-[0px] mr-[-15px] mb-[0px] ml-[-15px] mt-[-30px] lg:mt-[2px] lg:ml-[-25px] lg:mr-[-25px]">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial="hidden"
               animate="visible"
               variants={fadeInLeft}
-              className="pr-[8px] pb-[0px] pl-[8px]"
+              className="px-4"
             >
               <motion.div
                 className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-4 py-2 rounded-full mb-6"
@@ -170,7 +170,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   whileTap={{ scale: 1.05 }}
                   transition={{ duration: 0.4 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent px-[0px] p-[0px] mx-[0px] m-[0px]"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}
                 <motion.div
@@ -358,7 +358,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </div>
                 {index < 2 && (
                   <motion.div
-                    className="hidden md:block absolute top-1/3 right-0 transform translate-x-1/2"
+                    className="hidden md:block absolute top-1/3 right-0 transform translate-x-1/2 w-8"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 0.3, x: 0 }}
                     viewport={{ once: false }}
