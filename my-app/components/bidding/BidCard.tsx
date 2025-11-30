@@ -17,7 +17,7 @@ interface BidCardProps {
   showAcceptButton?: boolean
 }
 
-const VEHICLE_ICONS: Record<VehicleType, any> = {
+const VEHICLE_ICONS: Record<VehicleType, React.ComponentType<any>> = {
   car: Car,
   motorcycle: Bike,
   bike: Bike,

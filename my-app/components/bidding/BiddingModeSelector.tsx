@@ -157,7 +157,7 @@ export function BiddingModeSelector({
       {selectedMode === 'direct_assign' && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-900">
-            <span className="font-semibold">👤 Direct Assignment:</span> You'll be able to select a preferred Pal from your previous deliveries in the next step.
+            <span className="font-semibold">👤 Direct Assignment:</span> You&apos;ll be able to select a preferred Pal from your previous deliveries in the next step.
           </p>
         </div>
       )}
