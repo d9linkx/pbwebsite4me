@@ -1,4 +1,4 @@
-# Testing Guide
+# Test Guide
 
 ## ✅ All Prop Errors Fixed!
 
