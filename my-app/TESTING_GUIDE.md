@@ -8,7 +8,7 @@ I've fixed all component prop mismatches in the migrated routes. The dev server 
 
 ## 🚀 Server Status
 
-**Dev Server Running:**
+**Server Running:**
 - Local: http://localhost:3001
 - Network: http://172.20.10.2:3001
 - Status: ✅ No errors
