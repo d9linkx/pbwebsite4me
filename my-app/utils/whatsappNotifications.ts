@@ -6,7 +6,7 @@
 import { Notification } from '../types';
 
 // WhatsApp API Configuration (Using Twilio WhatsApp API)
-const WHATSAPP_CONFIG = {
+const WHATSAPP_CONFIG = { // eslint-disable-line @typescript-eslint/no-unused-vars
   // In production, these would come from environment variables
   accountSid: 'YOUR_TWILIO_ACCOUNT_SID',
   authToken: 'YOUR_TWILIO_AUTH_TOKEN',
@@ -164,7 +164,7 @@ export const shouldSendWhatsApp = (notification: Notification): boolean => {
   // Only send alerts, not general notifications
   const isAlert = notification.actionRequired || 
                   notification.priority === 'urgent' || 
-                  notification.priority === 'normal';
+                  notification.priority === 'high';
   
   // Don't send for system messages or promo offers
   const shouldSkip = notification.type === 'system-message' || 

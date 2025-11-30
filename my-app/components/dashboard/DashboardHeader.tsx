@@ -67,7 +67,7 @@ export function DashboardHeader({
     return notifications.filter(n =>
       !n.read &&
       (n.category === 'general' ||
-        ((!n.category && !n.priority) || n.priority === 'low' || n.priority === 'normal') &&
+        ((!n.category && !n.priority) || n.priority === 'low') &&
         !n.actionRequired) &&
       (n.type === 'promo-offer' ||
         n.type === 'system-message' ||

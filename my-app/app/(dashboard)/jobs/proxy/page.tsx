@@ -10,7 +10,8 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAppStore } from '@/stores/appStore'
-import type { DeliveryJob, ItemSize, DeliveryStatus, Bid } from '@/types/index'
+import type { DeliveryJob, ItemSize, DeliveryStatus, VehicleType } from '@/types/index'
+import type { BackendPackageResponse } from '@/types/api'
 import { apiService } from '@/utils/apiService'
 import { toast } from 'sonner'
 import { ArrowLeft, Package, Clock, CheckCircle, Eye, MessageCircle, User } from 'lucide-react'
@@ -20,59 +21,6 @@ import { getProxyPackages, PackageFilters, filterPackages } from '@/utils/packag
 import { calculateProxyStats } from '@/utils/packageStats'
 
 type FilterStatus = 'all' | 'incoming' | 'stored' | 'picked-up' | 'completed'
-
-interface PackageResponse {
-  _id: string
-  id?: string
-  title: string
-  description?: string
-  sender?: {
-    senderId?: string | { _id: string }
-    name?: string
-    phone?: string
-    formattedAddress?: string
-    address?: string
-  }
-  receiver?: {
-    receiverId?: string
-    name?: string
-    phone?: string
-    formattedAddress?: string
-    address?: string
-  }
-  items?: Array<{
-    size?: string
-    category?: string
-    weight?: string | number
-    value?: number
-    images?: Array<{ url: string }>
-  }>
-  price?: number
-  value?: number
-  status?: string
-  pickupDate?: string
-  pickupTime?: string
-  notes?: string
-  escrowAmount?: number
-  bids?: Bid[]
-  pal?: {
-    palId?: string
-    name?: string
-    phone?: string
-  }
-  proxy?: {
-    proxyId?: string
-    name?: string
-    phone?: string
-  }
-  createdAt?: string
-  orderNumber?: string
-  pickupLocation?: string
-  dropoffLocation?: string
-  category?: string
-  weight?: string
-  itemSize?: string
-}
 
 export default function ProxyJobsPage() {
   const router = useRouter()
@@ -103,7 +51,7 @@ export default function ProxyJobsPage() {
           console.log('✅ Packages fetched from backend:', response.data)
 
           // Map backend packages to frontend DeliveryJob format
-          const allMappedJobs: DeliveryJob[] = response.data.map((pkg: PackageResponse) => {
+          const allMappedJobs: DeliveryJob[] = response.data.map((pkg: BackendPackageResponse) => {
             const senderId = pkg.sender?.senderId
               ? (typeof pkg.sender.senderId === 'object' ? pkg.sender.senderId._id : pkg.sender.senderId)
               : user?.id || ''
@@ -116,13 +64,13 @@ export default function ProxyJobsPage() {
               senderPhone: pkg.sender?.phone || user?.phone || '',
               title: pkg.title,
               description: pkg.description || '',
-              pickupLocation: pkg.sender?.formattedAddress || pkg.sender?.address || pkg.pickupLocation || 'Pickup address not specified',
-              dropoffLocation: pkg.receiver?.formattedAddress || pkg.receiver?.address || pkg.dropoffLocation || 'Delivery address not specified',
+              pickupLocation: pkg.sender?.formattedAddress || pkg.pickupLocation || 'Pickup address not specified',
+              dropoffLocation: pkg.receiver?.formattedAddress || pkg.dropoffLocation || 'Delivery address not specified',
               itemSize: (pkg.items?.[0]?.size as ItemSize) || 'Medium',
               category: pkg.items?.[0]?.category || pkg.category || '',
               weight: pkg.items?.[0]?.weight?.toString() || pkg.weight || '',
-              value: pkg.price || pkg.items?.[0]?.value || 0,
-              receiverId: pkg.receiver?.receiverId,
+              value: pkg.price || pkg.value || 0,
+              receiverId: pkg.receiver?.id,
               receiverName: pkg.receiver?.name || '',
               receiverPhone: pkg.receiver?.phone || '',
               selectedPalId: pkg.pal?.palId,
@@ -136,12 +84,17 @@ export default function ProxyJobsPage() {
               notes: pkg.notes || '',
               images: pkg.items?.[0]?.images?.map(img => img.url) || [],
               bids: pkg.bids?.map(bid => ({
-                ...bid,
-                vehicleType: bid.vehicleType || 'car',
-                canEdit: bid.canEdit || false,
-                isAccepted: bid.isAccepted || false,
+                id: bid.id || bid._id,
+                palId: bid.palId,
+                palName: bid.palName || 'Unknown Pal',
+                palRating: 4.5, // Default rating since backend doesn't provide it
+                vehicleType: 'car' as VehicleType, // Default vehicle type
+                estimatedTime: '30 mins', // Default estimate
+                amount: bid.amount,
+                message: bid.message || '',
                 placedAt: bid.placedAt || new Date().toISOString(),
-                createdAt: bid.createdAt || new Date().toISOString()
+                canEdit: false, // Default since backend doesn't provide it
+                createdAt: bid.placedAt || new Date().toISOString()
               })) || [],
               isLive: true,
               createdAt: pkg.createdAt || new Date().toISOString(),

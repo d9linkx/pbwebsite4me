@@ -1,7 +1,7 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { CheckCircle, Package, X, Eye } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { DeliveryJob } from '../types';
 
 interface JobProcessingScreenProps {
@@ -171,7 +171,7 @@ export function JobProcessingScreen({
           <h4 className="font-semibold text-gray-900 mb-2 text-sm">What happens next?</h4>
           <ul className="text-xs text-gray-600 space-y-1 text-left">
             <li>• Available Pals will review your delivery request</li>
-            <li>• You'll receive bids from interested Pals</li>
+            <li>• You&apos;ll receive bids from interested Pals</li>
             <li>• Review bids and select the best Pal for your delivery</li>
             <li>• Track your delivery in real-time once accepted</li>
           </ul>

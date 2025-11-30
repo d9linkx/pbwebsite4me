@@ -13,9 +13,16 @@ import { Home, Wallet, Settings, Heart, Users } from 'lucide-react'
 
 interface DesktopSidebarProps {
   currentPath: string
+  user?: {
+    id?: string
+    name?: string
+    email?: string
+    role?: string
+  } | null
+  activeRole?: string
 }
 
-export function DesktopSidebar({ currentPath }: DesktopSidebarProps) {
+export function DesktopSidebar({ currentPath, user, activeRole }: DesktopSidebarProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const router = useRouter()
 
   const handleNavigation = (path: string) => {

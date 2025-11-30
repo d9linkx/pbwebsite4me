@@ -112,7 +112,7 @@ export function TableLoader({ rows = 5, columns = 4 }: { rows?: number; columns?
 }
 
 // Button loading state
-export function ButtonLoader({ children, isLoading, ...props }: any) {
+export function ButtonLoader({ children, isLoading, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode; isLoading: boolean }) {
   return (
     <button disabled={isLoading} {...props}>
       {isLoading ? (

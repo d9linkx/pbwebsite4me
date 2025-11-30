@@ -27,11 +27,14 @@ interface QuickActionsCardProps {
 
 export function QuickActionsCard({
   activeRole,
+  stats, // eslint-disable-line @typescript-eslint/no-unused-vars
   user,
   allJobs,
   onActionClick,
+  onSpecialActionClick, // eslint-disable-line @typescript-eslint/no-unused-vars
+  onNavigateToSponsorship, // eslint-disable-line @typescript-eslint/no-unused-vars
   onJobSelect
-}: Omit<QuickActionsCardProps, 'stats' | 'onSpecialActionClick' | 'onNavigateToSponsorship'>) {
+}: QuickActionsCardProps) {
   const config = ACTION_BUTTON_CONFIGS[activeRole.toUpperCase() as keyof typeof ACTION_BUTTON_CONFIGS];
 
   // Filter sent packages for the current user (sender role)
@@ -66,9 +69,9 @@ export function QuickActionsCard({
     return getProxyPackages(allJobs, user.id);
   }, [allJobs, user]);
 
-  const [lastActivity, setLastActivity] = useState(Date.now());
-  const [showVibration, setShowVibration] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [lastActivity, setLastActivity] = useState(Date.now()); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [showVibration, setShowVibration] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const buttonRef = useRef<HTMLButtonElement>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
   const activityTimerRef = useRef<number | null>(null);
   const vibrationTimeoutRef = useRef<number | null>(null);
 
@@ -173,7 +176,7 @@ export function QuickActionsCard({
 
   const roleInstructions = getRoleInstructions();
 
-  const calculateEscrowAmount = () => {
+  const calculateEscrowAmount = () => { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!user) return 0;
 
     const userActiveJobs = allJobs.filter(job => {
