@@ -1,4 +1,4 @@
-# Testing Guide - Fixed Routes
+# Testing Guide
 
 ## ✅ All Prop Errors Fixed!
 
