@@ -12,7 +12,7 @@ import { io, Socket } from 'socket.io-client'
 import type { ChatMessage, Notification, Bid } from '@/types/index'
 
 // Socket.IO connection configuration
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000'
+const SOCKET_URL = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:4000'
 
 interface SocketEvents {
   // Chat events
@@ -361,6 +361,11 @@ class SocketService {
 
 // Export singleton instance
 export const socketService = new SocketService()
+export const socketInstance = io('https://api-prawnbox.onrender.com', {
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 10,
+  timeout: 10000,
+})
 
 // Export types for use in components
 export type { SocketEvents }

@@ -16,8 +16,8 @@ export default function JobProcessingPage() {
   const shouldAutoMinimize = searchParams.get('autoMinimize') === 'true'
   const {
     deliveryJobs,
-    setDeliveryJobs,
-    processingJob,
+    setDeliveryJobs, // eslint-disable-line @typescript-eslint/no-unused-vars
+    processingJob, // eslint-disable-line @typescript-eslint/no-unused-vars
     isProcessingMinimized,
     processingBidCount,
     setProcessingJob,
@@ -25,7 +25,7 @@ export default function JobProcessingPage() {
     setProcessingBidCount
   } = useAppStore()
   const [job, setJob] = useState(deliveryJobs.find(j => j.id === jobId) || null)
-  const [socket, setSocket] = useState<Socket | null>(null)
+  const [socket] = useState<Socket | null>(null) // eslint-disable-line @typescript-eslint/no-unused-vars
 
   // Expand the view when this page loads (un-minimize)
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function JobProcessingPage() {
 
   // Initialize WebSocket connection separately
   useEffect(() => {
-    const socketInstance = io('http://localhost:4000', {
+    const socketInstance = io(process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:4000', {
       auth: {
         token: localStorage.getItem('token')
       },
@@ -91,15 +91,13 @@ export default function JobProcessingPage() {
       console.error('WebSocket connection error:', error)
     })
 
-    setSocket(socketInstance)
-
     return () => {
       if (socketInstance) {
         socketInstance.emit('leave_room', `package_${jobId}`)
         socketInstance.disconnect()
       }
     }
-  }, [jobId])
+  }, [jobId, setProcessingBidCount])
 
   const handleViewDetails = useCallback(() => {
     // Navigate directly to the bids page since sender wants to see bids and user details
