@@ -8,7 +8,7 @@ const nextConfig = {
     const isProduction = process.env.NODE_ENV === 'production';
     const backendUrl = isProduction 
       ? process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api-prawnbox.onrender.com'
-      : 'http://localhost:4000';
+      : 'http://localhost:8000';
     
     console.log('Using backend URL:', backendUrl);
     

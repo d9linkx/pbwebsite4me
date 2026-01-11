@@ -224,9 +224,6 @@ export function AuthScreen({ onLogin, onDemoLogin, onNavigate }: AuthScreenProps
                     {isLogin ? 'Login Failed' : 'Registration Failed'}
                   </div>
                   <div>{error || authError}</div>
-                  <div className="mt-2 text-xs text-red-400">
-                    Check the console for more details
-                  </div>
                 </div>
               )}
 

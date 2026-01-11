@@ -1,6 +1,9 @@
 // API Configuration and Client
 export const API_CONFIG = {
-  BASE_URL: typeof window === 'undefined' ? '/api' : (process.env.NEXT_PUBLIC_API_BASE_URL || ''),
+  BASE_URL:
+    typeof window === "undefined"
+      ? "/api"
+      : process.env.NEXT_PUBLIC_API_BASE_URL || "",
   TIMEOUT: 30000, // 30 seconds
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000, // 1 second
@@ -8,23 +11,34 @@ export const API_CONFIG = {
 
 // Public endpoints that don't require authentication tokens
 const PUBLIC_ENDPOINTS = [
-  '/user/register',
-  '/user/login',
-  '/auth/login',
-  '/auth/register',
-  '/user/verify-verification-code',
-  '/auth/refresh',
+  "/user/register",
+  "/user/login",
+  "/auth/login",
+  "/auth/register",
+  "/user/verify-verification-code",
+  "/auth/refresh",
 ] as const;
 
 // Type for JSON-serializable data
-export type RequestData = Record<string, unknown> | unknown[] | string | number | boolean | null;
+export type RequestData =
+  | Record<string, unknown>
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
 
 // Type guard to check if data is JSON serializable
 function isSerializable(data: unknown): data is RequestData {
   if (data === null || data === undefined) return true;
-  if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') return true;
+  if (
+    typeof data === "string" ||
+    typeof data === "number" ||
+    typeof data === "boolean"
+  )
+    return true;
   if (Array.isArray(data)) return data.every(isSerializable);
-  if (typeof data === 'object') {
+  if (typeof data === "object") {
     return Object.values(data as Record<string, unknown>).every(isSerializable);
   }
   return false;
@@ -35,15 +49,15 @@ function serializeData(data: unknown): string | undefined {
   if (data === undefined || data === null) return undefined;
 
   if (!isSerializable(data)) {
-    console.error('Attempted to serialize non-serializable data:', data);
-    throw new Error('Data contains non-serializable values');
+    console.error("Attempted to serialize non-serializable data:", data);
+    throw new Error("Data contains non-serializable values");
   }
 
   try {
     return JSON.stringify(data);
   } catch (error) {
-    console.error('Failed to serialize request data:', error);
-    throw new Error('Failed to serialize request data');
+    console.error("Failed to serialize request data:", error);
+    throw new Error("Failed to serialize request data");
   }
 }
 
@@ -98,7 +112,7 @@ export class ApiClient {
   constructor(baseURL: string = API_CONFIG.BASE_URL) {
     this.baseURL = baseURL;
     this.defaultHeaders = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
   }
 
@@ -128,10 +142,13 @@ export class ApiClient {
         options.headers.forEach(([key, value]) => {
           headers[key] = value;
         });
-      } else if (typeof options.headers === 'object' && options.headers !== null) {
+      } else if (
+        typeof options.headers === "object" &&
+        options.headers !== null
+      ) {
         // Handle Record<string, string> format, but exclude arrays and other non-record objects
         Object.entries(options.headers).forEach(([key, value]) => {
-          if (typeof value === 'string') {
+          if (typeof value === "string") {
             headers[key] = value;
           }
         });
@@ -139,26 +156,33 @@ export class ApiClient {
     }
 
     // Add auth token if available (skip token check for public endpoints)
-    const isPublicEndpoint = PUBLIC_ENDPOINTS.some(publicPath => endpoint.startsWith(publicPath));
+    const isPublicEndpoint = PUBLIC_ENDPOINTS.some((publicPath) =>
+      endpoint.startsWith(publicPath)
+    );
     const token = this.getAuthToken();
 
     if (!isPublicEndpoint) {
-      console.log('🔍 Checking token for request to', endpoint, ':', token ? 'Token found' : 'No token');
+      console.log(
+        "🔍 Checking token for request to",
+        endpoint,
+        ":",
+        token ? "Token found" : "No token"
+      );
     }
 
-    if (token && token !== 'undefined' && token !== 'null') {
+    if (token && token !== "undefined" && token !== "null") {
       headers.Authorization = `Bearer ${token}`;
       if (!isPublicEndpoint) {
-        console.log('🔑 Adding Authorization header to request');
+        console.log("🔑 Adding Authorization header to request");
       }
     } else if (!isPublicEndpoint) {
-      console.warn('⚠️ No valid token available for request to', endpoint);
+      console.warn("⚠️ No valid token available for request to", endpoint);
     }
 
     const config: RequestInit = {
       ...options,
       headers,
-      credentials: 'include', // Include credentials for authentication
+      credentials: "include", // Include credentials for authentication
     };
 
     try {
@@ -170,22 +194,28 @@ export class ApiClient {
   }
 
   private async handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
-    const contentType = response.headers.get('content-type');
+    const contentType = response.headers.get("content-type");
 
-    if (contentType && contentType.includes('application/json')) {
+    if (contentType && contentType.includes("application/json")) {
       let data: ApiResponse<T>;
       try {
-        data = await response.json() as ApiResponse<T>;
+        data = (await response.json()) as ApiResponse<T>;
       } catch (parseError) {
-        console.error('❌ Failed to parse JSON response:', parseError);
+        console.error("❌ Failed to parse JSON response:", parseError);
         const responseText = await response.text();
-        console.error('❌ Response text:', responseText);
-        data = { success: false, message: `Invalid JSON response from server: ${responseText.substring(0, 200)}` } as ApiResponse<T>;
+        console.error("❌ Response text:", responseText);
+        data = {
+          success: false,
+          message: `Invalid JSON response from server: ${responseText.substring(
+            0,
+            200
+          )}`,
+        } as ApiResponse<T>;
       }
 
       if (!response.ok) {
         // Log detailed error information for debugging
-        console.error('❌ API Error Response:', {
+        console.error("❌ API Error Response:", {
           status: response.status,
           statusText: response.statusText,
           url: response.url,
@@ -193,11 +223,11 @@ export class ApiClient {
           message: data.message,
           errors: data.errors,
           data: data.data,
-          responseHeaders: Object.fromEntries(response.headers.entries())
+          responseHeaders: Object.fromEntries(response.headers.entries()),
         });
 
         const error: ApiError = {
-          message: data.message || 'An error occurred',
+          message: data.message || "An error occurred",
           status: response.status,
           errors: data.errors,
         };
@@ -206,10 +236,14 @@ export class ApiClient {
 
       // Handle different response structures
       let extractedData: T;
-      
+
       if (data.data) {
         // Handle nested user object if present
-        if (typeof data.data === 'object' && data.data !== null && 'user' in data.data) {
+        if (
+          typeof data.data === "object" &&
+          data.data !== null &&
+          "user" in data.data
+        ) {
           extractedData = (data.data as { user: T }).user;
         } else {
           extractedData = data.data as T;
@@ -228,17 +262,19 @@ export class ApiClient {
     } else {
       // Handle non-JSON responses
       const responseText = await response.text();
-      console.error('❌ Non-JSON Response:', {
+      console.error("❌ Non-JSON Response:", {
         status: response.status,
         statusText: response.statusText,
         url: response.url,
         contentType: contentType,
-        responseText: responseText.substring(0, 500)
+        responseText: responseText.substring(0, 500),
       });
-      
+
       if (!response.ok) {
         throw {
-          message: `Server returned ${response.status}: ${response.statusText}. Response: ${responseText.substring(0, 200)}`,
+          message: `Server returned ${response.status}: ${
+            response.statusText
+          }. Response: ${responseText.substring(0, 200)}`,
           status: response.status,
         } as ApiError;
       }
@@ -251,19 +287,24 @@ export class ApiClient {
   }
 
   private handleError(error: unknown): ApiError {
-    if (error instanceof Error && error.name === 'TypeError' && error.message.includes('fetch')) {
+    if (
+      error instanceof Error &&
+      error.name === "TypeError" &&
+      error.message.includes("fetch")
+    ) {
       return {
-        message: 'Network error. Please check your connection.',
+        message: "Network error. Please check your connection.",
         status: 0,
       };
     }
 
-    if (error && typeof error === 'object' && 'status' in error) {
+    if (error && typeof error === "object" && "status" in error) {
       return error as ApiError;
     }
 
-    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-    console.error('API Error:', error); // Log the original error for debugging
+    const errorMessage =
+      error instanceof Error ? error.message : "An unexpected error occurred";
+    console.error("API Error:", error); // Log the original error for debugging
     return {
       message: errorMessage,
       status: 500,
@@ -271,30 +312,47 @@ export class ApiClient {
   }
 
   public getAuthToken(): string | null {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token');
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("auth_token");
       // Don't return invalid token strings
-      if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
-        console.log('🔑 Retrieved token from localStorage:', token.substring(0, 10) + '...');
+      if (
+        token &&
+        token !== "undefined" &&
+        token !== "null" &&
+        token.trim() !== ""
+      ) {
+        console.log(
+          "🔑 Retrieved token from localStorage:",
+          token.substring(0, 10) + "..."
+        );
         return token;
       }
-      console.warn('⚠️ No valid token found in localStorage');
+      console.warn("⚠️ No valid token found in localStorage");
       return null;
     }
-    console.warn('⚠️ getAuthToken called on server side');
+    console.warn("⚠️ getAuthToken called on server side");
     return null;
   }
 
-  async get<T>(endpoint: string, params?: Record<string, string>): Promise<ApiResponse<T>> {
-    const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+  async get<T>(
+    endpoint: string,
+    params?: Record<string, string>
+  ): Promise<ApiResponse<T>> {
+    const queryString = params
+      ? `?${new URLSearchParams(params).toString()}`
+      : "";
     return this.request<T>(`${endpoint}${queryString}`, {
-      method: 'GET',
+      method: "GET",
     });
   }
 
-  async post<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+  async post<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestInit
+  ): Promise<ApiResponse<T>> {
     const requestOptions: RequestInit = {
-      method: 'POST',
+      method: "POST",
       ...options,
     };
 
@@ -304,8 +362,8 @@ export class ApiClient {
       // Remove Content-Type header to let browser set it with boundary
       if (requestOptions.headers) {
         const headers = new Headers(requestOptions.headers);
-        if (headers.has('Content-Type')) {
-          headers.delete('Content-Type');
+        if (headers.has("Content-Type")) {
+          headers.delete("Content-Type");
         }
         requestOptions.headers = headers;
       }
@@ -316,9 +374,13 @@ export class ApiClient {
     return this.request<T>(endpoint, requestOptions);
   }
 
-  async put<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+  async put<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestInit
+  ): Promise<ApiResponse<T>> {
     const requestOptions: RequestInit = {
-      method: 'PUT',
+      method: "PUT",
       ...options,
     };
 
@@ -326,8 +388,8 @@ export class ApiClient {
       requestOptions.body = data;
       if (requestOptions.headers) {
         const headers = new Headers(requestOptions.headers);
-        if (headers.has('Content-Type')) {
-          headers.delete('Content-Type');
+        if (headers.has("Content-Type")) {
+          headers.delete("Content-Type");
         }
         requestOptions.headers = headers;
       }
@@ -338,9 +400,13 @@ export class ApiClient {
     return this.request<T>(endpoint, requestOptions);
   }
 
-  async patch<T>(endpoint: string, data?: unknown, options?: RequestInit): Promise<ApiResponse<T>> {
+  async patch<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: RequestInit
+  ): Promise<ApiResponse<T>> {
     const requestOptions: RequestInit = {
-      method: 'PATCH',
+      method: "PATCH",
       ...options,
     };
 
@@ -348,8 +414,8 @@ export class ApiClient {
       requestOptions.body = data;
       if (requestOptions.headers) {
         const headers = new Headers(requestOptions.headers);
-        if (headers.has('Content-Type')) {
-          headers.delete('Content-Type');
+        if (headers.has("Content-Type")) {
+          headers.delete("Content-Type");
         }
         requestOptions.headers = headers;
       }
@@ -362,29 +428,32 @@ export class ApiClient {
 
   async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   }
 
   setAuthToken(token: string) {
-    if (typeof window !== 'undefined') {
-      console.log('🔒 Setting auth token in localStorage:', token ? token.substring(0, 10) + '...' : 'empty');
-      localStorage.setItem('auth_token', token);
+    if (typeof window !== "undefined") {
+      console.log(
+        "🔒 Setting auth token in localStorage:",
+        token ? token.substring(0, 10) + "..." : "empty"
+      );
+      localStorage.setItem("auth_token", token);
       // Verify the token was set correctly
-      const storedToken = localStorage.getItem('auth_token');
+      const storedToken = localStorage.getItem("auth_token");
       if (storedToken !== token) {
-        console.error('❌ Token was not stored correctly in localStorage');
+        console.error("❌ Token was not stored correctly in localStorage");
       } else {
-        console.log('✅ Token stored successfully in localStorage');
+        console.log("✅ Token stored successfully in localStorage");
       }
     } else {
-      console.warn('⚠️ setAuthToken called on server side');
+      console.warn("⚠️ setAuthToken called on server side");
     }
   }
 
   clearAuthToken() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth_token");
     }
   }
 }
@@ -393,7 +462,8 @@ export class ApiClient {
 export const apiClient = new ApiClient();
 
 // Utility functions for API calls
-export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 export const retry = async <T>(
   fn: () => Promise<T>,

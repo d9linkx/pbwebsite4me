@@ -1,14 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { apiService } from './apiService';
-import { apiClient } from './apiClient';
-import { ApiResponse } from './apiClient';
-import {
-  User,
-  UserRole,
-} from '../types';
-import {
-  AuthResponse,
-} from '../types/api';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { apiService } from "./apiService";
+import { apiClient } from "./apiClient";
+import { ApiResponse } from "./apiClient";
+import { User, UserRole } from "../types";
+import { AuthResponse } from "../types/api";
 
 // Generic API Hook
 interface UseApiOptions {
@@ -34,10 +29,17 @@ export function useApi<T>(
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const cacheRef = useRef<Map<string, { data: T; timestamp: number }>>(new Map());
+  const cacheRef = useRef<Map<string, { data: T; timestamp: number }>>(
+    new Map()
+  );
   const isExecutingRef = useRef(false); // Prevent multiple simultaneous calls
 
-  const { enabled = true, retry = true, cacheTime = 5 * 60 * 1000, requiresAuth = false } = options;
+  const {
+    enabled = true,
+    retry = true,
+    cacheTime = 5 * 60 * 1000,
+    requiresAuth = false,
+  } = options;
 
   const executeApiCall = useCallback(async () => {
     if (!enabled || isExecutingRef.current) return;
@@ -46,7 +48,7 @@ export function useApi<T>(
     if (requiresAuth) {
       const token = apiClient.getAuthToken();
       if (!token) {
-        setError('Authentication required');
+        setError("Authentication required");
         return;
       }
     }
@@ -62,17 +64,20 @@ export function useApi<T>(
         setData(response.data);
         // Cache the result
         const cacheKey = JSON.stringify(apiCall);
-        cacheRef.current.set(cacheKey, { data: response.data, timestamp: Date.now() });
+        cacheRef.current.set(cacheKey, {
+          data: response.data,
+          timestamp: Date.now(),
+        });
       } else {
-        setError(response.message || 'An error occurred');
+        setError(response.message || "An error occurred");
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+    } catch (err: any) {
+      const errorMessage = err.message || "An unexpected error occurred";
       setError(errorMessage);
 
       if (retry) {
         // Retry logic could be implemented here
-        console.error('API call failed:', errorMessage);
+        console.error("API call failed:", errorMessage);
       }
     } finally {
       setLoading(false);
@@ -134,12 +139,14 @@ export function useAuth() {
         // Normalize user object - ensure id is set from _id if needed
         const normalizedUser = {
           ...response.data,
-          id: response.data.id || response.data._id || '',
-          phone: response.data.phone || response.data.phoneNumber || '',
-          name: response.data.name || `${response.data.firstName} ${response.data.lastName}`.trim()
+          id: response.data.id || response.data._id || "",
+          phone: response.data.phone || response.data.phoneNumber || "",
+          name:
+            response.data.name ||
+            `${response.data.firstName} ${response.data.lastName}`.trim(),
         };
 
-        console.log('👤 Normalized user from getCurrentUser:', normalizedUser);
+        console.log("👤 Normalized user from getCurrentUser:", normalizedUser);
         setUser(normalizedUser);
       } else {
         setUser(null);
@@ -148,7 +155,7 @@ export function useAuth() {
     } catch {
       setUser(null);
       apiClient.clearAuthToken();
-      setError('Failed to refresh authentication');
+      setError("Failed to refresh authentication");
     } finally {
       setLoading(false);
     }
@@ -159,12 +166,10 @@ export function useAuth() {
     setError(null);
 
     // Determine if identifier is email or username
-    const isEmail = identifier.includes('@');
+    const isEmail = identifier.includes("@");
     const loginData = {
-      detail: isEmail
-        ? { email: identifier }
-        : { userName: identifier },
-      password
+      detail: isEmail ? { email: identifier } : { userName: identifier },
+      password,
     };
 
     try {
@@ -172,8 +177,8 @@ export function useAuth() {
 
       if (response.success && response.data) {
         // Debug: Log the actual response structure
-        console.log('🔍 Login API Response:', response);
-        console.log('📦 Response data:', response.data);
+        console.log("🔍 Login API Response:", response);
+        console.log("📦 Response data:", response.data);
 
         // Handle different possible token locations
         const user = response.data.user;
@@ -181,60 +186,61 @@ export function useAuth() {
 
         // Fallback: Check if token is directly in response.data
         if (!token && response.data) {
-          console.log('🔄 Checking alternative token locations...');
+          console.log("🔄 Checking alternative token locations...");
 
           // Type-safe approach to check for alternative token fields
           const data = response.data as AuthResponse;
 
           // Try common token field names
-          token = data.token ||
-                  data.accessToken ||
-                  data.jwt ||
-                  data.authToken;
+          token = data.token || data.accessToken || data.jwt || data.authToken;
 
           // Check if token is nested under tokens object (your backend format)
           if (!token && data.tokens && data.tokens.accessToken) {
-            console.log('🎫 Found token in tokens.accessToken');
+            console.log("🎫 Found token in tokens.accessToken");
             token = data.tokens.accessToken;
           }
 
           // Try if user data contains the token
-          if (data.user && typeof data.user === 'object' && data.user !== null) {
+          if (
+            data.user &&
+            typeof data.user === "object" &&
+            data.user !== null
+          ) {
             // Safe type assertion for debugging - user might have additional properties
             const userData = data.user as User & Record<string, unknown>;
             token = (userData.token as string) || token;
           }
         }
 
-        console.log('🎫 Extracted token:', token);
-        console.log('👤 Extracted user:', user);
+        console.log("🎫 Extracted token:", token);
+        console.log("👤 Extracted user:", user);
 
         if (token && user) {
           // Normalize user object - ensure id is set from _id if needed
           const normalizedUser = {
             ...user,
-            id: user.id || user._id || '',
-            phone: user.phone || user.phoneNumber || '',
-            name: user.name || `${user.firstName} ${user.lastName}`.trim()
+            id: user.id || user._id || "",
+            phone: user.phone || user.phoneNumber || "",
+            name: user.name || `${user.firstName} ${user.lastName}`.trim(),
           };
 
-          console.log('👤 Normalized user:', normalizedUser);
+          console.log("👤 Normalized user:", normalizedUser);
           setUser(normalizedUser);
           apiClient.setAuthToken(token);
-          console.log('✅ Login successful, token stored');
+          console.log("✅ Login successful, token stored");
           return { success: true, user: normalizedUser };
         } else {
-          console.error('❌ Token or user missing from response');
-          setError('Login response missing required data');
-          return { success: false, error: 'Invalid response format' };
+          console.error("❌ Token or user missing from response");
+          setError("Login response missing required data");
+          return { success: false, error: "Invalid response format" };
         }
       } else {
-        console.error('❌ Login API failed:', response);
-        setError(response.message || 'Login failed');
+        console.error("❌ Login API failed:", response);
+        setError(response.message || "Login failed");
         return { success: false, error: response.message };
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Login failed';
+    } catch (err: any) {
+      const errorMessage = err.message || "Login failed";
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -242,82 +248,91 @@ export function useAuth() {
     }
   }, []);
 
-  const register = useCallback(async (userData: {
-    firstName: string;
-    lastName: string;
-    userName: string;
-    email: string;
-    phone: string;
-    password: string;
-    role: UserRole;
-  }) => {
-    setLoading(true);
-    setError(null);
+  const register = useCallback(
+    async (userData: {
+      firstName: string;
+      lastName: string;
+      userName: string;
+      email: string;
+      phone: string;
+      password: string;
+      role: UserRole;
+    }) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await apiService.register(userData);
+      try {
+        const response = await apiService.register(userData);
 
-      if (response.success && response.data) {
-        const { user, token } = response.data;
-        setUser(user);
-        apiClient.setAuthToken(token);
-        return { success: true, user };
-      } else {
-        setError(response.message || 'Registration failed');
-        return { success: false, error: response.message };
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Registration failed';
-      setError(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const verifyEmail = useCallback(async (email: string, verificationCode: string) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await apiService.verifyEmail({ email, verificationCode });
-
-      if (response.success && response.data) {
-        const { user, token } = response.data;
-        if (user && token) {
+        if (response.success && response.data) {
+          const { user, token } = response.data;
           setUser(user);
           apiClient.setAuthToken(token);
+          return { success: true, user };
+        } else {
+          setError(response.message || "Registration failed");
+          return { success: false, error: response.message };
         }
-        return {
-          success: true,
-          message: 'Email verified successfully',
-          user,
-          token
-        };
-      } else {
-        setError(response.message || 'Email verification failed');
+      } catch (err: any) {
+        const errorMessage = err.message || "Registration failed";
+        setError(errorMessage);
+        return { success: false, error: errorMessage };
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  const verifyEmail = useCallback(
+    async (email: string, verificationCode: string) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await apiService.verifyEmail({
+          email,
+          verificationCode,
+        });
+
+        if (response.success && response.data) {
+          const { user, token } = response.data;
+          if (user && token) {
+            setUser(user);
+            apiClient.setAuthToken(token);
+          }
+          return {
+            success: true,
+            message: "Email verified successfully",
+            user,
+            token,
+          };
+        } else {
+          setError(response.message || "Email verification failed");
+          return {
+            success: false,
+            message: response.message || "Email verification failed",
+          };
+        }
+      } catch (err: any) {
+        const errorMessage = err.message || "Email verification failed";
+        setError(errorMessage);
         return {
           success: false,
-          message: response.message || 'Email verification failed'
+          message: errorMessage,
         };
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Email verification failed';
-      setError(errorMessage);
-      return {
-        success: false,
-        message: errorMessage
-      };
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   const logout = useCallback(async () => {
     try {
       await apiService.logout();
     } catch (err) {
-      console.error('Logout error:', err);
+      console.error("Logout error:", err);
     } finally {
       setUser(null);
       apiClient.clearAuthToken();
@@ -328,14 +343,22 @@ export function useAuth() {
     refreshAuth();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { user, loading, error, login, register, logout, refreshAuth, verifyEmail };
+  return {
+    user,
+    loading,
+    error,
+    login,
+    register,
+    logout,
+    refreshAuth,
+    verifyEmail,
+  };
 }
 export function useUserProfile() {
   const getCurrentUser = useCallback(() => apiService.getCurrentUser(), []);
-  const { data, loading, error, refetch } = useApi(
-    getCurrentUser,
-    { requiresAuth: true }
-  );
+  const { data, loading, error, refetch } = useApi(getCurrentUser, {
+    requiresAuth: true,
+  });
 
   return {
     profile: data || null,
@@ -350,38 +373,43 @@ export function useUpdateProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateProfile = useCallback(async (userId: string,updates: {
-    firstName?: string;
-    lastName?: string;
-    userName?: string;
-    email?: string;
-    phone?: string;
-    address?: string;
-  }) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await apiService.updateProfile(userId, updates);
-
-      if (response.success && response.data) {
-        return { success: true, profile: response.data };
-      } else {
-        setError(response.message || 'Failed to update profile');
-        return { success: false, error: response.message };
+  const updateProfile = useCallback(
+    async (
+      userId: string,
+      updates: {
+        firstName?: string;
+        lastName?: string;
+        userName?: string;
+        email?: string;
+        phone?: string;
+        address?: string;
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update profile';
-      setError(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    ) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await apiService.updateProfile(userId, updates);
+
+        if (response.success && response.data) {
+          return { success: true, profile: response.data };
+        } else {
+          setError(response.message || "Failed to update profile");
+          return { success: false, error: response.message };
+        }
+      } catch (err: any) {
+        const errorMessage = err.message || "Failed to update profile";
+        setError(errorMessage);
+        return { success: false, error: errorMessage };
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   return { updateProfile, loading, error };
 }
-
 
 // Jobs Hooks
 // export function useJobs(params?: {
@@ -447,7 +475,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to create job';
+//       const errorMessage = err.message || 'Failed to create job';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
@@ -490,7 +518,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to update job';
+//       const errorMessage = err.message || 'Failed to update job';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
@@ -541,7 +569,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to place bid';
+//       const errorMessage = err.message || 'Failed to place bid';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
@@ -599,7 +627,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to send message';
+//       const errorMessage = err.message || 'Failed to send message';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
@@ -644,7 +672,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to mark notification as read';
+//       const errorMessage = err.message || 'Failed to mark notification as read';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
@@ -734,7 +762,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to update profile';
+//       const errorMessage = err.message || 'Failed to update profile';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
@@ -780,7 +808,7 @@ export function useUpdateProfile() {
 //         return { success: false, error: response.message };
 //       }
 //     } catch (err) {
-//       const errorMessage = err instanceof Error ? err.message : 'Failed to search locations';
+//       const errorMessage = err.message || 'Failed to search locations';
 //       setError(errorMessage);
 //       return { success: false, error: errorMessage };
 //     } finally {
