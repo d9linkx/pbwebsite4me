@@ -361,7 +361,7 @@ class SocketService {
 
 // Export singleton instance
 export const socketService = new SocketService()
-export const socketInstance = io('https://api-prawnbox.onrender.com', {
+export const socketInstance = io(SOCKET_URL, {
   reconnectionDelayMax: 5000,
   reconnectionAttempts: 10,
   timeout: 10000,
