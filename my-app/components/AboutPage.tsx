@@ -881,7 +881,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 company: 'Prawnbox',
                 linkedin: 'https://www.linkedin.com/in/uchechukwu-friday/',
                 initials: 'UF',
-                photo: '/2.png' // Placeholder for team member photos
+                photo: '/2.png'
               },
               {
                 name: 'Prince DIKE',
@@ -889,15 +889,15 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 company: 'Prawnbox',
                 linkedin: 'https://www.linkedin.com/in/prince-dike/',
                 initials: 'PD',
-                photo: '/1.png' // Placeholder for team member photos
+                photo: '/1.png'
               },
               {
-                name: 'Laurels Ozy ECHICHINWO',
-                role: 'Chief Technology Officer (CTO)',
+                name: 'Victor ADERIBIGBE',
+                role: 'Co-founder/Executive Director, Technology',
                 company: 'Prawnbox',
-                linkedin: 'https://www.linkedin.com/in/laurels-ozy-echichinwo/',
-                initials: 'LE',
-                photo: '/3.png' // Placeholder for team member photos
+                linkedin: 'https://www.linkedin.com/in/vee-jay/',
+                initials: 'VA',
+                photo: '/3.webp'
               }
             ].map((member, index) => (
               <div
