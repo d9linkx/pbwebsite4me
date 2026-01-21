@@ -1,44 +1,54 @@
-"use client"
-import React from 'react';
-import { Shield, Lock, Eye, CheckCircle, AlertTriangle, Phone, FileText, Camera, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+"use client";
+import React from "react";
+import {
+  Shield,
+  Lock,
+  Eye,
+  CheckCircle,
+  AlertTriangle,
+  Phone,
+  FileText,
+  Camera,
+  ArrowRight,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 
-interface SafetyPageProps {
-  onNavigate?: (screen: string) => void;
-}
+export function SafetyPage() {
+  const router = useRouter();
 
-export function SafetyPage({ onNavigate }: SafetyPageProps) {
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
     visible: {
       opacity: 1,
-      y: 0
-    }
+      y: 0,
+    },
   };
 
   const fadeInLeft = {
     hidden: { opacity: 0, x: -60 },
     visible: {
       opacity: 1,
-      x: 0
-    }
+      x: 0,
+    },
   };
 
   const fadeInRight = {
     hidden: { opacity: 0, x: 60 },
     visible: {
       opacity: 1,
-      x: 0
-    }
+      x: 0,
+    },
   };
 
   const scaleIn = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
-      scale: 1
-    }
+      scale: 1,
+    },
   };
 
   const staggerContainer = {
@@ -46,9 +56,9 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   return (
@@ -64,7 +74,8 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
               Your Safety is Our Priority
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Multi-layer security measures to protect every delivery, every transaction, and every user on our platform.
+              Multi-layer security measures to protect every delivery, every
+              transaction, and every user on our platform.
             </p>
           </div>
         </div>
@@ -83,41 +94,55 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
             {[
               {
                 icon: Shield,
-                title: 'Verified Pals Only',
-                description: 'Every Pal goes through rigorous background checks with government-issued ID verification before they can accept deliveries.'
+                title: "Verified Pals Only",
+                description:
+                  "Every Pal goes through rigorous background checks with government-issued ID verification before they can accept deliveries.",
               },
               {
                 icon: Lock,
-                title: 'Escrow Protection',
-                description: 'Your payment is held securely until successful delivery. Pals only get paid when you confirm receipt.'
+                title: "Escrow Protection",
+                description:
+                  "Your payment is held securely until successful delivery. Pals only get paid when you confirm receipt.",
               },
               {
                 icon: Eye,
-                title: 'Real-Time GPS Tracking',
-                description: 'Track your package every step of the way with live GPS updates. Always know where your delivery is.'
+                title: "Real-Time GPS Tracking",
+                description:
+                  "Track your package every step of the way with live GPS updates. Always know where your delivery is.",
               },
               {
                 icon: Camera,
-                title: 'Photo Verification',
-                description: 'Pals take photos at pickup and delivery. Visual proof of package condition at every stage.'
+                title: "Photo Verification",
+                description:
+                  "Pals take photos at pickup and delivery. Visual proof of package condition at every stage.",
               },
               {
                 icon: Phone,
-                title: '24/7 Support',
-                description: 'Our support team is always available to help resolve any issues or answer your questions.'
+                title: "24/7 Support",
+                description:
+                  "Our support team is always available to help resolve any issues or answer your questions.",
               },
               {
                 icon: FileText,
-                title: 'Insurance Coverage',
-                description: 'All deliveries are insured up to package value. Full compensation for damaged or lost items.'
-              }
+                title: "Insurance Coverage",
+                description:
+                  "All deliveries are insured up to package value. Full compensation for damaged or lost items.",
+              },
             ].map((feature, index) => (
               <motion.div
                 key={index}
                 className="p-8 bg-gray-50 rounded-2xl cursor-pointer shadow-sm hover:shadow-md"
                 variants={scaleIn}
-                whileHover={{ scale: 1.05, y: -10, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-                whileTap={{ scale: 1.05, y: -10, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -10,
+                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                }}
+                whileTap={{
+                  scale: 1.05,
+                  y: -10,
+                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                }}
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
@@ -130,9 +155,7 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
                 <h3 className="text-xl font-bold text-[#2f2f2f] mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -175,25 +198,28 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
           >
             {[
               {
-                step: '1',
-                title: 'ID Verification',
-                description: 'Government-issued ID with live selfie verification'
+                step: "1",
+                title: "ID Verification",
+                description:
+                  "Government-issued ID with live selfie verification",
               },
               {
-                step: '2',
-                title: 'Background Check',
-                description: 'Criminal record screening and reference checks'
+                step: "2",
+                title: "Background Check",
+                description: "Criminal record screening and reference checks",
               },
               {
-                step: '3',
-                title: 'Vehicle Inspection',
-                description: 'Vehicle registration and roadworthiness certificate'
+                step: "3",
+                title: "Vehicle Inspection",
+                description:
+                  "Vehicle registration and roadworthiness certificate",
               },
               {
-                step: '4',
-                title: 'Passenger Verification',
-                description: 'Special verification process for passengers delivering items'
-              }
+                step: "4",
+                title: "Passenger Verification",
+                description:
+                  "Special verification process for passengers delivering items",
+              },
             ].map((step, index) => (
               <motion.div
                 key={index}
@@ -208,7 +234,9 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
                 >
                   {step.step}
                 </motion.div>
-                <h3 className="text-lg font-bold text-[#2f2f2f] mb-2">{step.title}</h3>
+                <h3 className="text-lg font-bold text-[#2f2f2f] mb-2">
+                  {step.title}
+                </h3>
                 <p className="text-gray-600">{step.description}</p>
               </motion.div>
             ))}
@@ -241,15 +269,18 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
               </h2>
               <ul className="space-y-4">
                 {[
-                  'Always check Pal ratings and reviews before accepting a bid',
-                  'Use clear, accurate item descriptions to avoid disputes',
-                  'Take photos of your package before handover',
-                  'Meet Pals in well-lit, public locations when possible',
-                  'Never include cash or prohibited items in packages',
-                  'Report suspicious behavior immediately to support'
+                  "Always check Pal ratings and reviews before accepting a bid",
+                  "Use clear, accurate item descriptions to avoid disputes",
+                  "Take photos of your package before handover",
+                  "Meet Pals in well-lit, public locations when possible",
+                  "Never include cash or prohibited items in packages",
+                  "Report suspicious behavior immediately to support",
                 ].map((tip, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <CheckCircle size={20} className="text-[#f44708] flex-shrink-0 mt-1" />
+                    <CheckCircle
+                      size={20}
+                      className="text-[#f44708] flex-shrink-0 mt-1"
+                    />
                     <span className="text-gray-700">{tip}</span>
                   </li>
                 ))}
@@ -277,15 +308,18 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
               </h2>
               <ul className="space-y-4">
                 {[
-                  'Verify package contents match description before pickup',
-                  'Take photos at pickup and delivery for proof',
-                  'Never accept packages that look suspicious or damaged',
-                  'Use GPS tracking to share your route with trusted contacts',
-                  'Trust your instincts - report unsafe situations',
-                  'Keep valuable items secure and out of sight during transport'
+                  "Verify package contents match description before pickup",
+                  "Take photos at pickup and delivery for proof",
+                  "Never accept packages that look suspicious or damaged",
+                  "Use GPS tracking to share your route with trusted contacts",
+                  "Trust your instincts - report unsafe situations",
+                  "Keep valuable items secure and out of sight during transport",
                 ].map((tip, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <CheckCircle size={20} className="text-[#f44708] flex-shrink-0 mt-1" />
+                    <CheckCircle
+                      size={20}
+                      className="text-[#f44708] flex-shrink-0 mt-1"
+                    />
                     <span className="text-gray-700">{tip}</span>
                   </li>
                 ))}
@@ -321,18 +355,19 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
               </h2>
             </div>
             <p className="text-gray-700 mb-4">
-              For everyone&apos;s safety, the following items are strictly prohibited on Prawnbox:
+              For everyone&apos;s safety, the following items are strictly
+              prohibited on Prawnbox:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
-                'Weapons and ammunition',
-                'Illegal drugs and substances',
-                'Explosives and fireworks',
-                'Hazardous materials',
-                'Live animals',
-                'Perishable food (without proper packaging)',
-                'Cash above ₦50,000',
-                'Stolen or counterfeit goods'
+                "Weapons and ammunition",
+                "Illegal drugs and substances",
+                "Explosives and fireworks",
+                "Hazardous materials",
+                "Live animals",
+                "Perishable food (without proper packaging)",
+                "Cash above ₦50,000",
+                "Stolen or counterfeit goods",
               ].map((item, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <span className="text-red-600 font-bold">✗</span>
@@ -362,19 +397,16 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
           >
             24/7 Emergency Support
           </motion.h2>
-          <motion.p
-            className="text-xl text-gray-300 mb-8"
-            variants={fadeInUp}
-          >
-            If you ever feel unsafe or encounter an emergency during a delivery, contact us immediately.
+          <motion.p className="text-xl text-gray-300 mb-8" variants={fadeInUp}>
+            If you ever feel unsafe or encounter an emergency during a delivery,
+            contact us immediately.
           </motion.p>
-          <motion.div
-            className="space-y-4"
-            variants={staggerContainer}
-          >
+          <motion.div className="space-y-4" variants={staggerContainer}>
             <motion.div variants={scaleIn}>
               <p className="text-gray-400 mb-2">Emergency Hotline</p>
-              <p className="text-3xl font-bold text-[#f44708]">+234 800 EMERGENCY</p>
+              <p className="text-3xl font-bold text-[#f44708]">
+                +234 800 EMERGENCY
+              </p>
             </motion.div>
             <motion.div variants={scaleIn}>
               <p className="text-gray-400 mb-2">WhatsApp Support</p>
@@ -399,17 +431,17 @@ export function SafetyPage({ onNavigate }: SafetyPageProps) {
           >
             Safe, Secure, Reliable
           </motion.h2>
-          <motion.p
-            className="text-xl mb-8"
-            variants={fadeInUp}
-          >
+          <motion.p className="text-xl mb-8" variants={fadeInUp}>
             Experience peace of mind with every delivery
           </motion.p>
           <motion.button
-            onClick={() => onNavigate?.('auth')}
+            onClick={() => router.push(ROUTES.AUTH)}
             className="px-8 py-4 bg-white text-[#f44708] text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
             variants={scaleIn}
-            whileHover={{ scale: 1.1, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+            whileHover={{
+              scale: 1.1,
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+            }}
             whileTap={{ scale: 0.95 }}
           >
             Get Started Safely

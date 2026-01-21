@@ -1,40 +1,63 @@
-"use client"
-import React from 'react';
-import { Target, Users, Zap, Heart, Shield, TrendingUp, ArrowRight, Linkedin, BarChart3, Rocket, CheckCircle, Building2, Code, Lock, Gift, Sparkles, Brain, Handshake, Coins, Map, GraduationCap, ShieldCheck, Globe } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+"use client";
+import React from "react";
+import {
+  Target,
+  Users,
+  Zap,
+  Heart,
+  Shield,
+  TrendingUp,
+  ArrowRight,
+  Linkedin,
+  BarChart3,
+  Rocket,
+  CheckCircle,
+  Building2,
+  Code,
+  Lock,
+  Gift,
+  Sparkles,
+  Brain,
+  Handshake,
+  Coins,
+  Map,
+  GraduationCap,
+  ShieldCheck,
+  Globe,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 
-interface AboutPageProps {
-  onNavigate?: (screen: string) => void;
-}
-
-export function AboutPage({ onNavigate }: AboutPageProps) {
+export function AboutPage() {
+  const router = useRouter();
 
   // Animation variants (compatible with framer-motion v12)
-  
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const fadeInLeft = {
     hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
   };
 
   const fadeInRight = {
     hidden: { opacity: 0, x: 60 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
   };
 
   const scaleIn = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 }
+    visible: { opacity: 1, scale: 1 },
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1 }
+    visible: { opacity: 1 },
   };
 
   return (
@@ -47,7 +70,9 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               Transforming Delivery in Nigeria
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              We are building Africa&apos;s most trusted peer-to-peer delivery platform, connecting Nigerians who need to send packages with verified Pals who can deliver them safely and efficiently.
+              We are building Africa&apos;s most trusted peer-to-peer delivery
+              platform, connecting Nigerians who need to send packages with
+              verified Pals who can deliver them safely and efficiently.
             </p>
 
             {/* CAC Registration Badge */}
@@ -56,10 +81,12 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 <Shield className="text-[#f44708] mr-3" size={20} />
                 <div className="text-left">
                   <p className="text-sm font-semibold text-white">
-                    Prawnbox Technology Ltd. (the company behind the Prawnbox delivery app)
+                    Prawnbox Technology Ltd. (the company behind the Prawnbox
+                    delivery app)
                   </p>
                   <p className="text-sm text-gray-300">
-                    is registered with the Corporate Affairs Commission (CAC) RC 8179339
+                    is registered with the Corporate Affairs Commission (CAC) RC
+                    8179339
                   </p>
                 </div>
               </div>
@@ -91,39 +118,62 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 mb-4">
-                Prawnbox was born from a simple frustration: sending packages in Nigeria was expensive, unreliable, and complicated. We saw friends and family struggle with traditional courier services that charged exorbitant fees and often delayed deliveries.
+                Prawnbox was born from a simple frustration: sending packages in
+                Nigeria was expensive, unreliable, and complicated. We saw
+                friends and family struggle with traditional courier services
+                that charged exorbitant fees and often delayed deliveries.
               </p>
 
               {/* Founder Quote - Friday */}
               <div className="bg-gray-50 border-l-4 border-[#f44708] p-6 mb-4 rounded-r-xl">
                 <p className="text-gray-700 italic mb-2">
-                  &quot;We realized that millions of Nigerians travel the same routes every day. Why not connect those who need to send packages with those already making the journey? That&apos;s how we can democratize delivery and create opportunities for everyone.&quot;
+                  &quot;We realized that millions of Nigerians travel the same
+                  routes every day. Why not connect those who need to send
+                  packages with those already making the journey? That&apos;s
+                  how we can democratize delivery and create opportunities for
+                  everyone.&quot;
                 </p>
                 <p className="text-sm font-semibold text-[#2f2f2f]">
-                  — Uchechukwu Friday, Co-founder & Executive Director, Business & Partnership
+                  — Uchechukwu Friday, Co-founder & Executive Director, Business
+                  & Partnership
                 </p>
               </div>
 
               <p className="text-lg text-gray-600 mb-4">
-                We envisioned a better way - a community-driven platform where everyday Nigerians could earn money by delivering packages on routes they were already traveling, while senders enjoyed affordable, fast, and transparent delivery services.
+                We envisioned a better way - a community-driven platform where
+                everyday Nigerians could earn money by delivering packages on
+                routes they were already traveling, while senders enjoyed
+                affordable, fast, and transparent delivery services.
               </p>
 
               {/* Founder Quote - Prince */}
               <div className="bg-gray-50 border-l-4 border-[#f44708] p-6 mb-4 rounded-r-xl">
                 <p className="text-gray-700 italic mb-2">
-                  &quot;At Prawnbox, we are not just building a delivery platform; we are building trust, one package at a time. Our technology ensures that every stakeholder—sender, receiver, and Pal—has complete transparency and security throughout the delivery journey.&quot;
+                  &quot;At Prawnbox, we are not just building a delivery
+                  platform; we are building trust, one package at a time. Our
+                  technology ensures that every stakeholder—sender, receiver,
+                  and Pal—has complete transparency and security throughout the
+                  delivery journey.&quot;
                 </p>
                 <p className="text-sm font-semibold text-[#2f2f2f]">
-                  — Prince Dike, Co-founder & Executive Director, Product & Marketing
+                  — Prince Dike, Co-founder & Executive Director, Product &
+                  Marketing
                 </p>
               </div>
 
               <p className="text-lg text-gray-600 mb-4">
-                Today, Prawnbox is a registered Nigerian company (CAC RC 8179339) that has successfully launched in Lagos and Ibadan, with active verified Pals serving thousands of customers. We are rapidly expanding to Port Harcourt, Abuja, Enugu, Kano, and Calabar.
+                Today, Prawnbox is a registered Nigerian company (CAC RC
+                8179339) that has successfully launched in Lagos and Ibadan,
+                with active verified Pals serving thousands of customers. We are
+                rapidly expanding to Port Harcourt, Abuja, Enugu, Kano, and
+                Calabar.
               </p>
 
               <p className="text-lg text-gray-600">
-                We are not just a delivery platform; we are a community built on trust, transparency, and mutual support, connecting Nigerians who need to send packages with those already traveling the routes.
+                We are not just a delivery platform; we are a community built on
+                trust, transparency, and mutual support, connecting Nigerians
+                who need to send packages with those already traveling the
+                routes.
               </p>
             </motion.div>
             <motion.div
@@ -134,7 +184,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               variants={fadeInRight}
             >
               <motion.img
-                src="https://images.unsplash.com/photo-1649502913092-fb7f0e8fc632?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxMYWdvcyUyME5pZ2VyaWElMjBjaXR5JTIwc2t5bGluZXxlbnwxfHx8fDE3NjAxMDk2Njh8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src="/nigeria-skyline.jpg"
                 alt="Lagos Nigeria Skyline"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
@@ -168,7 +218,8 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We are driven by a commitment to make delivery accessible, affordable, and reliable for every Nigerian.
+              We are driven by a commitment to make delivery accessible,
+              affordable, and reliable for every Nigerian.
             </p>
           </motion.div>
 
@@ -182,49 +233,56 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             {[
               {
                 icon: Target,
-                title: 'Our Mission',
-                description: 'To democratize delivery in Nigeria by connecting communities and empowering individuals to earn while they travel.'
+                title: "Our Mission",
+                description:
+                  "To democratize delivery in Nigeria by connecting communities and empowering individuals to earn while they travel.",
               },
               {
                 icon: Shield,
-                title: 'Trust First',
-                description: 'Every Pal is verified with government-issued ID. Every transaction is protected by secure escrow payments.'
+                title: "Trust First",
+                description:
+                  "Every Pal is verified with government-issued ID. Every transaction is protected by secure escrow payments.",
               },
               {
                 icon: Heart,
-                title: 'Community Driven',
-                description: 'We believe in the power of community. Nigerians helping Nigerians, building trust one delivery at a time.'
+                title: "Community Driven",
+                description:
+                  "We believe in the power of community. Nigerians helping Nigerians, building trust one delivery at a time.",
               },
               {
                 icon: Zap,
-                title: 'Speed & Efficiency',
-                description: 'We leverage technology to make deliveries faster, tracking more transparent, and communication seamless.'
+                title: "Speed & Efficiency",
+                description:
+                  "We leverage technology to make deliveries faster, tracking more transparent, and communication seamless.",
               },
               {
                 icon: Users,
-                title: 'Fair Compensation',
-                description: 'Pals keep 95% of their earnings. We believe in rewarding hard work fairly and transparently.'
+                title: "Fair Compensation",
+                description:
+                  "Pals keep 95% of their earnings. We believe in rewarding hard work fairly and transparently.",
               },
               {
                 icon: TrendingUp,
-                title: 'Continuous Innovation',
-                description: 'We are constantly improving our platform based on feedback from our community of senders, Pals, and receivers.'
-              }
+                title: "Continuous Innovation",
+                description:
+                  "We are constantly improving our platform based on feedback from our community of senders, Pals, and receivers.",
+              },
             ].map((value, index) => (
               <motion.div
                 key={index}
                 className="p-8 bg-white rounded-2xl shadow-lg cursor-pointer"
                 variants={scaleIn}
-                whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                }}
                 transition={{ duration: 0.3 }}
               >
                 <value.icon size={40} className="text-[#f44708] mb-4" />
                 <h3 className="text-xl font-bold text-[#2f2f2f] mb-3">
                   {value.title}
                 </h3>
-                <p className="text-gray-600">
-                  {value.description}
-                </p>
+                <p className="text-gray-600">{value.description}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -242,10 +300,10 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             variants={staggerContainer}
           >
             {[
-              { number: '10,000+', label: 'Verified Pals' },
-              { number: '50,000+', label: 'Deliveries Completed' },
-              { number: '4.8/5', label: 'Average Rating' },
-              { number: '7 Cities', label: 'Coming Soon' }
+              { number: "10,000+", label: "Verified Pals" },
+              { number: "50,000+", label: "Deliveries Completed" },
+              { number: "4.8/5", label: "Average Rating" },
+              { number: "7 Cities", label: "Coming Soon" },
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -255,9 +313,7 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 <div className="text-4xl md:text-5xl font-bold text-[#f44708] mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-300">
-                  {stat.label}
-                </div>
+                <div className="text-gray-300">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -290,7 +346,8 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Officially registered with CAC (RC 8179339), we&apos;ve launched in key cities and are rapidly expanding nationwide.
+              Officially registered with CAC (RC 8179339), we&apos;ve launched
+              in key cities and are rapidly expanding nationwide.
             </p>
           </motion.div>
 
@@ -310,18 +367,26 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 <h3 className="text-2xl font-bold">Live Now</h3>
               </div>
               <p className="text-white/90 mb-6">
-                We&apos;re actively serving customers with verified Pals in these cities:
+                We&apos;re actively serving customers with verified Pals in
+                these cities:
               </p>
               <ul className="space-y-3">
                 {[
-                  { city: 'Lagos', description: 'Nigeria&apos;s commercial hub' },
-                  { city: 'Ibadan', description: 'Oyo State capital' }
+                  {
+                    city: "Lagos",
+                    description: "Nigeria&apos;s commercial hub",
+                  },
+                  { city: "Ibadan", description: "Oyo State capital" },
                 ].map((location, index) => (
                   <li key={index} className="flex items-start">
                     <div className="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></div>
                     <div>
-                      <span className="font-semibold text-lg">{location.city}</span>
-                      <p className="text-white/80 text-sm">{location.description}</p>
+                      <span className="font-semibold text-lg">
+                        {location.city}
+                      </span>
+                      <p className="text-white/80 text-sm">
+                        {location.description}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -334,24 +399,36 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 <div className="w-12 h-12 bg-[#2f2f2f] rounded-full flex items-center justify-center mr-4">
                   <TrendingUp className="text-white" size={24} />
                 </div>
-                <h3 className="text-2xl font-bold text-[#2f2f2f]">Expanding Soon</h3>
+                <h3 className="text-2xl font-bold text-[#2f2f2f]">
+                  Expanding Soon
+                </h3>
               </div>
               <p className="text-gray-600 mb-6">
                 We&apos;re bringing Prawnbox to more cities across Nigeria:
               </p>
               <ul className="space-y-3">
                 {[
-                  { city: 'Port Harcourt', description: 'Rivers State capital' },
-                  { city: 'Abuja', description: 'Federal Capital Territory' },
-                  { city: 'Enugu', description: 'Coal City' },
-                  { city: 'Kano', description: 'Commercial center of the North' },
-                  { city: 'Calabar', description: 'Cross River State capital' }
+                  {
+                    city: "Port Harcourt",
+                    description: "Rivers State capital",
+                  },
+                  { city: "Abuja", description: "Federal Capital Territory" },
+                  { city: "Enugu", description: "Coal City" },
+                  {
+                    city: "Kano",
+                    description: "Commercial center of the North",
+                  },
+                  { city: "Calabar", description: "Cross River State capital" },
                 ].map((location, index) => (
                   <li key={index} className="flex items-start">
                     <div className="w-2 h-2 bg-[#f44708] rounded-full mt-2 mr-3 flex-shrink-0"></div>
                     <div>
-                      <span className="font-semibold text-[#2f2f2f]">{location.city}</span>
-                      <p className="text-gray-500 text-sm">{location.description}</p>
+                      <span className="font-semibold text-[#2f2f2f]">
+                        {location.city}
+                      </span>
+                      <p className="text-gray-500 text-sm">
+                        {location.description}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -366,7 +443,10 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
         {/* Animated Background Elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-[#f44708] rounded-full filter blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#f44708] rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div
+            className="absolute bottom-20 right-10 w-96 h-96 bg-[#f44708] rounded-full filter blur-3xl animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -393,7 +473,8 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
               </span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              From concept to nationwide expansion - our journey to transform delivery in Nigeria
+              From concept to nationwide expansion - our journey to transform
+              delivery in Nigeria
             </p>
           </motion.div>
 
@@ -421,157 +502,183 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 {/* Phase Header */}
                 <div className="mb-6">
                   <div className="inline-block px-3 py-1 bg-[#f44708]/10 rounded-full mb-2">
-                    <span className="text-sm font-semibold text-[#f44708]">2024-2025</span>
+                    <span className="text-sm font-semibold text-[#f44708]">
+                      2024-2025
+                    </span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Foundation Phase</h3>
-                  <p className="text-gray-300 text-base">Building the groundwork for delivery revolution</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    Foundation Phase
+                  </h3>
+                  <p className="text-gray-300 text-base">
+                    Building the groundwork for delivery revolution
+                  </p>
                 </div>
 
                 {/* Milestone Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {/* Market Research */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <BarChart3 className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">August 2024</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Market Research</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            August 2024
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Market Research
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Comprehensive market analysis of Nigeria&apos;s delivery landscape, identifying pain points and opportunities in Lagos and beyond.
+                        Comprehensive market analysis of Nigeria&apos;s delivery
+                        landscape, identifying pain points and opportunities in
+                        Lagos and beyond.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Company Founding */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Rocket className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">October 2024</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Company Founding</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            October 2024
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Company Founding
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Prawnbox Technology Ltd. officially founded by our team of passionate entrepreneurs committed to revolutionizing delivery.
+                        Prawnbox Technology Ltd. officially founded by our team
+                        of passionate entrepreneurs committed to revolutionizing
+                        delivery.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* CAC Registration */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <CheckCircle className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">November 2024</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">CAC Registration</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            November 2024
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            CAC Registration
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Official registration with Corporate Affairs Commission (RC 8179339), establishing Prawnbox as a legitimate Nigerian company.
+                        Official registration with Corporate Affairs Commission
+                        (RC 8179339), establishing Prawnbox as a legitimate
+                        Nigerian company.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Business Structuring */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Building2 className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">January 2025</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Business Structuring</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            January 2025
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Business Structuring
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Finalized business model, legal framework, partnership agreements, and operational structure for sustainable growth.
+                        Finalized business model, legal framework, partnership
+                        agreements, and operational structure for sustainable
+                        growth.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* MVP Development */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Code className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">January - June 2025</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">MVP Development</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            January - June 2025
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            MVP Development
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Built our first Minimum Viable Product with core features: Pal verification, escrow payments, real-time tracking, and bidding system.
+                        Built our first Minimum Viable Product with core
+                        features: Pal verification, escrow payments, real-time
+                        tracking, and bidding system.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Private MVP Launch */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Lock className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">September 2025</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Private MVP Launch</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            September 2025
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Private MVP Launch
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Soft launch to a limited group of early adopters in Lagos and Ibadan for real-world validation and feedback.
+                        Soft launch to a limited group of early adopters in
+                        Lagos and Ibadan for real-world validation and feedback.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Early Bird Registrations */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-[#f44708]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Gift className="w-5 h-5 text-[#f44708]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-[#f44708] mb-1">October 2025 to January 2026</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Early Bird Registrations</h4>
+                          <div className="text-xs font-semibold text-[#f44708] mb-1">
+                            October 2025 to January 2026
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Early Bird Registrations
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Building our community! Pre-launch registrations for senders and Pals with exclusive early adopter benefits and discounts.
+                        Building our community! Pre-launch registrations for
+                        senders and Pals with exclusive early adopter benefits
+                        and discounts.
                       </p>
                     </div>
                   </motion.div>
@@ -599,11 +706,19 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 {/* Phase Header */}
                 <div className="mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#f44708] rounded-full mb-2">
-                    <span className="text-sm font-semibold text-white">2026</span>
-                    <span className="text-xs px-2 py-0.5 bg-white/20 rounded-full text-white">Current</span>
+                    <span className="text-sm font-semibold text-white">
+                      2026
+                    </span>
+                    <span className="text-xs px-2 py-0.5 bg-white/20 rounded-full text-white">
+                      Current
+                    </span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Launch & Growth Phase</h3>
-                  <p className="text-gray-300 text-base">Scaling nationwide and expanding features</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    Launch & Growth Phase
+                  </h3>
+                  <p className="text-gray-300 text-base">
+                    Scaling nationwide and expanding features
+                  </p>
                 </div>
 
                 {/* Milestone Cards */}
@@ -619,18 +734,30 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                           <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-[#f44708]" />
                         </div>
                         <div className="flex-1">
-                          <div className="text-white/90 text-xs font-semibold mb-1">February 2026</div>
-                          <h4 className="text-white font-bold text-lg md:text-xl mb-2">Public Launch</h4>
+                          <div className="text-white/90 text-xs font-semibold mb-1">
+                            February 2026
+                          </div>
+                          <h4 className="text-white font-bold text-lg md:text-xl mb-2">
+                            Public Launch
+                          </h4>
                           <p className="text-white/90 text-sm md:text-base leading-relaxed mb-4">
-                            Official nationwide public launch in Lagos and Ibadan! Full platform access, mass marketing campaign, and onboarding thousands of Pals.
+                            Official nationwide public launch in Lagos and
+                            Ibadan! Full platform access, mass marketing
+                            campaign, and onboarding thousands of Pals.
                           </p>
                           <div className="flex flex-wrap gap-3">
                             <div className="bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
-                              <div className="text-white text-xs">Expected Users</div>
-                              <div className="text-white font-bold">10,000+</div>
+                              <div className="text-white text-xs">
+                                Expected Users
+                              </div>
+                              <div className="text-white font-bold">
+                                10,000+
+                              </div>
                             </div>
                             <div className="bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
-                              <div className="text-white text-xs">Active Pals</div>
+                              <div className="text-white text-xs">
+                                Active Pals
+                              </div>
                               <div className="text-white font-bold">2,500+</div>
                             </div>
                             <div className="bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
@@ -644,64 +771,74 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                   </motion.div>
 
                   {/* AI-Powered Matching */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Brain className="w-5 h-5 text-purple-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-purple-600 mb-1">Q2 2026</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">AI-Powered Matching</h4>
+                          <div className="text-xs font-semibold text-purple-600 mb-1">
+                            Q2 2026
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            AI-Powered Matching
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Launch intelligent Pal-to-delivery matching algorithm using AI to optimize routes, reduce delivery times, and increase Pal earnings.
+                        Launch intelligent Pal-to-delivery matching algorithm
+                        using AI to optimize routes, reduce delivery times, and
+                        increase Pal earnings.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Corporate Partnerships */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Handshake className="w-5 h-5 text-blue-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-blue-600 mb-1">Q3 2026</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Corporate Partnerships</h4>
+                          <div className="text-xs font-semibold text-blue-600 mb-1">
+                            Q3 2026
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Corporate Partnerships
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Strategic B2B partnerships with e-commerce platforms, restaurants, and retail businesses for bulk delivery contracts.
+                        Strategic B2B partnerships with e-commerce platforms,
+                        restaurants, and retail businesses for bulk delivery
+                        contracts.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* New Earning Opportunities */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Coins className="w-5 h-5 text-green-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-green-600 mb-1">Q4 2026</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">New Earning Opportunities</h4>
+                          <div className="text-xs font-semibold text-green-600 mb-1">
+                            Q4 2026
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            New Earning Opportunities
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Introducing innovative earning opportunities for everyone - senders and receivers can now earn on the platform through various engagement programs and rewards.
+                        Introducing innovative earning opportunities for
+                        everyone - senders and receivers can now earn on the
+                        platform through various engagement programs and
+                        rewards.
                       </p>
                     </div>
                   </motion.div>
@@ -724,97 +861,116 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 {/* Phase Header */}
                 <div className="mb-6">
                   <div className="inline-block px-3 py-1 bg-gray-200 rounded-full mb-2">
-                    <span className="text-sm font-semibold text-gray-600">2027</span>
+                    <span className="text-sm font-semibold text-gray-600">
+                      2027
+                    </span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">National Expansion Phase</h3>
-                  <p className="text-gray-300 text-base">Taking Prawnbox across Nigeria</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                    National Expansion Phase
+                  </h3>
+                  <p className="text-gray-300 text-base">
+                    Taking Prawnbox across Nigeria
+                  </p>
                 </div>
 
                 {/* Milestone Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {/* Multi-State Expansion */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Map className="w-5 h-5 text-yellow-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-yellow-600 mb-1">Q1-Q2 2027</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Multi-State Expansion</h4>
+                          <div className="text-xs font-semibold text-yellow-600 mb-1">
+                            Q1-Q2 2027
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Multi-State Expansion
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Major expansion to Port Harcourt, Abuja, Enugu, Kano, and Calabar - bringing Prawnbox to all major Nigerian cities.
+                        Major expansion to Port Harcourt, Abuja, Enugu, Kano,
+                        and Calabar - bringing Prawnbox to all major Nigerian
+                        cities.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Pal Training Academy */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <GraduationCap className="w-5 h-5 text-indigo-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-indigo-600 mb-1">Q2 2027</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Pal Training Academy</h4>
+                          <div className="text-xs font-semibold text-indigo-600 mb-1">
+                            Q2 2027
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Pal Training Academy
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Launch comprehensive training program for Pals covering customer service, safe handling, route optimization, and professional development.
+                        Launch comprehensive training program for Pals covering
+                        customer service, safe handling, route optimization, and
+                        professional development.
                       </p>
                     </div>
                   </motion.div>
 
                   {/* Electronic Tamper-Proof Security */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <ShieldCheck className="w-5 h-5 text-red-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-red-600 mb-1">Q3 2027</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">Electronic Security</h4>
+                          <div className="text-xs font-semibold text-red-600 mb-1">
+                            Q3 2027
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            Electronic Security
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed mb-2">
-                        Revolutionary electronic security system for package protection with tamper-proof tracking technology.
+                        Revolutionary electronic security system for package
+                        protection with tamper-proof tracking technology.
                       </p>
                       <div className="inline-block px-2 py-1 bg-red-50 rounded-md">
-                        <p className="text-red-600 text-xs">Subject to earlier launch</p>
+                        <p className="text-red-600 text-xs">
+                          Subject to earlier launch
+                        </p>
                       </div>
                     </div>
                   </motion.div>
 
                   {/* International Pilot */}
-                  <motion.div
-                    variants={scaleIn}
-                    className="group relative"
-                  >
+                  <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-[#f44708] transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="w-10 h-10 bg-teal-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Globe className="w-5 h-5 text-teal-600" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-teal-600 mb-1">Q4 2027</div>
-                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">International Pilot</h4>
+                          <div className="text-xs font-semibold text-teal-600 mb-1">
+                            Q4 2027
+                          </div>
+                          <h4 className="text-[#2f2f2f] font-bold text-base mb-2">
+                            International Pilot
+                          </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        Pilot program for cross-border deliveries to Ghana and other West African countries - expanding Prawnbox beyond Nigeria.
+                        Pilot program for cross-border deliveries to Ghana and
+                        other West African countries - expanding Prawnbox beyond
+                        Nigeria.
                       </p>
                     </div>
                   </motion.div>
@@ -876,29 +1032,29 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Uchechukwu FRIDAY',
-                role: 'Co-founder/Executive Director, Business & Partnership',
-                company: 'Prawnbox',
-                linkedin: 'https://www.linkedin.com/in/uchechukwu-friday/',
-                initials: 'UF',
-                photo: '/2.png'
+                name: "Uchechukwu FRIDAY",
+                role: "Co-founder/Executive Director, Business & Partnership",
+                company: "Prawnbox",
+                linkedin: "https://www.linkedin.com/in/uchechukwu-friday/",
+                initials: "UF",
+                photo: "/2.png",
               },
               {
-                name: 'Prince DIKE',
-                role: 'Co-founder/Executive Director, Product & Marketing',
-                company: 'Prawnbox',
-                linkedin: 'https://www.linkedin.com/in/prince-dike/',
-                initials: 'PD',
-                photo: '/1.png'
+                name: "Prince DIKE",
+                role: "Co-founder/Executive Director, Product & Marketing",
+                company: "Prawnbox",
+                linkedin: "https://www.linkedin.com/in/prince-dike/",
+                initials: "PD",
+                photo: "/1.png",
               },
               {
-                name: 'Victor ADERIBIGBE',
-                role: 'Co-founder/Executive Director, Technology',
-                company: 'Prawnbox',
-                linkedin: 'https://www.linkedin.com/in/vee-jay/',
-                initials: 'VA',
-                photo: '/3.webp'
-              }
+                name: "Victor ADERIBIGBE",
+                role: "Co-founder/Executive Director, Technology",
+                company: "Prawnbox",
+                linkedin: "https://www.linkedin.com/in/vee-jay/",
+                initials: "VA",
+                photo: "/3.webp",
+              },
             ].map((member, index) => (
               <div
                 key={index}
@@ -907,9 +1063,11 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
                 {/* Square Image with slight rounding - positioned at top with 99% width */}
                 <div className="w-[99%] aspect-square rounded-lg mx-auto mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-lg">
                   {member.photo ? (
-                    <img
+                    <Image
                       src={member.photo}
                       alt={member.name}
+                      width={100}
+                      height={100}
                       className="w-full h-full object-cover object-center"
                     />
                   ) : (
@@ -954,10 +1112,11 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
             Join the Prawnbox Community
           </h2>
           <p className="text-xl mb-8">
-            Whether you want to send packages or earn money as a Pal, we are here for you.
+            Whether you want to send packages or earn money as a Pal, we are
+            here for you.
           </p>
           <button
-            onClick={() => onNavigate?.('auth')}
+            onClick={() => router.push(ROUTES.AUTH)}
             className="px-8 py-4 bg-white text-[#f44708] text-lg font-semibold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Get Started Today

@@ -1,118 +1,116 @@
 // Core types for the Prawnbox delivery application
 
-export type Screen = 
+export type Screen =
   // Website Screens
-  | 'website-home'
-  | 'website-about'
-  | 'website-how-it-works'
-  | 'website-pricing'
-  | 'website-safety'
-  | 'website-faqs'
-  | 'website-contact'
-  | 'website-terms'
-  | 'website-privacy'
+  | "website-home"
+  | "website-about"
+  | "website-how-it-works"
+  | "website-pricing"
+  | "website-safety"
+  | "website-faqs"
+  | "website-contact"
+  | "website-terms"
+  | "website-privacy"
+  | "website-become-pal"
+  | "website-become-proxy"
+  | "website-send-items"
   // App Screens
-  | 'splash'
-  | 'onboarding'
-  | 'auth'
-  | 'email-verification'
-  | 'dashboard'
-  | 'post-delivery'
-  | 'pal-profile'
-  | 'escrow-payment'
-  | 'payment-confirmation'
-  | 'available-jobs'
-  | 'bid-edit'
-  | 'tracking'
-  | 'delivery-completion'
-  | 'proxy-selection'
-  | 'chat'
-  | 'wallet'
-  | 'wallet-add-funds'
-  | 'wallet-withdraw'
-  | 'bank-transfer'
-  | 'card-payment'
-  | 'payment-status'
-  | 'location-selection'
-  | 'referral'
-  | 'sponsorship'
-  | 'sponsor-search'
-  | 'sponsor-user-search'
-  | 'sponsor-user-confirmation'
-  | 'sponsorship-success'
-  | 'settings'
-  | 'profile-information'
-  | 'verification'
-  | 'payment-methods'
-  | 'help-center'
-  | 'contact-support'
-  | 'proxy-dashboard'
-  | 'route-ads-management'
-
-  | 'ratings'
-  | 'qr-scanner'
-  | 'pickup-confirmation'
-  | 'pickup-verification'
-  | 'handover-qr'
-  | 'accepted-bids'
-  | 'my-deliveries'
-  | 'receiver-dashboard'
-  | 'sponsorship-management'
-  | 'sponsorship-details'
-  | 'bids'
-  | 'website-become-pal'
-  | 'website-become-proxy'
-  | 'website-send-items'
-  | 'website-home'
+  | "splash"
+  | "onboarding"
+  | "auth"
+  | "email-verification"
+  | "dashboard"
+  | "post-delivery"
+  | "pal-profile"
+  | "escrow-payment"
+  | "payment-confirmation"
+  | "available-jobs"
+  | "bid-edit"
+  | "tracking"
+  | "delivery-completion"
+  | "proxy-selection"
+  | "chat"
+  | "wallet"
+  | "wallet-add-funds"
+  | "wallet-withdraw"
+  | "bank-transfer"
+  | "card-payment"
+  | "payment-status"
+  | "location-selection"
+  | "referral"
+  | "sponsorship"
+  | "sponsor-search"
+  | "sponsor-user-search"
+  | "sponsor-user-confirmation"
+  | "sponsorship-success"
+  | "settings"
+  | "profile-information"
+  | "verification"
+  | "payment-methods"
+  | "help-center"
+  | "contact-support"
+  | "proxy-dashboard"
+  | "route-ads-management"
+  | "ratings"
+  | "qr-scanner"
+  | "pickup-confirmation"
+  | "pickup-verification"
+  | "handover-qr"
+  | "accepted-bids"
+  | "my-deliveries"
+  | "receiver-dashboard"
+  | "sponsorship-management"
+  | "sponsorship-details"
+  | "bids"
   | "proxy-to-receiver-handover"
-  | 'delivery-progress'
-  | 'delivery-confirmation'
-  | 'arrival-confirmation'
-  | 'item-mismatch-notification'
-  | 'sender-resolution'
-  | 'cancellation-confirmation'
-  | 'pal-waiting'
-  | 'support-resolution'
-  | 'evidence-collection'
-  | 'notifications'
-  | 'item-edit'
-  | 'post-delivery-edit'
-  | 'receiver-confirmation'
-  | 'delivery-completed'
-  | 'tape-distributor'
-  | 'become-pal'
-  | 'become-sender'
-  | 'become-receiver'
-  | 'become-proxy'
-  | 'proxy-confirmation'
-  | 'proxy-completed'
-  | 'proxy-item-scan'
-  | 'favorite-pal-input'
-  | 'favorite-pal-confirmation'
-  | 'pal-acceptance-notification'
-  | 'proxy-acceptance-code'
-  | 'proxy-handover-directions'
-  | 'sent-deliveries-history'
-  | 'proxy-deliveries'
-  | 'received-deliveries'
-  | 'sponsorship-management'
-  | 'sponsorship-details';
+  | "delivery-progress"
+  | "delivery-confirmation"
+  | "arrival-confirmation"
+  | "item-mismatch-notification"
+  | "sender-resolution"
+  | "cancellation-confirmation"
+  | "pal-waiting"
+  | "support-resolution"
+  | "evidence-collection"
+  | "notifications"
+  | "item-edit"
+  | "post-delivery-edit"
+  | "receiver-confirmation"
+  | "delivery-completed"
+  | "tape-distributor"
+  | "become-pal"
+  | "become-sender"
+  | "become-receiver"
+  | "become-proxy"
+  | "proxy-confirmation"
+  | "proxy-completed"
+  | "proxy-item-scan"
+  | "favorite-pal-input"
+  | "favorite-pal-confirmation"
+  | "pal-acceptance-notification"
+  | "proxy-acceptance-code"
+  | "proxy-handover-directions"
+  | "sent-deliveries-history"
+  | "proxy-deliveries"
+  | "received-deliveries"
+  | "sponsorship-management"
+  | "sponsorship-details";
 
-export type UserRole = 'sender' | 'pal' | 'receiver' | 'proxy';
+export type UserRole = "sender" | "pal" | "receiver" | "proxy";
 
-export type DeliveryStatus = 
-  | 'pending'
-  | 'bidding'
-  | 'assigned'
-  | 'picked-up'
-  | 'in-transit'
-  | 'arrived'
-  | 'delivered'
-  | 'completed'
-  | 'cancelled'
-  | 'disputed';
+export type DeliveryStatus =
+  | "pending"
+  | "bidding"
+  | "assigned"
+  | "picked-up"
+  | "in-transit"
+  | "arrived"
+  | "delivered"
+  | "completed"
+  | "cancelled"
+  | "disputed";
 
-export type ItemSize = 'Small' | 'Medium' | 'Large';
+export type ItemSize = "Small" | "Medium" | "Large";
 
 export interface Item {
   title: string;
@@ -136,9 +134,16 @@ export interface VerifyEmailResponse {
   expiresIn?: number;
 }
 
-export type ProxyStatus = 'incoming' | 'stored' | 'completed' | 'returned' | 'waiting-pickup' | 'ready-pickup' | 'collected';
+export type ProxyStatus =
+  | "incoming"
+  | "stored"
+  | "completed"
+  | "returned"
+  | "waiting-pickup"
+  | "ready-pickup"
+  | "collected";
 
-export type DisputeStatus = 'pending' | 'resolved' | 'escalated' | 'timeout';
+export type DisputeStatus = "pending" | "resolved" | "escalated" | "timeout";
 
 export interface DisputeResolutionMetrics {
   disputeId: string;
@@ -150,7 +155,7 @@ export interface DisputeResolutionMetrics {
   timestamp: string;
 }
 
-export interface Dispute{
+export interface Dispute {
   id: string;
   jobId: string;
   reason: string;
@@ -178,10 +183,10 @@ export interface User {
   rating?: number;
   totalDeliveries?: number;
   joinedDate?: string;
-  vehicleType?: 'car' | 'motorcycle' | 'bike' | 'truck' | 'van' | 'bicycle';
+  vehicleType?: "car" | "motorcycle" | "bike" | "truck" | "van" | "bicycle";
   isVerified?: boolean;
   governmentIdUrl?: string;
-  governmentIdStatus?: 'pending' | 'verified' | 'rejected';
+  governmentIdStatus?: "pending" | "verified" | "rejected";
   activeEscrows?: SponsorshipEscrow[];
   transactions?: Transaction[];
   bankAccounts?: BankAccount[];
@@ -227,7 +232,7 @@ export interface SponsorshipEscrow {
   pendingReturn: number;
   endDate: string;
   startDate: string;
-  status: 'active' | 'completed' | 'cancelled';
+  status: "active" | "completed" | "cancelled";
 }
 
 export interface BankAccount {
@@ -247,9 +252,9 @@ export interface PaymentCard {
   isDefault: boolean;
 }
 
-export type PaymentMethod = 
+export type PaymentMethod =
   | {
-      type: 'card';
+      type: "card";
       id: string;
       last4: string;
       brand: string;
@@ -258,7 +263,7 @@ export type PaymentMethod =
       isDefault: boolean;
     }
   | {
-      type: 'bank';
+      type: "bank";
       id: string;
       bankName: string;
       accountNumber: string;
@@ -269,13 +274,23 @@ export type PaymentMethod =
 export interface Transaction {
   id: string;
   userId: string;
-  type: 'earning' | 'withdrawal' | 'escrow_payment' | 'refund' | 'fee' | 'bonus' | 'tip_payment' | 'storage_fee' | 'wallet_topup' | 'equipment_fee';
+  type:
+    | "earning"
+    | "withdrawal"
+    | "escrow_payment"
+    | "refund"
+    | "fee"
+    | "bonus"
+    | "tip_payment"
+    | "storage_fee"
+    | "wallet_topup"
+    | "equipment_fee";
   amount: number; // Positive for credits, negative for debits
-  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  status: "pending" | "completed" | "failed" | "cancelled";
   description: string;
   jobId?: string;
   timestamp: string;
-  paymentMethod: 'wallet' | 'bank_transfer' | 'card' | 'cash';
+  paymentMethod: "wallet" | "bank_transfer" | "card" | "cash";
   reference: string;
   metadata?: {
     [key: string]: unknown;
@@ -307,7 +322,7 @@ export interface DeliveryJob {
   proxyId?: string;
   proxyName?: string; // Name of the proxy associated with this delivery
   chatId?: string;
-  
+
   title: string;
   pickupLocation: string;
   dropoffLocation: string;
@@ -322,7 +337,7 @@ export interface DeliveryJob {
   images?: string[];
   description?: string;
   distance?: number; // km
-  
+
   status: DeliveryStatus;
   bids: Bid[];
   acceptedBidAmount?: number;
@@ -347,7 +362,7 @@ export interface DeliveryJob {
   completedAt?: string;
   deliveredAt?: string;
   acceptedAt?: string; // When Pal accepts the job
-  
+
   // Dispute fields
   isDisputed?: boolean;
   disputeReason?: string;
@@ -356,14 +371,14 @@ export interface DeliveryJob {
   disputeTimeoutAt?: string;
   violationFee?: number;
   disputeResolution?: DisputeResolution;
-  
+
   // Tracking
   currentLocation?: {
     lat: number;
     lng: number;
     timestamp: string;
   };
-  
+
   // Location Privacy & "I'm Here" Feature
   locationPrivacy?: {
     isPalLocationVisible: boolean; // true when Pal triggers "I'm here"
@@ -375,7 +390,7 @@ export interface DeliveryJob {
     isWithinProximity?: boolean; // true when Pal is within 5-10m of destination
     proximityDistance?: number; // actual distance in meters
   };
-  
+
   // Item verification scan data (Enhanced for AI matching)
   itemScanData?: {
     itemId?: string;
@@ -389,19 +404,25 @@ export interface DeliveryJob {
     features?: number;
     scanHash?: string;
     scannedBy: string;
-    scanType: 'sender_verification' | 'pal_pickup' | 'receiver_delivery';
+    scanType: "sender_verification" | "pal_pickup" | "receiver_delivery";
     images?: string[];
     detectionDetails?: unknown;
     cameraUsed?: boolean;
   };
-  
+
   // Metadata
   metadata?: {
     [key: string]: unknown;
   };
 }
 
-export type VehicleType = 'car' | 'motorcycle' | 'bike' | 'truck' | 'van' | 'bicycle';
+export type VehicleType =
+  | "car"
+  | "motorcycle"
+  | "bike"
+  | "truck"
+  | "van"
+  | "bicycle";
 
 export interface Bid {
   id: string;
@@ -422,7 +443,7 @@ export interface Bid {
   palCompletedJobs?: number; // Total completed deliveries
   palCompletionRate?: number; // Percentage of successful deliveries (0-100)
   estimatedPickupTime?: string; // "15 mins", "30 mins"
-  bidStatus?: 'pending' | 'accepted' | 'rejected' | 'withdrawn' | 'expired';
+  bidStatus?: "pending" | "accepted" | "rejected" | "withdrawn" | "expired";
   bidScore?: number; // Calculated matching score (0-100)
   isLowestBid?: boolean; // Flag if this is currently the lowest bid
   bidRank?: number; // Ranking among all bids (1 = best)
@@ -431,9 +452,14 @@ export interface Bid {
   rejectionReason?: string;
 }
 
-export type BiddingMode = 'open' | 'quick_accept' | 'direct_assign';
-export type BiddingStatus = 'not_started' | 'active' | 'ended' | 'auto_assigned' | 'manually_assigned';
-export type AssignmentMethod = 'auto' | 'manual' | 'direct';
+export type BiddingMode = "open" | "quick_accept" | "direct_assign";
+export type BiddingStatus =
+  | "not_started"
+  | "active"
+  | "ended"
+  | "auto_assigned"
+  | "manually_assigned";
+export type AssignmentMethod = "auto" | "manual" | "direct";
 
 export interface BiddingConfig {
   mode: BiddingMode;
@@ -456,10 +482,10 @@ export interface PricingSuggestion {
   factors: {
     distance: { value: number; impact: number }; // km and ₦
     packageSize: { value: ItemSize; impact: number };
-    urgency: { value: 'low' | 'medium' | 'high'; impact: number };
+    urgency: { value: "low" | "medium" | "high"; impact: number };
     timeOfDay: { value: string; impact: number }; // surge pricing
-    traffic: { value: 'light' | 'moderate' | 'heavy'; impact: number };
-    weather: { value: 'clear' | 'rain' | 'storm'; impact: number };
+    traffic: { value: "light" | "moderate" | "heavy"; impact: number };
+    weather: { value: "clear" | "rain" | "storm"; impact: number };
   };
   suggestedPrice: number;
   priceRange: { min: number; max: number };
@@ -510,10 +536,10 @@ export interface ChatMessage {
   threadId: string; // Links message to a specific chat thread
   senderId: string; // Can be 'system' for system messages
   senderName: string;
-  senderRole: UserRole | 'system';
+  senderRole: UserRole | "system";
   message: string;
   timestamp: string;
-  type: 'text' | 'image' | 'system' | 'location';
+  type: "text" | "image" | "system" | "location";
   read: boolean;
   metadata?: {
     [key: string]: unknown;
@@ -524,9 +550,9 @@ export interface CommunicationMessage {
   id: string;
   from: string; // User ID of sender
   fromRole: UserRole;
-  to: 'sender' | 'pal' | 'receiver' | 'support';
+  to: "sender" | "pal" | "receiver" | "support";
   message: string;
-  urgency: 'low' | 'medium' | 'high';
+  urgency: "low" | "medium" | "high";
   timestamp: string;
   jobId?: string; // Optional job reference
   read: boolean;
@@ -537,7 +563,7 @@ export interface NigerianLocation {
   name: string;
   state: string;
   lga: string; // Local Government Area
-  type: 'city' | 'town' | 'village' | 'landmark';
+  type: "city" | "town" | "village" | "landmark";
   coordinates: {
     lat: number;
     lng: number;
@@ -565,19 +591,39 @@ export interface DisputeResolution {
   penaltyAmount?: number;
 }
 
-export type NotificationCategory = 'alert' | 'general';
+export type NotificationCategory = "alert" | "general";
 
 export interface Notification {
   id: string;
   userId: string;
-  type: 'package-created' | 'package-update' | 'bid-placed' | 'bid_accepted' | 'bid-rejected' | 'delivery-assigned' | 'delivery-completed' | 'payment-received' | 'item-edit-request' | 'dispute-flagged' | 'rating-received' | 'system-message' | 'promo-offer' | 'delivery-update' | 'item-verified' | 'wallet-topup' | 'delivery-posted' | 'payment-processed' | 'tip-payment'| 'delivery-picked-up';
+  type:
+    | "package-created"
+    | "package-update"
+    | "bid-placed"
+    | "bid_accepted"
+    | "bid-rejected"
+    | "delivery-assigned"
+    | "delivery-completed"
+    | "payment-received"
+    | "item-edit-request"
+    | "dispute-flagged"
+    | "rating-received"
+    | "system-message"
+    | "promo-offer"
+    | "delivery-update"
+    | "item-verified"
+    | "wallet-topup"
+    | "delivery-posted"
+    | "payment-processed"
+    | "tip-payment"
+    | "delivery-picked-up";
   actionUrl?: string; // Optional URL to navigate to when the notification is clicked
   title: string;
   message: string;
   timestamp: string;
   read: boolean;
   actionRequired: boolean;
-  priority?: 'low' | 'medium' | 'high' | 'urgent'; // Time-sensitive priority level
+  priority?: "low" | "medium" | "high" | "urgent"; // Time-sensitive priority level
   category?: NotificationCategory; // Categorize as alert or general
   jobId?: string;
   metadata?: {
@@ -597,7 +643,7 @@ export interface AppConfig {
   withdrawalMinAmount: number; // NGN
 }
 
-export type ImageUploadStatus = 'idle' | 'uploading' | 'success' | 'error';
+export type ImageUploadStatus = "idle" | "uploading" | "success" | "error";
 
 export interface ImageUpload {
   id: string;
@@ -665,7 +711,7 @@ export interface EscrowPayment {
   amount: number;
   platformFee: number;
   totalAmount: number;
-  status: 'pending' | 'held' | 'released' | 'refunded';
+  status: "pending" | "held" | "released" | "refunded";
   createdAt: string;
   releasedAt?: string;
 }
@@ -675,7 +721,7 @@ export interface ReferralCode {
   id: string;
   userId: string;
   code: string;
-  type: 'sender' | 'pal' | 'universal';
+  type: "sender" | "pal" | "universal";
   usageCount: number;
   maxUsage?: number;
   reward: number; // NGN
@@ -690,7 +736,7 @@ export interface ReferralReward {
   refereeId: string;
   referralCodeId: string;
   amount: number;
-  status: 'pending' | 'paid' | 'expired';
+  status: "pending" | "paid" | "expired";
   createdAt: string;
   paidAt?: string;
 }
@@ -715,10 +761,10 @@ export interface UserAnalytics {
 // System maintenance types
 export interface SystemNotice {
   id: string;
-  type: 'maintenance' | 'update' | 'announcement';
+  type: "maintenance" | "update" | "announcement";
   title: string;
   message: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  severity: "low" | "medium" | "high" | "critical";
   startTime?: string;
   endTime?: string;
   affectedFeatures?: string[];

@@ -1,22 +1,33 @@
-"use client"
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, Clock, ArrowRight, Facebook, X, Instagram, Linkedin } from 'lucide-react';
-import { motion } from 'framer-motion';
+"use client";
+import React, { useState } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  MessageCircle,
+  Clock,
+  ArrowRight,
+  Facebook,
+  X,
+  Instagram,
+  Linkedin,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 
-interface ContactPageProps {
-  onNavigate?: (screen: string) => void;
-}
-
-export function ContactPage({ onNavigate }: ContactPageProps) {
+export function ContactPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +37,7 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
 
       setTimeout(() => setIsSubmitted(false), 5000);
     }, 1500);
@@ -67,7 +78,8 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                 </span>
               </h2>
               <p className="text-gray-600 mb-8">
-                Fill out the form below and we will get back to you within 24 hours.
+                Fill out the form below and we will get back to you within 24
+                hours.
               </p>
 
               {isSubmitted && (
@@ -85,7 +97,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none"
                     placeholder="John Doe"
                   />
@@ -99,7 +113,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none"
                     placeholder="john@example.com"
                   />
@@ -112,7 +128,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none"
                     placeholder="+234 800 0000 000"
                   />
@@ -125,7 +143,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                   <select
                     required
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none"
                   >
                     <option value="">Select a subject</option>
@@ -145,7 +165,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                   <textarea
                     required
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     rows={6}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none resize-none"
                     placeholder="Tell us how we can help you..."
@@ -190,7 +212,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     <Mail className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#2f2f2f] mb-1">Email Us</h3>
+                    <h3 className="font-semibold text-[#2f2f2f] mb-1">
+                      Email Us
+                    </h3>
                     <p className="text-gray-600">info@prawnbox.com</p>
                     <p className="text-gray-600">partners@prawnbox.com</p>
                   </div>
@@ -201,7 +225,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     <Phone className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#2f2f2f] mb-1">Call Us</h3>
+                    <h3 className="font-semibold text-[#2f2f2f] mb-1">
+                      Call Us
+                    </h3>
                     <p className="text-gray-600">+234 906 870 9992</p>
                     <p className="text-gray-600">+234 707 098 9034</p>
                   </div>
@@ -212,9 +238,13 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     <MessageCircle className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#2f2f2f] mb-1">WhatsApp</h3>
+                    <h3 className="font-semibold text-[#2f2f2f] mb-1">
+                      WhatsApp
+                    </h3>
                     <p className="text-gray-600">+234 906 870 9992</p>
-                    <p className="text-sm text-gray-500">24/7 instant support</p>
+                    <p className="text-sm text-gray-500">
+                      24/7 instant support
+                    </p>
                   </div>
                 </div>
 
@@ -223,7 +253,9 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     <MapPin className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#2f2f2f] mb-1">Visit Us</h3>
+                    <h3 className="font-semibold text-[#2f2f2f] mb-1">
+                      Visit Us
+                    </h3>
                     <p className="text-gray-600">123 Admiralty Way</p>
                     <p className="text-gray-600">Lekki Phase 1, Lagos</p>
                     <p className="text-gray-600">Nigeria</p>
@@ -235,11 +267,15 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     <Clock className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#2f2f2f] mb-1">Business Hours</h3>
+                    <h3 className="font-semibold text-[#2f2f2f] mb-1">
+                      Business Hours
+                    </h3>
                     <p className="text-gray-600">Monday - Friday: 8am - 8pm</p>
                     <p className="text-gray-600">Saturday: 9am - 6pm</p>
                     <p className="text-gray-600">Sunday: 10am - 4pm</p>
-                    <p className="text-sm text-[#f44708] mt-2">24/7 Emergency Support Available</p>
+                    <p className="text-sm text-[#f44708] mt-2">
+                      24/7 Emergency Support Available
+                    </p>
                   </div>
                 </div>
               </div>
@@ -254,7 +290,10 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-lg bg-white hover:bg-[#f44708] flex items-center justify-center transition-all duration-200 shadow-sm group"
                   >
-                    <Facebook size={20} className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200" />
+                    <Facebook
+                      size={20}
+                      className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200"
+                    />
                   </a>
                   <a
                     href="https://x.com/prawnbox/"
@@ -262,13 +301,19 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-lg bg-white hover:bg-[#f44708] flex items-center justify-center transition-all duration-200 shadow-sm group"
                   >
-                    <X size={20} className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200" />
+                    <X
+                      size={20}
+                      className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200"
+                    />
                   </a>
                   <a
                     href="#"
                     className="w-12 h-12 rounded-lg bg-white hover:bg-[#f44708] flex items-center justify-center transition-all duration-200 shadow-sm group"
                   >
-                    <Instagram size={20} className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200" />
+                    <Instagram
+                      size={20}
+                      className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200"
+                    />
                   </a>
                   <a
                     href="https://linkedin.com/company/prawnbox"
@@ -276,7 +321,10 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-lg bg-white hover:bg-[#f44708] flex items-center justify-center transition-all duration-200 shadow-sm group"
                   >
-                    <Linkedin size={20} className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200" />
+                    <Linkedin
+                      size={20}
+                      className="text-[#2f2f2f] group-hover:text-white transition-colors duration-200"
+                    />
                   </a>
                 </div>
               </div>
@@ -295,7 +343,7 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
             Join Prawnbox today and experience the future of delivery in Nigeria
           </p>
           <button
-            onClick={() => onNavigate?.('auth')}
+            onClick={() => router.push(ROUTES.AUTH)}
             className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Create Account

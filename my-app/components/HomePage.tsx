@@ -1,46 +1,49 @@
-"use client"
-import React from 'react';
-import { Package, Zap, Shield, Users, TrendingUp, CheckCircle, ArrowRight, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import woman from '/public/woman.jpg';
-import tamperProof from '/public/tamper-proof.jpg';
-import proxyWoman from '/public/woman-in-a-shop.jpg';
+"use client";
+import React from "react";
+import {
+  Package,
+  Zap,
+  Shield,
+  Users,
+  TrendingUp,
+  CheckCircle,
+  ArrowRight,
+  Star,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 
-interface HomePageProps {
-  onNavigate?: (screen: string) => void;
-}
-
-export function HomePage({ onNavigate }: HomePageProps) {
+export function HomePage() {
   const router = useRouter();
   // Animation variants for scroll effects (compatible with framer-motion v12)
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const fadeInLeft = {
     hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
   };
 
   const fadeInRight = {
     hidden: { opacity: 0, x: 60 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
   };
 
   const scaleIn = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 }
+    visible: { opacity: 1, scale: 1 },
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1 }
+    visible: { opacity: 1 },
   };
 
   const cardHover = {
-    scale: 1.05
+    scale: 1.05,
   };
 
   return (
@@ -49,11 +52,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
       <section className="relative bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-black text-white overflow-hidden min-h-[calc(100vh-5rem)]">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, #f44708 2px, transparent 2px),
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 25% 25%, #f44708 2px, transparent 2px),
                              radial-gradient(circle at 75% 75%, #f44708 1px, transparent 1px)`,
-            backgroundSize: '50px 50px'
-          }}></div>
+              backgroundSize: "50px 50px",
+            }}
+          ></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-32">
@@ -69,21 +75,25 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 variants={scaleIn}
               >
                 <Package className="w-4 h-4 text-[#f44708]" />
-                <span className="text-sm font-medium text-[#f44708]">Trusted by 50,000+ Users</span>
+                <span className="text-sm font-medium text-[#f44708]">
+                  Trusted by 50,000+ Users
+                </span>
               </motion.div>
 
               <motion.h1
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
                 variants={fadeInUp}
               >
-                Send <span className="text-[#f44708]">Anything</span>, Anywhere in Nigeria
+                Send <span className="text-[#f44708]">Anything</span>, Anywhere
+                in Nigeria
               </motion.h1>
 
               <motion.p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 variants={fadeInUp}
               >
-                Enjoy 7x faster, safer, and 5x more affordable peer-to-peer delivery services within Nigeria & beyond.
+                Enjoy 7x faster, safer, and 5x more affordable peer-to-peer
+                delivery services within Nigeria & beyond.
               </motion.p>
 
               {/* Quick Stats */}
@@ -100,7 +110,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   whileTap={{ scale: 1.05 }}
                 >
                   <div className="text-2xl font-bold text-[#f44708]">10k+</div>
-                  <div className="text-xs text-gray-300 mt-1">Verified Pals</div>
+                  <div className="text-xs text-gray-300 mt-1">
+                    Verified Pals
+                  </div>
                 </motion.div>
                 <motion.div
                   className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center"
@@ -124,7 +136,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <motion.button
-                  onClick={() => onNavigate?.('auth')}
+                  onClick={() => router.push(ROUTES.AUTH)}
                   className="group bg-[#f44708] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#ff5722] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
@@ -135,7 +147,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </motion.button>
 
                 <motion.button
-                  onClick={() => router.push('/send-items')}
+                  onClick={() => router.push(ROUTES.SEND_ITEMS)}
                   className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
@@ -146,11 +158,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </motion.button>
               </div>
 
-              <motion.p
-                className="text-sm text-gray-400"
-                variants={fadeInUp}
-              >
-                ✓ No hidden fees  ✓ 24/7 support  ✓ Instant matching
+              <motion.p className="text-sm text-gray-400" variants={fadeInUp}>
+                ✓ No hidden fees ✓ 24/7 support ✓ Instant matching
               </motion.p>
             </motion.div>
 
@@ -163,7 +172,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <motion.img
-                  src='/woman.jpg'
+                  src="/woman.jpg"
                   alt="Prawnbox delivery Pal with package - Professional delivery service"
                   className="w-full h-[500px] object-cover object-center"
                   whileHover={{ scale: 1.05 }}
@@ -181,8 +190,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm text-gray-600 mb-1">Active Deliveries Today</div>
-                      <div className="text-2xl font-bold text-[#2f2f2f]">2,847</div>
+                      <div className="text-sm text-gray-600 mb-1">
+                        Active Deliveries Today
+                      </div>
+                      <div className="text-2xl font-bold text-[#2f2f2f]">
+                        2,847
+                      </div>
                     </div>
                     <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
                       +28%
@@ -218,7 +231,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Experience the future of delivery with our innovative platform designed for you.
+              Experience the future of delivery with our innovative platform
+              designed for you.
             </p>
           </motion.div>
 
@@ -232,34 +246,40 @@ export function HomePage({ onNavigate }: HomePageProps) {
             {[
               {
                 icon: Zap,
-                title: 'Lightning Fast',
-                description: 'Get your items delivered in hours, not days. Our network of Pals ensures quick pickups and deliveries across Nigeria.'
+                title: "Lightning Fast",
+                description:
+                  "Get your items delivered in hours, not days. Our network of Pals ensures quick pickups and deliveries across Nigeria.",
               },
               {
                 icon: Shield,
-                title: 'Secure & Safe',
-                description: 'Escrow payments, verified Pals, and insurance protection. Your packages are always safe with us.'
+                title: "Secure & Safe",
+                description:
+                  "Escrow payments, verified Pals, and insurance protection. Your packages are always safe with us.",
               },
               {
                 icon: Package,
-                title: 'Track Everything',
-                description: 'Real-time tracking, live updates, and direct chat with your Pal. Always know where your package is.'
+                title: "Track Everything",
+                description:
+                  "Real-time tracking, live updates, and direct chat with your Pal. Always know where your package is.",
               },
               {
                 icon: Users,
-                title: 'Trusted Community',
-                description: 'Join thousands of verified Pals and satisfied customers. Build your reputation and earn trust.'
+                title: "Trusted Community",
+                description:
+                  "Join thousands of verified Pals and satisfied customers. Build your reputation and earn trust.",
               },
               {
                 icon: TrendingUp,
-                title: 'Best Prices',
-                description: 'Competitive bidding system ensures you always get the best rates. No hidden fees, transparent pricing.'
+                title: "Best Prices",
+                description:
+                  "Competitive bidding system ensures you always get the best rates. No hidden fees, transparent pricing.",
               },
               {
                 icon: Star,
-                title: 'Quality Service',
-                description: 'Rated 4.8/5 by our users. We are committed to providing excellent service every single time.'
-              }
+                title: "Quality Service",
+                description:
+                  "Rated 4.8/5 by our users. We are committed to providing excellent service every single time.",
+              },
             ].map((feature, index) => (
               <motion.div
                 key={index}
@@ -268,7 +288,10 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 whileHover={cardHover}
                 whileTap={cardHover}
               >
-                <feature.icon size={40} className="text-[#f44708] group-hover:text-white mb-4 transition-transform duration-300 group-hover:scale-110" />
+                <feature.icon
+                  size={40}
+                  className="text-[#f44708] group-hover:text-white mb-4 transition-transform duration-300 group-hover:scale-110"
+                />
                 <h3 className="text-xl font-bold text-[#2f2f2f] group-hover:text-white mb-3">
                   {feature.title}
                 </h3>
@@ -317,26 +340,25 @@ export function HomePage({ onNavigate }: HomePageProps) {
           >
             {[
               {
-                step: '01',
-                title: 'Post Your Delivery',
-                description: 'Tell us what you need delivered, where it is going, and when you need it. Get instant bids from verified Pals.'
+                step: "01",
+                title: "Post Your Delivery",
+                description:
+                  "Tell us what you need delivered, where it is going, and when you need it. Get instant bids from verified Pals.",
               },
               {
-                step: '02',
-                title: 'Choose Your Pal',
-                description: 'Review bids, check ratings, and select the best Pal for your delivery. Secure payment held in escrow.'
+                step: "02",
+                title: "Choose Your Pal",
+                description:
+                  "Review bids, check ratings, and select the best Pal for your delivery. Secure payment held in escrow.",
               },
               {
-                step: '03',
-                title: 'Track & Receive',
-                description: 'Track your delivery in real-time, chat with your Pal, and confirm receipt. Payment released on delivery.'
-              }
+                step: "03",
+                title: "Track & Receive",
+                description:
+                  "Track your delivery in real-time, chat with your Pal, and confirm receipt. Payment released on delivery.",
+              },
             ].map((step, index) => (
-              <motion.div
-                key={index}
-                className="relative"
-                variants={fadeInUp}
-              >
+              <motion.div key={index} className="relative" variants={fadeInUp}>
                 <div className="text-center">
                   <motion.div
                     className="inline-block mb-6"
@@ -352,9 +374,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   <h3 className="text-2xl font-bold text-[#2f2f2f] mb-4">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600">
-                    {step.description}
-                  </p>
+                  <p className="text-gray-600">{step.description}</p>
                 </div>
                 {index < 2 && (
                   <motion.div
@@ -396,7 +416,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From small business owners to delivery professionals, Prawnbox is transforming how Nigerians work and earn.
+              From small business owners to delivery professionals, Prawnbox is
+              transforming how Nigerians work and earn.
             </p>
           </motion.div>
 
@@ -408,13 +429,19 @@ export function HomePage({ onNavigate }: HomePageProps) {
               whileInView="visible"
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInLeft}
-              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-              whileTap={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
+              whileTap={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden">
-                <motion.img 
-                  src="https://images.pexels.com/photos/16155217/pexels-photo-16155217.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                <motion.img
+                  src="/city.jpeg"
                   alt="Nigerian entrepreneur"
                   className="w-full h-full object-cover"
                   whileHover={{ scale: 1.1 }}
@@ -427,10 +454,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Built for all senders
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Send inventory, products, and documents across Nigeria with ease. Focus on growing your business while we handle deliveries.
+                  Send inventory, products, and documents across Nigeria with
+                  ease. Focus on growing your business while we handle
+                  deliveries.
                 </p>
                 <motion.button
-                  onClick={() => router.push('/send-items')}
+                  onClick={() => router.push(ROUTES.SEND_ITEMS)}
                   className="text-[#f44708] font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
@@ -448,13 +477,19 @@ export function HomePage({ onNavigate }: HomePageProps) {
               whileInView="visible"
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInRight}
-              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-              whileTap={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
+              whileTap={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden">
-                <motion.img 
-                  src="https://images.pexels.com/photos/6868625/pexels-photo-6868625.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                <motion.img
+                  src="/professional.jpeg"
                   alt="Delivery professional"
                   className="w-full h-full object-cover"
                   whileHover={{ scale: 1.1 }}
@@ -467,10 +502,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Earn as a Delivery Pal
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Join our network of verified Pals <span className="font-bold">with or without a vehicle</span>. Set your own rates, choose your schedule, and build your reputation.
+                  Join our network of verified Pals{" "}
+                  <span className="font-bold">with or without a vehicle</span>.
+                  Set your own rates, choose your schedule, and build your
+                  reputation.
                 </p>
                 <motion.button
-                  onClick={() => router.push('/become-pal')}
+                  onClick={() => router.push(ROUTES.BECOME_PAL)}
                   className="text-[#f44708] font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
@@ -488,13 +526,19 @@ export function HomePage({ onNavigate }: HomePageProps) {
               whileInView="visible"
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInLeft}
-              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-              whileTap={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
+              whileTap={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden relative">
-                <motion.img 
-                  src='/tamper-proof-tape.png'
+                <motion.img
+                  src="/tamper-proof-tape.png"
                   alt="Hands applying tamper-proof security tape with QR code to a package"
                   className="w-full h-full object-cover"
                   whileHover={{ scale: 1.1 }}
@@ -510,7 +554,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Tamper-Proof Security Tapes
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Enhanced security for your deliveries with our exclusive tamper-proof tapes. Ensure package integrity from pickup to delivery.
+                  Enhanced security for your deliveries with our exclusive
+                  tamper-proof tapes. Ensure package integrity from pickup to
+                  delivery.
                 </p>
                 <motion.button
                   className="text-gray-400 font-semibold flex items-center cursor-not-allowed"
@@ -530,13 +576,19 @@ export function HomePage({ onNavigate }: HomePageProps) {
               whileInView="visible"
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInRight}
-              whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-              whileTap={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
+              whileTap={{
+                scale: 1.05,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              }}
               transition={{ duration: 0.3 }}
             >
               <div className="h-80 overflow-hidden">
-                <motion.img 
-                  src='/woman-in-a-shop.png'
+                <motion.img
+                  src="/woman-in-a-shop.png"
                   alt="Nigerian woman shop owner at provision store"
                   className="w-full h-full object-cover"
                   whileHover={{ scale: 1.1 }}
@@ -549,10 +601,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Earn as a Proxy Receiver
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Turn your business location into a secure package hub. Earn storage fees by safely holding deliveries for pickup when receivers are unavailable.
+                  Turn your business location into a secure package hub. Earn
+                  storage fees by safely holding deliveries for pickup when
+                  receivers are unavailable.
                 </p>
                 <motion.button
-                  onClick={() => router.push('/become-proxy')}
+                  onClick={() => router.push(ROUTES.BECOME_PROXY)}
                   className="text-[#f44708] font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
@@ -589,17 +643,19 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Every Pal on Prawnbox goes through a rigorous verification process. We prioritize safety, security, and reliability so you can have peace of mind with every delivery.
+                Every Pal on Prawnbox goes through a rigorous verification
+                process. We prioritize safety, security, and reliability so you
+                can have peace of mind with every delivery.
               </p>
-              <motion.div
-                className="space-y-4"
-                variants={staggerContainer}
-              >
+              <motion.div className="space-y-4" variants={staggerContainer}>
                 {[
-                  { label: 'Verified ID & Background Checks', icon: CheckCircle },
-                  { label: 'Secure Escrow Payments', icon: Shield },
-                  { label: 'Real-time GPS Tracking', icon: Package },
-                  { label: 'Rated & Reviewed Community', icon: Star }
+                  {
+                    label: "Verified ID & Background Checks",
+                    icon: CheckCircle,
+                  },
+                  { label: "Secure Escrow Payments", icon: Shield },
+                  { label: "Real-time GPS Tracking", icon: Package },
+                  { label: "Rated & Reviewed Community", icon: Star },
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -609,7 +665,10 @@ export function HomePage({ onNavigate }: HomePageProps) {
                     whileTap={{ x: 10 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <item.icon className="text-[#f44708] flex-shrink-0" size={24} />
+                    <item.icon
+                      className="text-[#f44708] flex-shrink-0"
+                      size={24}
+                    />
                     <span className="text-gray-700">{item.label}</span>
                   </motion.div>
                 ))}
@@ -622,8 +681,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInRight}
             >
-              <motion.img 
-                src="https://images.unsplash.com/photo-1687422808366-c5b2800c6e98?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwc21hcnRwaG9uZXxlbnwxfHx8fDE3NjAxMTU3Njh8MA&ixlib=rb-4.1.0&q=80&w=1080"
+              <motion.img
+                src="/entrepreneurs.jpg"
                 alt="Trust and security"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
@@ -646,8 +705,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              <motion.img 
-                src="https://images.pexels.com/photos/29812611/pexels-photo-29812611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              <motion.img
+                src="/community.jpeg"
                 alt="Community marketplace"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
@@ -675,7 +734,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                From Lagos to Abuja, Port Harcourt to Kano, Prawnbox is bringing people together through reliable delivery services. We&apos;re not just moving packages — we&apos;re building connections.
+                From Lagos to Abuja, Port Harcourt to Kano, Prawnbox is bringing
+                people together through reliable delivery services. We&apos;re
+                not just moving packages — we&apos;re building connections.
               </p>
               <motion.div
                 className="grid grid-cols-2 gap-6"
@@ -684,8 +745,16 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 <motion.div
                   className="p-6 bg-gray-50 rounded-xl"
                   variants={scaleIn}
-                  whileHover={{ scale: 1.05, backgroundColor: "#f44708", color: "#ffffff" }}
-                  whileTap={{ scale: 1.05, backgroundColor: "#f44708", color: "#ffffff" }}
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "#f44708",
+                    color: "#ffffff",
+                  }}
+                  whileTap={{
+                    scale: 1.05,
+                    backgroundColor: "#f44708",
+                    color: "#ffffff",
+                  }}
                   transition={{ duration: 0.3 }}
                 >
                   <p className="text-4xl font-bold text-[#f44708] mb-2">36</p>
@@ -694,8 +763,16 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 <motion.div
                   className="p-6 bg-gray-50 rounded-xl"
                   variants={scaleIn}
-                  whileHover={{ scale: 1.05, backgroundColor: "#f44708", color: "#ffffff" }}
-                  whileTap={{ scale: 1.05, backgroundColor: "#f44708", color: "#ffffff" }}
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "#f44708",
+                    color: "#ffffff",
+                  }}
+                  whileTap={{
+                    scale: 1.05,
+                    backgroundColor: "#f44708",
+                    color: "#ffffff",
+                  }}
                   transition={{ duration: 0.3 }}
                 >
                   <p className="text-4xl font-bold text-[#f44708] mb-2">100+</p>
@@ -730,12 +807,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Whether you&apos;re a motorcycle rider, car owner, passenger, or have spare time for deliveries, Prawnbox lets you earn income flexibly. Work when you want, where you want.
+                Whether you&apos;re a motorcycle rider, car owner, passenger, or
+                have spare time for deliveries, Prawnbox lets you earn income
+                flexibly. Work when you want, where you want.
               </p>
-              <motion.div
-                className="space-y-6"
-                variants={staggerContainer}
-              >
+              <motion.div className="space-y-6" variants={staggerContainer}>
                 <motion.div
                   className="flex items-start space-x-4"
                   variants={fadeInUp}
@@ -747,8 +823,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                     <Zap className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2f2f2f] mb-2">Set Your Own Rates</h3>
-                    <p className="text-gray-600">Bid on deliveries that match your schedule and price expectations.</p>
+                    <h3 className="font-bold text-[#2f2f2f] mb-2">
+                      Set Your Own Rates
+                    </h3>
+                    <p className="text-gray-600">
+                      Bid on deliveries that match your schedule and price
+                      expectations.
+                    </p>
                   </div>
                 </motion.div>
                 <motion.div
@@ -762,8 +843,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                     <TrendingUp className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2f2f2f] mb-2">Weekly Payouts</h3>
-                    <p className="text-gray-600">Get paid weekly for completed deliveries with instant wallet withdrawals.</p>
+                    <h3 className="font-bold text-[#2f2f2f] mb-2">
+                      Weekly Payouts
+                    </h3>
+                    <p className="text-gray-600">
+                      Get paid weekly for completed deliveries with instant
+                      wallet withdrawals.
+                    </p>
                   </div>
                 </motion.div>
                 <motion.div
@@ -777,8 +863,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                     <Star className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2f2f2f] mb-2">Build Your Reputation</h3>
-                    <p className="text-gray-600">Earn ratings and reviews to unlock premium delivery opportunities.</p>
+                    <h3 className="font-bold text-[#2f2f2f] mb-2">
+                      Build Your Reputation
+                    </h3>
+                    <p className="text-gray-600">
+                      Earn ratings and reviews to unlock premium delivery
+                      opportunities.
+                    </p>
                   </div>
                 </motion.div>
               </motion.div>
@@ -790,8 +881,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInRight}
             >
-              <motion.img 
-                src="https://images.pexels.com/photos/6868557/pexels-photo-6868557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              <motion.img
+                src="/delivery-work.jpeg"
                 alt="Flexible delivery work"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
@@ -814,8 +905,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              <motion.img 
-                src="https://images.unsplash.com/photo-1604933762021-54a5858c9832?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwc21hbGwlMjBidXNpbmVzcyUyMG93bmVyfGVufDF8fHx8MTc2MDExNTQ3M3ww&ixlib=rb-4.1.0&q=80&w=1080"
+              <motion.img
+                src="/business-owner.jpg"
                 alt="Small business owner"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
@@ -843,12 +934,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 </span>
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Small and medium businesses are the backbone of Nigeria&apos;s economy. Prawnbox provides affordable, reliable delivery solutions that help local businesses compete and grow.
+                Small and medium businesses are the backbone of Nigeria&apos;s
+                economy. Prawnbox provides affordable, reliable delivery
+                solutions that help local businesses compete and grow.
               </p>
-              <motion.ul
-                className="space-y-4 mb-8"
-                variants={staggerContainer}
-              >
+              <motion.ul className="space-y-4 mb-8" variants={staggerContainer}>
                 <motion.li
                   className="flex items-start space-x-3"
                   variants={fadeInUp}
@@ -856,8 +946,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <CheckCircle className="text-[#f44708] flex-shrink-0 mt-1" size={20} />
-                  <span className="text-gray-700">Affordable rates for businesses of all sizes</span>
+                  <CheckCircle
+                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    size={20}
+                  />
+                  <span className="text-gray-700">
+                    Affordable rates for businesses of all sizes
+                  </span>
                 </motion.li>
                 <motion.li
                   className="flex items-start space-x-3"
@@ -866,8 +961,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <CheckCircle className="text-[#f44708] flex-shrink-0 mt-1" size={20} />
-                  <span className="text-gray-700">Same-day and scheduled delivery options</span>
+                  <CheckCircle
+                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    size={20}
+                  />
+                  <span className="text-gray-700">
+                    Same-day and scheduled delivery options
+                  </span>
                 </motion.li>
                 <motion.li
                   className="flex items-start space-x-3"
@@ -876,8 +976,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <CheckCircle className="text-[#f44708] flex-shrink-0 mt-1" size={20} />
-                  <span className="text-gray-700">Business accounts with volume discounts</span>
+                  <CheckCircle
+                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    size={20}
+                  />
+                  <span className="text-gray-700">
+                    Business accounts with volume discounts
+                  </span>
                 </motion.li>
                 <motion.li
                   className="flex items-start space-x-3"
@@ -886,12 +991,17 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <CheckCircle className="text-[#f44708] flex-shrink-0 mt-1" size={20} />
-                  <span className="text-gray-700">Integration with online stores and marketplaces</span>
+                  <CheckCircle
+                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    size={20}
+                  />
+                  <span className="text-gray-700">
+                    Integration with online stores and marketplaces
+                  </span>
                 </motion.li>
               </motion.ul>
               <motion.button
-                onClick={() => onNavigate?.('website-pricing')}
+                onClick={() => router.push(ROUTES.PRICING)}
                 className="px-6 py-3 bg-[#2f2f2f] text-white font-semibold rounded-xl hover:bg-black transition-all duration-200"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -918,17 +1028,18 @@ export function HomePage({ onNavigate }: HomePageProps) {
           >
             Ready to Start Delivering?
           </motion.h2>
-          <motion.p
-            className="text-xl text-gray-300 mb-8"
-            variants={fadeInUp}
-          >
-            Join thousands of Nigerians who trust Prawnbox for their delivery needs.
+          <motion.p className="text-xl text-gray-300 mb-8" variants={fadeInUp}>
+            Join thousands of Nigerians who trust Prawnbox for their delivery
+            needs.
           </motion.p>
           <motion.button
-            onClick={() => onNavigate?.('auth')}
+            onClick={() => router.push(ROUTES.AUTH)}
             className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] shadow-2xl"
             variants={scaleIn}
-            whileHover={{ scale: 1.1, boxShadow: "0 25px 50px -12px rgba(244, 71, 8, 0.5)" }}
+            whileHover={{
+              scale: 1.1,
+              boxShadow: "0 25px 50px -12px rgba(244, 71, 8, 0.5)",
+            }}
             whileTap={{ scale: 0.95 }}
           >
             Create Free Account

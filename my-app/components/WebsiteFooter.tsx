@@ -1,44 +1,51 @@
 "use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Facebook, X, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
-// Using a placeholder for the logo - you can replace this with your actual logo
-// import prawnboxLogo from '../public/prawnbox-logo.png';
+import React from "react";
+import { useRouter } from "next/navigation";
+import {
+  Facebook,
+  X,
+  Instagram,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
+import Image from "next/image";
+import { ROUTES } from "@/lib/routes";
 
-interface WebsiteFooterProps {
-  onNavigate?: (screen: string) => void;
+interface NavItem {
+  label: string;
+  path: string;
 }
 
-export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
+const quickLinks: NavItem[] = [
+  { label: "About", path: ROUTES.ABOUT },
+  { label: "How It Works", path: ROUTES.HOW_IT_WORKS },
+  { label: "Pricing", path: ROUTES.PRICING },
+  { label: "Safety", path: ROUTES.SAFETY },
+];
+
+const getStarted: NavItem[] = [
+  { label: "Become a Pal", path: ROUTES.BECOME_PAL },
+  { label: "Become a Proxy", path: ROUTES.BECOME_PROXY },
+  { label: "Send Items", path: ROUTES.BECOME_SENDER },
+];
+
+const support: NavItem[] = [
+  { label: "FAQs", path: ROUTES.FAQS },
+  { label: "Contact US", path: ROUTES.CONTACT },
+  { label: "Terms of Service", path: ROUTES.TERMS },
+  { label: "Privacy Policy", path: ROUTES.PRIVACY },
+];
+
+export function WebsiteFooter() {
   const router = useRouter();
   const currentYear = new Date().getFullYear();
 
-  // Helper function to navigate and scroll to top
-  const handleNavigate = (screen: string) => {
-    // Map screen names to routes
-    const routeMap: { [key: string]: string } = {
-      'website-about': '/about',
-      'website-how-it-works': '/how-it-works',
-      'website-pricing': '/pricing',
-      'website-safety': '/safety',
-      'website-faqs': '/faqs',
-      'website-contact': '/contact',
-      'website-become-pal': '/become-pal',
-      'website-become-proxy': '/become-proxy',
-      'website-send-items': '/send-items',
-      'website-terms': '/terms',
-      'website-privacy': '/privacy',
-    };
-
-    const route = routeMap[screen] || '/';
-    router.push(route);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Call the optional onNavigate callback if provided
-    if (onNavigate) {
-      onNavigate(screen);
-    }
+  const handleNavigate = (path: string) => {
+    router.push(path);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -49,24 +56,49 @@ export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
-              <img src='/P-logo.png' alt="Prawnbox" className="w-10 h-10 object-contain" />
+              <Image
+                src="/P-logo.png"
+                alt="Prawnbox"
+                width={50}
+                height={50}
+                className="w-10 h-10 object-contain"
+              />
               <span className="text-xl font-bold text-white">Prawnbox</span>
             </div>
             <p className="text-sm text-gray-400 mb-4">
-              Nigeria&apos;s trusted peer-to-peer delivery platform. Fast, secure, and reliable delivery services at your fingertips.
+              Nigeria&apos;s trusted peer-to-peer delivery platform. Fast,
+              secure, and reliable delivery services at your fingertips.
             </p>
             {/* Social Links */}
             <div className="flex space-x-3">
-              <a href="https://www.facebook.com/share/1CUU8AAMpu/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200">
+              <a
+                href="https://www.facebook.com/share/1CUU8AAMpu/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+              >
                 <Facebook size={18} />
               </a>
-              <a href="https://x.com/prawnbox/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200">
+              <a
+                href="https://x.com/prawnbox/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+              >
                 <X size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200">
+              <a
+                href="#"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+              >
                 <Instagram size={18} />
               </a>
-              <a href="https://linkedin.com/company/prawnbox" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200">
+              <a
+                href="https://linkedin.com/company/prawnbox"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+              >
                 <Linkedin size={18} />
               </a>
             </div>
@@ -76,15 +108,10 @@ export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {[
-                { label: 'About Us', screen: 'website-about' },
-                { label: 'How It Works', screen: 'website-how-it-works' },
-                { label: 'Pricing', screen: 'website-pricing' },
-                { label: 'Safety & Security', screen: 'website-safety' },
-              ].map((link) => (
-                <li key={link.screen}>
+              {quickLinks.map((link) => (
+                <li key={link.path}>
                   <button
-                    onClick={() => handleNavigate(link.screen)}
+                    onClick={() => handleNavigate(link.path)}
                     className="text-sm hover:text-[#f44708] transition-colors duration-200"
                   >
                     {link.label}
@@ -98,14 +125,10 @@ export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
           <div>
             <h3 className="text-white font-semibold mb-4">Get Started</h3>
             <ul className="space-y-2">
-              {[
-                { label: 'Become a Pal', screen: 'website-become-pal' },
-                { label: 'Become a Proxy', screen: 'website-become-proxy' },
-                { label: 'Send Items', screen: 'website-send-items' },
-              ].map((link) => (
-                <li key={link.screen}>
+              {getStarted.map((link) => (
+                <li key={link.path}>
                   <button
-                    onClick={() => handleNavigate(link.screen)}
+                    onClick={() => handleNavigate(link.path)}
                     className="text-sm hover:text-[#f44708] transition-colors duration-200"
                   >
                     {link.label}
@@ -119,15 +142,10 @@ export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
           <div>
             <h3 className="text-white font-semibold mb-4">Support</h3>
             <ul className="space-y-2">
-              {[
-                { label: 'FAQs', screen: 'website-faqs' },
-                { label: 'Contact Us', screen: 'website-contact' },
-                { label: 'Terms of Service', screen: 'website-terms' },
-                { label: 'Privacy Policy', screen: 'website-privacy' },
-              ].map((link) => (
-                <li key={link.screen}>
+              {support.map((link) => (
+                <li key={link.path}>
                   <button
-                    onClick={() => handleNavigate(link.screen)}
+                    onClick={() => handleNavigate(link.path)}
                     className="text-sm hover:text-[#f44708] transition-colors duration-200"
                   >
                     {link.label}
@@ -149,14 +167,20 @@ export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <Phone size={18} className="text-[#f44708] mt-1 flex-shrink-0" />
+                <Phone
+                  size={18}
+                  className="text-[#f44708] mt-1 flex-shrink-0"
+                />
                 <div className="flex flex-col">
                   <span className="text-sm">+234 906 870 9992</span>
                   <span className="text-sm">+234 707 098 9034</span>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <MapPin size={18} className="text-[#f44708] mt-1 flex-shrink-0" />
+                <MapPin
+                  size={18}
+                  className="text-[#f44708] mt-1 flex-shrink-0"
+                />
                 <span className="text-sm">Lagos, Nigeria</span>
               </li>
             </ul>
@@ -173,13 +197,13 @@ export function WebsiteFooter({ onNavigate }: WebsiteFooterProps) {
             </p>
             <div className="flex items-center space-x-6 text-sm">
               <button
-                onClick={() => handleNavigate('website-terms')}
+                onClick={() => handleNavigate("website-terms")}
                 className="text-gray-400 hover:text-[#f44708] transition-colors duration-200"
               >
                 Terms
               </button>
               <button
-                onClick={() => handleNavigate('website-privacy')}
+                onClick={() => handleNavigate("website-privacy")}
                 className="text-gray-400 hover:text-[#f44708] transition-colors duration-200"
               >
                 Privacy

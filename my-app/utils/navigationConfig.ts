@@ -566,7 +566,7 @@ export const SCREEN_CONFIGS: Record<Screen, ScreenConfig> = {
   // Website screens (for landing page)
   'website-home': {
     id: 'website-home',
-    title: 'Website Home',
+    title: 'Prawnbox - Home',
     category: 'main',
     requiresAuth: false
   },
@@ -578,14 +578,6 @@ export const SCREEN_CONFIGS: Record<Screen, ScreenConfig> = {
     category: 'main',
     requiresAuth: true
   },
-
-  // Website screens
-//   'website-home': {
-//     id: 'website-home',
-//     title: 'Prawnbox - Home',
-//     category: 'main',
-//     requiresAuth: false
-//   },
 
   'website-about': {
     id: 'website-about',
