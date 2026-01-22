@@ -110,7 +110,7 @@ export function AcceptedBidsScreen({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <Package size={24} className="text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             <p className="text-xs text-gray-600">Total</p>
           </motion.div>
@@ -167,7 +167,7 @@ export function AcceptedBidsScreen({
               onClick={() => setActiveFilter(filter.key as DeliveryFilter)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 activeFilter === filter.key
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -206,7 +206,7 @@ export function AcceptedBidsScreen({
                 {/* Locations */}
                 <div className="space-y-2 mb-4">
                   <div className="flex items-start space-x-2 text-sm">
-                    <MapPin size={14} className="text-[#f44708] mt-0.5 flex-shrink-0" />
+                    <MapPin size={14} className="text-primary mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <span className="text-gray-600">Pickup:</span>
                       <p className="text-gray-900">{job.pickupLocation}</p>
@@ -306,7 +306,7 @@ export function AcceptedBidsScreen({
 
                             {/* Item Details */}
                             <div className="flex items-start space-x-3">
-                              <Package size={16} className="text-[#f44708] mt-0.5 flex-shrink-0" />
+                              <Package size={16} className="text-primary mt-0.5 flex-shrink-0" />
                               <div className="flex-1">
                                 <p className="text-xs text-gray-600">Item Details</p>
                                 <p className="text-sm text-gray-900">{job.title}</p>
@@ -332,7 +332,7 @@ export function AcceptedBidsScreen({
                   <div className="grid grid-cols-2 gap-2">
                     <motion.button
                       onClick={() => onOpenChat(job)}
-                      className="flex items-center justify-center space-x-1 bg-[#f44708] hover:bg-[#d63a00] text-white py-2.5 rounded-xl"
+                      className="flex items-center justify-center space-x-1 bg-primary hover:bg-[#d63a00] text-white py-2.5 rounded-xl"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

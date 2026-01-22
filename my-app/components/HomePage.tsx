@@ -49,7 +49,7 @@ export function HomePage() {
   return (
     <div className="pt-20 min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-black text-white overflow-hidden min-h-[calc(100vh-5rem)]">
+      <section className="relative bg-gradient-to-br from-dark via-darker to-darkest text-white overflow-hidden min-h-[calc(100vh-5rem)]">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -71,11 +71,11 @@ export function HomePage() {
               className="px-4"
             >
               <motion.div
-                className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-4 py-2 rounded-full mb-6"
+                className="inline-flex items-center space-x-2 bg-primary-light px-4 py-2 rounded-full mb-6"
                 variants={scaleIn}
               >
-                <Package className="w-4 h-4 text-[#f44708]" />
-                <span className="text-sm font-medium text-[#f44708]">
+                <Package className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">
                   Trusted by 50,000+ Users
                 </span>
               </motion.div>
@@ -84,7 +84,7 @@ export function HomePage() {
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
                 variants={fadeInUp}
               >
-                Send <span className="text-[#f44708]">Anything</span>, Anywhere
+                Send <span className="text-primary">Anything</span>, Anywhere
                 in Nigeria
               </motion.h1>
 
@@ -109,7 +109,7 @@ export function HomePage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 1.05 }}
                 >
-                  <div className="text-2xl font-bold text-[#f44708]">10k+</div>
+                  <div className="text-2xl font-bold text-primary">10k+</div>
                   <div className="text-xs text-gray-300 mt-1">
                     Verified Pals
                   </div>
@@ -120,7 +120,7 @@ export function HomePage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 1.05 }}
                 >
-                  <div className="text-2xl font-bold text-[#f44708]">50k+</div>
+                  <div className="text-2xl font-bold text-primary">50k+</div>
                   <div className="text-xs text-gray-300 mt-1">Deliveries</div>
                 </motion.div>
                 <motion.div
@@ -129,7 +129,7 @@ export function HomePage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 1.05 }}
                 >
-                  <div className="text-2xl font-bold text-[#f44708]">4.8★</div>
+                  <div className="text-2xl font-bold text-primary">4.8★</div>
                   <div className="text-xs text-gray-300 mt-1">Avg. Rating</div>
                 </motion.div>
               </motion.div>
@@ -137,7 +137,7 @@ export function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <motion.button
                   onClick={() => router.push(ROUTES.AUTH)}
-                  className="group bg-[#f44708] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#ff5722] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
+                  className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -179,7 +179,7 @@ export function HomePage() {
                   whileTap={{ scale: 1.05 }}
                   transition={{ duration: 0.4 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}
                 <motion.div
@@ -193,7 +193,7 @@ export function HomePage() {
                       <div className="text-sm text-gray-600 mb-1">
                         Active Deliveries Today
                       </div>
-                      <div className="text-2xl font-bold text-[#2f2f2f]">
+                      <div className="text-2xl font-bold text-dark">
                         2,847
                       </div>
                     </div>
@@ -218,11 +218,11 @@ export function HomePage() {
             viewport={{ once: false, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 Why Choose Prawnbox?
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -283,16 +283,16 @@ export function HomePage() {
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="p-8 rounded-2xl bg-gray-50 hover:bg-[#f44708] hover:text-white group transition-all duration-300 cursor-pointer"
+                className="p-8 rounded-2xl bg-gray-50 hover:bg-primary hover:text-white group transition-all duration-300 cursor-pointer"
                 variants={scaleIn}
                 whileHover={cardHover}
                 whileTap={cardHover}
               >
                 <feature.icon
                   size={40}
-                  className="text-[#f44708] group-hover:text-white mb-4 transition-transform duration-300 group-hover:scale-110"
+                  className="text-primary group-hover:text-white mb-4 transition-transform duration-300 group-hover:scale-110"
                 />
-                <h3 className="text-xl font-bold text-[#2f2f2f] group-hover:text-white mb-3">
+                <h3 className="text-xl font-bold text-dark group-hover:text-white mb-3">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 group-hover:text-white/90">
@@ -314,11 +314,11 @@ export function HomePage() {
             viewport={{ once: false, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 How to send items
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -367,11 +367,11 @@ export function HomePage() {
                     viewport={{ once: false }}
                     transition={{ duration: 0.6, delay: index * 0.2 }}
                   >
-                    <span className="text-6xl font-bold text-[#f44708] opacity-20">
+                    <span className="text-6xl font-bold text-primary opacity-20">
                       {step.step}
                     </span>
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-[#2f2f2f] mb-4">
+                  <h3 className="text-2xl font-bold text-dark mb-4">
                     {step.title}
                   </h3>
                   <p className="text-gray-600">{step.description}</p>
@@ -384,7 +384,7 @@ export function HomePage() {
                     viewport={{ once: false }}
                     transition={{ duration: 0.5, delay: index * 0.2 + 0.3 }}
                   >
-                    <ArrowRight size={32} className="text-[#f44708]" />
+                    <ArrowRight size={32} className="text-primary" />
                   </motion.div>
                 )}
               </motion.div>
@@ -403,11 +403,11 @@ export function HomePage() {
             viewport={{ once: false, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 Empowering Nigerian Entrepreneurs
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -450,7 +450,7 @@ export function HomePage() {
                 />
               </div>
               <div className="p-8 bg-gray-50">
-                <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">
+                <h3 className="text-2xl font-bold text-dark mb-3">
                   Built for all senders
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -460,7 +460,7 @@ export function HomePage() {
                 </p>
                 <motion.button
                   onClick={() => router.push(ROUTES.SEND_ITEMS)}
-                  className="text-[#f44708] font-semibold hover:underline flex items-center"
+                  className="text-primary font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -498,7 +498,7 @@ export function HomePage() {
                 />
               </div>
               <div className="p-8 bg-gray-50">
-                <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">
+                <h3 className="text-2xl font-bold text-dark mb-3">
                   Earn as a Delivery Pal
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -509,7 +509,7 @@ export function HomePage() {
                 </p>
                 <motion.button
                   onClick={() => router.push(ROUTES.BECOME_PAL)}
-                  className="text-[#f44708] font-semibold hover:underline flex items-center"
+                  className="text-primary font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -545,12 +545,12 @@ export function HomePage() {
                   whileTap={{ scale: 1.1 }}
                   transition={{ duration: 0.4 }}
                 />
-                <div className="absolute top-4 right-4 bg-[#f44708] text-white px-4 py-2 rounded-full shadow-lg">
+                <div className="absolute top-4 right-4 bg-primary text-white px-4 py-2 rounded-full shadow-lg">
                   <span className="font-semibold text-sm">Coming Soon</span>
                 </div>
               </div>
               <div className="p-8 bg-gray-50">
-                <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">
+                <h3 className="text-2xl font-bold text-dark mb-3">
                   Tamper-Proof Security Tapes
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -597,7 +597,7 @@ export function HomePage() {
                 />
               </div>
               <div className="p-8 bg-gray-50">
-                <h3 className="text-2xl font-bold text-[#2f2f2f] mb-3">
+                <h3 className="text-2xl font-bold text-dark mb-3">
                   Earn as a Proxy Receiver
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -607,7 +607,7 @@ export function HomePage() {
                 </p>
                 <motion.button
                   onClick={() => router.push(ROUTES.BECOME_PROXY)}
-                  className="text-[#f44708] font-semibold hover:underline flex items-center"
+                  className="text-primary font-semibold hover:underline flex items-center"
                   whileHover={{ x: 5 }}
                   whileTap={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -630,11 +630,11 @@ export function HomePage() {
               viewport={{ once: false, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
                 <span className="h2-animated-underline relative inline-block">
                   A Platform Built on Trust
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -666,7 +666,7 @@ export function HomePage() {
                     transition={{ duration: 0.2 }}
                   >
                     <item.icon
-                      className="text-[#f44708] flex-shrink-0"
+                      className="text-primary flex-shrink-0"
                       size={24}
                     />
                     <span className="text-gray-700">{item.label}</span>
@@ -721,11 +721,11 @@ export function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInRight}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
                 <span className="h2-animated-underline relative inline-block">
                   Connecting Communities Across Nigeria
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -757,7 +757,7 @@ export function HomePage() {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <p className="text-4xl font-bold text-[#f44708] mb-2">36</p>
+                  <p className="text-4xl font-bold text-primary mb-2">36</p>
                   <p className="text-gray-600">States Covered</p>
                 </motion.div>
                 <motion.div
@@ -775,7 +775,7 @@ export function HomePage() {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <p className="text-4xl font-bold text-[#f44708] mb-2">100+</p>
+                  <p className="text-4xl font-bold text-primary mb-2">100+</p>
                   <p className="text-gray-600">Cities & Towns</p>
                 </motion.div>
               </motion.div>
@@ -794,11 +794,11 @@ export function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
                 <span className="h2-animated-underline relative inline-block">
                   Earn Money on Your Own Terms
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -819,11 +819,11 @@ export function HomePage() {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-12 h-12 bg-[#f44708] rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                     <Zap className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2f2f2f] mb-2">
+                    <h3 className="font-bold text-dark mb-2">
                       Set Your Own Rates
                     </h3>
                     <p className="text-gray-600">
@@ -839,11 +839,11 @@ export function HomePage() {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-12 h-12 bg-[#f44708] rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                     <TrendingUp className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2f2f2f] mb-2">
+                    <h3 className="font-bold text-dark mb-2">
                       Weekly Payouts
                     </h3>
                     <p className="text-gray-600">
@@ -859,11 +859,11 @@ export function HomePage() {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-12 h-12 bg-[#f44708] rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                     <Star className="text-white" size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[#2f2f2f] mb-2">
+                    <h3 className="font-bold text-dark mb-2">
                       Build Your Reputation
                     </h3>
                     <p className="text-gray-600">
@@ -921,11 +921,11 @@ export function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInRight}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
                 <span className="h2-animated-underline relative inline-block">
                   Supporting Nigerian SMEs
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -947,7 +947,7 @@ export function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    className="text-primary flex-shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -962,7 +962,7 @@ export function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    className="text-primary flex-shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -977,7 +977,7 @@ export function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    className="text-primary flex-shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -992,7 +992,7 @@ export function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-[#f44708] flex-shrink-0 mt-1"
+                    className="text-primary flex-shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -1002,7 +1002,7 @@ export function HomePage() {
               </motion.ul>
               <motion.button
                 onClick={() => router.push(ROUTES.PRICING)}
-                className="px-6 py-3 bg-[#2f2f2f] text-white font-semibold rounded-xl hover:bg-black transition-all duration-200"
+                className="px-6 py-3 bg-dark text-white font-semibold rounded-xl hover:bg-darkest transition-all duration-200"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -1014,7 +1014,7 @@ export function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2f2f2f] to-[#000000] text-white">
+      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white">
         <motion.div
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial="hidden"
@@ -1034,7 +1034,7 @@ export function HomePage() {
           </motion.p>
           <motion.button
             onClick={() => router.push(ROUTES.AUTH)}
-            className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] shadow-2xl"
+            className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover shadow-2xl"
             variants={scaleIn}
             whileHover={{
               scale: 1.1,

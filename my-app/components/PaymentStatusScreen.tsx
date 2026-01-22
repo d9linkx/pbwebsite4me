@@ -30,7 +30,7 @@ export function PaymentStatusScreen({
   }, [success, hasPendingBid, onContinue]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col items-center justify-center p-6">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className={`absolute -top-40 -right-40 w-80 h-80 ${success ? 'bg-green-500' : 'bg-red-500'} rounded-full opacity-10 blur-3xl`}></div>
@@ -119,7 +119,7 @@ export function PaymentStatusScreen({
               className={`w-full ${
                 success 
                   ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600' 
-                  : 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600'
+                  : 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-primary-dark'
               } text-white py-4 rounded-xl font-semibold`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

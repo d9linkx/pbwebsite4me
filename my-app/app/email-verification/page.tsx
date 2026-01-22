@@ -63,7 +63,7 @@ export default function EmailVerificationPage() {
   // Show loading or redirect if no user data
   if (!user || !email) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
     );

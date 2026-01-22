@@ -105,7 +105,7 @@ export function ConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-darkest bg-opacity-50 p-4 animate-fadeIn"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"

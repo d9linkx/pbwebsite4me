@@ -198,7 +198,7 @@ export default function SentDeliveriesPage() {
       <div className="container mx-auto">
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 border-4 border-[#f44708] border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
             <p className="text-gray-600">Loading sent deliveries...</p>
           </div>
         </div>

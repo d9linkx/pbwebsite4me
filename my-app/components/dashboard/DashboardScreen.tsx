@@ -1,21 +1,16 @@
-import React from 'react';
-import { User, DeliveryJob, UserRole, ProxyItem, Notification, Screen } from '../../types';
-import { filterNotificationsByRole } from '../../utils/helpers';
-import { RoleSpecificContent } from '../dashboard/RoleSpecificContent';
-import { 
-  calculateDashboardStats,
-  createButtonClickHandler,
-  createRoleButtonHandler,
-  createNotificationsHandler,
-  createSpecialButtonHandler
-} from '../../utils/dashboard';
+import React from "react";
+import { User, DeliveryJob, UserRole, ProxyItem, Notification } from "@/types";
+import { filterNotificationsByRole } from "@/utils/helpers";
+import { RoleSpecificContent } from "@/components/dashboard/RoleSpecificContent";
+import { ROUTES } from "@/lib/routes";
+import { calculateDashboardStats } from "@/utils/dashboard";
 
 interface DashboardScreenProps {
   user: User | null;
   activeRole: UserRole;
   onJobSelect: (job: DeliveryJob) => void;
   onRoleChange: (role: UserRole) => void;
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (route: string) => void;
   userJobs: DeliveryJob[];
   allJobs: DeliveryJob[];
   proxyItems: ProxyItem[];
@@ -41,89 +36,66 @@ export function DashboardScreen({
   onBack,
   handleCall,
   notifications = [],
-  onActionClick
+  onActionClick,
 }: DashboardScreenProps) {
-  // Calculate stats for current role
   const stats = calculateDashboardStats(activeRole, allJobs, proxyItems, user);
-  
-  // 🔥 FILTER NOTIFICATIONS BY ACTIVE ROLE
-  const roleBasedNotifications = filterNotificationsByRole(notifications, activeRole);
+  const roleBasedNotifications = filterNotificationsByRole(
+    notifications,
+    activeRole,
+  );
 
-  // Enhanced action handler - use App.tsx action handler with filtering logic or fallback to direct navigation
   const handleEnhancedActionClick = (action: string) => {
-    console.log('🚀 Enhanced action button clicked:', action);
-    
-    // Always try to use the onActionClick handler from App.tsx first (contains filtering logic)
     if (onActionClick) {
-      console.log('🎯 Using App.tsx action handler with filtering logic for:', action);
       onActionClick(action);
       return;
     }
-    
-    // Fallback to direct navigation mapping if no onActionClick handler provided
-    console.log('🔄 Fallback: Using direct navigation for:', action);
-    const navigationMap: Record<string, Screen> = {
-      'post-delivery': 'post-delivery',
-      'available-jobs': 'available-jobs',
-      'accepted-bids': 'accepted-bids',
-      'accepted-bids-completed': 'accepted-bids',
-      'my-deliveries': 'my-deliveries',
-      'wallet': 'wallet',
-      'settings': 'settings',
-      'wallet-add-funds': 'wallet-add-funds',
-      'referral': 'referral',
-      'tape-distributor': 'tape-distributor',
-    } as const;
 
-    const targetScreen = navigationMap[action];
-    if (targetScreen) {
-      onNavigate(targetScreen);
+    // Fallback navigation mapping
+    const navigationMap: Record<string, string> = {
+      "post-delivery": `${ROUTES.AVAILABLE_JOBS}/post`,
+      "available-jobs": ROUTES.AVAILABLE_JOBS,
+      "accepted-bids": ROUTES.ACCEPTED_BIDS,
+      "accepted-bids-completed": `${ROUTES.MY_DELIVERIES}?filter=completed`,
+      "my-deliveries": ROUTES.MY_DELIVERIES,
+      wallet: ROUTES.WALLET,
+      settings: ROUTES.SETTINGS,
+      "wallet-add-funds": `${ROUTES.WALLET}/add-funds`,
+      referral: ROUTES.REFERRAL,
+      "tape-distributor": ROUTES.TAPE_DISTRIBUTOR,
+    };
+
+    const route = navigationMap[action];
+    if (route) {
+      onNavigate(route);
     } else {
-      console.warn('Unknown action:', action);
+      console.warn("Unknown action:", action);
     }
   };
 
   const handleEnhancedSpecialActionClick = (action: string) => {
-    console.log('🔥 Enhanced special action button clicked:', action);
-    
-    if (action === 'accepted-bids') {
-      console.log('🔥 ENHANCED ACCEPTED BIDS BUTTON CLICKED - Perfect Functionality!');
-      console.log('📊 Enhanced count calculation stats:', stats);
-      console.log('📍 Enhanced navigation: Going to accepted-bids screen');
-      console.log('🎯 Button copy: Shows active deliveries for clarity');
-      onNavigate('accepted-bids');
-    } else if (action === 'proxy-dashboard') {
-      console.log('🏪 ENHANCED PROXY DASHBOARD BUTTON CLICKED!');
-      console.log('📊 Proxy stats:', stats);
-      onNavigate('proxy-dashboard');
+    if (action === "accepted-bids") {
+      onNavigate(ROUTES.ACCEPTED_BIDS);
+    } else if (action === "proxy-dashboard") {
+      onNavigate(ROUTES.PROXY_DASHBOARD);
     } else {
-      console.warn('Unknown special action:', action);
+      console.warn("Unknown special action:", action);
     }
   };
 
-  // Handle sponsorship navigation directly
   const handleNavigateToSponsorship = () => {
-    console.log('🎯 Sponsorship button clicked');
-    onNavigate('sponsorship');
+    onNavigate(ROUTES.SPONSORSHIP);
   };
 
-
-
   return (
-    <div className="w-full bg-white overflow-x-hidden">
-      {/* Main Content - Responsive container */}
-      <div className="w-full overflow-x-hidden">
-        <RoleSpecificContent
-          activeRole={activeRole}
-          stats={stats}
-          user={user}
-          allJobs={allJobs}
-          onActionClick={onActionClick || handleEnhancedActionClick}
-          onSpecialActionClick={handleEnhancedSpecialActionClick}
-          onNavigateToSponsorship={handleNavigateToSponsorship}
-          onJobSelect={onJobSelect}
-        />
-      </div>
-    </div>
+    <RoleSpecificContent
+      activeRole={activeRole}
+      stats={stats}
+      user={user}
+      allJobs={allJobs}
+      onActionClick={onActionClick || handleEnhancedActionClick}
+      onSpecialActionClick={handleEnhancedSpecialActionClick}
+      onNavigateToSponsorship={handleNavigateToSponsorship}
+      onJobSelect={onJobSelect}
+    />
   );
 }

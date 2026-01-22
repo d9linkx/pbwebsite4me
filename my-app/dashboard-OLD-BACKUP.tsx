@@ -386,7 +386,7 @@
 //       hover: "hover:bg-orange-100",
 //       border: "border-orange-200",
 //       text: "text-orange-900",
-//       subtext: "text-orange-600",
+//       subtext: "text-primary-dark",
 //     },
 //     {
 //       bg: "bg-pink-50",
@@ -5771,7 +5771,7 @@
 //           <>
 //             {/* Menu Backdrop */}
 //             <motion.div
-//               className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
+//               className="fixed inset-0 bg-darkest/70 backdrop-blur-sm z-40"
 //               onClick={closeMobileMenu}
 //               initial={{ opacity: 0 }}
 //               animate={{ opacity: 1 }}
@@ -5784,7 +5784,7 @@
 
 //             {/* Slide-out Menu */}
 //             <motion.div
-//               className="fixed top-0 right-0 h-full bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] shadow-2xl z-50 w-full max-w-sm sm:max-w-md overflow-hidden"
+//               className="fixed top-0 right-0 h-full bg-gradient-to-br from-dark via-darker to-dark shadow-2xl z-50 w-full max-w-sm sm:max-w-md overflow-hidden"
 //               initial={{ x: "100%" }}
 //               animate={{ x: 0 }}
 //               exit={{ x: "100%" }}
@@ -5868,7 +5868,7 @@
 //                     <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4">
 //                       <div className="flex items-center space-x-4">
 //                         {/* Profile Photo */}
-//                         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff6b35] border-2 border-[#f44708]/30 flex items-center justify-center flex-shrink-0 shadow-lg">
+//                         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-[#ff6b35] border-2 border-primary/30 flex items-center justify-center flex-shrink-0 shadow-lg">
 //                           {user.profileImage ? (
 //                             <Image
 //                               src={user.profileImage}
@@ -5896,9 +5896,9 @@
 //                             {user.email}
 //                           </p>
 //                           {/* Wallet Balance */}
-//                           <div className="flex items-center space-x-2 mt-2 bg-[#f44708]/20 border border-[#f44708]/30 rounded-lg px-3 py-1.5">
-//                             <Wallet size={14} className="text-[#f44708]" />
-//                             <span className="font-bold text-[#f44708] text-sm">
+//                           <div className="flex items-center space-x-2 mt-2 bg-primary-light border border-primary/30 rounded-lg px-3 py-1.5">
+//                             <Wallet size={14} className="text-primary" />
+//                             <span className="font-bold text-primary text-sm">
 //                               {formatAmount(user.walletBalance || 0)}
 //                             </span>
 //                           </div>
@@ -5915,7 +5915,7 @@
 //                     onClick={() => handleMobileMenuNavigation("dashboard")}
 //                     className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 ${
 //                       currentScreen === "dashboard"
-//                         ? "bg-[#f44708]/20 border border-[#f44708]/40"
+//                         ? "bg-primary-light border border-primary/40"
 //                         : "bg-white/10 hover:bg-white/15 border border-white/20"
 //                     }`}
 //                     whileHover={{ scale: 1.02, x: 5 }}
@@ -5933,7 +5933,7 @@
 //                     <div
 //                       className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
 //                         currentScreen === "dashboard"
-//                           ? "bg-[#f44708]"
+//                           ? "bg-primary"
 //                           : "bg-white/10"
 //                       }`}
 //                     >
@@ -5944,7 +5944,7 @@
 //                     </span>
 //                     {currentScreen === "dashboard" && (
 //                       <motion.div
-//                         className="w-2 h-2 rounded-full bg-[#f44708]"
+//                         className="w-2 h-2 rounded-full bg-primary"
 //                         initial={{ scale: 0 }}
 //                         animate={{ scale: 1 }}
 //                         transition={{ type: "spring", stiffness: 500 }}
@@ -5957,7 +5957,7 @@
 //                     onClick={() => handleMobileMenuNavigation("wallet")}
 //                     className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 ${
 //                       currentScreen === "wallet"
-//                         ? "bg-[#f44708]/20 border border-[#f44708]/40"
+//                         ? "bg-primary-light border border-primary/40"
 //                         : "bg-white/10 hover:bg-white/15 border border-white/20"
 //                     }`}
 //                     whileHover={{ scale: 1.02, x: 5 }}
@@ -5975,7 +5975,7 @@
 //                     <div
 //                       className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
 //                         currentScreen === "wallet"
-//                           ? "bg-[#f44708]"
+//                           ? "bg-primary"
 //                           : "bg-white/10"
 //                       }`}
 //                     >
@@ -5986,7 +5986,7 @@
 //                     </span>
 //                     {currentScreen === "wallet" && (
 //                       <motion.div
-//                         className="w-2 h-2 rounded-full bg-[#f44708]"
+//                         className="w-2 h-2 rounded-full bg-primary"
 //                         initial={{ scale: 0 }}
 //                         animate={{ scale: 1 }}
 //                         transition={{ type: "spring", stiffness: 500 }}
@@ -5999,7 +5999,7 @@
 //                     onClick={() => handleMobileMenuNavigation("settings")}
 //                     className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 ${
 //                       currentScreen === "settings"
-//                         ? "bg-[#f44708]/20 border border-[#f44708]/40"
+//                         ? "bg-primary-light border border-primary/40"
 //                         : "bg-white/10 hover:bg-white/15 border border-white/20"
 //                     }`}
 //                     whileHover={{ scale: 1.02, x: 5 }}
@@ -6017,7 +6017,7 @@
 //                     <div
 //                       className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
 //                         currentScreen === "settings"
-//                           ? "bg-[#f44708]"
+//                           ? "bg-primary"
 //                           : "bg-white/10"
 //                       }`}
 //                     >
@@ -6028,7 +6028,7 @@
 //                     </span>
 //                     {currentScreen === "settings" && (
 //                       <motion.div
-//                         className="w-2 h-2 rounded-full bg-[#f44708]"
+//                         className="w-2 h-2 rounded-full bg-primary"
 //                         initial={{ scale: 0 }}
 //                         animate={{ scale: 1 }}
 //                         transition={{ type: "spring", stiffness: 500 }}
@@ -6043,7 +6043,7 @@
 //                     }
 //                     className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 ${
 //                       currentScreen === "sponsor-user-search"
-//                         ? "bg-[#f44708]/20 border border-[#f44708]/40"
+//                         ? "bg-primary-light border border-primary/40"
 //                         : "bg-white/10 hover:bg-white/15 border border-white/20"
 //                     }`}
 //                     whileHover={{ scale: 1.02, x: 5 }}
@@ -6061,7 +6061,7 @@
 //                     <div
 //                       className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
 //                         currentScreen === "sponsor-user-search"
-//                           ? "bg-[#f44708]"
+//                           ? "bg-primary"
 //                           : "bg-white/10"
 //                       }`}
 //                     >
@@ -6072,7 +6072,7 @@
 //                     </span>
 //                     {currentScreen === "sponsor-user-search" && (
 //                       <motion.div
-//                         className="w-2 h-2 rounded-full bg-[#f44708]"
+//                         className="w-2 h-2 rounded-full bg-primary"
 //                         initial={{ scale: 0 }}
 //                         animate={{ scale: 1 }}
 //                         transition={{ type: "spring", stiffness: 500 }}
@@ -6085,7 +6085,7 @@
 //                     onClick={() => handleMobileMenuNavigation("referral")}
 //                     className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 ${
 //                       currentScreen === "referral"
-//                         ? "bg-[#f44708]/20 border border-[#f44708]/40"
+//                         ? "bg-primary-light border border-primary/40"
 //                         : "bg-white/10 hover:bg-white/15 border border-white/20"
 //                     }`}
 //                     whileHover={{ scale: 1.02, x: 5 }}
@@ -6103,7 +6103,7 @@
 //                     <div
 //                       className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
 //                         currentScreen === "referral"
-//                           ? "bg-[#f44708]"
+//                           ? "bg-primary"
 //                           : "bg-white/10"
 //                       }`}
 //                     >
@@ -6114,7 +6114,7 @@
 //                     </span>
 //                     {currentScreen === "referral" && (
 //                       <motion.div
-//                         className="w-2 h-2 rounded-full bg-[#f44708]"
+//                         className="w-2 h-2 rounded-full bg-primary"
 //                         initial={{ scale: 0 }}
 //                         animate={{ scale: 1 }}
 //                         transition={{ type: "spring", stiffness: 500 }}
@@ -6129,7 +6129,7 @@
 //                     }
 //                     className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 ${
 //                       currentScreen === "tape-distributor"
-//                         ? "bg-[#f44708]/20 border border-[#f44708]/40"
+//                         ? "bg-primary-light border border-primary/40"
 //                         : "bg-white/10 hover:bg-white/15 border border-white/20"
 //                     }`}
 //                     whileHover={{ scale: 1.02, x: 5 }}
@@ -6147,7 +6147,7 @@
 //                     <div
 //                       className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
 //                         currentScreen === "tape-distributor"
-//                           ? "bg-[#f44708]"
+//                           ? "bg-primary"
 //                           : "bg-white/10"
 //                       }`}
 //                     >
@@ -6158,7 +6158,7 @@
 //                     </span>
 //                     {currentScreen === "tape-distributor" && (
 //                       <motion.div
-//                         className="w-2 h-2 rounded-full bg-[#f44708]"
+//                         className="w-2 h-2 rounded-full bg-primary"
 //                         initial={{ scale: 0 }}
 //                         animate={{ scale: 1 }}
 //                         transition={{ type: "spring", stiffness: 500 }}
@@ -6175,7 +6175,7 @@
 //                       onClick={() =>
 //                         handleMobileMenuNavigation("post-delivery")
 //                       }
-//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-[#f44708]/40 shadow-lg"
+//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-dark to-darker hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-primary/40 shadow-lg"
 //                       whileHover={{ scale: 1.02, x: 5 }}
 //                       whileTap={{ scale: 0.98 }}
 //                       initial={{ opacity: 0, x: -20 }}
@@ -6188,7 +6188,7 @@
 //                         WebkitTapHighlightColor: "transparent",
 //                       }}
 //                     >
-//                       <div className="w-10 h-10 rounded-lg bg-[#f44708] flex items-center justify-center flex-shrink-0">
+//                       <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
 //                         <Plus size={20} className="text-white" />
 //                       </div>
 //                       <span className="font-medium text-white flex-1 text-left">
@@ -6202,7 +6202,7 @@
 //                       onClick={() =>
 //                         handleMobileMenuNavigation("available-jobs")
 //                       }
-//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-[#f44708]/40 shadow-lg"
+//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-dark to-darker hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-primary/40 shadow-lg"
 //                       whileHover={{ scale: 1.02, x: 5 }}
 //                       whileTap={{ scale: 0.98 }}
 //                       initial={{ opacity: 0, x: -20 }}
@@ -6215,7 +6215,7 @@
 //                         WebkitTapHighlightColor: "transparent",
 //                       }}
 //                     >
-//                       <div className="w-10 h-10 rounded-lg bg-[#f44708] flex items-center justify-center flex-shrink-0">
+//                       <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
 //                         <Zap size={20} className="text-white" />
 //                       </div>
 //                       <span className="font-medium text-white flex-1 text-left">
@@ -6227,7 +6227,7 @@
 //                   {activeRole === "receiver" && (
 //                     <motion.button
 //                       onClick={() => handleMobileMenuNavigation("dashboard")}
-//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-[#f44708]/40 shadow-lg"
+//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-dark to-darker hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-primary/40 shadow-lg"
 //                       whileHover={{ scale: 1.02, x: 5 }}
 //                       whileTap={{ scale: 0.98 }}
 //                       initial={{ opacity: 0, x: -20 }}
@@ -6240,7 +6240,7 @@
 //                         WebkitTapHighlightColor: "transparent",
 //                       }}
 //                     >
-//                       <div className="w-10 h-10 rounded-lg bg-[#f44708] flex items-center justify-center flex-shrink-0">
+//                       <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
 //                         <Mail size={20} className="text-white" />
 //                       </div>
 //                       <span className="font-medium text-white flex-1 text-left">
@@ -6254,7 +6254,7 @@
 //                       onClick={() =>
 //                         handleMobileMenuNavigation("proxy-dashboard")
 //                       }
-//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-[#f44708]/40 shadow-lg"
+//                       className="w-full flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r from-dark to-darker hover:from-[#3f3f3f] hover:to-[#2a2a2a] border border-primary/40 shadow-lg"
 //                       whileHover={{ scale: 1.02, x: 5 }}
 //                       whileTap={{ scale: 0.98 }}
 //                       initial={{ opacity: 0, x: -20 }}
@@ -6267,7 +6267,7 @@
 //                         WebkitTapHighlightColor: "transparent",
 //                       }}
 //                     >
-//                       <div className="w-10 h-10 rounded-lg bg-[#f44708] flex items-center justify-center flex-shrink-0">
+//                       <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
 //                         <Building size={20} className="text-white" />
 //                       </div>
 //                       <span className="font-medium text-white flex-1 text-left">
@@ -6286,7 +6286,7 @@
 //                 >
 //                   <div className="text-center space-y-2">
 //                     <div className="flex items-center justify-center space-x-2">
-//                       <div className="w-2 h-2 rounded-full bg-[#f44708] animate-pulse"></div>
+//                       <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
 //                       <p className="text-xs text-gray-400">System Online</p>
 //                     </div>
 //                     <p className="text-xs text-gray-500">Prawnbox v1.0</p>

@@ -378,7 +378,7 @@ export function VerificationScreen({ onBack, onNavigate }: VerificationScreenPro
                 key={step.id}
                 className={`bg-white border rounded-2xl p-6 cursor-pointer transition-all ${
                   isSelected
-                    ? 'border-[#f44708] bg-[#f44708]/5 scale-[1.02]'
+                    ? 'border-primary bg-primary/5 scale-[1.02]'
                     : step.status === 'completed'
                     ? 'border-green-200'
                     : 'border-gray-200 hover:border-gray-300'
@@ -418,7 +418,7 @@ export function VerificationScreen({ onBack, onNavigate }: VerificationScreenPro
                 <div className="flex items-center justify-between">
                   {getStatusBadge(step.status, step.required)}
                   {step.status !== 'completed' && (
-                    <span className="text-[#f44708] text-sm font-medium">
+                    <span className="text-primary text-sm font-medium">
                       Tap to {step.status === 'in-progress' ? 'review' : 'verify'} →
                     </span>
                   )}

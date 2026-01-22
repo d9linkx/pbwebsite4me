@@ -36,12 +36,12 @@ const BidsScreenComponent = ({ job, onBack, onBidSelect, onAcceptBid, onViewProf
   const getVehicleIcon = useCallback((vehicleType: string) => {
     switch ((vehicleType || '').toLowerCase()) {
       case 'car':
-        return <Car size={16} className="text-[#f44708]" />;
+        return <Car size={16} className="text-primary" />;
       case 'motorcycle':
       case 'bike':
-        return <Bike size={16} className="text-[#f44708]" />;
+        return <Bike size={16} className="text-primary" />;
       default:
-        return <Car size={16} className="text-[#f44708]" />;
+        return <Car size={16} className="text-primary" />;
     }
   }, []);
 
@@ -87,7 +87,7 @@ const BidsScreenComponent = ({ job, onBack, onBidSelect, onAcceptBid, onViewProf
           
           <motion.button
             onClick={() => onOpenChat(job)}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl font-medium shadow-sm flex items-center space-x-2"
+            className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-xl font-medium shadow-sm flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -111,7 +111,7 @@ const BidsScreenComponent = ({ job, onBack, onBidSelect, onAcceptBid, onViewProf
           </p>
           <div className="flex items-center space-x-4 text-sm text-gray-500">
             <span>{job.itemSize} • {job.weight}</span>
-            <span>Value: <span className="text-[#f44708] font-medium">{formatCurrency(job.value)}</span></span>
+            <span>Value: <span className="text-primary font-medium">{formatCurrency(job.value)}</span></span>
           </div>
         </motion.div>
       </div>
@@ -146,7 +146,7 @@ const BidsScreenComponent = ({ job, onBack, onBidSelect, onAcceptBid, onViewProf
                 
                 <div className="flex items-start space-x-4">
                   <Avatar className="w-12 h-12">
-                    <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white">
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-white">
                       {(bid.palName || 'Unknown').split(' ').map((n: string) => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
@@ -171,7 +171,7 @@ const BidsScreenComponent = ({ job, onBack, onBidSelect, onAcceptBid, onViewProf
                       </div>
                       
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-[#f44708]">{formatCurrency(bid.amount)}</p>
+                        <p className="text-2xl font-bold text-primary">{formatCurrency(bid.amount)}</p>
                         <p className="text-xs text-gray-500">Delivery fee</p>
                       </div>
                     </div>
@@ -201,7 +201,7 @@ const BidsScreenComponent = ({ job, onBack, onBidSelect, onAcceptBid, onViewProf
                         className={`flex-1 rounded-xl py-2 px-3 transition-all duration-200 flex items-center justify-center space-x-1.5 font-semibold shadow-md text-sm ${
                           isAcceptingBid 
                             ? 'bg-gray-300 text-gray-600 cursor-not-allowed border-2 border-gray-300' 
-                            : 'bg-[#f44708] hover:bg-[#e03d06] text-white border-2 border-[#f44708] hover:border-[#e03d06] shadow-lg hover:shadow-xl'
+                            : 'bg-primary hover:bg-[#e03d06] text-white border-2 border-primary hover:border-[#e03d06] shadow-lg hover:shadow-xl'
                         }`}
                         whileHover={isAcceptingBid ? {} : { scale: 1.02 }}
                         whileTap={isAcceptingBid ? {} : { scale: 0.98 }}

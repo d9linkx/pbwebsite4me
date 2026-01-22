@@ -67,7 +67,7 @@ export function BiddingModeSelector({
                 onClick={() => onModeChange(mode.id)}
                 className={`relative p-4 rounded-xl border-2 text-left transition-all ${
                   isSelected
-                    ? 'border-[#f44708] bg-orange-50'
+                    ? 'border-primary bg-orange-50'
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
@@ -80,7 +80,7 @@ export function BiddingModeSelector({
 
                 {/* Icon */}
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${
-                  isSelected ? 'bg-[#f44708] text-white' : 'bg-gray-100 text-gray-600'
+                  isSelected ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'
                 }`}>
                   <Icon size={20} />
                 </div>
@@ -103,7 +103,7 @@ export function BiddingModeSelector({
 
                 {/* Selection Indicator */}
                 {isSelected && (
-                  <div className="absolute top-4 right-4 w-5 h-5 bg-[#f44708] rounded-full flex items-center justify-center">
+                  <div className="absolute top-4 right-4 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -130,7 +130,7 @@ export function BiddingModeSelector({
                   onClick={() => onDurationChange(option.value)}
                   className={`px-4 py-3 rounded-lg border-2 font-medium transition-all ${
                     isSelected
-                      ? 'border-[#f44708] bg-orange-50 text-[#f44708]'
+                      ? 'border-primary bg-orange-50 text-primary'
                       : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
                   }`}
                 >

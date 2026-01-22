@@ -64,11 +64,11 @@ export function SafetyPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] text-white py-20">
+      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div>
-              <Shield className="w-20 h-20 text-[#f44708] mx-auto mb-6" />
+              <Shield className="w-20 h-20 text-primary mx-auto mb-6" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Your Safety is Our Priority
@@ -150,9 +150,9 @@ export function SafetyPage() {
                   whileTap={{ rotate: 360, scale: 1.2 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <feature.icon size={48} className="text-[#f44708] mb-4" />
+                  <feature.icon size={48} className="text-primary mb-4" />
                 </motion.div>
-                <h3 className="text-xl font-bold text-[#2f2f2f] mb-3">
+                <h3 className="text-xl font-bold text-dark mb-3">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -172,11 +172,11 @@ export function SafetyPage() {
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 How We Verify Pals
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -227,14 +227,14 @@ export function SafetyPage() {
                 variants={scaleIn}
               >
                 <motion.div
-                  className="w-20 h-20 rounded-full bg-[#f44708] text-white text-3xl font-bold flex items-center justify-center mx-auto mb-4"
+                  className="w-20 h-20 rounded-full bg-primary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-4"
                   whileHover={{ rotate: 360, scale: 1.2 }}
                   whileTap={{ rotate: 360, scale: 1.2 }}
                   transition={{ duration: 0.6 }}
                 >
                   {step.step}
                 </motion.div>
-                <h3 className="text-lg font-bold text-[#2f2f2f] mb-2">
+                <h3 className="text-lg font-bold text-dark mb-2">
                   {step.title}
                 </h3>
                 <p className="text-gray-600">{step.description}</p>
@@ -255,11 +255,11 @@ export function SafetyPage() {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInLeft}
             >
-              <h2 className="text-2xl font-bold text-[#2f2f2f] mb-6">
+              <h2 className="text-2xl font-bold text-dark mb-6">
                 <span className="h2-animated-underline relative inline-block">
                   Safety Tips for Senders
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -279,7 +279,7 @@ export function SafetyPage() {
                   <li key={index} className="flex items-start space-x-3">
                     <CheckCircle
                       size={20}
-                      className="text-[#f44708] flex-shrink-0 mt-1"
+                      className="text-primary flex-shrink-0 mt-1"
                     />
                     <span className="text-gray-700">{tip}</span>
                   </li>
@@ -294,11 +294,11 @@ export function SafetyPage() {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInRight}
             >
-              <h2 className="text-2xl font-bold text-[#2f2f2f] mb-6">
+              <h2 className="text-2xl font-bold text-dark mb-6">
                 <span className="h2-animated-underline relative inline-block">
                   Safety Tips for Pals
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -318,7 +318,7 @@ export function SafetyPage() {
                   <li key={index} className="flex items-start space-x-3">
                     <CheckCircle
                       size={20}
-                      className="text-[#f44708] flex-shrink-0 mt-1"
+                      className="text-primary flex-shrink-0 mt-1"
                     />
                     <span className="text-gray-700">{tip}</span>
                   </li>
@@ -341,11 +341,11 @@ export function SafetyPage() {
           >
             <div className="flex items-center mb-6">
               <AlertTriangle size={32} className="text-red-600 mr-4" />
-              <h2 className="text-2xl font-bold text-[#2f2f2f]">
+              <h2 className="text-2xl font-bold text-dark">
                 <span className="h2-animated-underline relative inline-block">
                   Prohibited Items
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -380,7 +380,7 @@ export function SafetyPage() {
       </section>
 
       {/* Emergency Support */}
-      <section className="py-20 bg-[#2f2f2f] text-white">
+      <section className="py-20 bg-dark text-white">
         <motion.div
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial="hidden"
@@ -389,7 +389,7 @@ export function SafetyPage() {
           variants={staggerContainer}
         >
           <motion.div variants={scaleIn}>
-            <Phone className="w-16 h-16 text-[#f44708] mx-auto mb-6" />
+            <Phone className="w-16 h-16 text-primary mx-auto mb-6" />
           </motion.div>
           <motion.h2
             className="text-3xl md:text-4xl font-bold mb-6"
@@ -404,7 +404,7 @@ export function SafetyPage() {
           <motion.div className="space-y-4" variants={staggerContainer}>
             <motion.div variants={scaleIn}>
               <p className="text-gray-400 mb-2">Emergency Hotline</p>
-              <p className="text-3xl font-bold text-[#f44708]">
+              <p className="text-3xl font-bold text-primary">
                 +234 800 EMERGENCY
               </p>
             </motion.div>
@@ -417,7 +417,7 @@ export function SafetyPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white">
+      <section className="py-20 bg-gradient-to-br from-primary to-primary-hover text-white">
         <motion.div
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial="hidden"
@@ -436,7 +436,7 @@ export function SafetyPage() {
           </motion.p>
           <motion.button
             onClick={() => router.push(ROUTES.AUTH)}
-            className="px-8 py-4 bg-white text-[#f44708] text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
+            className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
             variants={scaleIn}
             whileHover={{
               scale: 1.1,

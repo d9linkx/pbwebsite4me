@@ -1,7 +1,7 @@
-import React from 'react';
-import { UserRole, User, DeliveryJob } from '../../types';
-import { DashboardStats } from '../../utils/dashboard';
-import { QuickActionsCard } from './QuickActionsCard';
+import React from "react";
+import { UserRole, User, DeliveryJob } from "../../types";
+import { DashboardStats } from "../../utils/dashboard";
+import { QuickActionsCard } from "./QuickActionsCard";
 
 interface RoleSpecificContentProps {
   activeRole: UserRole;
@@ -22,23 +22,18 @@ export function RoleSpecificContent({
   onActionClick,
   onSpecialActionClick,
   onNavigateToSponsorship,
-  onJobSelect
+  onJobSelect,
 }: RoleSpecificContentProps) {
   return (
-    <div className="w-full overflow-x-hidden">
-      {/* Quick Actions Card */}
-      <div className="w-full overflow-x-hidden">
-        <QuickActionsCard
-          activeRole={activeRole}
-          stats={stats}
-          user={user}
-          allJobs={allJobs}
-          onActionClick={onActionClick}
-          onSpecialActionClick={onSpecialActionClick}
-          onNavigateToSponsorship={onNavigateToSponsorship}
-          onJobSelect={onJobSelect}
-        />
-      </div>
-    </div>
+    <QuickActionsCard
+      activeRole={activeRole}
+      stats={stats}
+      user={user}
+      allJobs={allJobs}
+      onActionClick={onActionClick}
+      onSpecialActionClick={onSpecialActionClick}
+      onNavigateToSponsorship={onNavigateToSponsorship}
+      onJobSelect={onJobSelect}
+    />
   );
 }

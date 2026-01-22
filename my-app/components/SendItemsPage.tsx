@@ -175,7 +175,7 @@ export function SendItemsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-black text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-dark via-darker to-darkest text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -191,15 +191,15 @@ export function SendItemsPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-[0px] pt-[56px] pr-[28px] pb-[112px] pl-[28px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-[0px] p-[0px] mx-[-20px] my-[0px] mr-[-15px] mb-[0px] ml-[-15px] mt-[-30px] lg:mt-[-13px] lg:ml-[-25px] lg:mr-[-25px]">
             <div className="pt-[80px] pr-[0px] pb-[0px] pl-[0px]">
-              <div className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-4 py-2 rounded-full mb-6">
-                <Package className="w-4 h-4 text-[#f44708]" />
-                <span className="text-sm font-medium text-[#f44708]">
+              <div className="inline-flex items-center space-x-2 bg-primary-light px-4 py-2 rounded-full mb-6">
+                <Package className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">
                   50,000+ Deliveries Completed
                 </span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Send Items <span className="text-[#f44708]">Fast & Cheap</span>
+                Send Items <span className="text-primary">Fast & Cheap</span>
               </h1>
 
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
@@ -211,13 +211,13 @@ export function SendItemsPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f44708]">
+                  <div className="text-2xl font-bold text-primary">
                     ₦1,000
                   </div>
                   <div className="text-xs text-gray-300 mt-1">From</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f44708]">
+                  <div className="text-2xl font-bold text-primary">
                     2-4hrs
                   </div>
                   <div className="text-xs text-gray-300 mt-1">
@@ -225,14 +225,14 @@ export function SendItemsPage() {
                   </div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f44708]">60%</div>
+                  <div className="text-2xl font-bold text-primary">60%</div>
                   <div className="text-xs text-gray-300 mt-1">Savings</div>
                 </div>
               </div>
 
               <button
                 onClick={() => router.push(ROUTES.AUTH)}
-                className="group bg-[#f44708] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#ff5722] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
+                className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
               >
                 <span>Send Your First Item</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -253,7 +253,7 @@ export function SendItemsPage() {
                   height={600}
                   className="w-full h-[500px] object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent m-[0px] p-[0px]"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent m-[0px] p-[0px]"></div>
 
                 {/* Floating Card */}
                 <div className="absolute bottom-6 left-6 right-6 bg-white rounded-xl p-4 shadow-xl">
@@ -262,7 +262,7 @@ export function SendItemsPage() {
                       <div className="text-sm text-gray-600 mb-1">
                         Active Delivery
                       </div>
-                      <div className="text-lg font-bold text-[#2f2f2f]">
+                      <div className="text-lg font-bold text-dark">
                         Wedding Dress Package
                       </div>
                       <div className="text-xs text-gray-500 mt-1">
@@ -277,8 +277,8 @@ export function SendItemsPage() {
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#f44708] rounded-full opacity-20 blur-2xl"></div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#f44708] rounded-full opacity-20 blur-2xl"></div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary rounded-full opacity-20 blur-2xl"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-primary rounded-full opacity-20 blur-2xl"></div>
             </div>
           </div>
         </div>
@@ -288,11 +288,11 @@ export function SendItemsPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 Why Send with Prawnbox?
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -313,16 +313,16 @@ export function SendItemsPage() {
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-16 h-16 bg-[#f44708]/10 rounded-xl flex items-center justify-center text-[#f44708] group-hover:bg-[#f44708] group-hover:text-white transition-colors duration-300">
+                  <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-[#2f2f2f] mb-2">
+                    <h3 className="text-xl font-bold text-dark mb-2">
                       {benefit.title}
                     </h3>
                     <p className="text-gray-600 mb-4">{benefit.description}</p>
                     <div className="flex items-end space-x-2">
-                      <div className="text-3xl font-bold text-[#f44708]">
+                      <div className="text-3xl font-bold text-primary">
                         {benefit.stat}
                       </div>
                       <div className="text-sm text-gray-500 mb-1">
@@ -337,7 +337,7 @@ export function SendItemsPage() {
 
           {/* Features Grid */}
           <div className="mt-12 bg-white rounded-2xl p-8 shadow-lg">
-            <h3 className="text-2xl font-bold text-[#2f2f2f] mb-6 text-center">
+            <h3 className="text-2xl font-bold text-dark mb-6 text-center">
               Everything You Need
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -356,11 +356,11 @@ export function SendItemsPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 What Can You Send?
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -379,8 +379,8 @@ export function SendItemsPage() {
                 key={index}
                 className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
               >
-                <div className="text-[#2f2f2f] mb-4">{useCase.icon}</div>
-                <h3 className="text-xl font-bold text-[#2f2f2f] mb-2">
+                <div className="text-dark mb-4">{useCase.icon}</div>
+                <h3 className="text-xl font-bold text-dark mb-2">
                   {useCase.title}
                 </h3>
                 <p className="text-gray-600 mb-4">{useCase.description}</p>
@@ -390,7 +390,7 @@ export function SendItemsPage() {
                       key={i}
                       className="flex items-center space-x-2 text-sm text-gray-500"
                     >
-                      <div className="w-1 h-1 bg-[#f44708] rounded-full"></div>
+                      <div className="w-1 h-1 bg-primary rounded-full"></div>
                       <span>{example}</span>
                     </div>
                   ))}
@@ -405,7 +405,7 @@ export function SendItemsPage() {
               Not sure if we can deliver your item?{" "}
               <button
                 onClick={() => router.push(ROUTES.CONTACT)}
-                className="text-[#f44708] font-semibold hover:underline"
+                className="text-primary font-semibold hover:underline"
               >
                 Contact us
               </button>
@@ -418,7 +418,7 @@ export function SendItemsPage() {
       <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               How It Works
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -431,18 +431,18 @@ export function SendItemsPage() {
               <div key={index} className="relative">
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                   {/* Step Number */}
-                  <div className="w-16 h-16 bg-[#f44708] text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">
+                  <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">
                     {step.step}
                   </div>
 
-                  <h3 className="text-xl font-bold text-[#2f2f2f] mb-3">
+                  <h3 className="text-xl font-bold text-dark mb-3">
                     {step.title}
                   </h3>
                   <p className="text-gray-600 mb-4">{step.description}</p>
 
-                  <div className="inline-flex items-center space-x-2 bg-[#f44708]/10 px-3 py-1 rounded-full">
-                    <Clock className="w-4 h-4 text-[#f44708]" />
-                    <span className="text-sm font-medium text-[#f44708]">
+                  <div className="inline-flex items-center space-x-2 bg-primary/10 px-3 py-1 rounded-full">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-medium text-primary">
                       {step.time}
                     </span>
                   </div>
@@ -450,7 +450,7 @@ export function SendItemsPage() {
 
                 {/* Connector Line */}
                 {index < howItWorks.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-[#f44708] to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
+                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-primary to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
                 )}
               </div>
             ))}
@@ -462,7 +462,7 @@ export function SendItemsPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               Trusted by Thousands
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -483,10 +483,10 @@ export function SendItemsPage() {
                     alt={testimonial.name}
                     width={100}
                     height={100}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-[#f44708]"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-primary"
                   />
                   <div>
-                    <h4 className="font-bold text-[#2f2f2f]">
+                    <h4 className="font-bold text-dark">
                       {testimonial.name}
                     </h4>
                     <p className="text-sm text-gray-600">{testimonial.role}</p>
@@ -496,7 +496,7 @@ export function SendItemsPage() {
                           key={i}
                           className={`w-3 h-3 ${
                             i < Math.floor(testimonial.rating)
-                              ? "text-[#f44708] fill-current"
+                              ? "text-primary fill-current"
                               : "text-gray-300"
                           }`}
                         />
@@ -528,7 +528,7 @@ export function SendItemsPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               Compare & Save
             </h2>
             <p className="text-xl text-gray-600">
@@ -578,14 +578,14 @@ export function SendItemsPage() {
               </div>
 
               {/* Prawnbox */}
-              <div className="p-8 bg-gradient-to-br from-[#f44708]/5 to-orange-50">
-                <h3 className="text-xl font-bold text-[#f44708] mb-6 text-center">
+              <div className="p-8 bg-gradient-to-br from-primary/5 to-orange-50">
+                <h3 className="text-xl font-bold text-primary mb-6 text-center">
                   Prawnbox
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-gray-700">Delivery Fee</span>
-                    <span className="font-bold text-[#2f2f2f]">
+                    <span className="font-bold text-dark">
                       From ₦1,000
                     </span>
                   </div>
@@ -603,9 +603,9 @@ export function SendItemsPage() {
                       Free Live GPS
                     </span>
                   </div>
-                  <div className="pt-4 border-t border-[#f44708]/20">
+                  <div className="pt-4 border-t border-primary-light">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-[#f44708]">
+                      <div className="text-3xl font-bold text-primary">
                         ₦2,000+
                       </div>
                       <div className="text-sm text-gray-600">Average Cost</div>
@@ -623,7 +623,7 @@ export function SendItemsPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2f2f2f] to-black text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -647,7 +647,7 @@ export function SendItemsPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <button
               onClick={() => router.push(ROUTES.AUTH)}
-              className="group bg-[#f44708] text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-[#ff5722] transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
+              className="group bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-primary-hover transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>Post Your First Delivery</span>
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
@@ -655,7 +655,7 @@ export function SendItemsPage() {
 
             <button
               onClick={() => router.push(ROUTES.PRICING)}
-              className="bg-white text-[#2f2f2f] px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl inline-flex items-center space-x-2 w-full sm:w-auto"
+              className="bg-white text-dark px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>See Pricing</span>
             </button>
@@ -663,11 +663,11 @@ export function SendItemsPage() {
 
           <p className="text-sm text-gray-400">
             Questions? Call us at{" "}
-            <span className="text-[#f44708] font-semibold">
+            <span className="text-primary font-semibold">
               +234 906 870 9992
             </span>{" "}
             or email{" "}
-            <span className="text-[#f44708] font-semibold">
+            <span className="text-primary font-semibold">
               info@prawnbox.com
             </span>
           </p>

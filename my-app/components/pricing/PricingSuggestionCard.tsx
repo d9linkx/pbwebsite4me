@@ -46,7 +46,7 @@ export function PricingSuggestionCard({
       </div>
 
       {/* Price Display */}
-      <div className="bg-gradient-to-br from-[#f44708] to-[#ff5722] rounded-xl p-6 text-white">
+      <div className="bg-gradient-to-br from-primary to-primary-hover rounded-xl p-6 text-white">
         <div className="space-y-2">
           <p className="text-sm opacity-90">Recommended Amount</p>
           <div className="flex items-end space-x-3">
@@ -93,7 +93,7 @@ export function PricingSuggestionCard({
               type="number"
               value={customPrice || pricing.suggestedPrice}
               onChange={(e) => handlePriceChange(Number(e.target.value))}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f44708] focus:border-transparent"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               placeholder={`e.g., ${pricing.suggestedPrice}`}
               min={pricing.priceRange.min}
             />
@@ -141,7 +141,7 @@ export function PricingSuggestionCard({
             ))}
             <div className="pt-2 mt-2 border-t border-gray-200 flex items-center justify-between font-bold">
               <span>Total</span>
-              <span className="text-[#f44708]">{formatPrice(pricing.suggestedPrice)}</span>
+              <span className="text-primary">{formatPrice(pricing.suggestedPrice)}</span>
             </div>
           </motion.div>
         )}

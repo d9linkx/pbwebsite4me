@@ -77,10 +77,10 @@ export function CancellationConfirmationScreen({
           {!isComplete ? (
             <Card className="p-8 bg-white border border-gray-100 rounded-2xl text-center">
               <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-6">
-                <div className="w-8 h-8 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-primary-dark border-t-transparent rounded-full animate-spin"></div>
               </div>
               
-              <h2 className="text-xl font-medium text-black mb-2">Processing Cancellation</h2>
+              <h2 className="text-xl font-medium text-darkest mb-2">Processing Cancellation</h2>
               <p className="text-gray-600 mb-6">Please wait while we handle your request...</p>
               
               <div className="space-y-3">
@@ -124,7 +124,7 @@ export function CancellationConfirmationScreen({
                   <CheckCircle size={40} className="text-green-600" />
                 </div>
                 
-                <h2 className="text-2xl font-medium text-black mb-2">Cancellation Completed</h2>
+                <h2 className="text-2xl font-medium text-darkest mb-2">Cancellation Completed</h2>
                 <p className="text-gray-600">Your delivery order has been successfully cancelled.</p>
                 
                 <Badge className="mt-4 bg-green-50 text-green-700 border-green-200 rounded-xl px-4 py-2">
@@ -134,7 +134,7 @@ export function CancellationConfirmationScreen({
 
               {/* Financial Summary */}
               <Card className="p-6 bg-white border border-gray-100 rounded-2xl">
-                <h3 className="font-medium text-black mb-4 flex items-center">
+                <h3 className="font-medium text-darkest mb-4 flex items-center">
                   <DollarSign size={18} className="mr-2 text-gray-600" />
                   Financial Summary
                 </h3>
@@ -142,7 +142,7 @@ export function CancellationConfirmationScreen({
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Original Escrow Amount:</span>
-                    <span className="font-medium text-black">{formatAmount(job.escrowAmount || job.value)}</span>
+                    <span className="font-medium text-darkest">{formatAmount(job.escrowAmount || job.value)}</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
@@ -153,7 +153,7 @@ export function CancellationConfirmationScreen({
                   <Separator className="my-3" />
                   
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-black">Refund Amount:</span>
+                    <span className="font-medium text-darkest">Refund Amount:</span>
                     <span className="font-medium text-green-600">{formatAmount(refundAmount)}</span>
                   </div>
                 </div>
@@ -186,7 +186,7 @@ export function CancellationConfirmationScreen({
 
               {/* Next Steps */}
               <Card className="p-6 bg-white border border-gray-100 rounded-2xl">
-                <h4 className="font-medium text-black mb-4">What happens next?</h4>
+                <h4 className="font-medium text-darkest mb-4">What happens next?</h4>
                 
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
@@ -194,7 +194,7 @@ export function CancellationConfirmationScreen({
                       <span className="text-blue-600 font-medium text-sm">1</span>
                     </div>
                     <div>
-                      <p className="font-medium text-black">Refund Processing</p>
+                      <p className="font-medium text-darkest">Refund Processing</p>
                       <p className="text-sm text-gray-600">Your refund will appear in your wallet within 1-3 business days.</p>
                     </div>
                   </div>
@@ -204,7 +204,7 @@ export function CancellationConfirmationScreen({
                       <span className="text-blue-600 font-medium text-sm">2</span>
                     </div>
                     <div>
-                      <p className="font-medium text-black">Account Record</p>
+                      <p className="font-medium text-darkest">Account Record</p>
                       <p className="text-sm text-gray-600">This cancellation will be recorded in your delivery history.</p>
                     </div>
                   </div>
@@ -214,7 +214,7 @@ export function CancellationConfirmationScreen({
                       <span className="text-blue-600 font-medium text-sm">3</span>
                     </div>
                     <div>
-                      <p className="font-medium text-black">Future Deliveries</p>
+                      <p className="font-medium text-darkest">Future Deliveries</p>
                       <p className="text-sm text-gray-600">You can post new delivery requests anytime from your dashboard.</p>
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export function CancellationConfirmationScreen({
               <div className="space-y-3">
                 <Button
                   onClick={onComplete}
-                  className="w-full bg-black text-white hover:bg-gray-800 rounded-xl py-3"
+                  className="w-full bg-darkest text-white hover:bg-gray-800 rounded-xl py-3"
                 >
                   <Home size={18} className="mr-2" />
                   Return to Dashboard

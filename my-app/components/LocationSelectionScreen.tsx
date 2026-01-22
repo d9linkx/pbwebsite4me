@@ -24,7 +24,7 @@ export function LocationSelectionScreen({ locations, onBack, onSelectLocation, s
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
       {/* Dark Header */}
       <motion.div 
-        className="bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] border-b border-white/10 p-6 shadow-lg"
+        className="bg-gradient-to-r from-dark to-darker border-b border-white/10 p-6 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -56,7 +56,7 @@ export function LocationSelectionScreen({ locations, onBack, onSelectLocation, s
             placeholder="Search locations..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-12 rounded-xl h-12 bg-gray-50 border-2 border-gray-200 focus:border-[#f44708]"
+            className="pl-12 rounded-xl h-12 bg-gray-50 border-2 border-gray-200 focus:border-primary"
           />
         </motion.div>
       </div>
@@ -69,7 +69,7 @@ export function LocationSelectionScreen({ locations, onBack, onSelectLocation, s
               <motion.div
                 key={index}
                 onClick={() => onSelectLocation(location)}
-                className="bg-white border-2 border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-[#f44708] hover:shadow-lg transition-all"
+                className="bg-white border-2 border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-primary hover:shadow-lg transition-all"
                 whileHover={{ scale: 1.02, x: 4 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -77,8 +77,8 @@ export function LocationSelectionScreen({ locations, onBack, onSelectLocation, s
                 transition={{ delay: index * 0.05 }}
               >
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-[#f44708]/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin size={24} className="text-[#f44708]" />
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin size={24} className="text-primary" />
                   </div>
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{location.name}</h4>

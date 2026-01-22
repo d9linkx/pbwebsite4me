@@ -78,7 +78,7 @@ export function TapeDistributorScreen({ user, onBack, onNavigate }: TapeDistribu
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
@@ -87,7 +87,7 @@ export function TapeDistributorScreen({ user, onBack, onNavigate }: TapeDistribu
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -108,7 +108,7 @@ export function TapeDistributorScreen({ user, onBack, onNavigate }: TapeDistribu
       </motion.div>
 
       {/* Tabs */}
-      <div className="bg-[#2f2f2f] border-b border-white/10 p-4 relative z-10">
+      <div className="bg-dark border-b border-white/10 p-4 relative z-10">
         <div className="flex space-x-2">
           {(['overview', 'products', 'orders'] as const).map((tab) => (
             <motion.button

@@ -101,7 +101,7 @@ export function GoogleMapsPreview({ job, className = '', userRole = 'sender', sh
             ></iframe>
             
             {/* Map overlay info */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-darkest/70 to-transparent p-3">
               <div className="flex items-center justify-between text-white text-xs">
                 <div className="flex items-center space-x-2">
                   <Clock size={12} />

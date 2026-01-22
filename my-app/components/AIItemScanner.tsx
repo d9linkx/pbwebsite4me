@@ -53,7 +53,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
             category: 'Electronics',
             estimatedWeight: '2.5 kg',
             size: 'Medium',
-            color: 'Black',
+            color: 'darkest',
             fragile: true,
             confidence: 92,
             description: 'Appears to be a boxed electronic device, possibly a smartphone or tablet. Handle with care.',
@@ -123,7 +123,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               {/* AI Info Card */}
               <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4 sm:p-6">
                 <div className="flex items-center space-x-3 mb-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#f44708] flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                     <Sparkles size={20} className="text-white sm:w-6 sm:h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -139,12 +139,12 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               {/* Scan Button */}
               <motion.button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full bg-gray-50 border-2 border-dashed border-gray-300 hover:border-[#f44708] hover:bg-orange-50 rounded-2xl p-8 sm:p-12 transition-all"
+                className="w-full bg-gray-50 border-2 border-dashed border-gray-300 hover:border-primary hover:bg-orange-50 rounded-2xl p-8 sm:p-12 transition-all"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="text-center">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#f44708] flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-3 sm:mb-4">
                     <Camera size={32} className="text-white sm:w-10 sm:h-10" />
                   </div>
                   <h3 className="text-gray-900 font-semibold mb-1 sm:mb-2">Take or Upload Photo</h3>
@@ -188,7 +188,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
                     return (
                       <div key={index} className="flex items-center space-x-3">
                         <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
-                          <Icon size={18} className="text-[#f44708] sm:w-5 sm:h-5" />
+                          <Icon size={18} className="text-primary sm:w-5 sm:h-5" />
                         </div>
                         <p className="text-gray-700 text-xs sm:text-sm">{feature.text}</p>
                       </div>
@@ -207,7 +207,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               exit={{ opacity: 0, scale: 0.9 }}
             >
               <motion.div
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-[#f44708] flex items-center justify-center mb-4 sm:mb-6"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-primary flex items-center justify-center mb-4 sm:mb-6"
                 animate={{
                   rotate: 360
                 }}
@@ -226,7 +226,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               <div className="w-full max-w-xs px-4">
                 <div className="h-2 sm:h-3 bg-gray-200 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-[#f44708]"
+                    className="h-full bg-primary"
                     initial={{ width: 0 }}
                     animate={{ width: `${scanProgress}%` }}
                     transition={{ duration: 0.3 }}
@@ -297,7 +297,7 @@ export function AIItemScanner({ onBack, onCancel, onScanComplete }: AIItemScanne
               <div className="space-y-2.5 sm:space-y-3">
                 <motion.button
                   onClick={handleAccept}
-                  className="w-full bg-[#f44708] hover:bg-[#d63a00] text-white py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base"
+                  className="w-full bg-primary hover:bg-[#d63a00] text-white py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >

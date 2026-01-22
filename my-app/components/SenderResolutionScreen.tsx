@@ -90,7 +90,7 @@ export function SenderResolutionScreen({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-red-500 rounded-full opacity-10 blur-3xl"></div>
@@ -99,7 +99,7 @@ export function SenderResolutionScreen({
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -124,7 +124,7 @@ export function SenderResolutionScreen({
       </motion.div>
 
       {/* Tabs */}
-      <div className="bg-[#2f2f2f]/50 border-b border-white/10 p-4 sticky top-[88px] z-10">
+      <div className="bg-dark/50 border-b border-white/10 p-4 sticky top-[88px] z-10">
         <div className="flex space-x-2">
           {tabs.map(tab => (
             <motion.button
@@ -132,7 +132,7 @@ export function SenderResolutionScreen({
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl font-medium transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-white/10 text-gray-400 hover:bg-white/20'
               }`}
               whileHover={{ scale: 1.02 }}
@@ -211,7 +211,7 @@ export function SenderResolutionScreen({
               {/* Action */}
               <motion.button
                 onClick={handleAcceptDispute}
-                className="w-full bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white py-4 rounded-xl font-semibold"
+                className="w-full bg-dark hover:bg-darker text-white py-4 rounded-xl font-semibold"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -284,7 +284,7 @@ export function SenderResolutionScreen({
 
               <motion.button
                 onClick={handleUpdateDetails}
-                className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-4 rounded-xl font-semibold"
+                className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-semibold"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -351,7 +351,7 @@ export function SenderResolutionScreen({
 
       {/* Cancel Confirmation Dialog */}
       <Dialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <DialogContent className="sm:max-w-md mx-4 rounded-2xl bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] border-white/20 text-white">
+        <DialogContent className="sm:max-w-md mx-4 rounded-2xl bg-gradient-to-br from-dark to-darker border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-white">Confirm Cancellation</DialogTitle>
             <DialogDescription className="text-gray-400">

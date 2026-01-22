@@ -60,7 +60,7 @@ export function SponsorUserConfirmationScreen({
   const canSubmit = parseFloat(amount) >= 10000 && agreedToTerms;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
@@ -69,7 +69,7 @@ export function SponsorUserConfirmationScreen({
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -98,7 +98,7 @@ export function SponsorUserConfirmationScreen({
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center text-white text-2xl font-bold">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white text-2xl font-bold">
               {selectedUserName.charAt(0)}
             </div>
             <div>
@@ -126,7 +126,7 @@ export function SponsorUserConfirmationScreen({
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
-            className="bg-white/10 border-white/20 text-white text-2xl font-bold placeholder-gray-500 focus:border-[#f44708] mb-2"
+            className="bg-white/10 border-white/20 text-white text-2xl font-bold placeholder-gray-500 focus:border-primary mb-2"
           />
           <p className="text-gray-400 text-sm">
             Minimum: ₦10,000 • Recommended: ₦20,000 - ₦50,000
@@ -145,7 +145,7 @@ export function SponsorUserConfirmationScreen({
               <Percent size={20} className="text-purple-400" />
               <span>Commission Rate</span>
             </div>
-            <span className="text-2xl text-[#f44708]">{commission[0]}%</span>
+            <span className="text-2xl text-primary">{commission[0]}%</span>
           </label>
           <Slider
             value={commission}
@@ -173,7 +173,7 @@ export function SponsorUserConfirmationScreen({
               <Calendar size={20} className="text-blue-400" />
               <span>Duration</span>
             </div>
-            <span className="text-2xl text-[#f44708]">{duration[0]} days</span>
+            <span className="text-2xl text-primary">{duration[0]} days</span>
           </label>
           <Slider
             value={duration}
@@ -203,7 +203,7 @@ export function SponsorUserConfirmationScreen({
           <select
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            className="w-full bg-white/10 border border-white/20 text-white rounded-lg p-3 focus:border-[#f44708] focus:outline-none"
+            className="w-full bg-white/10 border border-white/20 text-white rounded-lg p-3 focus:border-primary focus:outline-none"
           >
             <option value="wallet">Wallet</option>
             <option value="card">Credit/Debit Card</option>
@@ -226,7 +226,7 @@ export function SponsorUserConfirmationScreen({
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Add a personal message for the sponsored user..."
-            className="w-full bg-white/10 border border-white/20 text-white rounded-lg p-3 focus:border-[#f44708] focus:outline-none resize-none"
+            className="w-full bg-white/10 border border-white/20 text-white rounded-lg p-3 focus:border-primary focus:outline-none resize-none"
             rows={3}
           />
         </motion.div>
@@ -315,10 +315,10 @@ export function SponsorUserConfirmationScreen({
             <Checkbox
               checked={agreedToTerms}
               onCheckedChange={(checked: boolean) => setAgreedToTerms(checked)}
-              className="mt-1 data-[state=checked]:bg-[#f44708] data-[state=checked]:border-[#f44708]"
+              className="mt-1 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
             <label className="text-sm text-gray-300 cursor-pointer" onClick={() => setAgreedToTerms(!agreedToTerms)}>
-              I agree to the <span className="text-[#f44708] font-medium">Sponsorship Terms & Conditions</span> and understand that my funds will be held in escrow for the duration of the sponsorship period.
+              I agree to the <span className="text-primary font-medium">Sponsorship Terms & Conditions</span> and understand that my funds will be held in escrow for the duration of the sponsorship period.
             </label>
           </div>
         </motion.div>
@@ -327,7 +327,7 @@ export function SponsorUserConfirmationScreen({
         <motion.button
           onClick={handleConfirm}
           disabled={!canSubmit || isSubmitting}
-          className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           whileHover={canSubmit ? { scale: 1.02 } : {}}
           whileTap={canSubmit ? { scale: 0.98 } : {}}
           initial={{ opacity: 0, y: 20 }}

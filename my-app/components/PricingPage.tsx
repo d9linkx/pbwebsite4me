@@ -58,7 +58,7 @@ export function PricingPage() {
   return (
     <div className="pt-20">
       {/* Hero Section with Background Image */}
-      <section className="relative bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] text-white py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-dark to-darker text-white py-20 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-20">
           <Image
@@ -68,7 +68,7 @@ export function PricingPage() {
             height={500}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#2f2f2f] via-[#2f2f2f]/80 to-[#1a1a1a]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/80 to-darker"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -94,12 +94,12 @@ export function PricingPage() {
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <Calculator className="w-16 h-16 text-[#f44708] mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-[#2f2f2f] mb-4">
+            <Calculator className="w-16 h-16 text-primary mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 Pricing Calculator
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -122,14 +122,14 @@ export function PricingPage() {
             {/* Input Fields */}
             <div className="space-y-6 mb-8">
               <div>
-                <label className="block text-sm font-medium text-[#2f2f2f] mb-2">
+                <label className="block text-sm font-medium text-dark mb-2">
                   Accepted Pal Bid (₦)
                 </label>
                 <input
                   type="number"
                   value={palBid}
                   onChange={(e) => setPalBid(Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-light outline-none"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   This is the delivery fee you agreed to pay
@@ -142,9 +142,9 @@ export function PricingPage() {
                     type="checkbox"
                     checked={hasProxyFee}
                     onChange={(e) => setHasProxyFee(e.target.checked)}
-                    className="w-5 h-5 text-[#f44708] rounded border-gray-300 focus:ring-[#f44708]"
+                    className="w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary"
                   />
-                  <span className="text-sm font-medium text-[#2f2f2f]">
+                  <span className="text-sm font-medium text-dark">
                     Receiver unavailable (Proxy needed)
                   </span>
                 </label>
@@ -152,14 +152,14 @@ export function PricingPage() {
 
               {hasProxyFee && (
                 <div>
-                  <label className="block text-sm font-medium text-[#2f2f2f] mb-2">
+                  <label className="block text-sm font-medium text-dark mb-2">
                     Emergency Proxy Fee (₦)
                   </label>
                   <input
                     type="number"
                     value={proxyFee}
                     onChange={(e) => setProxyFee(Number(e.target.value))}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#f44708] focus:ring-2 focus:ring-[#f44708]/20 outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary-light outline-none"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Paid upfront, earned by Proxy if receiver doesn&apos;t show
@@ -179,7 +179,7 @@ export function PricingPage() {
             >
               {/* Sender Breakdown */}
               <motion.div
-                className="bg-white p-6 rounded-xl border-2 border-[#f44708]"
+                className="bg-white p-6 rounded-xl border-2 border-primary"
                 variants={scaleIn}
                 whileHover={{
                   scale: 1.05,
@@ -187,7 +187,7 @@ export function PricingPage() {
                 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-xl font-bold text-[#2f2f2f] mb-4 flex items-center">
+                <h3 className="text-xl font-bold text-dark mb-4 flex items-center">
                   <Package className="mr-2" size={20} />
                   Sender Pays
                 </h3>
@@ -213,10 +213,10 @@ export function PricingPage() {
                     <span className="font-semibold">₦0 (FREE!)</span>
                   </div>
                   <div className="border-t-2 border-gray-200 pt-3 flex justify-between">
-                    <span className="font-bold text-[#2f2f2f]">
+                    <span className="font-bold text-dark">
                       Total in Escrow:
                     </span>
-                    <span className="font-bold text-[#f44708] text-xl">
+                    <span className="font-bold text-primary text-xl">
                       ₦{totalSenderPays.toLocaleString()}
                     </span>
                   </div>
@@ -228,7 +228,7 @@ export function PricingPage() {
 
               {/* Pal Earnings */}
               <motion.div
-                className="bg-white p-6 rounded-xl border-2 border-[#2f2f2f]"
+                className="bg-white p-6 rounded-xl border-2 border-dark"
                 variants={scaleIn}
                 whileHover={{
                   scale: 1.05,
@@ -236,7 +236,7 @@ export function PricingPage() {
                 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-xl font-bold text-[#2f2f2f] mb-4 flex items-center">
+                <h3 className="text-xl font-bold text-dark mb-4 flex items-center">
                   <Truck className="mr-2" size={20} />
                   Pal Earns
                 </h3>
@@ -254,10 +254,10 @@ export function PricingPage() {
                     </span>
                   </div>
                   <div className="border-t-2 border-gray-200 pt-3 flex justify-between">
-                    <span className="font-bold text-[#2f2f2f]">
+                    <span className="font-bold text-dark">
                       You Keep (80%):
                     </span>
-                    <span className="font-bold text-[#f44708] text-xl">
+                    <span className="font-bold text-primary text-xl">
                       ₦{palEarnings.toLocaleString()}
                     </span>
                   </div>
@@ -277,7 +277,7 @@ export function PricingPage() {
                 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-xl font-bold text-[#2f2f2f] mb-4 flex items-center">
+                <h3 className="text-xl font-bold text-dark mb-4 flex items-center">
                   <DollarSign className="mr-2" size={20} />
                   Proxy Earns
                 </h3>
@@ -295,10 +295,10 @@ export function PricingPage() {
                         <span className="font-semibold">₦0 (FREE!)</span>
                       </div>
                       <div className="border-t-2 border-gray-200 pt-3 flex justify-between">
-                        <span className="font-bold text-[#2f2f2f]">
+                        <span className="font-bold text-dark">
                           You Keep (100%):
                         </span>
-                        <span className="font-bold text-[#f44708] text-xl">
+                        <span className="font-bold text-primary text-xl">
                           ₦{proxyFee.toLocaleString()}
                         </span>
                       </div>
@@ -315,10 +315,10 @@ export function PricingPage() {
                         </p>
                       </div>
                       <div className="border-t-2 border-gray-200 pt-3 flex justify-between">
-                        <span className="font-bold text-[#2f2f2f]">
+                        <span className="font-bold text-dark">
                           Typical Range:
                         </span>
-                        <span className="font-bold text-[#f44708]">
+                        <span className="font-bold text-primary">
                           ₦500-₦2,000
                         </span>
                       </div>
@@ -329,15 +329,15 @@ export function PricingPage() {
             </motion.div>
 
             {/* Key Points Banner */}
-            <div className="mt-6 bg-[#f44708]/10 border-2 border-[#f44708] rounded-xl p-4">
-              <h4 className="font-bold text-[#2f2f2f] mb-3 flex items-center">
-                <Shield className="mr-2 text-[#f44708]" size={20} />
+            <div className="mt-6 bg-primary/10 border-2 border-primary rounded-xl p-4">
+              <h4 className="font-bold text-dark mb-3 flex items-center">
+                <Shield className="mr-2 text-primary" size={20} />
                 How Payment Works
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-start space-x-2">
                   <Check
-                    className="text-[#f44708] flex-shrink-0 mt-0.5"
+                    className="text-primary flex-shrink-0 mt-0.5"
                     size={16}
                   />
                   <p className="text-gray-700">
@@ -347,7 +347,7 @@ export function PricingPage() {
                 </div>
                 <div className="flex items-start space-x-2">
                   <Check
-                    className="text-[#f44708] flex-shrink-0 mt-0.5"
+                    className="text-primary flex-shrink-0 mt-0.5"
                     size={16}
                   />
                   <p className="text-gray-700">
@@ -357,7 +357,7 @@ export function PricingPage() {
                 </div>
                 <div className="flex items-start space-x-2">
                   <Check
-                    className="text-[#f44708] flex-shrink-0 mt-0.5"
+                    className="text-primary flex-shrink-0 mt-0.5"
                     size={16}
                   />
                   <p className="text-gray-700">
@@ -381,11 +381,11 @@ export function PricingPage() {
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 Complete Fee Breakdown
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -467,10 +467,10 @@ export function PricingPage() {
                 transition={{ duration: 0.3 }}
               >
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-[#2f2f2f] mb-2">
+                  <h3 className="text-2xl font-bold text-dark mb-2">
                     {plan.role}
                   </h3>
-                  <div className="text-3xl font-bold text-[#f44708] mb-2">
+                  <div className="text-3xl font-bold text-primary mb-2">
                     {plan.fee}
                   </div>
                   <p className="text-sm text-gray-500">{plan.minimum}</p>
@@ -484,7 +484,7 @@ export function PricingPage() {
                     <li key={idx} className="flex items-start space-x-2">
                       <Check
                         size={20}
-                        className="text-[#f44708] flex-shrink-0 mt-0.5"
+                        className="text-primary flex-shrink-0 mt-0.5"
                       />
                       <span className="text-gray-600">{feature}</span>
                     </li>
@@ -517,12 +517,12 @@ export function PricingPage() {
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeInUp}
           >
-            <TrendingDown className="w-16 h-16 text-[#f44708] mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-[#2f2f2f] mb-4">
+            <TrendingDown className="w-16 h-16 text-primary mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 Save Up to 60% vs Traditional Couriers in Nigeria
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -542,7 +542,7 @@ export function PricingPage() {
             {/* Horizontal scroll container for mobile */}
             <div className="overflow-x-auto scrollbar-smooth">
               <table className="w-full min-w-[640px]">
-                <thead className="bg-[#2f2f2f] text-white">
+                <thead className="bg-dark text-white">
                   <tr>
                     <th className="px-6 py-4 text-left">Feature</th>
                     <th className="px-6 py-4 text-center">Prawnbox</th>
@@ -628,11 +628,11 @@ export function PricingPage() {
                       key={index}
                       className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                     >
-                      <td className="px-6 py-4 font-medium text-[#2f2f2f]">
+                      <td className="px-6 py-4 font-medium text-dark">
                         {row.feature}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className="inline-flex items-center text-[#f44708] font-semibold">
+                        <span className="inline-flex items-center text-primary font-semibold">
                           <Check size={20} className="mr-2" />
                           {row.prawnbox}
                         </span>
@@ -650,7 +650,7 @@ export function PricingPage() {
       </section>
 
       {/* No Hidden Fees Guarantee */}
-      <section className="py-20 bg-[#2f2f2f] text-white">
+      <section className="py-20 bg-dark text-white">
         <motion.div
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial="hidden"
@@ -659,7 +659,7 @@ export function PricingPage() {
           variants={staggerContainer}
         >
           <motion.div variants={scaleIn}>
-            <Shield className="w-20 h-20 text-[#f44708] mx-auto mb-6" />
+            <Shield className="w-20 h-20 text-primary mx-auto mb-6" />
           </motion.div>
           <motion.h2
             className="text-3xl md:text-4xl font-bold mb-6"
@@ -687,7 +687,7 @@ export function PricingPage() {
                 className="flex items-center justify-center space-x-2"
                 variants={scaleIn}
               >
-                <item.icon className="text-[#f44708]" size={24} />
+                <item.icon className="text-primary" size={24} />
                 <span className="font-medium">{item.text}</span>
               </motion.div>
             ))}
@@ -696,7 +696,7 @@ export function PricingPage() {
       </section>
 
       {/* CTA Section with Background */}
-      <section className="py-20 bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-primary to-primary-hover text-white relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-10">
           <Image
@@ -727,7 +727,7 @@ export function PricingPage() {
           </motion.p>
           <motion.button
             onClick={() => router.push(ROUTES.AUTH)}
-            className="px-8 py-4 bg-white text-[#f44708] text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
+            className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
             variants={scaleIn}
             whileHover={{
               scale: 1.1,

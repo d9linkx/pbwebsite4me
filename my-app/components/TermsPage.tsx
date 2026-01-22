@@ -10,10 +10,10 @@ export function TermsPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] text-white py-20">
+      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <FileText className="w-16 h-16 text-[#f44708] mx-auto mb-6" />
+            <FileText className="w-16 h-16 text-primary mx-auto mb-6" />
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Terms of Service
             </h1>
@@ -36,7 +36,7 @@ export function TermsPage() {
               </p>
             </div>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               1. Acceptance of Terms
             </h2>
             <p className="text-gray-600 mb-6">
@@ -46,7 +46,7 @@ export function TermsPage() {
               may not use our services.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               2. User Accounts
             </h2>
             <p className="text-gray-600 mb-4">To use Prawnbox, you must:</p>
@@ -58,11 +58,11 @@ export function TermsPage() {
               <li>Not share your account with others</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               3. User Responsibilities
             </h2>
 
-            <h3 className="text-xl font-semibold text-[#2f2f2f] mt-6 mb-3">
+            <h3 className="text-xl font-semibold text-dark mt-6 mb-3">
               For Senders:
             </h3>
             <ul className="list-disc pl-6 text-gray-600 mb-6 space-y-2">
@@ -73,7 +73,7 @@ export function TermsPage() {
               <li>Be available for pickup coordination</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-[#2f2f2f] mt-6 mb-3">
+            <h3 className="text-xl font-semibold text-dark mt-6 mb-3">
               For Pals:
             </h3>
             <ul className="list-disc pl-6 text-gray-600 mb-6 space-y-2">
@@ -86,7 +86,7 @@ export function TermsPage() {
               <li>Report any issues or damages immediately</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               4. Payment Terms
             </h2>
             <ul className="list-disc pl-6 text-gray-600 mb-6 space-y-2">
@@ -99,7 +99,7 @@ export function TermsPage() {
               <li>Disputed funds remain in escrow during resolution</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               5. Prohibited Items
             </h2>
             <p className="text-gray-600 mb-4">
@@ -115,7 +115,7 @@ export function TermsPage() {
               <li>Perishable items without proper packaging</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               6. Liability and Insurance
             </h2>
             <p className="text-gray-600 mb-6">
@@ -126,7 +126,7 @@ export function TermsPage() {
               with photographic evidence.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               7. Dispute Resolution
             </h2>
             <p className="text-gray-600 mb-6">
@@ -136,7 +136,7 @@ export function TermsPage() {
               binding. For legal disputes, Nigerian law governs these terms.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               8. Termination
             </h2>
             <p className="text-gray-600 mb-6">
@@ -147,7 +147,7 @@ export function TermsPage() {
               payments.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               9. Changes to Terms
             </h2>
             <p className="text-gray-600 mb-6">
@@ -157,7 +157,7 @@ export function TermsPage() {
               notification.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               10. Contact Us
             </h2>
             <p className="text-gray-600 mb-6">
@@ -165,14 +165,14 @@ export function TermsPage() {
               legal@prawnbox.ng or visit our{" "}
               <button
                 onClick={() => router.push(ROUTES.CONTACT)}
-                className="text-[#f44708] underline"
+                className="text-primary underline"
               >
                 Contact Page
               </button>
               .
             </p>
 
-            <div className="bg-[#f44708] text-white p-6 rounded-xl mt-12">
+            <div className="bg-primary text-white p-6 rounded-xl mt-12">
               <p className="font-semibold mb-2">
                 By using Prawnbox, you agree to these Terms of Service.
               </p>
@@ -185,7 +185,7 @@ export function TermsPage() {
       {/* CTA Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-[#2f2f2f] mb-6">
+          <h2 className="text-3xl font-bold text-dark mb-6">
             Ready to Join Prawnbox?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
@@ -193,7 +193,7 @@ export function TermsPage() {
           </p>
           <button
             onClick={() => router.push(ROUTES.AUTH)}
-            className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] transform hover:scale-105 transition-all duration-200 shadow-lg"
+            className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             Get Started
             <ArrowRight className="inline ml-2" size={20} />

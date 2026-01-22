@@ -372,7 +372,7 @@ export function AvailableJobsScreen({
           {onNavigateToRouteAds && (
             <motion.button
               onClick={onNavigateToRouteAds}
-              className="flex items-center space-x-2 bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl font-medium shadow-sm"
+              className="flex items-center space-x-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-xl font-medium shadow-sm"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -390,7 +390,7 @@ export function AvailableJobsScreen({
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center ${
                 activeTab === tab
-                ? 'bg-[#f44708] text-white shadow-sm'
+                ? 'bg-primary text-white shadow-sm'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.02 }}
@@ -463,7 +463,7 @@ export function AvailableJobsScreen({
                 : 'Filter Jobs'}
             </span>
             {(routeFilter || selectedState || itemWorthFilter || sizeFilter || categoryFilter) && (
-              <Badge className="bg-[#f44708] text-white text-xs">
+              <Badge className="bg-primary text-white text-xs">
                 {[routeFilter, selectedState, itemWorthFilter, sizeFilter, categoryFilter].filter(Boolean).length}
               </Badge>
             )}
@@ -483,7 +483,7 @@ export function AvailableJobsScreen({
               <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-2">
-                    <MapPin size={16} className="text-[#f44708]" />
+                    <MapPin size={16} className="text-primary" />
                     <h4 className="font-medium text-gray-900">Location</h4>
                   </div>
                   {routeFilter && (
@@ -502,7 +502,7 @@ export function AvailableJobsScreen({
                       onClick={() => setRouteFilter(routeFilter === area ? null : area)}
                       className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                         routeFilter === area
-                          ? 'bg-[#f44708] text-white shadow-sm'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                       }`}
                       whileHover={{ scale: 1.05 }}
@@ -654,8 +654,8 @@ export function AvailableJobsScreen({
                 <div className="mb-4">
                   <div className="flex flex-col space-y-3">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#f44708]/20 to-[#ff5722]/20 flex items-center justify-center flex-shrink-0">
-                        <Package size={20} className="text-[#f44708]" />
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-light to-primary-hover/20 flex items-center justify-center flex-shrink-0">
+                        <Package size={20} className="text-primary" />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
                     </div>
@@ -671,7 +671,7 @@ export function AvailableJobsScreen({
                     </div>
                     
                     <div>
-                      <div className="text-2xl font-bold text-[#f44708]">
+                      <div className="text-2xl font-bold text-primary">
                         {formatAmount(job.value)}
                       </div>
                       <div className="text-xs text-gray-500">Item Value</div>
@@ -764,7 +764,7 @@ export function AvailableJobsScreen({
 
                       <motion.button
                         type="submit"
-                        className="w-full bg-[#f44708] hover:bg-[#f44708] text-white rounded-xl py-3 font-semibold transition-all"
+                        className="w-full bg-primary hover:bg-primary text-white rounded-xl py-3 font-semibold transition-all"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -819,7 +819,7 @@ export function AvailableJobsScreen({
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="text-xs text-gray-500 mb-1">Your Bid</div>
-                            <div className="text-2xl font-bold text-[#f44708]">
+                            <div className="text-2xl font-bold text-primary">
                               {formatAmount(currentUserBid.amount)}
                             </div>
                           </div>
@@ -866,7 +866,7 @@ export function AvailableJobsScreen({
                             </motion.button>
                             <motion.button
                               type="submit"
-                              className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 font-semibold transition-all"
+                              className="flex-1 bg-primary hover:bg-primary-hover text-white rounded-xl py-3 font-semibold transition-all"
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                             >

@@ -139,7 +139,7 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for help..."
-            className="pl-12 bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-[#f44708] h-12"
+            className="pl-12 bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-primary h-12"
           />
         </motion.div>
 
@@ -156,7 +156,7 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
               onClick={() => setSelectedCategory(category.id)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 selectedCategory === category.id
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -236,7 +236,7 @@ export function HelpCenterScreen({ user, onBack, onContactSupport }: HelpCenterS
           <div className="grid grid-cols-1 gap-3">
             <motion.button
               onClick={onContactSupport}
-              className="flex items-center justify-between bg-[#f44708] hover:bg-[#ff5722] text-white p-4 rounded-xl shadow-sm"
+              className="flex items-center justify-between bg-primary hover:bg-primary-hover text-white p-4 rounded-xl shadow-sm"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

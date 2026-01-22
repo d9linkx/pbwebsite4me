@@ -145,7 +145,7 @@ export function RouteAdsManagementScreen({ user, onBack }: RouteAdsManagementScr
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
@@ -154,7 +154,7 @@ export function RouteAdsManagementScreen({ user, onBack }: RouteAdsManagementScr
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -175,7 +175,7 @@ export function RouteAdsManagementScreen({ user, onBack }: RouteAdsManagementScr
           </div>
           <motion.button
             onClick={() => setShowCreateDialog(true)}
-            className="p-2 bg-[#f44708] hover:bg-[#ff5722] rounded-xl"
+            className="p-2 bg-primary hover:bg-primary-hover rounded-xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -367,7 +367,7 @@ export function RouteAdsManagementScreen({ user, onBack }: RouteAdsManagementScr
               <p className="text-gray-400 mb-6">Create your first route ad to start promoting</p>
               <motion.button
                 onClick={() => setShowCreateDialog(true)}
-                className="bg-[#f44708] hover:bg-[#ff5722] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center"
+                className="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -380,7 +380,7 @@ export function RouteAdsManagementScreen({ user, onBack }: RouteAdsManagementScr
 
       {/* Create Dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent className="sm:max-w-md mx-4 rounded-2xl bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] border-white/20 text-white">
+        <DialogContent className="sm:max-w-md mx-4 rounded-2xl bg-gradient-to-br from-dark to-darker border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-white">Create Route Ad</DialogTitle>
           </DialogHeader>
@@ -431,7 +431,7 @@ export function RouteAdsManagementScreen({ user, onBack }: RouteAdsManagementScr
             <motion.button
               onClick={handleCreateAd}
               disabled={!fromLocation || !toLocation || !description || !budget}
-              className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center"
+              className="w-full bg-primary hover:bg-primary-hover text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

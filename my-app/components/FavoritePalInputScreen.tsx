@@ -125,8 +125,8 @@ return (
           </div>
           
           <div className="flex items-center space-x-2">
-            <Heart size={20} className="text-[#f44708]" />
-            <span className="text-sm font-medium text-[#f44708]">Trusted Delivery</span>
+            <Heart size={20} className="text-primary" />
+            <span className="text-sm font-medium text-primary">Trusted Delivery</span>
           </div>
         </div>
       </div>
@@ -170,13 +170,13 @@ return (
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="PAL001 or +234-802-123-4567"
-                  className="flex-1 rounded-xl h-12 border-gray-200 focus:border-[#f44708]"
+                  className="flex-1 rounded-xl h-12 border-gray-200 focus:border-primary"
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 />
                 <Button
                   onClick={handleSearch}
                   disabled={isSearching || !searchQuery.trim()}
-                  className="bg-[#f44708] hover:bg-[#d63a00] text-white rounded-xl px-6 h-12"
+                  className="bg-primary hover:bg-[#d63a00] text-white rounded-xl px-6 h-12"
                 >
                   {isSearching ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
@@ -214,7 +214,7 @@ return (
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
-                      <User size={20} className="text-[#f44708]" />
+                      <User size={20} className="text-primary" />
                     )}
                   </div>
                   
@@ -305,7 +305,7 @@ return (
         {searchResult && (
           <Button
             onClick={handleProceed}
-            className="w-full bg-[#f44708] hover:bg-[#d63a00] text-white rounded-xl h-14 font-medium"
+            className="w-full bg-primary hover:bg-[#d63a00] text-white rounded-xl h-14 font-medium"
           >
             Proceed with {searchResult.name}
           </Button>

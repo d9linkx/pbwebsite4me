@@ -59,7 +59,7 @@ export function ReceivedDeliveriesScreen({
   const getStatusInfo = (job: DeliveryJob) => {
     if (['assigned', 'picked-up', 'in-transit'].includes(job.status)) {
       return {
-        color: 'text-orange-600',
+        color: 'text-primary-dark',
         bg: 'bg-orange-100',
         icon: Clock,
         label: 'Incoming'
@@ -144,7 +144,7 @@ export function ReceivedDeliveriesScreen({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <Package size={24} className="text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             <p className="text-xs text-gray-600">Total</p>
           </motion.div>
@@ -155,7 +155,7 @@ export function ReceivedDeliveriesScreen({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
           >
-            <Clock size={24} className="text-orange-600 mx-auto mb-2" />
+            <Clock size={24} className="text-primary-dark mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{stats.incoming}</p>
             <p className="text-xs text-gray-600">Incoming</p>
           </motion.div>
@@ -202,7 +202,7 @@ export function ReceivedDeliveriesScreen({
               onClick={() => setFilterStatus(filter.key as FilterStatus)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 filterStatus === filter.key
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -238,7 +238,7 @@ export function ReceivedDeliveriesScreen({
               return (
                 <motion.div
                   key={job.id}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#f44708] hover:shadow-md transition-all cursor-pointer"
+                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-primary hover:shadow-md transition-all cursor-pointer"
                   onClick={() => handleJobAction(job)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -260,7 +260,7 @@ export function ReceivedDeliveriesScreen({
                       <span className="text-gray-900">{job.senderName}</span>
                     </div>
                     <div className="flex items-center space-x-2 text-sm">
-                      <MapPin size={16} className="text-[#f44708]" />
+                      <MapPin size={16} className="text-primary" />
                       <span className="text-gray-600">To:</span>
                       <span className="text-gray-900 truncate">{job.dropoffLocation}</span>
                     </div>
@@ -287,7 +287,7 @@ export function ReceivedDeliveriesScreen({
                         e.stopPropagation();
                         handleJobAction(job);
                       }}
-                      className="px-4 py-2 bg-[#f44708] hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                      className="px-4 py-2 bg-primary hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >

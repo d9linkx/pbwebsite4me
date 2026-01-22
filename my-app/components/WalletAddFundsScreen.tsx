@@ -123,7 +123,7 @@ export function WalletAddFundsScreen({
           animate={{ opacity: 1, y: 0 }}
         >
           <p className="text-sm text-gray-600 mb-2">Current Balance</p>
-          <p className="text-3xl font-bold text-[#f44708]">{formatAmount(user.walletBalance || 0)}</p>
+          <p className="text-3xl font-bold text-primary">{formatAmount(user.walletBalance || 0)}</p>
         </motion.div>
 
         {/* Amount Input */}
@@ -144,7 +144,7 @@ export function WalletAddFundsScreen({
                 placeholder="0"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="pl-10 pr-4 py-4 text-xl font-semibold border-2 border-gray-300 rounded-xl focus:border-[#f44708]"
+                className="pl-10 pr-4 py-4 text-xl font-semibold border-2 border-gray-300 rounded-xl focus:border-primary"
               />
             </div>
           </div>
@@ -159,8 +159,8 @@ export function WalletAddFundsScreen({
                   onClick={() => handleQuickAmount(value)}
                   className={`py-3 rounded-xl border-2 font-medium transition-all flex items-center justify-center ${
                     amount === value.toString() 
-                      ? 'bg-[#f44708] text-white border-[#f44708]' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#f44708]'
+                      ? 'bg-primary text-white border-primary' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-primary'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -194,7 +194,7 @@ export function WalletAddFundsScreen({
                   onClick={() => setSelectedMethod(method.id as 'card' | 'bank' | 'mobile')}
                   className={`p-4 cursor-pointer transition-all rounded-xl border-2 ${
                     isSelected 
-                      ? 'border-[#f44708] bg-[#f44708] text-white shadow-sm' 
+                      ? 'border-primary bg-primary text-white shadow-sm' 
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                   whileHover={{ scale: 1.02 }}
@@ -223,7 +223,7 @@ export function WalletAddFundsScreen({
                         : 'border-gray-300'
                     }`}>
                       {isSelected && (
-                        <div className="w-3 h-3 rounded-full bg-[#f44708]"></div>
+                        <div className="w-3 h-3 rounded-full bg-primary"></div>
                       )}
                     </div>
                   </div>
@@ -243,7 +243,7 @@ export function WalletAddFundsScreen({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">Amount to add:</span>
-                <span className="font-bold text-xl text-[#f44708]">{formatAmount(parseFloat(amount))}</span>
+                <span className="font-bold text-xl text-primary">{formatAmount(parseFloat(amount))}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">New balance:</span>
@@ -255,7 +255,7 @@ export function WalletAddFundsScreen({
                 <motion.button
                   onClick={handleProceed}
                   disabled={!amount || parseFloat(amount) <= 0 || !selectedMethod || isLoading}
-                  className="w-full bg-[#f44708] hover:bg-[#e03d06] text-white py-4 font-semibold rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full bg-primary hover:bg-[#e03d06] text-white py-4 font-semibold rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   whileHover={amount && selectedMethod && !isLoading ? { scale: 1.02 } : {}}
                   whileTap={amount && selectedMethod && !isLoading ? { scale: 0.98 } : {}}
                 >

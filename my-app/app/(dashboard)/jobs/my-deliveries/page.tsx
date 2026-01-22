@@ -154,7 +154,7 @@ export default function MyDeliveriesPage() {
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-600">Loading your deliveries...</p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function MyDeliveriesPage() {
           onClick={() => router.push('/jobs/my-deliveries')}
           className={`px-4 py-2 font-medium border-b-2 transition-colors ${
             !filter
-              ? 'border-[#f44708] text-[#f44708]'
+              ? 'border-primary text-primary'
               : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -212,7 +212,7 @@ export default function MyDeliveriesPage() {
           onClick={() => router.push('/jobs/my-deliveries?filter=active')}
           className={`px-4 py-2 font-medium border-b-2 transition-colors ${
             filter === 'active'
-              ? 'border-[#f44708] text-[#f44708]'
+              ? 'border-primary text-primary'
               : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -222,7 +222,7 @@ export default function MyDeliveriesPage() {
           onClick={() => router.push('/jobs/my-deliveries?filter=completed')}
           className={`px-4 py-2 font-medium border-b-2 transition-colors ${
             filter === 'completed'
-              ? 'border-[#f44708] text-[#f44708]'
+              ? 'border-primary text-primary'
               : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -245,7 +245,7 @@ export default function MyDeliveriesPage() {
           {activeRole === 'sender' && (
             <button
               onClick={() => router.push('/jobs/post')}
-              className="bg-[#f44708] text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] transition-colors"
+              className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] transition-colors"
             >
               Post a Delivery
             </button>
@@ -253,7 +253,7 @@ export default function MyDeliveriesPage() {
           {activeRole === 'pal' && (
             <button
               onClick={() => router.push('/jobs')}
-              className="bg-[#f44708] text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] transition-colors"
+              className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] transition-colors"
             >
               Find Jobs
             </button>

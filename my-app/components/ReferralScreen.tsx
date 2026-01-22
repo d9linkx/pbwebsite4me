@@ -78,7 +78,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
       <div className="p-6 space-y-6 relative z-10">
         {/* Rewards Banner */}
         <motion.div 
-          className="bg-gradient-to-r from-[#f44708] to-[#ff5722] rounded-2xl p-6 text-white"
+          className="bg-gradient-to-r from-primary to-primary-hover rounded-2xl p-6 text-white"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
@@ -105,7 +105,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
             transition={{ delay: 0.1 }}
           >
             <div className="flex items-center space-x-2 mb-2">
-              <Users size={18} className="text-[#f44708]" />
+              <Users size={18} className="text-primary" />
               <span className="text-gray-600 text-sm">Total Referrals</span>
             </div>
             <p className="text-2xl font-bold text-gray-900">{mockReferrals.length}</p>
@@ -135,7 +135,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
           <h3 className="text-gray-900 font-semibold mb-4">Your Referral Code</h3>
 
           <div className="bg-white rounded-xl p-4 mb-4 border border-gray-200">
-            <p className="text-center text-3xl font-bold text-[#f44708] tracking-wider mb-2">
+            <p className="text-center text-3xl font-bold text-primary tracking-wider mb-2">
               {referralCode}
             </p>
             <p className="text-center text-sm text-gray-600">{referralLink}</p>
@@ -154,7 +154,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
 
             <motion.button
               onClick={handleShare}
-              className="bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 px-4 font-medium transition-all duration-300 flex items-center justify-center space-x-2"
+              className="bg-primary hover:bg-primary-hover text-white rounded-xl py-3 px-4 font-medium transition-all duration-300 flex items-center justify-center space-x-2"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -180,7 +180,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
               { step: '4', text: 'You both get ₦500 instantly!' }
             ].map((item, index) => (
               <div key={index} className="flex items-start space-x-3">
-                <div className="w-8 h-8 rounded-full bg-[#f44708] flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-bold text-sm">{item.step}</span>
                 </div>
                 <p className="text-gray-700 text-sm pt-1">{item.text}</p>
@@ -209,7 +209,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center">
                       <span className="text-white font-bold text-sm">
                         {referral.name.split(' ').map(n => n[0]).join('')}
                       </span>
@@ -222,7 +222,7 @@ export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[#f44708] font-semibold">{formatCurrency(referral.earned)}</p>
+                    <p className="text-primary font-semibold">{formatCurrency(referral.earned)}</p>
                     <Badge className={`text-xs border-0 ${
                       referral.status === 'completed'
                         ? 'bg-green-100 text-green-700'

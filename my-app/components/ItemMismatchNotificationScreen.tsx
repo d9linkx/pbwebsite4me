@@ -224,7 +224,7 @@ export function ItemMismatchNotificationScreen({
         {/* Action Button */}
         <motion.button
           onClick={onViewMyDeliveries}
-          className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2"
+          className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-primary-dark text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0, y: 20 }}

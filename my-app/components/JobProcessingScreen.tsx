@@ -137,7 +137,7 @@ export function JobProcessingScreen({
         <div className="flex flex-col space-y-3 w-full">
           <motion.button
             onClick={onViewDetails}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 shadow-sm"
+            className="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 shadow-sm"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, y: 20 }}

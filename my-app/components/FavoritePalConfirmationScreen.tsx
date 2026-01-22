@@ -29,11 +29,11 @@ export function FavoritePalConfirmationScreen({
   }, [onContinue]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col items-center justify-center p-6">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute -top-40 -right-40 w-96 h-96 bg-[#f44708] rounded-full opacity-20 blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-primary rounded-full opacity-20 blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.2, 0.3, 0.2],
@@ -63,7 +63,7 @@ export function FavoritePalConfirmationScreen({
       <div className="relative z-10 max-w-md w-full">
         {/* Success Icon */}
         <motion.div
-          className="w-32 h-32 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center mx-auto mb-8"
+          className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center mx-auto mb-8"
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{
@@ -162,7 +162,7 @@ export function FavoritePalConfirmationScreen({
         {/* Continue Button */}
         <motion.button
           onClick={() => onContinue(1000, "wallet")} // Example values - adjust based on your business logic
-          className="w-full bg-gradient-to-r from-[#f44708] to-[#ff5722] hover:from-[#ff5722] hover:to-[#f44708] text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2"
+          className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0, y: 20 }}

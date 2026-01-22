@@ -90,7 +90,7 @@ export default function ChatThreadPage() {
         </div>
         <button
           onClick={() => handleCall(thread.otherUserPhone || '')}
-          className="text-[#f44708] hover:text-[#d63a00]"
+          className="text-primary hover:text-[#d63a00]"
         >
           📞 Call
         </button>
@@ -114,7 +114,7 @@ export default function ChatThreadPage() {
                   <div
                     className={`max-w-[70%] rounded-lg px-4 py-2 ${
                       isOwn
-                        ? 'bg-[#f44708] text-white'
+                        ? 'bg-primary text-white'
                         : 'bg-white text-gray-900 border border-gray-200'
                     }`}
                   >
@@ -144,11 +144,11 @@ export default function ChatThreadPage() {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#f44708]"
+          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
         />
         <button
           type="submit"
-          className="bg-[#f44708] text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] font-medium"
+          className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] font-medium"
         >
           Send
         </button>

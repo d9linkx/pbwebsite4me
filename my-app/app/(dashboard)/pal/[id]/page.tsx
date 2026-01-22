@@ -89,7 +89,7 @@ export default function PalProfilePage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-gray-600">Loading Pal profile...</p>
         </div>
       </div>
@@ -131,7 +131,7 @@ export default function PalProfilePage() {
         >
           <div className="flex items-start space-x-6">
             <Avatar className="w-24 h-24">
-              <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-white text-2xl">
                 {pal.name.split(' ').map((n: string) => n[0]).join('')}
               </AvatarFallback>
             </Avatar>
@@ -179,15 +179,15 @@ export default function PalProfilePage() {
           transition={{ delay: 0.2 }}
         >
           <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="text-2xl font-bold text-[#f44708]">{pal.completedDeliveries}</div>
+            <div className="text-2xl font-bold text-primary">{pal.completedDeliveries}</div>
             <div className="text-sm text-gray-600">Completed Deliveries</div>
           </div>
           <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="text-2xl font-bold text-[#f44708]">{pal.responseRate}</div>
+            <div className="text-2xl font-bold text-primary">{pal.responseRate}</div>
             <div className="text-sm text-gray-600">Response Rate</div>
           </div>
           <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="text-2xl font-bold text-[#f44708]">{pal.averageResponseTime}</div>
+            <div className="text-2xl font-bold text-primary">{pal.averageResponseTime}</div>
             <div className="text-sm text-gray-600">Avg Response Time</div>
           </div>
         </motion.div>
@@ -246,7 +246,7 @@ export default function PalProfilePage() {
         >
           <motion.button
             onClick={handleContactPal}
-            className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-white px-6 py-3 rounded-xl font-medium shadow-sm flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-medium shadow-sm flex items-center justify-center space-x-2"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

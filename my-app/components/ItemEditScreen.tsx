@@ -27,7 +27,7 @@ export function ItemEditScreen({ onBack, onSave, initialData }: ItemEditScreenPr
   const canSave = title && description && category && size;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
@@ -36,7 +36,7 @@ export function ItemEditScreen({ onBack, onSave, initialData }: ItemEditScreenPr
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -90,7 +90,7 @@ export function ItemEditScreen({ onBack, onSave, initialData }: ItemEditScreenPr
               <SelectTrigger className="bg-white/10 border-white/20 text-white">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
-              <SelectContent className="bg-[#2f2f2f] border-white/20 text-white">
+              <SelectContent className="bg-dark border-white/20 text-white">
                 <SelectItem value="electronics">Electronics</SelectItem>
                 <SelectItem value="documents">Documents</SelectItem>
                 <SelectItem value="groceries">Groceries</SelectItem>
@@ -107,7 +107,7 @@ export function ItemEditScreen({ onBack, onSave, initialData }: ItemEditScreenPr
                 <SelectTrigger className="bg-white/10 border-white/20 text-white">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#2f2f2f] border-white/20 text-white">
+                <SelectContent className="bg-dark border-white/20 text-white">
                   <SelectItem value="small">Small</SelectItem>
                   <SelectItem value="medium">Medium</SelectItem>
                   <SelectItem value="large">Large</SelectItem>

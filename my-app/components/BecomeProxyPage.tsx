@@ -183,7 +183,7 @@ export function BecomeProxyPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-black text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-dark via-darker to-darkest text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -199,15 +199,15 @@ export function BecomeProxyPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-[0px] pt-[56px] pr-[28px] pb-[112px] pl-[28px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-[0px] p-[0px] mx-[-20px] my-[0px] mr-[-15px] mb-[0px] ml-[-15px] mt-[-30px] lg:mt-[-13px] lg:ml-[-25px] lg:mr-[-25px]">
             <div className="pt-[80px] pr-[0px] pb-[0px] pl-[0px]">
-              <div className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-4 py-2 rounded-full mb-6">
-                <Store className="w-4 h-4 text-[#f44708]" />
-                <span className="text-sm font-medium text-[#f44708]">
+              <div className="inline-flex items-center space-x-2 bg-primary-light px-4 py-2 rounded-full mb-6">
+                <Store className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">
                   Join 2,000+ Trusted Proxies
                 </span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Become a <span className="text-[#f44708]">Proxy</span>
+                Become a <span className="text-primary">Proxy</span>
               </h1>
 
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
@@ -219,24 +219,24 @@ export function BecomeProxyPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f44708]">₦85k</div>
+                  <div className="text-2xl font-bold text-primary">₦85k</div>
                   <div className="text-xs text-gray-300 mt-1">Avg. Monthly</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f44708]">100%</div>
+                  <div className="text-2xl font-bold text-primary">100%</div>
                   <div className="text-xs text-gray-300 mt-1">
                     Your Earnings
                   </div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#f44708]">₦0</div>
+                  <div className="text-2xl font-bold text-primary">₦0</div>
                   <div className="text-xs text-gray-300 mt-1">Liability</div>
                 </div>
               </div>
 
               <button
                 onClick={() => router.push(ROUTES.AUTH)}
-                className="group bg-[#f44708] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#ff5722] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
+                className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
               >
                 <span>Start Earning Passive Income</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -258,7 +258,7 @@ export function BecomeProxyPage() {
                   height={500}
                   className="w-full h-[500px] object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:from-black/20 lg:to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}
                 <div className="absolute bottom-6 left-6 right-6 bg-white rounded-xl p-4 shadow-xl">
@@ -267,7 +267,7 @@ export function BecomeProxyPage() {
                       <div className="text-sm text-gray-600 mb-1">
                         This Month&apos;s Passive Income
                       </div>
-                      <div className="text-2xl font-bold text-[#2f2f2f]">
+                      <div className="text-2xl font-bold text-dark">
                         ₦89,500
                       </div>
                     </div>
@@ -279,8 +279,8 @@ export function BecomeProxyPage() {
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#f44708] rounded-full opacity-20 blur-2xl"></div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#f44708] rounded-full opacity-20 blur-2xl"></div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary rounded-full opacity-20 blur-2xl"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-primary rounded-full opacity-20 blur-2xl"></div>
             </div>
           </div>
         </div>
@@ -290,7 +290,7 @@ export function BecomeProxyPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               Why Become a Prawnbox Proxy?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -305,16 +305,16 @@ export function BecomeProxyPage() {
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-16 h-16 bg-[#f44708]/10 rounded-xl flex items-center justify-center text-[#f44708] group-hover:bg-[#f44708] group-hover:text-white transition-colors duration-300">
+                  <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-[#2f2f2f] mb-2">
+                    <h3 className="text-xl font-bold text-dark mb-2">
                       {benefit.title}
                     </h3>
                     <p className="text-gray-600 mb-4">{benefit.description}</p>
                     <div className="flex items-end space-x-2">
-                      <div className="text-3xl font-bold text-[#f44708]">
+                      <div className="text-3xl font-bold text-primary">
                         {benefit.stat}
                       </div>
                       <div className="text-sm text-gray-500 mb-1">
@@ -333,7 +333,7 @@ export function BecomeProxyPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               Simple Requirements
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -345,19 +345,19 @@ export function BecomeProxyPage() {
             {requirements.map((req, index) => (
               <div
                 key={index}
-                className="bg-gray-50 rounded-xl p-6 text-center hover:bg-[#f44708]/5 transition-colors duration-300 group"
+                className="bg-gray-50 rounded-xl p-6 text-center hover:bg-primary/5 transition-colors duration-300 group"
               >
-                <div className="w-14 h-14 bg-[#f44708]/10 rounded-full flex items-center justify-center text-[#f44708] mx-auto mb-4 group-hover:bg-[#f44708] group-hover:text-white transition-colors duration-300">
+                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                   {req.icon}
                 </div>
-                <h3 className="font-bold text-[#2f2f2f] mb-2">{req.title}</h3>
+                <h3 className="font-bold text-dark mb-2">{req.title}</h3>
                 <p className="text-sm text-gray-600">{req.description}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 bg-gradient-to-r from-[#f44708]/10 to-orange-100 rounded-2xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-[#2f2f2f] mb-4">
+          <div className="mt-12 bg-gradient-to-r from-primary/10 to-orange-100 rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-bold text-dark mb-4">
               Perfect For:
             </h3>
             <div className="flex flex-wrap justify-center gap-3">
@@ -373,7 +373,7 @@ export function BecomeProxyPage() {
               ].map((type, index) => (
                 <span
                   key={index}
-                  className="bg-white px-4 py-2 rounded-full text-sm font-medium text-[#2f2f2f] shadow-sm"
+                  className="bg-white px-4 py-2 rounded-full text-sm font-medium text-dark shadow-sm"
                 >
                   {type}
                 </span>
@@ -388,7 +388,7 @@ export function BecomeProxyPage() {
             </p>
             <button
               onClick={() => router.push(ROUTES.AUTH)}
-              className="bg-[#2f2f2f] text-white px-8 py-4 rounded-xl font-semibold hover:bg-black transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
+              className="bg-dark text-white px-8 py-4 rounded-xl font-semibold hover:bg-darkest transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
             >
               <span>Register Your Location</span>
               <ArrowRight className="w-5 h-5" />
@@ -401,7 +401,7 @@ export function BecomeProxyPage() {
       <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               How It Works
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -414,18 +414,18 @@ export function BecomeProxyPage() {
               <div key={index} className="relative">
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                   {/* Step Number */}
-                  <div className="w-16 h-16 bg-[#f44708] text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">
+                  <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">
                     {step.step}
                   </div>
 
-                  <h3 className="text-xl font-bold text-[#2f2f2f] mb-3">
+                  <h3 className="text-xl font-bold text-dark mb-3">
                     {step.title}
                   </h3>
                   <p className="text-gray-600 mb-4">{step.description}</p>
 
-                  <div className="inline-flex items-center space-x-2 bg-[#f44708]/10 px-3 py-1 rounded-full">
-                    <Clock className="w-4 h-4 text-[#f44708]" />
-                    <span className="text-sm font-medium text-[#f44708]">
+                  <div className="inline-flex items-center space-x-2 bg-primary/10 px-3 py-1 rounded-full">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-medium text-primary">
                       {step.time}
                     </span>
                   </div>
@@ -433,7 +433,7 @@ export function BecomeProxyPage() {
 
                 {/* Connector Line */}
                 {index < howItWorks.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-[#f44708] to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
+                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-primary to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
                 )}
               </div>
             ))}
@@ -445,7 +445,7 @@ export function BecomeProxyPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               Success Stories from Our Proxies
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -466,10 +466,10 @@ export function BecomeProxyPage() {
                     alt={testimonial.name}
                     width={100}
                     height={100}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-[#f44708]"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-primary"
                   />
                   <div>
-                    <h4 className="font-bold text-[#2f2f2f]">
+                    <h4 className="font-bold text-dark">
                       {testimonial.name}
                     </h4>
                     <p className="text-sm text-gray-600">{testimonial.role}</p>
@@ -479,7 +479,7 @@ export function BecomeProxyPage() {
                           key={i}
                           className={`w-3 h-3 ${
                             i < Math.floor(testimonial.rating)
-                              ? "text-[#f44708] fill-current"
+                              ? "text-primary fill-current"
                               : "text-gray-300"
                           }`}
                         />
@@ -511,7 +511,7 @@ export function BecomeProxyPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
               Frequently Asked Questions
             </h2>
           </div>
@@ -519,7 +519,7 @@ export function BecomeProxyPage() {
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <div key={index} className="bg-white rounded-xl p-6 shadow-md">
-                <h4 className="font-bold text-[#2f2f2f] mb-2">
+                <h4 className="font-bold text-dark mb-2">
                   {faq.question}
                 </h4>
                 <p className="text-gray-600">{faq.answer}</p>
@@ -530,7 +530,7 @@ export function BecomeProxyPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2f2f2f] to-black text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -554,7 +554,7 @@ export function BecomeProxyPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <button
               onClick={() => router.push(ROUTES.AUTH)}
-              className="group bg-[#f44708] text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-[#ff5722] transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
+              className="group bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-primary-hover transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>Sign Up as a Proxy</span>
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
@@ -562,7 +562,7 @@ export function BecomeProxyPage() {
 
             <button
               onClick={() => router.push(ROUTES.CONTACT)}
-              className="bg-white text-[#2f2f2f] px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl inline-flex items-center space-x-2 w-full sm:w-auto"
+              className="bg-white text-dark px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>Learn More</span>
             </button>
@@ -570,11 +570,11 @@ export function BecomeProxyPage() {
 
           <p className="text-sm text-gray-400">
             Questions? Call us at{" "}
-            <span className="text-[#f44708] font-semibold">
+            <span className="text-primary font-semibold">
               +234 906 870 9992
             </span>{" "}
             or email{" "}
-            <span className="text-[#f44708] font-semibold">
+            <span className="text-primary font-semibold">
               info@prawnbox.com
             </span>
           </p>

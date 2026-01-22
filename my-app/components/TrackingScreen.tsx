@@ -155,7 +155,7 @@ export function TrackingScreen({
       case 'picked-up':
         return 'bg-green-500/20 text-green-400 border-green-500/30';
       case 'assigned':
-        return 'bg-orange-500/20 text-[#f44708] border-orange-500/30';
+        return 'bg-orange-500/20 text-primary border-orange-500/30';
       case 'delivered':
         return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
       default:
@@ -207,16 +207,16 @@ export function TrackingScreen({
   const contactPerson = getContactPerson();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] pb-6">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark pb-6">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary rounded-full opacity-10 blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       {/* Header */}
       <motion.div 
-        className="sticky top-0 z-10 bg-[#2f2f2f] border-b border-white/10"
+        className="sticky top-0 z-10 bg-dark border-b border-white/10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -273,7 +273,7 @@ export function TrackingScreen({
                 <span className="text-sm">ETA</span>
               </div>
               <p className={`text-2xl font-mono font-semibold ${
-                estimatedArrival <= 5 ? 'text-[#f44708]' : 'text-white'
+                estimatedArrival <= 5 ? 'text-primary' : 'text-white'
               }`}>
                 {job.status === 'delivered' ? 'Arrived' : formatEstimatedTime(estimatedArrival)}
               </p>
@@ -338,7 +338,7 @@ export function TrackingScreen({
                   ></iframe>
                   
                   {/* Map overlay info */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-darkest/70 to-transparent p-3">
                     <div className="flex items-center justify-between text-white text-xs">
                       <div className="flex items-center space-x-2">
                         <Clock size={12} />
@@ -353,7 +353,7 @@ export function TrackingScreen({
                 </div>
 
                 {/* Action Buttons Below Map */}
-                <div className="bg-[#2f2f2f] p-2 border-t border-white/10">
+                <div className="bg-dark p-2 border-t border-white/10">
                   <motion.button
                     onClick={() => {
                       window.open(
@@ -389,7 +389,7 @@ export function TrackingScreen({
               <CollapsibleTrigger className="w-full">
                 <div className="flex items-center justify-between p-6 hover:bg-white/5 transition-colors">
                   <div className="flex items-center space-x-3">
-                    <Package size={20} className="text-[#f44708]" />
+                    <Package size={20} className="text-primary" />
                     <h3 className="font-semibold text-white">Package Details</h3>
                   </div>
                   {isPackageDetailsOpen ? (
@@ -422,7 +422,7 @@ export function TrackingScreen({
                   <div className="pb-4 border-b border-white/10">
                     <div className="flex items-start space-x-3">
                       <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
-                        <MapPin size={18} className="text-[#f44708]" />
+                        <MapPin size={18} className="text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs text-gray-400 mb-1">Dropoff Location</p>
@@ -500,7 +500,7 @@ export function TrackingScreen({
                   <div className="px-6 pb-6 space-y-4 border-t border-white/10 pt-4">
                     <div className="bg-orange-500/20 border border-orange-500/30 rounded-xl p-3">
                       <div className="flex items-start space-x-2">
-                        <AlertCircle size={16} className="text-[#f44708] mt-0.5 flex-shrink-0" />
+                        <AlertCircle size={16} className="text-primary mt-0.5 flex-shrink-0" />
                         <p className="text-xs text-orange-300">
                           Update receiver details if they can&apos;t receive the verification code or need to change contact information.
                         </p>
@@ -587,7 +587,7 @@ export function TrackingScreen({
                             }, 5000);
                           }, 500);
                         }}
-                        className="bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-2 px-4 flex items-center justify-center space-x-2 font-medium disabled:opacity-50"
+                        className="bg-primary hover:bg-primary-hover text-white rounded-xl py-2 px-4 flex items-center justify-center space-x-2 font-medium disabled:opacity-50"
                         disabled={isSaving}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
@@ -658,7 +658,7 @@ export function TrackingScreen({
 
             <div className="grid grid-cols-2 gap-3">
               <motion.button
-                className="bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 flex items-center justify-center space-x-2 font-medium"
+                className="bg-primary hover:bg-primary-hover text-white rounded-xl py-3 flex items-center justify-center space-x-2 font-medium"
                 onClick={() => onCall(contactPerson.phone)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -713,7 +713,7 @@ export function TrackingScreen({
                             stage.status === 'completed' 
                               ? 'bg-green-500 text-white' 
                               : stage.status === 'active'
-                              ? 'bg-[#f44708] text-white'
+                              ? 'bg-primary text-white'
                               : 'bg-white/20 text-gray-500'
                           }`}
                           animate={stage.status === 'active' ? { scale: [1, 1.1, 1] } : {}}
@@ -733,7 +733,7 @@ export function TrackingScreen({
                         <div className="flex items-center justify-between">
                           <p className={`font-medium ${
                             stage.status === 'active' 
-                              ? 'text-[#f44708]' 
+                              ? 'text-primary' 
                               : stage.status === 'completed'
                               ? 'text-white'
                               : 'text-gray-500'
@@ -768,7 +768,7 @@ export function TrackingScreen({
           >
             {job.status === 'assigned' && onStartPickup && (
               <motion.button
-                className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl h-12 font-semibold"
+                className="w-full bg-primary hover:bg-primary-hover text-white rounded-xl h-12 font-semibold"
                 onClick={onStartPickup}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -779,7 +779,7 @@ export function TrackingScreen({
 
             {(job.status === 'in-transit' || job.status === 'picked-up') && onReceiverUnavailable && (
               <motion.button
-                className="w-full bg-orange-500/20 border border-orange-500/30 text-[#f44708] hover:bg-orange-500/30 rounded-xl h-12 font-semibold flex items-center justify-center space-x-2"
+                className="w-full bg-orange-500/20 border border-orange-500/30 text-primary hover:bg-orange-500/30 rounded-xl h-12 font-semibold flex items-center justify-center space-x-2"
                 onClick={onReceiverUnavailable}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

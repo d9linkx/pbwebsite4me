@@ -10,10 +10,10 @@ export function PrivacyPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] text-white py-20">
+      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <Lock className="w-16 h-16 text-[#f44708] mx-auto mb-6" />
+            <Lock className="w-16 h-16 text-primary mx-auto mb-6" />
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Privacy Policy
             </h1>
@@ -36,12 +36,12 @@ export function PrivacyPage() {
               </p>
             </div>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4 flex items-center">
-              <FileText className="mr-3 text-[#f44708]" size={28} />
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4 flex items-center">
+              <FileText className="mr-3 text-primary" size={28} />
               1. Information We Collect
             </h2>
 
-            <h3 className="text-xl font-semibold text-[#2f2f2f] mt-6 mb-3">
+            <h3 className="text-xl font-semibold text-dark mt-6 mb-3">
               Personal Information:
             </h3>
             <ul className="list-disc pl-6 text-gray-600 mb-6 space-y-2">
@@ -52,7 +52,7 @@ export function PrivacyPage() {
               <li>Delivery addresses and locations</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-[#2f2f2f] mt-6 mb-3">
+            <h3 className="text-xl font-semibold text-dark mt-6 mb-3">
               Automatically Collected Information:
             </h3>
             <ul className="list-disc pl-6 text-gray-600 mb-6 space-y-2">
@@ -64,8 +64,8 @@ export function PrivacyPage() {
               <li>Cookies and similar tracking technologies</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4 flex items-center">
-              <Eye className="mr-3 text-[#f44708]" size={28} />
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4 flex items-center">
+              <Eye className="mr-3 text-primary" size={28} />
               2. How We Use Your Information
             </h2>
             <p className="text-gray-600 mb-4">We use your information to:</p>
@@ -80,8 +80,8 @@ export function PrivacyPage() {
               <li>Comply with legal obligations</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4 flex items-center">
-              <Shield className="mr-3 text-[#f44708]" size={28} />
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4 flex items-center">
+              <Shield className="mr-3 text-primary" size={28} />
               3. Information Sharing
             </h2>
             <p className="text-gray-600 mb-4">
@@ -111,8 +111,8 @@ export function PrivacyPage() {
               parties for marketing purposes.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4 flex items-center">
-              <Lock className="mr-3 text-[#f44708]" size={28} />
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4 flex items-center">
+              <Lock className="mr-3 text-primary" size={28} />
               4. Data Security
             </h2>
             <p className="text-gray-600 mb-4">
@@ -130,7 +130,7 @@ export function PrivacyPage() {
               <li>Employee training on data protection</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               5. Your Rights
             </h2>
             <p className="text-gray-600 mb-4">You have the right to:</p>
@@ -159,7 +159,7 @@ export function PrivacyPage() {
               To exercise these rights, contact us at privacy@prawnbox.ng
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               6. Cookies and Tracking
             </h2>
             <p className="text-gray-600 mb-6">
@@ -169,7 +169,7 @@ export function PrivacyPage() {
               disabling them may limit some features.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               7. Third-Party Services
             </h2>
             <p className="text-gray-600 mb-6">
@@ -178,7 +178,7 @@ export function PrivacyPage() {
               privacy policies. We encourage you to review them.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               8. Data Retention
             </h2>
             <p className="text-gray-600 mb-6">
@@ -188,7 +188,7 @@ export function PrivacyPage() {
               fraud prevention for up to 7 years.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               9. Children&apos;s Privacy
             </h2>
             <p className="text-gray-600 mb-6">
@@ -197,7 +197,7 @@ export function PrivacyPage() {
               collected data from a child, we will delete it immediately.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               10. NDPR Compliance
             </h2>
             <p className="text-gray-600 mb-6">
@@ -207,7 +207,7 @@ export function PrivacyPage() {
               NDPR standards.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               11. Changes to This Policy
             </h2>
             <p className="text-gray-600 mb-6">
@@ -216,7 +216,7 @@ export function PrivacyPage() {
               use after changes constitutes acceptance.
             </p>
 
-            <h2 className="text-2xl font-bold text-[#2f2f2f] mt-8 mb-4">
+            <h2 className="text-2xl font-bold text-dark mt-8 mb-4">
               12. Contact Us
             </h2>
             <p className="text-gray-600 mb-6">
@@ -236,7 +236,7 @@ export function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#f44708] text-white p-6 rounded-xl mt-12">
+            <div className="bg-primary text-white p-6 rounded-xl mt-12">
               <p className="font-semibold mb-2">Your privacy matters to us.</p>
               <p>
                 We are committed to protecting your personal information and
@@ -250,7 +250,7 @@ export function PrivacyPage() {
       {/* CTA Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-[#2f2f2f] mb-6">
+          <h2 className="text-3xl font-bold text-dark mb-6">
             Start Using Prawnbox Safely
           </h2>
           <p className="text-xl text-gray-600 mb-8">
@@ -258,7 +258,7 @@ export function PrivacyPage() {
           </p>
           <button
             onClick={() => router.push(ROUTES.AUTH)}
-            className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] transform hover:scale-105 transition-all duration-200 shadow-lg"
+            className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             Create Secure Account
             <ArrowRight className="inline ml-2" size={20} />

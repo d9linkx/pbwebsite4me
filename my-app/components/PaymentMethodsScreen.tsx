@@ -106,7 +106,7 @@ export function PaymentMethodsScreen({
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
       {/* Dark Header */}
       <motion.div 
-        className="bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] border-b border-white/10 p-6 shadow-lg"
+        className="bg-gradient-to-r from-dark to-darker border-b border-white/10 p-6 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -129,7 +129,7 @@ export function PaymentMethodsScreen({
           <Dialog open={isAddingCard} onOpenChange={setIsAddingCard}>
             <DialogTrigger asChild>
               <motion.button
-                className="bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl flex items-center space-x-2 font-medium"
+                className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-xl flex items-center space-x-2 font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -196,7 +196,7 @@ export function PaymentMethodsScreen({
                   <motion.button
                     onClick={handleAddCard}
                     disabled={!newCardData.number || !newCardData.expiry || !newCardData.cvv || !newCardData.name}
-                    className="flex-1 bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white rounded-xl py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 bg-dark hover:bg-darker text-white rounded-xl py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -242,8 +242,8 @@ export function PaymentMethodsScreen({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full bg-[#f44708]/10 flex items-center justify-center">
-                      <CreditCard size={24} className="text-[#f44708]" />
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <CreditCard size={24} className="text-primary" />
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">
@@ -272,7 +272,7 @@ export function PaymentMethodsScreen({
                     {!method.isDefault && (
                       <motion.button
                         onClick={() => handleSetDefault(method.id)}
-                        className="p-2 text-[#f44708] hover:bg-[#f44708]/10 rounded-xl"
+                        className="p-2 text-primary hover:bg-primary/10 rounded-xl"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
@@ -308,7 +308,7 @@ export function PaymentMethodsScreen({
             </p>
             <motion.button
               onClick={() => setIsAddingCard(true)}
-              className="bg-[#2f2f2f] hover:bg-[#1a1a1a] text-white px-6 py-3 rounded-xl flex items-center space-x-2 font-medium"
+              className="bg-dark hover:bg-darker text-white px-6 py-3 rounded-xl flex items-center space-x-2 font-medium"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

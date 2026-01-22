@@ -57,7 +57,7 @@ export function WebsiteHeader() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#2f2f2f] border-b border-gray-800">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-dark border-b border-gray-800">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Logo onNavigate={handleNavigate} />
@@ -66,7 +66,7 @@ export function WebsiteHeader() {
           <div className="hidden lg:flex items-center space-x-4">
             <button
               onClick={() => handleNavigate(ROUTES.AUTH)}
-              className="px-6 py-2.5 text-white hover:text-[#f44708] transition-colors duration-200"
+              className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
             >
               Sign In
             </button>
@@ -158,7 +158,7 @@ function GetStartedDropdown({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={onToggle}
-        className="px-6 py-2.5 text-[#f44708] hover:text-[#ff5722] transition-all duration-200 flex items-center space-x-1 font-semibold"
+        className="px-6 py-2.5 text-primary hover:text-primary-hover transition-all duration-200 flex items-center space-x-1 font-semibold"
         aria-expanded={isOpen}
       >
         <span>Get Started</span>
@@ -168,12 +168,12 @@ function GetStartedDropdown({
         />
       </button>
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-56 bg-[#1a1a1a] border border-gray-800 rounded-lg shadow-xl overflow-hidden z-50">
+        <div className="absolute top-full right-0 mt-2 w-56 bg-darker border border-gray-800 rounded-lg shadow-xl overflow-hidden z-50">
           {items.map((item) => (
             <button
               key={item.path}
               onClick={() => onNavigate(item.path)}
-              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-[#f44708]/20 transition-all duration-200 border-b border-gray-800 last:border-b-0"
+              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-primary-light transition-all duration-200 border-b border-gray-800 last:border-b-0"
             >
               {item.label}
             </button>
@@ -194,7 +194,7 @@ function MobileMenu({
   onNavigate: (path: string) => void;
 }) {
   return (
-    <div className="lg:hidden bg-[#1a1a1a] border-t border-gray-800 w-full">
+    <div className="lg:hidden bg-darker border-t border-gray-800 w-full">
       <nav className="px-4 py-6 space-y-2 max-w-7xl mx-auto">
         {menuItems.map((item) => (
           <button
@@ -213,7 +213,7 @@ function MobileMenu({
             <button
               key={item.path}
               onClick={() => onNavigate(item.path)}
-              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-[#f44708]/20 rounded-lg transition-all duration-200"
+              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-primary-light rounded-lg transition-all duration-200"
             >
               {item.label}
             </button>

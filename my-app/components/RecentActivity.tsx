@@ -74,7 +74,7 @@ export function RecentActivity({ packages, onViewPackage }: RecentActivityProps)
     return (
       <div className="bg-white rounded-lg">
         <div className="flex items-center gap-2 mb-4">
-          <Clock className="w-5 h-5 text-[#f44708]" />
+          <Clock className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-gray-900">Recent Activity (24h)</h2>
         </div>
         <div className="text-center py-8">
@@ -90,7 +90,7 @@ export function RecentActivity({ packages, onViewPackage }: RecentActivityProps)
     <div className="bg-white rounded-lg">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Clock className="w-5 h-5 text-[#f44708]" />
+          <Clock className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-gray-900">Recent Activity (24h)</h2>
         </div>
         <span className="text-sm text-gray-500">{sortedPackages.length} package{sortedPackages.length !== 1 ? 's' : ''}</span>
@@ -104,13 +104,13 @@ export function RecentActivity({ packages, onViewPackage }: RecentActivityProps)
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             onClick={() => onViewPackage(pkg)}
-            className="group bg-gray-50 hover:bg-gray-100 rounded-lg p-4 cursor-pointer transition-all border border-transparent hover:border-[#f44708]/20"
+            className="group bg-gray-50 hover:bg-gray-100 rounded-lg p-4 cursor-pointer transition-all border border-transparent hover:border-primary-light"
           >
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-medium text-gray-900 truncate group-hover:text-[#f44708] transition-colors">
+                  <h3 className="font-medium text-gray-900 truncate group-hover:text-primary transition-colors">
                     {pkg.title}
                   </h3>
                   {pkg.orderNumber && (
@@ -151,7 +151,7 @@ export function RecentActivity({ packages, onViewPackage }: RecentActivityProps)
                   <span className="truncate max-w-[120px]">To: {pkg.receiverName}</span>
                 )}
               </div>
-              <span className="text-[#f44708] font-medium group-hover:underline">View →</span>
+              <span className="text-primary font-medium group-hover:underline">View →</span>
             </div>
           </motion.div>
         ))}

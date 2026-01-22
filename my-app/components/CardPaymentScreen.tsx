@@ -42,7 +42,7 @@ export function CardPaymentScreen({ amount, purpose, onBack, onComplete }: CardP
 
   if (currentStep === 'processing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex items-center justify-center p-6">
         <div className="text-center">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center mx-auto mb-6">
             <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -57,13 +57,13 @@ export function CardPaymentScreen({ amount, purpose, onBack, onComplete }: CardP
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >

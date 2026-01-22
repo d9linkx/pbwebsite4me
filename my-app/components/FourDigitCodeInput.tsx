@@ -67,7 +67,7 @@ export function FourDigitCodeInput({ onCodeVerified, onCancel, placeholder }: Fo
             <div className="w-full border-t border-white/20"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-[#1a1a1a] text-gray-400">OR</span>
+            <span className="px-4 bg-darker text-gray-400">OR</span>
           </div>
         </div>
 

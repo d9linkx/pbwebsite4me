@@ -172,10 +172,10 @@ export function AuthScreen({
   // };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#f44708] rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary rounded-full opacity-20 blur-3xl"></div>
         <div className="absolute top-1/2 -left-40 w-96 h-96 bg-blue-500 rounded-full opacity-15 blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
       </div>
@@ -236,7 +236,7 @@ export function AuthScreen({
                 onClick={() => setIsLogin(true)}
                 className={`flex-1 py-3 rounded-xl font-semibold transition-all flex items-center justify-center ${
                   isLogin
-                    ? "bg-[#f44708] text-white shadow-lg"
+                    ? "bg-primary text-white shadow-lg"
                     : "text-gray-400 hover:text-white"
                 }`}
                 whileHover={{ scale: 1.02 }}
@@ -248,7 +248,7 @@ export function AuthScreen({
                 onClick={() => setIsLogin(false)}
                 className={`flex-1 py-3 rounded-xl font-semibold transition-all flex items-center justify-center ${
                   !isLogin
-                    ? "bg-[#f44708] text-white shadow-lg"
+                    ? "bg-primary text-white shadow-lg"
                     : "text-gray-400 hover:text-white"
                 }`}
                 whileHover={{ scale: 1.02 }}
@@ -291,7 +291,7 @@ export function AuthScreen({
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             placeholder="John"
-                            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-14"
                             required={!isLogin}
                           />
                         </div>
@@ -309,7 +309,7 @@ export function AuthScreen({
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             placeholder="Doe"
-                            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-14"
                             required={!isLogin}
                           />
                         </div>
@@ -329,7 +329,7 @@ export function AuthScreen({
                           value={userName}
                           onChange={(e) => setUserName(e.target.value)}
                           placeholder="johndoe123"
-                          className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                          className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-14"
                           required={!isLogin}
                         />
                       </div>
@@ -349,7 +349,7 @@ export function AuthScreen({
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value)}
                           placeholder="+234 123 456 7890"
-                          className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                          className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-14"
                           required={!isLogin}
                         />
                       </div>
@@ -374,7 +374,7 @@ export function AuthScreen({
                     placeholder={
                       isLogin ? "Enter email or username" : "you@example.com"
                     }
-                    className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                    className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-14"
                     required
                   />
                 </div>
@@ -394,7 +394,7 @@ export function AuthScreen({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-14"
+                    className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-14"
                     required
                     minLength={8}
                   />
@@ -405,7 +405,7 @@ export function AuthScreen({
                 <div className="text-right">
                   <button
                     type="button"
-                    className="text-sm text-[#f44708] hover:underline"
+                    className="text-sm text-primary hover:underline"
                   >
                     Forgot Password?
                   </button>
@@ -415,7 +415,7 @@ export function AuthScreen({
               <motion.button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-[#f44708] to-[#ff5722] hover:from-[#ff5722] hover:to-[#f44708] text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 shadow-lg"
+                className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 shadow-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

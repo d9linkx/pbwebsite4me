@@ -165,7 +165,7 @@ export function RatingsScreen({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
@@ -179,7 +179,7 @@ export function RatingsScreen({
           transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
         />
         <motion.div 
-          className="absolute top-20 left-1/2 w-2 h-2 bg-[#f44708] rounded-full"
+          className="absolute top-20 left-1/2 w-2 h-2 bg-primary rounded-full"
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 2, repeat: Infinity, delay: 1 }}
         />
@@ -192,7 +192,7 @@ export function RatingsScreen({
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-10"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -253,7 +253,7 @@ export function RatingsScreen({
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 >
-                  <div className="w-8 h-8 bg-[#f44708] rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-lg">
                     <Sparkles size={16} className="text-white" />
                   </div>
                 </motion.div>
@@ -265,7 +265,7 @@ export function RatingsScreen({
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
               >
-                <div className="w-3 h-3 bg-[#f44708] rounded-full"></div>
+                <div className="w-3 h-3 bg-primary rounded-full"></div>
               </motion.div>
               <motion.div 
                 className="absolute -top-6 -right-8"
@@ -300,7 +300,7 @@ export function RatingsScreen({
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <div className="w-8 h-8 bg-[#f44708] rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                     <Award size={16} className="text-white" />
                   </div>
                 </div>
@@ -328,13 +328,13 @@ export function RatingsScreen({
             y: showRatingSection ? 0 : 20 
           }}
         >
-          <div className="bg-[#2f2f2f] rounded-t-3xl border-t border-white/20 shadow-2xl mx-0 px-6 pt-8 pb-8">
+          <div className="bg-dark rounded-t-3xl border-t border-white/20 shadow-2xl mx-0 px-6 pt-8 pb-8">
             {/* Optional Rating Header */}
             <div className="text-center mb-6">
               <div className="inline-flex items-center space-x-2 mb-3">
-                <Heart size={20} className="text-[#f44708]" />
+                <Heart size={20} className="text-primary" />
                 <h3 className="text-lg font-semibold text-white">Share Your Experience</h3>
-                <Heart size={20} className="text-[#f44708]" />
+                <Heart size={20} className="text-primary" />
               </div>
               <p className="text-sm text-gray-400">Help others by rating your experience (optional)</p>
             </div>
@@ -342,7 +342,7 @@ export function RatingsScreen({
             {/* Rating Target */}
             <div className="text-center mb-6">
               <Avatar className="w-16 h-16 mx-auto mb-3 border-2 border-white/20">
-                <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white text-lg font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-white text-lg font-semibold">
                   {target.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
@@ -365,7 +365,7 @@ export function RatingsScreen({
                       size={32}
                       className={`${
                         star <= rating
-                          ? 'text-[#f44708] fill-current'
+                          ? 'text-primary fill-current'
                           : 'text-gray-600 hover:text-gray-500'
                       }`}
                     />
@@ -400,7 +400,7 @@ export function RatingsScreen({
                     <motion.button
                       key={quickReview}
                       onClick={() => setReview(review ? `${review}, ${quickReview}` : quickReview)}
-                      className="rounded-full bg-white/10 border border-white/20 text-gray-300 hover:bg-[#f44708] hover:text-white hover:border-[#f44708] text-xs px-4 py-2 transition-all duration-300"
+                      className="rounded-full bg-white/10 border border-white/20 text-gray-300 hover:bg-primary hover:text-white hover:border-primary text-xs px-4 py-2 transition-all duration-300"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -432,7 +432,7 @@ export function RatingsScreen({
               <motion.button
                 onClick={handleComplete}
                 disabled={isSubmitting}
-                className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl h-14 font-semibold transition-all duration-300 disabled:opacity-50"
+                className="w-full bg-primary hover:bg-primary-hover text-white rounded-xl h-14 font-semibold transition-all duration-300 disabled:opacity-50"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

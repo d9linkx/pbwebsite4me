@@ -84,7 +84,7 @@ export function WalletWithdrawScreen({ user, onBack, onWithdrawComplete }: Walle
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {/* Balance Card */}
         <motion.div
-          className="bg-gradient-to-r from-[#f44708] to-[#ff5722] text-white rounded-2xl p-6"
+          className="bg-gradient-to-r from-primary to-primary-hover text-white rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -231,7 +231,7 @@ export function WalletWithdrawScreen({ user, onBack, onWithdrawComplete }: Walle
         <motion.button
           onClick={handleWithdraw}
           disabled={!canWithdraw || isProcessing}
-          className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           whileHover={canWithdraw ? { scale: 1.02 } : {}}
           whileTap={canWithdraw ? { scale: 0.98 } : {}}
           initial={{ opacity: 0, y: 20 }}

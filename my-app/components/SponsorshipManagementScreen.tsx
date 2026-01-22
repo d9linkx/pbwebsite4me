@@ -75,7 +75,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
   const totalPendingReturn = activeEscrows.reduce((sum, e) => sum + e.pendingReturn, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
@@ -84,7 +84,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -105,7 +105,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
           </div>
           <motion.button
             onClick={() => onNavigate('sponsor-search')}
-            className="p-2 bg-[#f44708] hover:bg-[#ff5722] rounded-xl"
+            className="p-2 bg-primary hover:bg-primary-hover rounded-xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -189,7 +189,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-2 rounded-lg font-medium transition-all ${
                 activeTab === tab
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'text-gray-400 hover:text-white'
               }`}
               whileHover={{ scale: 1.02 }}
@@ -214,7 +214,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-bold">
                       {escrow.beneficiaryName.charAt(0)}
                     </div>
                     <div>
@@ -257,7 +257,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
                   </div>
                   <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-gradient-to-r from-[#f44708] to-[#ff5722] rounded-full"
+                      className="h-full bg-gradient-to-r from-primary to-primary-hover rounded-full"
                       style={{ width: `${(escrow.usedAmount / escrow.amount) * 100}%` }}
                     />
                   </div>
@@ -284,7 +284,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
                 {/* Action Button */}
                 <motion.button
                   onClick={() => onNavigate('sponsorship-details')}
-                  className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-3 rounded-xl font-medium flex items-center justify-center space-x-2"
+                  className="w-full bg-primary hover:bg-primary-hover text-white py-3 rounded-xl font-medium flex items-center justify-center space-x-2"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -305,7 +305,7 @@ export function SponsorshipManagementScreen({ user, onBack, onNavigate }: Sponso
                 <p className="text-gray-400 mb-6">Start sponsoring users to earn commission</p>
                 <motion.button
                   onClick={() => onNavigate('sponsor-search')}
-                  className="bg-[#f44708] hover:bg-[#ff5722] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center"
+                  className="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

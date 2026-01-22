@@ -83,7 +83,7 @@ export function ContactSupportScreen({ user, onBack }: ContactSupportScreenProps
           </p>
           <motion.button
             onClick={onBack}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-8 py-3 rounded-xl font-semibold flex items-center justify-center shadow-sm"
+            className="bg-primary hover:bg-primary-hover text-white px-8 py-3 rounded-xl font-semibold flex items-center justify-center shadow-sm"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -134,7 +134,7 @@ export function ContactSupportScreen({ user, onBack }: ContactSupportScreenProps
                 onClick={() => setSelectedCategory(category.id)}
                 className={`p-4 rounded-xl border-2 transition-all ${
                   selectedCategory === category.id
-                    ? 'border-[#f44708] bg-[#f44708]/5 scale-[1.02]'
+                    ? 'border-primary bg-primary/5 scale-[1.02]'
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
                 whileHover={{ scale: 1.02 }}
@@ -144,7 +144,7 @@ export function ContactSupportScreen({ user, onBack }: ContactSupportScreenProps
                 transition={{ delay: index * 0.05 }}
               >
                 <span className={`font-medium ${
-                  selectedCategory === category.id ? 'text-[#f44708]' : 'text-gray-900'
+                  selectedCategory === category.id ? 'text-primary' : 'text-gray-900'
                 }`}>
                   {category.label}
                 </span>
@@ -165,7 +165,7 @@ export function ContactSupportScreen({ user, onBack }: ContactSupportScreenProps
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Brief description of your issue"
-            className="bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-[#f44708]"
+            className="bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-primary"
           />
         </motion.div>
 
@@ -181,7 +181,7 @@ export function ContactSupportScreen({ user, onBack }: ContactSupportScreenProps
             value={message}
             onChange={(e) => setMessage(e.target.value.slice(0, 1000))}
             placeholder="Describe your issue in detail..."
-            className="bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-[#f44708] min-h-[150px]"
+            className="bg-white border-gray-200 text-gray-900 placeholder-gray-500 focus:border-primary min-h-[150px]"
             rows={6}
           />
           <p className="text-xs text-gray-600 mt-2 text-right">{message.length}/1000</p>
@@ -259,7 +259,7 @@ export function ContactSupportScreen({ user, onBack }: ContactSupportScreenProps
         <motion.button
           onClick={handleSubmit}
           disabled={!canSubmit || isSubmitting}
-          className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           whileHover={canSubmit ? { scale: 1.02 } : {}}
           whileTap={canSubmit ? { scale: 0.98 } : {}}
           initial={{ opacity: 0, y: 20 }}

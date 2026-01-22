@@ -263,7 +263,7 @@ export function HowItWorksPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] text-white py-20">
+      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -287,8 +287,8 @@ export function HowItWorksPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-2 px-6 py-4 border-b-2 transition-all duration-200 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "border-[#f44708] text-[#f44708]"
-                    : "border-transparent text-gray-600 hover:text-[#2f2f2f]"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-gray-600 hover:text-dark"
                 }`}
               >
                 <tab.icon size={20} />
@@ -324,14 +324,14 @@ export function HowItWorksPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <motion.div
-                    className="w-32 h-32 rounded-2xl bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center shadow-2xl"
+                    className="w-32 h-32 rounded-2xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-2xl"
                     whileHover={{
                       boxShadow: "0 30px 60px -12px rgba(244, 71, 8, 0.5)",
                     }}
                   >
                     <step.icon size={48} className="text-white" />
                   </motion.div>
-                  <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-[#2f2f2f] flex items-center justify-center">
+                  <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-dark flex items-center justify-center">
                     <span className="text-white font-bold text-xl">
                       {step.number}
                     </span>
@@ -347,7 +347,7 @@ export function HowItWorksPage() {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-2xl font-bold text-[#2f2f2f] mb-4">
+                  <h3 className="text-2xl font-bold text-dark mb-4">
                     {step.title}
                   </h3>
                   <p className="text-lg text-gray-600">{step.description}</p>
@@ -362,11 +362,11 @@ export function HowItWorksPage() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2f2f2f] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
               <span className="h2-animated-underline relative inline-block">
                 See It in Action
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -380,7 +380,7 @@ export function HowItWorksPage() {
           </div>
           <div className="aspect-video rounded-2xl bg-gray-900 flex items-center justify-center shadow-2xl">
             <div className="text-center">
-              <div className="w-20 h-20 rounded-full bg-[#f44708] flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-4">
                 <svg
                   className="w-10 h-10 text-white ml-1"
                   fill="currentColor"
@@ -398,11 +398,11 @@ export function HowItWorksPage() {
       {/* FAQ Teaser */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-[#2f2f2f] mb-6">
+          <h2 className="text-3xl font-bold text-dark mb-6">
             <span className="h2-animated-underline relative inline-block">
               Still Have Questions?
               <motion.span
-                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                 initial={{ width: "0%", opacity: 0 }}
                 whileInView={{ width: "100%", opacity: 1 }}
                 viewport={{ once: false, margin: "-50px" }}
@@ -415,7 +415,7 @@ export function HowItWorksPage() {
           </p>
           <button
             onClick={() => router.push(ROUTES.FAQS)}
-            className="px-8 py-4 bg-[#2f2f2f] text-white text-lg font-semibold rounded-xl hover:bg-[#1a1a1a] transform hover:scale-105 transition-all duration-200"
+            className="px-8 py-4 bg-dark text-white text-lg font-semibold rounded-xl hover:bg-darker transform hover:scale-105 transition-all duration-200"
           >
             View FAQs
             <ArrowRight className="inline ml-2" size={20} />
@@ -424,7 +424,7 @@ export function HowItWorksPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-[#2f2f2f] to-[#000000] text-white">
+      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Ready to Get Started?
@@ -434,7 +434,7 @@ export function HowItWorksPage() {
           </p>
           <button
             onClick={() => router.push(ROUTES.AUTH)}
-            className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] transform hover:scale-105 transition-all duration-200 shadow-2xl"
+            className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Create Free Account
             <ArrowRight className="inline ml-2" size={20} />

@@ -1,8 +1,10 @@
-import React from 'react';
-import { Bell, Menu, X, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { UserRole, Screen, User, Notification } from '../../types';
-import { ROLE_PRIORITIES } from '../../constants/dashboard';
+import React from "react";
+import { Bell, Menu, X, Zap } from "lucide-react";
+import { motion } from "framer-motion";
+import { UserRole, User, Notification } from "@/types";
+import { ROLE_PRIORITIES } from "@/constants/dashboard";
+import { ROUTES } from "@/lib/routes";
+import Image from "next/image";
 
 interface DashboardHeaderProps {
   activeRole: UserRole;
@@ -10,11 +12,11 @@ interface DashboardHeaderProps {
   onNotificationsClick: () => void;
   onMenuToggle: () => void;
   onProfileClick: () => void;
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (route: string) => void;
   isMenuOpen: boolean;
   notifications?: Notification[];
   user?: User;
-  currentScreen?: Screen;
+  currentPath: string;
   onAlertsClick?: () => void;
 }
 
@@ -28,60 +30,57 @@ export function DashboardHeader({
   isMenuOpen,
   notifications = [],
   user,
-  currentScreen,
-  onAlertsClick
+  currentPath,
+  onAlertsClick,
 }: DashboardHeaderProps) {
-  const handleRoleButtonClick = (role: UserRole) => {
-    return (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onRoleChange(role);
-    };
-  };
-
   const getRoleDisplayLabel = (role: UserRole): string => {
     const roleLabels: Record<UserRole, string> = {
-      'sender': 'Send',
-      'pal': 'Deliver',
-      'receiver': 'Receive',
-      'proxy': 'Proxy'
+      sender: "Send",
+      pal: "Deliver",
+      receiver: "Receive",
+      proxy: "Proxy",
     };
     return roleLabels[role];
   };
 
   const getUrgentNotificationsCount = () => {
-    return notifications.filter(n =>
-      !n.read &&
-      (n.category === 'alert' ||
-        n.priority === 'urgent' ||
-        n.actionRequired ||
-        n.type === 'bid-placed' ||
-        n.type === 'delivery-assigned' ||
-        n.type === 'item-edit-request' ||
-        n.type === 'dispute-flagged' ||
-        n.type === 'delivery-update')
+    return notifications.filter(
+      (n) =>
+        !n.read &&
+        (n.category === "alert" ||
+          n.priority === "urgent" ||
+          n.actionRequired ||
+          n.type === "bid-placed" ||
+          n.type === "delivery-assigned" ||
+          n.type === "item-edit-request" ||
+          n.type === "dispute-flagged" ||
+          n.type === "delivery-update"),
     ).length;
   };
 
   const getNormalNotificationsCount = () => {
-    return notifications.filter(n =>
-      !n.read &&
-      (n.category === 'general' ||
-        ((!n.category && !n.priority) || n.priority === 'low') &&
-        !n.actionRequired) &&
-      (n.type === 'promo-offer' ||
-        n.type === 'system-message' ||
-        n.type === 'rating-received' ||
-        n.type === 'payment-received' ||
-        n.type === 'delivery-completed')
+    return notifications.filter(
+      (n) =>
+        !n.read &&
+        (n.category === "general" ||
+          (((!n.category && !n.priority) || n.priority === "low") &&
+            !n.actionRequired)) &&
+        (n.type === "promo-offer" ||
+          n.type === "system-message" ||
+          n.type === "rating-received" ||
+          n.type === "payment-received" ||
+          n.type === "delivery-completed"),
     ).length;
   };
 
-  const shouldShowRoleSwitcher = currentScreen === 'dashboard' || currentScreen === 'notifications';
+  const shouldShowRoleSwitcher =
+    currentPath === ROUTES.DASHBOARD ||
+    currentPath === ROUTES.NOTIFICATIONS ||
+    currentPath === "/";
 
   return (
     <motion.div
-      className="bg-[#2f2f2f] shadow-lg border-b border-white/10 p-4 lg:p-6 sticky top-0 z-40 w-full"
+      className="bg-dark shadow-lg border-b border-white/10 p-4 lg:p-6 sticky top-0 z-40 w-full"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -89,16 +88,22 @@ export function DashboardHeader({
       <div className="flex items-center justify-between w-full gap-4">
         {/* Logo and Brand */}
         <button
-          onClick={() => onNavigate('dashboard')}
+          onClick={() => onNavigate(ROUTES.DASHBOARD)}
           className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200 flex-shrink-0"
         >
-          <img src='/P-logo.png' alt="Prawnbox" className="w-10 h-10 object-contain" />
+          <Image
+            src="/P-logo.png"
+            alt="Prawnbox"
+            width={100}
+            height={100}
+            className="w-10 h-10 object-contain"
+          />
           <div>
             <h1 className="font-bold text-white text-lg">Prawnbox</h1>
           </div>
         </button>
 
-        {/* Desktop Role Switcher - Only visible on desktop when on dashboard/notifications */}
+        {/* Desktop Role Switcher */}
         {shouldShowRoleSwitcher && (
           <div className="hidden xl:flex flex-1 max-w-md mx-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-1 w-full border border-white/20">
@@ -106,11 +111,12 @@ export function DashboardHeader({
                 {ROLE_PRIORITIES.map((role, index) => (
                   <motion.button
                     key={role}
-                    onClick={handleRoleButtonClick(role)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 capitalize text-center ${activeRole === role
-                        ? 'bg-[#f44708] text-white shadow-lg'
-                        : 'text-gray-300 hover:text-white hover:bg-white/10'
-                      }`}
+                    onClick={() => onRoleChange(role)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 capitalize text-center ${
+                      activeRole === role
+                        ? "bg-primary text-white shadow-lg"
+                        : "text-gray-300 hover:text-white hover:bg-white/10"
+                    }`}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -127,10 +133,7 @@ export function DashboardHeader({
 
         {/* Header Action Buttons */}
         <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-          {/* User Profile Button */}
-          
-
-          {/* Time-Sensitive Alerts Button */}
+          {/* Time-Sensitive Alerts */}
           {onAlertsClick && getUrgentNotificationsCount() > 0 && (
             <motion.button
               onClick={onAlertsClick}
@@ -139,15 +142,17 @@ export function DashboardHeader({
               whileTap={{ scale: 0.95 }}
             >
               <Zap size={18} className="text-red-400 sm:w-5 sm:h-5" />
-              <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg border-2 border-[#2f2f2f]">
+              <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg border-2 border-dark">
                 <span className="text-white font-bold text-xs">
-                  {getUrgentNotificationsCount() > 9 ? '9+' : getUrgentNotificationsCount()}
+                  {getUrgentNotificationsCount() > 9
+                    ? "9+"
+                    : getUrgentNotificationsCount()}
                 </span>
               </div>
             </motion.button>
           )}
 
-          {/* General Notifications Button */}
+          {/* Notifications */}
           <motion.button
             onClick={onNotificationsClick}
             className="relative w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200"
@@ -158,15 +163,16 @@ export function DashboardHeader({
             {(() => {
               const normalCount = getNormalNotificationsCount();
               return normalCount > 0 ? (
-                <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-[#f44708] rounded-full flex items-center justify-center shadow-lg border-2 border-[#2f2f2f]">
+                <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 border-dark">
                   <span className="text-white font-bold text-xs">
-                    {normalCount > 9 ? '9+' : normalCount}
+                    {normalCount > 9 ? "9+" : normalCount}
                   </span>
                 </div>
               ) : null;
             })()}
           </motion.button>
 
+          {/* Profile */}
           <motion.button
             onClick={onProfileClick}
             className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200 overflow-hidden"
@@ -174,21 +180,30 @@ export function DashboardHeader({
             whileTap={{ scale: 0.95 }}
           >
             {user?.profileImage ? (
-              <img
+              <Image
                 src={user.profileImage}
-                alt={user.fullName || 'Profile'}
+                alt={user.fullName || "Profile"}
+                width={100}
+                height={100}
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-7 h-7 rounded-full bg-[#f44708] text-white flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center">
                 <span className="text-xs font-bold">
-                  {user?.name ? user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'U'}
+                  {user?.name
+                    ? user.name
+                        .split(" ")
+                        .map((n: string) => n[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2)
+                    : "U"}
                 </span>
               </div>
             )}
           </motion.button>
 
-          {/* Hamburger Menu Button - Hidden on desktop (xl and above) */}
+          {/* Hamburger Menu */}
           <motion.button
             onClick={onMenuToggle}
             className="xl:hidden w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl border border-white/20 flex items-center justify-center transition-all duration-200"
@@ -204,7 +219,7 @@ export function DashboardHeader({
         </div>
       </div>
 
-      {/* Mobile Role Switcher - Below header on mobile/tablet only */}
+      {/* Mobile Role Switcher */}
       {shouldShowRoleSwitcher && (
         <motion.div
           className="xl:hidden mt-4 pt-4 border-t border-white/10"
@@ -217,11 +232,12 @@ export function DashboardHeader({
               {ROLE_PRIORITIES.map((role, index) => (
                 <motion.button
                   key={role}
-                  onClick={handleRoleButtonClick(role)}
-                  className={`px-3 py-3 sm:py-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200 capitalize text-center ${activeRole === role
-                      ? 'bg-[#f44708] text-white shadow-lg'
-                      : 'text-gray-300 hover:text-white hover:bg-white/10'
-                    }`}
+                  onClick={() => onRoleChange(role)}
+                  className={`px-3 py-3 sm:py-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200 capitalize text-center ${
+                    activeRole === role
+                      ? "bg-primary text-white shadow-lg"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
+                  }`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}

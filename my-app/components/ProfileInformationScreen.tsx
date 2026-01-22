@@ -71,7 +71,7 @@ export function ProfileInformationScreen({
   if (apiUserLoading) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#f44708] border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-primary border-t-transparent"></div>
         <p className="text-gray-900 mt-4">Loading profile...</p>
       </div>
     );
@@ -85,7 +85,7 @@ export function ProfileInformationScreen({
           <p className="mb-4">Failed to load profile information</p>
           <button
             onClick={() => refetch()}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-gray-900 px-4 py-2 rounded-xl"
+            className="bg-primary hover:bg-primary-hover text-gray-900 px-4 py-2 rounded-xl"
           >
             Try Again
           </button>
@@ -272,7 +272,7 @@ export function ProfileInformationScreen({
             ) : currentUser?.profileImage ? (
               <img src={currentUser.profileImage} alt={currentUser?.fullName || 'Profile'} className="w-full h-full object-cover rounded-full" />
             ) : (
-              <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-gray-900 text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-gray-900 text-2xl">
                 {currentUser?.fullName ? currentUser.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
               </AvatarFallback>
             )}
@@ -282,7 +282,7 @@ export function ProfileInformationScreen({
               <motion.button
                 onClick={handlePhotoUpload}
                 disabled={photoVerificationStatus === 'uploading' || photoVerificationStatus === 'verifying'}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-[#f44708] text-gray-900 rounded-full flex items-center justify-center shadow-sm hover:bg-[#ff5722] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 w-10 h-10 bg-primary text-gray-900 rounded-full flex items-center justify-center shadow-sm hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -372,7 +372,7 @@ export function ProfileInformationScreen({
             transition={{ delay: 0.2 }}
           >
             <h3 className="text-gray-900 mb-4 flex items-center font-semibold">
-              <User size={20} className="mr-2 text-[#f44708]" />
+              <User size={20} className="mr-2 text-primary" />
               Personal Information
             </h3>
 
@@ -455,7 +455,7 @@ export function ProfileInformationScreen({
             transition={{ delay: 0.3 }}
           >
             <h3 className="text-gray-900 mb-4 flex items-center font-semibold">
-              <MapPin size={20} className="mr-2 text-[#f44708]" />
+              <MapPin size={20} className="mr-2 text-primary" />
               Address Information
             </h3>
 
@@ -486,11 +486,11 @@ export function ProfileInformationScreen({
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/5 rounded-xl p-4 text-center">
-                <p className="text-3xl text-[#f44708] font-bold">{currentUser?.rating || 0}</p>
+                <p className="text-3xl text-primary font-bold">{currentUser?.rating || 0}</p>
                 <p className="text-xs text-gray-500 mt-1">Rating</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 text-center">
-                <p className="text-3xl text-[#f44708] font-bold">{currentUser?.totalDeliveries || 0}</p>
+                <p className="text-3xl text-primary font-bold">{currentUser?.totalDeliveries || 0}</p>
                 <p className="text-xs text-gray-500 mt-1">Deliveries</p>
               </div>
             </div>
@@ -517,7 +517,7 @@ export function ProfileInformationScreen({
             </motion.button>
             <motion.button
               onClick={handleSave}
-              className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-gray-900 rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
+              className="flex-1 bg-primary hover:bg-primary-hover text-gray-900 rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
               disabled={updateLoading || !formData.firstName || !formData.lastName || !formData.email}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

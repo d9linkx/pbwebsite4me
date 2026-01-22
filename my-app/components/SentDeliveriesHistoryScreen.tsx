@@ -66,7 +66,7 @@ export function SentDeliveriesHistoryScreen({
       case 'picked-up':
         return { color: 'text-blue-600', bg: 'bg-blue-100', icon: Truck, label: 'In Progress' };
       case 'in-transit':
-        return { color: 'text-orange-600', bg: 'bg-orange-100', icon: Package, label: 'In Transit' };
+        return { color: 'text-primary-dark', bg: 'bg-orange-100', icon: Package, label: 'In Transit' };
       case 'delivered':
         return { color: 'text-green-600', bg: 'bg-green-100', icon: CheckCircle, label: 'Delivered' };
       case 'completed':
@@ -128,7 +128,7 @@ export function SentDeliveriesHistoryScreen({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <Package size={24} className="text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             <p className="text-xs text-gray-600">Total</p>
           </motion.div>
@@ -187,7 +187,7 @@ export function SentDeliveriesHistoryScreen({
               onClick={() => setFilterStatus(filter.key as FilterStatus)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 filterStatus === filter.key
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -215,7 +215,7 @@ export function SentDeliveriesHistoryScreen({
             </p>
             {/* <motion.button
               onClick={() => onNavigate('post-delivery')}
-              className="px-6 py-3 bg-[#2f2f2f] hover:bg-[#404040] text-white rounded-xl font-semibold transition-colors"
+              className="px-6 py-3 bg-dark hover:bg-[#404040] text-white rounded-xl font-semibold transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -231,7 +231,7 @@ export function SentDeliveriesHistoryScreen({
               return (
                 <motion.div
                   key={job.id}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#f44708] hover:shadow-md transition-all cursor-pointer"
+                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-primary hover:shadow-md transition-all cursor-pointer"
                   onClick={() => handleJobAction(job)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -248,7 +248,7 @@ export function SentDeliveriesHistoryScreen({
 
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="flex items-center space-x-2 text-sm">
-                      <MapPin size={16} className="text-[#f44708]" />
+                      <MapPin size={16} className="text-primary" />
                       <span className="text-gray-600">From:</span>
                       <span className="text-gray-900 truncate">{job.pickupLocation}</span>
                     </div>
@@ -280,7 +280,7 @@ export function SentDeliveriesHistoryScreen({
                         e.stopPropagation();
                         handleJobAction(job);
                       }}
-                      className="px-4 py-2 bg-[#f44708] hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                      className="px-4 py-2 bg-primary hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >

@@ -22,7 +22,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500 rounded-full opacity-10 blur-3xl"></div>
@@ -31,7 +31,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -113,7 +113,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
               <SelectTrigger className="bg-white/10 border-white/20 text-white">
                 <SelectValue placeholder="Select vehicle type" />
               </SelectTrigger>
-              <SelectContent className="bg-[#2f2f2f] border-white/20 text-white">
+              <SelectContent className="bg-dark border-white/20 text-white">
                 <SelectItem value="bicycle">Bicycle</SelectItem>
                 <SelectItem value="motorcycle">Motorcycle</SelectItem>
                 <SelectItem value="car">Car</SelectItem>
@@ -128,7 +128,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
               <SelectTrigger className="bg-white/10 border-white/20 text-white">
                 <SelectValue placeholder="Select availability" />
               </SelectTrigger>
-              <SelectContent className="bg-[#2f2f2f] border-white/20 text-white">
+              <SelectContent className="bg-dark border-white/20 text-white">
                 <SelectItem value="fulltime">Full-time (6+ hours/day)</SelectItem>
                 <SelectItem value="parttime">Part-time (3-6 hours/day)</SelectItem>
                 <SelectItem value="weekends">Weekends only</SelectItem>

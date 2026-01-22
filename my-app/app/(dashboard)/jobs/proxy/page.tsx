@@ -212,7 +212,7 @@ export default function ProxyJobsPage() {
       <div className="container mx-auto">
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 border-4 border-[#f44708] border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
             <p className="text-gray-600">Loading proxy deliveries...</p>
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function ProxyJobsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <Package size={24} className="text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             <p className="text-xs text-gray-600">Total</p>
           </motion.div>
@@ -313,7 +313,7 @@ export default function ProxyJobsPage() {
               onClick={() => setFilterStatus(filter.key as FilterStatus)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                 filterStatus === filter.key
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -349,7 +349,7 @@ export default function ProxyJobsPage() {
               return (
                 <motion.div
                   key={job.id}
-                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#f44708] hover:shadow-md transition-all cursor-pointer"
+                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-primary hover:shadow-md transition-all cursor-pointer"
                   onClick={() => handleJobSelect(job)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -398,7 +398,7 @@ export default function ProxyJobsPage() {
                         e.stopPropagation()
                         handleJobSelect(job)
                       }}
-                      className="px-4 py-2 bg-[#f44708] hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
+                      className="px-4 py-2 bg-primary hover:bg-[#d63a00] text-white rounded-xl text-sm font-medium flex items-center space-x-1 transition-colors"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >

@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -12,7 +13,8 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
-a, button {
+a,
+button {
   cursor: pointer;
 }
 
@@ -20,12 +22,75 @@ a, button {
   --background: #ffffff;
   --foreground: #171717;
   --font-plus-jakarta-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* Prawnbox Brand Colors */
+  --primary: #f44708;
+  --primary-hover: #ff5722;
+  --primary-light: #f4470820;
+  --primary-dark: #d63e06;
+
+  /* Dark Theme Colors */
+  --dark: #2f2f2f;
+  --darker: #1a1a1a;
+  --darkest: #000000;
+
+  /* Gray Scale */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --error: #ef4444;
+  --error-light: #fee2e2;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-plus-jakarta-sans);
+
+  /* Custom Color Utilities */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-dark: var(--dark);
+  --color-darker: var(--darker);
+  --color-darkest: var(--darkest);
+
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-warning: var(--warning);
+  --color-warning-light: var(--warning-light);
+  --color-error: var(--error);
+  --color-error-light: var(--error-light);
+  --color-info: var(--info);
+  --color-info-light: var(--info-light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,4 +107,102 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+}
+
+/* Custom Utility Classes for Your Brand Colors */
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-primary-hover {
+  background-color: var(--primary-hover);
+}
+
+.bg-primary-light {
+  background-color: var(--primary-light);
+}
+
+.bg-dark {
+  background-color: var(--dark);
+}
+
+.bg-darker {
+  background-color: var(--darker);
+}
+
+.bg-darkest {
+  background-color: var(--darkest);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-primary-hover {
+  color: var(--primary-hover);
+}
+
+.text-dark {
+  color: var(--dark);
+}
+
+.text-darker {
+  color: var(--darker);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+.border-primary-hover {
+  border-color: var(--primary-hover);
+}
+
+/* Gradient Utilities */
+.gradient-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-hover) 100%
+  );
+}
+
+.gradient-dark {
+  background: linear-gradient(
+    to bottom right,
+    var(--dark),
+    var(--darker),
+    var(--darkest)
+  );
+}
+
+.gradient-hero {
+  background: linear-gradient(
+    to bottom right,
+    var(--dark) 0%,
+    var(--darker) 50%,
+    var(--darkest) 100%
+  );
+}
+
+/* Hover Effects */
+.hover-primary:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Shadow Utilities */
+.shadow-primary {
+  box-shadow: 0 10px 25px -5px rgba(244, 71, 8, 0.3);
+}
+
+.shadow-primary-lg {
+  box-shadow: 0 20px 50px -12px rgba(244, 71, 8, 0.5);
 }

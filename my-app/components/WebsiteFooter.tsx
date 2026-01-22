@@ -49,7 +49,7 @@ export function WebsiteFooter() {
   };
 
   return (
-    <footer className="bg-[#1a1a1a] text-gray-300">
+    <footer className="bg-darker text-gray-300">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
@@ -75,7 +75,7 @@ export function WebsiteFooter() {
                 href="https://www.facebook.com/share/1CUU8AAMpu/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary flex items-center justify-center transition-colors duration-200"
               >
                 <Facebook size={18} />
               </a>
@@ -83,13 +83,13 @@ export function WebsiteFooter() {
                 href="https://x.com/prawnbox/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary flex items-center justify-center transition-colors duration-200"
               >
                 <X size={18} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary flex items-center justify-center transition-colors duration-200"
               >
                 <Instagram size={18} />
               </a>
@@ -97,7 +97,7 @@ export function WebsiteFooter() {
                 href="https://linkedin.com/company/prawnbox"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#f44708] flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary flex items-center justify-center transition-colors duration-200"
               >
                 <Linkedin size={18} />
               </a>
@@ -112,7 +112,7 @@ export function WebsiteFooter() {
                 <li key={link.path}>
                   <button
                     onClick={() => handleNavigate(link.path)}
-                    className="text-sm hover:text-[#f44708] transition-colors duration-200"
+                    className="text-sm hover:text-primary transition-colors duration-200"
                   >
                     {link.label}
                   </button>
@@ -129,7 +129,7 @@ export function WebsiteFooter() {
                 <li key={link.path}>
                   <button
                     onClick={() => handleNavigate(link.path)}
-                    className="text-sm hover:text-[#f44708] transition-colors duration-200"
+                    className="text-sm hover:text-primary transition-colors duration-200"
                   >
                     {link.label}
                   </button>
@@ -146,7 +146,7 @@ export function WebsiteFooter() {
                 <li key={link.path}>
                   <button
                     onClick={() => handleNavigate(link.path)}
-                    className="text-sm hover:text-[#f44708] transition-colors duration-200"
+                    className="text-sm hover:text-primary transition-colors duration-200"
                   >
                     {link.label}
                   </button>
@@ -160,7 +160,7 @@ export function WebsiteFooter() {
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
-                <Mail size={18} className="text-[#f44708] mt-1 flex-shrink-0" />
+                <Mail size={18} className="text-primary mt-1 flex-shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-sm">info@prawnbox.com</span>
                   <span className="text-sm">partners@prawnbox.com</span>
@@ -169,7 +169,7 @@ export function WebsiteFooter() {
               <li className="flex items-start space-x-3">
                 <Phone
                   size={18}
-                  className="text-[#f44708] mt-1 flex-shrink-0"
+                  className="text-primary mt-1 flex-shrink-0"
                 />
                 <div className="flex flex-col">
                   <span className="text-sm">+234 906 870 9992</span>
@@ -179,7 +179,7 @@ export function WebsiteFooter() {
               <li className="flex items-start space-x-3">
                 <MapPin
                   size={18}
-                  className="text-[#f44708] mt-1 flex-shrink-0"
+                  className="text-primary mt-1 flex-shrink-0"
                 />
                 <span className="text-sm">Lagos, Nigeria</span>
               </li>
@@ -198,13 +198,13 @@ export function WebsiteFooter() {
             <div className="flex items-center space-x-6 text-sm">
               <button
                 onClick={() => handleNavigate("website-terms")}
-                className="text-gray-400 hover:text-[#f44708] transition-colors duration-200"
+                className="text-gray-400 hover:text-primary transition-colors duration-200"
               >
                 Terms
               </button>
               <button
                 onClick={() => handleNavigate("website-privacy")}
-                className="text-gray-400 hover:text-[#f44708] transition-colors duration-200"
+                className="text-gray-400 hover:text-primary transition-colors duration-200"
               >
                 Privacy
               </button>

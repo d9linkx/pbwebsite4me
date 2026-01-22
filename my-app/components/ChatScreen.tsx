@@ -36,7 +36,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
 
   if (!chatThread || !currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex items-center justify-center p-4">
         <motion.div 
           className="text-center"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -47,7 +47,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
           <p className="text-gray-400 mb-4">Unable to load chat conversation</p>
           <motion.button
             onClick={onBack}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-6 py-3 rounded-xl font-medium flex items-center justify-center"
+            className="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-medium flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -197,16 +197,16 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary rounded-full opacity-10 blur-3xl"></div>
         <div className="absolute top-1/2 -left-40 w-80 h-80 bg-blue-500 rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 z-10 relative"
+        className="bg-dark border-b border-white/10 p-6 z-10 relative"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -222,8 +222,8 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
             </motion.button>
             
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-[#f44708]/20 rounded-full flex items-center justify-center">
-                <MessageCircle size={20} className="text-[#f44708]" />
+              <div className="w-10 h-10 bg-primary-light rounded-full flex items-center justify-center">
+                <MessageCircle size={20} className="text-primary" />
               </div>
               <div>
                 <h1 className="font-semibold text-white flex items-center space-x-2">
@@ -259,7 +259,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
             onClick={() => setShowConflictResolution(!showConflictResolution)}
             className={`flex items-center space-x-2 px-4 py-2 rounded-xl border transition-all ${
               showConflictResolution 
-                ? 'bg-[#f44708]/20 border-[#f44708]/30 text-[#f44708]' 
+                ? 'bg-primary-light border-primary/30 text-primary' 
                 : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
             }`}
             whileHover={{ scale: 1.05 }}
@@ -275,7 +275,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
       <AnimatePresence>
         {showConflictResolution && (
           <motion.div 
-            className="bg-[#2f2f2f]/50 border-b border-white/10 z-10 relative"
+            className="bg-dark/50 border-b border-white/10 z-10 relative"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -283,8 +283,8 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
             <div className="p-6">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-[#f44708]/20 rounded-full flex items-center justify-center">
-                    <Shield size={20} className="text-[#f44708]" />
+                  <div className="w-10 h-10 bg-primary-light rounded-full flex items-center justify-center">
+                    <Shield size={20} className="text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">Conflict Resolution Center</h3>
@@ -311,12 +311,12 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
                   <Collapsible>
                     <CollapsibleTrigger asChild>
                       <motion.div
-                        className="bg-[#f44708]/20 border border-[#f44708]/30 rounded-2xl p-4 text-center cursor-pointer hover:bg-[#f44708]/30 transition-all"
+                        className="bg-primary-light border border-primary/30 rounded-2xl p-4 text-center cursor-pointer hover:bg-primary/30 transition-all"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        <div className="w-12 h-12 bg-[#f44708]/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <Flag size={24} className="text-[#f44708]" />
+                        <div className="w-12 h-12 bg-primary/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <Flag size={24} className="text-primary" />
                         </div>
                         <h4 className="font-medium text-white mb-2">Report Issue</h4>
                         <p className="text-sm text-gray-400">Document a specific problem for resolution</p>
@@ -334,8 +334,8 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
                                 onClick={() => setReportType(type.value)}
                                 className={`p-2 text-xs rounded-xl border transition-all text-left ${
                                   reportType === type.value
-                                    ? 'border-[#f44708] bg-[#f44708]/20 text-[#f44708]'
-                                    : 'border-white/20 bg-white/5 hover:border-[#f44708]/30 text-gray-300'
+                                    ? 'border-primary bg-primary-light text-primary'
+                                    : 'border-white/20 bg-white/5 hover:border-primary/30 text-gray-300'
                                 }`}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
@@ -380,7 +380,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
                             value={reportDescription}
                             onChange={(e) => setReportDescription(e.target.value)}
                             placeholder="Please describe the issue in detail..."
-                            className="w-full p-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-gray-500 resize-none focus:border-[#f44708] focus:outline-none"
+                            className="w-full p-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-gray-500 resize-none focus:border-primary focus:outline-none"
                             rows={3}
                           />
                         </div>
@@ -388,7 +388,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
                         <motion.button
                           onClick={handleReportIssue}
                           disabled={!reportType || !reportDescription.trim()}
-                          className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-3 rounded-xl font-medium disabled:bg-gray-600 disabled:cursor-not-allowed transition-all flex items-center justify-center"
+                          className="w-full bg-primary hover:bg-primary-hover text-white py-3 rounded-xl font-medium disabled:bg-gray-600 disabled:cursor-not-allowed transition-all flex items-center justify-center"
                           whileHover={{ scale: !reportType || !reportDescription.trim() ? 1 : 1.02 }}
                           whileTap={{ scale: !reportType || !reportDescription.trim() ? 1 : 0.98 }}
                         >
@@ -416,7 +416,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
                 {/* Resolution Guidelines */}
                 <div className="mt-6 p-4 bg-white/5 border border-white/10 rounded-xl">
                   <div className="flex items-start space-x-3">
-                    <AlertTriangle size={16} className="text-[#f44708] mt-0.5 flex-shrink-0" />
+                    <AlertTriangle size={16} className="text-primary mt-0.5 flex-shrink-0" />
                     <div className="text-xs text-gray-400">
                       <p className="font-medium text-white mb-1">Resolution Process:</p>
                       <p>1. Try to resolve issues through direct communication first</p>
@@ -523,7 +523,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
                           {/* Message Bubble */}
                           <div className={`rounded-2xl p-4 shadow-lg ${
                             isCurrentUser
-                              ? 'bg-[#f44708] text-white rounded-br-md'
+                              ? 'bg-primary text-white rounded-br-md'
                               : msg.senderId === 'support-agent'
                               ? 'bg-blue-500/20 text-blue-300 rounded-bl-md border-2 border-blue-500/30'
                               : 'bg-white/10 text-white rounded-bl-md border border-white/20'
@@ -580,7 +580,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
       </div>
 
       {/* Message Input - Sticky */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#2f2f2f] border-t border-white/10 p-6 shadow-lg z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-dark border-t border-white/10 p-6 shadow-lg z-50">
         <div className="flex items-end space-x-3">
           <div className="flex-1 relative">
             <Input
@@ -588,7 +588,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
-              className="w-full rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-gray-500 px-4 py-3 pr-12 focus:bg-white/15 focus:border-[#f44708] resize-none min-h-[48px]"
+              className="w-full rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-gray-500 px-4 py-3 pr-12 focus:bg-white/15 focus:border-primary resize-none min-h-[48px]"
               style={{ paddingRight: '3rem' }}
             />
             
@@ -596,9 +596,9 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
             {isTyping && (
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                 <div className="flex space-x-1">
-                  <div className="w-1 h-1 bg-[#f44708] rounded-full animate-bounce"></div>
-                  <div className="w-1 h-1 bg-[#f44708] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-1 h-1 bg-[#f44708] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-1 h-1 bg-primary rounded-full animate-bounce"></div>
+                  <div className="w-1 h-1 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-1 h-1 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
               </div>
             )}
@@ -609,7 +609,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
             disabled={!message.trim()}
             className={`w-12 h-12 p-0 rounded-2xl transition-all duration-200 ${
               message.trim()
-                ? 'bg-[#f44708] hover:bg-[#ff5722] text-white scale-100'
+                ? 'bg-primary hover:bg-primary-hover text-white scale-100'
                 : 'bg-white/10 text-gray-500 scale-95'
             }`}
             whileHover={{ scale: message.trim() ? 1.05 : 0.95 }}

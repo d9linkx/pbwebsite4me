@@ -221,7 +221,7 @@ export function FAQsPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#2f2f2f] to-[#1a1a1a] text-white py-20">
+      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -243,7 +243,7 @@ export function FAQsPage() {
                   placeholder="Search for answers..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#f44708]"
+                  className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-primary"
                 />
               </div>
             </div>
@@ -261,8 +261,8 @@ export function FAQsPage() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-6 py-4 border-b-2 transition-all duration-200 whitespace-nowrap ${
                   activeCategory === category.id
-                    ? "border-[#f44708] text-[#f44708]"
-                    : "border-transparent text-gray-600 hover:text-[#2f2f2f]"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-gray-600 hover:text-dark"
                 }`}
               >
                 <span className="font-medium">{category.label}</span>
@@ -294,12 +294,12 @@ export function FAQsPage() {
                     }
                     className="w-full px-6 py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
                   >
-                    <span className="font-semibold text-left text-[#2f2f2f]">
+                    <span className="font-semibold text-left text-dark">
                       {faq.question}
                     </span>
                     {expandedFaq === faq.id ? (
                       <ChevronUp
-                        className="text-[#f44708] flex-shrink-0"
+                        className="text-primary flex-shrink-0"
                         size={24}
                       />
                     ) : (
@@ -322,12 +322,12 @@ export function FAQsPage() {
       {/* Still Have Questions */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <MessageCircle className="w-16 h-16 text-[#f44708] mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-[#2f2f2f] mb-6">
+          <MessageCircle className="w-16 h-16 text-primary mx-auto mb-6" />
+          <h2 className="text-3xl font-bold text-dark mb-6">
             <span className="h2-animated-underline relative inline-block">
               Still Have Questions?
               <motion.span
-                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-[#f44708] to-[#f4470899] rounded-full"
+                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
                 initial={{ width: "0%", opacity: 0 }}
                 whileInView={{ width: "100%", opacity: 1 }}
                 viewport={{ once: false, margin: "-50px" }}
@@ -340,7 +340,7 @@ export function FAQsPage() {
           </p>
           <button
             onClick={() => router.push(ROUTES.CONTACT)}
-            className="px-8 py-4 bg-[#f44708] text-white text-lg font-semibold rounded-xl hover:bg-[#ff5722] transform hover:scale-105 transition-all duration-200 shadow-lg"
+            className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             Contact Support
             <ArrowRight className="inline ml-2" size={20} />

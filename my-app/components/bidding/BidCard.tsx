@@ -50,7 +50,7 @@ export function BidCard({
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           {/* Pal Avatar */}
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center text-white font-bold text-lg">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-bold text-lg">
             {bid.palName.charAt(0).toUpperCase()}
           </div>
 
@@ -101,7 +101,7 @@ export function BidCard({
       {/* Bid Details Grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">
         {/* Price */}
-        <div className="bg-gradient-to-br from-[#f44708] to-[#ff5722] rounded-lg p-3 text-white">
+        <div className="bg-gradient-to-br from-primary to-primary-hover rounded-lg p-3 text-white">
           <p className="text-xs opacity-90 mb-1">Bid Amount</p>
           <p className="text-2xl font-bold">{formatPrice(bid.amount)}</p>
         </div>
@@ -175,7 +175,7 @@ export function BidCard({
             onClick={() => onAccept(bid.id)}
             className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
               isLowest || isRecommended
-                ? 'bg-[#f44708] hover:bg-[#ff5722] text-white shadow-md hover:shadow-lg'
+                ? 'bg-primary hover:bg-primary-hover text-white shadow-md hover:shadow-lg'
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
             }`}
           >

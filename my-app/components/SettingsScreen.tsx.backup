@@ -120,16 +120,16 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 sticky top-0 z-10"
+        className="bg-dark border-b border-white/10 sticky top-0 z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -159,7 +159,7 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
             whileTap={{ scale: 0.98 }}
           >
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-lg">
                 <span className="text-white text-xl font-bold">
                   {user.name?.split(' ').map(n => n[0]).join('') || 'U'}
                 </span>
@@ -174,7 +174,7 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
                 <p className="text-gray-400 text-sm">{user.email || 'No email'}</p>
                 <div className="flex items-center mt-1">
                   <span className="text-sm text-gray-400">Rating: </span>
-                  <span className="text-sm text-[#f44708] ml-1 font-medium">⭐ {typeof user.rating === 'number' ? user.rating.toFixed(1) : '0.0'}</span>
+                  <span className="text-sm text-primary ml-1 font-medium">⭐ {typeof user.rating === 'number' ? user.rating.toFixed(1) : '0.0'}</span>
                 </div>
               </div>
               <ChevronRight size={20} className="text-gray-400" />

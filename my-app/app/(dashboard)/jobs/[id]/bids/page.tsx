@@ -152,7 +152,7 @@ export default function JobBidsPage() {
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-600">Loading bids...</p>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default function JobBidsPage() {
           <h2 className="text-xl font-semibold text-gray-700">Job not found</h2>
           <button
             onClick={handleBack}
-            className="mt-4 px-4 py-2 bg-[#f44708] text-white rounded hover:bg-[#d63a00]"
+            className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-[#d63a00]"
           >
             Go Back
           </button>

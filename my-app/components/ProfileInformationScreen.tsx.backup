@@ -70,8 +70,8 @@ export function ProfileInformationScreen({
   // Show loading state while fetching user data
   if (apiUserLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#f44708] border-t-transparent"></div>
+      <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 border-primary border-t-transparent"></div>
         <p className="text-white mt-4">Loading profile...</p>
       </div>
     );
@@ -80,12 +80,12 @@ export function ProfileInformationScreen({
   // Show error state if user data fails to load
   if (apiUserError || !isValidUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col items-center justify-center">
         <div className="text-white text-center">
           <p className="mb-4">Failed to load profile information</p>
           <button
             onClick={() => refetch()}
-            className="bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-xl"
+            className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-xl"
           >
             Try Again
           </button>
@@ -226,16 +226,16 @@ export function ProfileInformationScreen({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f]">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#f44708] rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       {/* Header */}
       <motion.div
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-10"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -278,7 +278,7 @@ export function ProfileInformationScreen({
             ) : currentUser?.profileImage ? (
               <img src={currentUser.profileImage} alt={currentUser?.fullName || 'Profile'} className="w-full h-full object-cover rounded-full" />
             ) : (
-              <AvatarFallback className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white text-2xl">
+              <AvatarFallback className="bg-gradient-to-br from-primary to-primary-hover text-white text-2xl">
                 {currentUser?.fullName ? currentUser.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
               </AvatarFallback>
             )}
@@ -288,7 +288,7 @@ export function ProfileInformationScreen({
               <motion.button
                 onClick={handlePhotoUpload}
                 disabled={photoVerificationStatus === 'uploading' || photoVerificationStatus === 'verifying'}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-[#f44708] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#ff5722] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -378,7 +378,7 @@ export function ProfileInformationScreen({
             transition={{ delay: 0.2 }}
           >
             <h3 className="text-white mb-4 flex items-center font-semibold">
-              <User size={20} className="mr-2 text-[#f44708]" />
+              <User size={20} className="mr-2 text-primary" />
               Personal Information
             </h3>
 
@@ -461,7 +461,7 @@ export function ProfileInformationScreen({
             transition={{ delay: 0.3 }}
           >
             <h3 className="text-white mb-4 flex items-center font-semibold">
-              <MapPin size={20} className="mr-2 text-[#f44708]" />
+              <MapPin size={20} className="mr-2 text-primary" />
               Address Information
             </h3>
 
@@ -492,11 +492,11 @@ export function ProfileInformationScreen({
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/5 rounded-xl p-4 text-center">
-                <p className="text-3xl text-[#f44708] font-bold">{currentUser?.rating || 0}</p>
+                <p className="text-3xl text-primary font-bold">{currentUser?.rating || 0}</p>
                 <p className="text-xs text-gray-400 mt-1">Rating</p>
               </div>
               <div className="bg-white/5 rounded-xl p-4 text-center">
-                <p className="text-3xl text-[#f44708] font-bold">{currentUser?.totalDeliveries || 0}</p>
+                <p className="text-3xl text-primary font-bold">{currentUser?.totalDeliveries || 0}</p>
                 <p className="text-xs text-gray-400 mt-1">Deliveries</p>
               </div>
             </div>
@@ -507,7 +507,7 @@ export function ProfileInformationScreen({
       {/* Action Buttons - Fixed at bottom */}
       {isEditing && (
         <motion.div
-          className="fixed bottom-0 left-0 right-0 p-6 bg-[#2f2f2f] border-t border-white/10 z-20"
+          className="fixed bottom-0 left-0 right-0 p-6 bg-dark border-t border-white/10 z-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -523,7 +523,7 @@ export function ProfileInformationScreen({
             </motion.button>
             <motion.button
               onClick={handleSave}
-              className="flex-1 bg-[#f44708] hover:bg-[#ff5722] text-white rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
+              className="flex-1 bg-primary hover:bg-primary-hover text-white rounded-xl py-3 px-4 font-semibold transition-all duration-300 disabled:opacity-50"
               disabled={updateLoading || !formData.firstName || !formData.lastName || !formData.email}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

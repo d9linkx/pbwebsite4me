@@ -102,17 +102,17 @@ export function EmailVerificationScreen({
   }, [verificationCode]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#f44708] rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary rounded-full opacity-20 blur-3xl"></div>
         <div className="absolute top-1/2 -left-40 w-96 h-96 bg-blue-500 rounded-full opacity-15 blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       {/* Header */}
       <motion.div
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -158,7 +158,7 @@ export function EmailVerificationScreen({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="w-20 h-20 bg-[#f44708] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mail size={40} className="text-white" />
               </div>
               <h2 className="text-xl font-semibold text-white mb-2">Check Your Email</h2>
@@ -206,7 +206,7 @@ export function EmailVerificationScreen({
                         }
                       }
                     }}
-                    className="w-12 h-12 bg-white/10 border-2 border-white/20 rounded-xl text-center text-xl font-semibold text-white focus:border-[#f44708] focus:outline-none transition-all"
+                    className="w-12 h-12 bg-white/10 border-2 border-white/20 rounded-xl text-center text-xl font-semibold text-white focus:border-primary focus:outline-none transition-all"
                     style={{ caretColor: 'transparent' }}
                     data-index={index}
                   />
@@ -221,7 +221,7 @@ export function EmailVerificationScreen({
             <motion.button
               onClick={handleVerify}
               disabled={isLoading || verificationCode.length !== 6}
-              className="w-full bg-gradient-to-r from-[#f44708] to-[#ff5722] hover:from-[#ff5722] hover:to-[#f44708] text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 shadow-lg mb-4"
+              className="w-full bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 shadow-lg mb-4"
               whileHover={{ scale: verificationCode.length === 6 ? 1.02 : 1 }}
               whileTap={{ scale: verificationCode.length === 6 ? 0.98 : 1 }}
             >
@@ -243,7 +243,7 @@ export function EmailVerificationScreen({
               {canResend ? (
                 <button
                   onClick={handleResendCode}
-                  className="text-[#f44708] hover:text-[#ff5722] text-sm font-medium transition-colors"
+                  className="text-primary hover:text-primary-hover text-sm font-medium transition-colors"
                 >
                   Resend verification code
                 </button>

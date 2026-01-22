@@ -59,7 +59,7 @@ export function ProxyToReceiverHandoverScreen({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"></div>
@@ -68,7 +68,7 @@ export function ProxyToReceiverHandoverScreen({
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -100,7 +100,7 @@ export function ProxyToReceiverHandoverScreen({
             onClick={() => setMode('show')}
             className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all ${
               mode === 'show' 
-                ? 'bg-white text-[#2f2f2f]' 
+                ? 'bg-white text-dark' 
                 : 'text-gray-400 hover:text-white'
             }`}
             whileHover={{ scale: 1.02 }}
@@ -115,7 +115,7 @@ export function ProxyToReceiverHandoverScreen({
             onClick={() => setMode('scan')}
             className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all ${
               mode === 'scan' 
-                ? 'bg-white text-[#2f2f2f]' 
+                ? 'bg-white text-dark' 
                 : 'text-gray-400 hover:text-white'
             }`}
             whileHover={{ scale: 1.02 }}
@@ -240,7 +240,7 @@ export function ProxyToReceiverHandoverScreen({
                   <motion.button
                     onClick={handleScanDemo}
                     disabled={isScanning}
-                    className="w-full bg-white hover:bg-gray-100 text-[#2f2f2f] py-4 px-6 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    className="w-full bg-white hover:bg-gray-100 text-dark py-4 px-6 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     whileHover={{ scale: isScanning ? 1 : 1.02 }}
                     whileTap={{ scale: isScanning ? 1 : 0.98 }}
                     initial={{ opacity: 0, y: 20 }}

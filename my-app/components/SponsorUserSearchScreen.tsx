@@ -92,7 +92,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#2f2f2f] via-[#1a1a1a] to-[#2f2f2f] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500 rounded-full opacity-10 blur-3xl"></div>
@@ -101,7 +101,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
 
       {/* Header */}
       <motion.div 
-        className="bg-[#2f2f2f] border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
+        className="bg-dark border-b border-white/10 p-6 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -134,7 +134,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name..."
-            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-[#f44708] h-12"
+            className="pl-12 bg-white/10 border-white/20 text-white placeholder-gray-500 focus:border-primary h-12"
           />
         </motion.div>
 
@@ -151,7 +151,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
               onClick={() => setSelectedFilter(filter)}
               className={`px-4 py-2 rounded-xl font-medium transition-all ${
                 selectedFilter === filter
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-white/10 text-gray-400 hover:bg-white/20'
               }`}
               whileHover={{ scale: 1.05 }}
@@ -192,7 +192,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#f44708] to-[#ff5722] flex items-center justify-center text-white text-xl font-bold">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white text-xl font-bold">
                       {candidate.name.charAt(0)}
                     </div>
                     <div>
@@ -301,7 +301,7 @@ export function SponsorUserSearchScreen({ user, onBack, onSelectUser }: SponsorU
                     };
                     onSelectUser(userObject);
                   }}
-                  className="w-full bg-[#f44708] hover:bg-[#ff5722] text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2"
+                  className="w-full bg-primary hover:bg-primary-hover text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >

@@ -110,7 +110,7 @@ export function ProxyDashboard({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Package size={24} className="text-[#f44708] mx-auto mb-2" />
+            <Package size={24} className="text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{stats.incoming + stats.stored}</p>
             <p className="text-xs text-gray-600">Active</p>
           </motion.div>
@@ -161,7 +161,7 @@ export function ProxyDashboard({
               key={filter}
               onClick={() => setActiveFilter(filter as FilterType)}
               className={`px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${activeFilter === filter
-                  ? 'bg-[#f44708] text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               whileHover={{ scale: 1.05 }}
@@ -178,7 +178,7 @@ export function ProxyDashboard({
             filteredItems.map((item, index) => (
               <motion.div
                 key={item.id}
-                className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-[#f44708] hover:shadow-md transition-all"
+                className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-primary hover:shadow-md transition-all"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -229,7 +229,7 @@ export function ProxyDashboard({
                     <>
                       <motion.button
                         onClick={() => onStartScan?.(item)}
-                        className="flex items-center justify-center space-x-2 bg-[#f44708] hover:bg-[#d63a00] text-white py-2.5 rounded-xl transition-colors"
+                        className="flex items-center justify-center space-x-2 bg-primary hover:bg-[#d63a00] text-white py-2.5 rounded-xl transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >

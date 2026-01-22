@@ -484,7 +484,7 @@ export function PostDeliveryScreen({
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
       {/* Dark Header */}
       <motion.div 
-        className="bg-gradient-to-r from-[#2f2f2f] to-[#1a1a1a] border-b border-white/10 sticky top-0 z-20 shadow-lg"
+        className="bg-gradient-to-r from-dark to-darker border-b border-white/10 sticky top-0 z-20 shadow-lg"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -505,7 +505,7 @@ export function PostDeliveryScreen({
                     className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold transition-all ${step < currentStep
                         ? 'bg-green-500 text-white'
                         : step === currentStep
-                          ? 'bg-[#f44708] text-white'
+                          ? 'bg-primary text-white'
                           : 'bg-white/20 text-gray-400'
                       }`}
                     animate={step === currentStep ? { scale: [1, 1.1, 1] } : {}}
@@ -547,7 +547,7 @@ export function PostDeliveryScreen({
                     value={formData.title}
                     onChange={(e) => updateFormData('title', e.target.value)}
                     placeholder="e.g., iPhone 15 Pro, Birthday Cake, Designer Shoes"
-                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-primary"
                     required
                   />
                 </div>
@@ -621,7 +621,7 @@ export function PostDeliveryScreen({
                     value={formData.value}
                     onChange={(e) => updateFormData('value', e.target.value)}
                     placeholder="e.g. 350000 (for iPhone), 25000 (for cake)"
-                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-primary"
                     onWheel={(e) => e.currentTarget.blur()}
                     required
                   />
@@ -751,7 +751,7 @@ export function PostDeliveryScreen({
                   <Label className="text-sm font-medium text-gray-700">Pickup Location <span className="text-red-500">*</span></Label>
                   <div className="relative mt-2">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <MapPin size={20} className="text-[#f44708]" />
+                      <MapPin size={20} className="text-primary" />
                     </div>
                     <Input
                       type="text"
@@ -763,7 +763,7 @@ export function PostDeliveryScreen({
                         }
                       }}
                       placeholder="e.g., Victoria Island, Ikeja, Bodija Ibadan"
-                      className="pl-12 pr-4 h-12 rounded-xl border-gray-300 focus:border-[#f44708]"
+                      className="pl-12 pr-4 h-12 rounded-xl border-gray-300 focus:border-primary"
                       required
                     />
                   </div>
@@ -785,7 +785,7 @@ export function PostDeliveryScreen({
                             className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 border-b border-gray-100 last:border-b-0 transition-colors"
                             whileHover={{ backgroundColor: 'rgba(244, 71, 8, 0.1)' }}
                           >
-                            <MapPin size={16} className="text-[#f44708] flex-shrink-0" />
+                            <MapPin size={16} className="text-primary flex-shrink-0" />
                             <span className="text-gray-900 text-sm">{location}</span>
                           </motion.button>
                         ))}
@@ -799,7 +799,7 @@ export function PostDeliveryScreen({
                   <Label className="text-sm font-medium text-gray-700">Delivery Location <span className="text-red-500">*</span></Label>
                   <div className="relative mt-2">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <MapPin size={20} className="text-[#f44708]" />
+                      <MapPin size={20} className="text-primary" />
                     </div>
                     <Input
                       type="text"
@@ -811,7 +811,7 @@ export function PostDeliveryScreen({
                         }
                       }}
                       placeholder="e.g., Lekki, Surulere, Ogbomoso"
-                      className="pl-12 pr-4 h-12 rounded-xl border-gray-300 focus:border-[#f44708]"
+                      className="pl-12 pr-4 h-12 rounded-xl border-gray-300 focus:border-primary"
                       required
                     />
                   </div>
@@ -833,7 +833,7 @@ export function PostDeliveryScreen({
                             className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 border-b border-gray-100 last:border-b-0 transition-colors"
                             whileHover={{ backgroundColor: 'rgba(244, 71, 8, 0.1)' }}
                           >
-                            <MapPin size={16} className="text-[#f44708] flex-shrink-0" />
+                            <MapPin size={16} className="text-primary flex-shrink-0" />
                             <span className="text-gray-900 text-sm">{location}</span>
                           </motion.button>
                         ))}
@@ -851,7 +851,7 @@ export function PostDeliveryScreen({
                       value={formData.pickupDate}
                       onChange={(e) => updateFormData('pickupDate', e.target.value)}
                       min={new Date().toISOString().split('T')[0]}
-                      className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                      className="mt-2 rounded-xl h-12 border-gray-300 focus:border-primary"
                       required
                     />
                   </div>
@@ -863,7 +863,7 @@ export function PostDeliveryScreen({
                       type="time"
                       value={formData.pickupTime}
                       onChange={(e) => updateFormData('pickupTime', e.target.value)}
-                      className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                      className="mt-2 rounded-xl h-12 border-gray-300 focus:border-primary"
                     />
                   </div>
                 </div>
@@ -875,7 +875,7 @@ export function PostDeliveryScreen({
                     value={formData.notes}
                     onChange={(e) => updateFormData('notes', e.target.value)}
                     placeholder="e.g., Handle with care, Fragile, Call when arriving, etc."
-                    className="mt-2 rounded-xl border-gray-300 focus:border-[#f44708] min-h-[100px]"
+                    className="mt-2 rounded-xl border-gray-300 focus:border-primary min-h-[100px]"
                     rows={4}
                   />
                 </div>
@@ -892,7 +892,7 @@ export function PostDeliveryScreen({
                     value={formData.receiverName}
                     onChange={(e) => updateFormData('receiverName', e.target.value)}
                     placeholder="Full name of receiver"
-                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-primary"
                     required
                   />
                 </div>
@@ -905,7 +905,7 @@ export function PostDeliveryScreen({
                     value={formData.receiverPhone}
                     onChange={(e) => updateFormData('receiverPhone', e.target.value)}
                     placeholder="+234 801 234 5678"
-                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-[#f44708]"
+                    className="mt-2 rounded-xl h-12 border-gray-300 focus:border-primary"
                     required
                   />
                   <p className="text-xs text-gray-500 mt-1">
@@ -917,12 +917,12 @@ export function PostDeliveryScreen({
                 <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-2 border-orange-200 rounded-2xl p-6">
                   <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
                     <span>How Payment Works</span>
-                    <span className="ml-2 px-2 py-0.5 bg-[#f44708] text-white text-xs rounded-full">Secure Escrow</span>
+                    <span className="ml-2 px-2 py-0.5 bg-primary text-white text-xs rounded-full">Secure Escrow</span>
                   </h4>
                   
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
-                      <div className="w-7 h-7 bg-[#f44708] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                      <div className="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
                         1
                       </div>
                       <div>
@@ -934,7 +934,7 @@ export function PostDeliveryScreen({
                     </div>
 
                     <div className="flex items-start space-x-3">
-                      <div className="w-7 h-7 bg-[#f44708] text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                      <div className="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
                         2
                       </div>
                       <div>
@@ -982,7 +982,7 @@ export function PostDeliveryScreen({
                 <motion.button
                   type="button"
                   onClick={handlePrevious}
-                  className="flex-1 border-2 border-[#f44708] text-gray-700 hover:bg-gray-50 hover:border-[#f44708] rounded-xl h-14 font-medium flex items-center justify-center"
+                  className="flex-1 border-2 border-primary text-gray-700 hover:bg-gray-50 hover:border-primary rounded-xl h-14 font-medium flex items-center justify-center"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -995,7 +995,7 @@ export function PostDeliveryScreen({
                 type="button"
                 onClick={handleNext}
                 disabled={!isCurrentStepValid()}
-                className={`${currentStep === 1 ? 'w-full' : 'flex-1'} bg-[#f44708] hover:bg-[#f44708] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all mb-10`}
+                className={`${currentStep === 1 ? 'w-full' : 'flex-1'} bg-primary hover:bg-primary text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all mb-10`}
                 whileHover={isCurrentStepValid() ? { scale: 1.02 } : {}}
                 whileTap={isCurrentStepValid() ? { scale: 0.98 } : {}}
               >
@@ -1009,7 +1009,7 @@ export function PostDeliveryScreen({
                 <motion.button
                   type="button"
                   onClick={handlePrevious}
-                  className="flex-1 border-2 border-[#f44708] text-gray-700 hover:bg-gray-50 hover:border-[#f44708] rounded-xl h-14 font-medium flex items-center justify-center"
+                  className="flex-1 border-2 border-primary text-gray-700 hover:bg-gray-50 hover:border-primary rounded-xl h-14 font-medium flex items-center justify-center"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -1021,7 +1021,7 @@ export function PostDeliveryScreen({
                   type="button"
                   onClick={handleSubmit}
                   disabled={!isFormValid() || isSubmitting}
-                  className="flex-1 bg-[#f44708] hover:bg-[#f44708] text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex-1 bg-primary hover:bg-primary text-white rounded-xl h-14 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   whileHover={isFormValid() && !isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={isFormValid() && !isSubmitting ? { scale: 0.98 } : {}}
                 >
@@ -1050,7 +1050,7 @@ export function PostDeliveryScreen({
                   type="button"
                   onClick={handleChooseFavoritePal}
                   disabled={!isFormValid() || isSubmitting}
-                  className="text-[#f44708] hover:text-[#ff5722] underline font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="text-primary hover:text-primary-hover underline font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -1078,9 +1078,9 @@ export function PostDeliveryScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex flex-col"
+            className="fixed inset-0 bg-darkest/90 z-50 flex flex-col"
           >
-            <div className="flex items-center justify-between p-4 bg-[#2f2f2f] border-b border-white/10">
+            <div className="flex items-center justify-between p-4 bg-dark border-b border-white/10">
               <h2 className="text-white font-semibold">AI Item Scanner</h2>
               <motion.button
                 onClick={() => setShowAIScanner(false)}

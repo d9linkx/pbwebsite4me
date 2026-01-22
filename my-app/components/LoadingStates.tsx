@@ -13,7 +13,7 @@ export function PageLoader({ message = 'Loading...' }: { message?: string }) {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 border-4 border-[#f44708] border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p className="text-gray-600 font-medium">{message}</p>
       </div>
     </div>
@@ -130,10 +130,10 @@ export function ButtonLoader({ children, isLoading, ...props }: React.ButtonHTML
 // Overlay loading (for modal/dialog loading states)
 export function OverlayLoader({ message = 'Processing...' }: { message?: string }) {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-darkest bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-8 max-w-sm mx-4">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-[#f44708] border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-700 font-medium">{message}</p>
         </div>
       </div>

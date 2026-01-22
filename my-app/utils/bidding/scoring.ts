@@ -197,7 +197,7 @@ export function getBidStatusColor(bidStatus?: string): string {
     case 'withdrawn':
       return 'text-gray-600 bg-gray-50'
     case 'expired':
-      return 'text-orange-600 bg-orange-50'
+      return 'text-primary-dark bg-orange-50'
     case 'pending':
     default:
       return 'text-blue-600 bg-blue-50'

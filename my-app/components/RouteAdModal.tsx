@@ -167,7 +167,7 @@ export function RouteAdModal({ isOpen, onClose, onSave, onUpdate, editingAd }: R
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 z-40"
+        className="fixed inset-0 bg-darkest/50 z-40"
         onClick={onClose}
       />
 
@@ -175,7 +175,7 @@ export function RouteAdModal({ isOpen, onClose, onSave, onUpdate, editingAd }: R
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
           {/* Header */}
-          <div className="bg-[#2f2f2f] p-6 text-white">
+          <div className="bg-dark p-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-bold">
                 {editingAd ? 'Edit Route Ad' : 'Create New Route Ad'}
@@ -319,7 +319,7 @@ export function RouteAdModal({ isOpen, onClose, onSave, onUpdate, editingAd }: R
                       onClick={() => toggleCategory(category)}
                       className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                         selectedCategories.includes(category)
-                          ? 'bg-[#2f2f2f] text-white'
+                          ? 'bg-dark text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -357,7 +357,7 @@ export function RouteAdModal({ isOpen, onClose, onSave, onUpdate, editingAd }: R
               </Button>
               <Button
                 onClick={handleSubmit}
-                className="flex-1 h-11 bg-[#2f2f2f] text-white hover:bg-[#404040]"
+                className="flex-1 h-11 bg-dark text-white hover:bg-[#404040]"
               >
                 {editingAd ? 'Update Route Ad' : 'Create Route Ad'}
               </Button>
@@ -395,7 +395,7 @@ export function RouteAdModal({ isOpen, onClose, onSave, onUpdate, editingAd }: R
       {/* Cancel Confirmation Modal - Persistent */}
       {showCancelConfirm && (
         <>
-          <div className="fixed inset-0 bg-black/60 z-[55]" onClick={handleContinue} />
+          <div className="fixed inset-0 bg-darkest/60 z-[55]" onClick={handleContinue} />
           <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] w-full max-w-md mx-4">
             <div className="bg-white rounded-2xl shadow-2xl p-6">
               <div className="mb-4">

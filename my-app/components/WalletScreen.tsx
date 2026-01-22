@@ -213,7 +213,7 @@ export function WalletScreen({
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-300 flex items-center justify-center">
         <p className="text-gray-600">Please log in to view your wallet</p>
       </div>
     );
@@ -221,9 +221,9 @@ export function WalletScreen({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-300 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-gray-600">Loading wallet data...</p>
         </div>
       </div>
@@ -231,11 +231,11 @@ export function WalletScreen({
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
 
       {/* Header */}
       <motion.div
-        className="bg-white border-b border-gray-200 relative z-10 sticky top-0 shadow-sm"
+        className="bg-gray-300 border-b border-gray-200 z-10 sticky top-0 shadow-sm"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -269,44 +269,44 @@ export function WalletScreen({
       <div className="px-6 py-6 space-y-6 relative z-10">
         {/* Balance Card */}
         <motion.div 
-          className="bg-gradient-to-br from-[#f44708] to-[#ff5722] text-white border-0 rounded-2xl p-6 relative overflow-hidden shadow-2xl"
+          className="bg-gradient-to-br from-primary to-primary-hover text-gray-300 border-0 rounded-2xl p-6 relative overflow-hidden shadow-2xl"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full translate-x-16 -translate-y-16"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -translate-x-12 translate-y-12"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gray-300/10 rounded-full translate-x-16 -translate-y-16"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gray-300/10 rounded-full -translate-x-12 translate-y-12"></div>
           
           <div className="relative">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <Wallet size={20} className="text-white" />
+                <div className="w-10 h-10 rounded-xl bg-gray-300/20 backdrop-blur-sm flex items-center justify-center">
+                  <Wallet size={20} className="text-gray-300" />
                 </div>
                 <div>
-                  <p className="text-white/90 text-sm">Available Balance</p>
-                  <p className="text-white/70 text-xs">Last updated: Just now</p>
+                  <p className="text-gray-300/90 text-sm">Available Balance</p>
+                  <p className="text-gray-300/70 text-xs">Last updated: Just now</p>
                 </div>
               </div>
               
               <motion.button
                 onClick={() => setShowBalance(!showBalance)}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-300/10 rounded-lg transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {showBalance ? <Eye size={18} className="text-white/90" /> : <EyeOff size={18} className="text-white/90" />}
+                {showBalance ? <Eye size={18} className="text-gray-300/90" /> : <EyeOff size={18} className="text-gray-300/90" />}
               </motion.button>
             </div>
 
             <div className="mb-6">
-              <p className="text-4xl font-bold text-white mb-2">
+              <p className="text-4xl font-bold text-gray-300 mb-2">
                 {showBalance ? formatAmount(walletData.balance) : '****'}
               </p>
               <div className="flex items-center space-x-2">
-                <TrendingUp size={14} className="text-white/90" />
-                <span className="text-white/90 text-sm font-medium">+{formatAmount(getTotalThisMonth())}</span>
-                <span className="text-white/70 text-sm">this month</span>
+                <TrendingUp size={14} className="text-gray-300/90" />
+                <span className="text-gray-300/90 text-sm font-medium">+{formatAmount(getTotalThisMonth())}</span>
+                <span className="text-gray-300/70 text-sm">this month</span>
               </div>
             </div>
 
@@ -314,7 +314,7 @@ export function WalletScreen({
             <div className="grid grid-cols-2 gap-3">
               <motion.button
                 onClick={onAddFunds}
-                className="bg-white hover:bg-white/90 text-[#f44708] rounded-xl py-3 px-4 font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
+                className="bg-gray-300 hover:bg-gray-300/90 text-primary rounded-xl py-3 px-4 font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -323,7 +323,7 @@ export function WalletScreen({
               </motion.button>
               <motion.button
                 onClick={onWithdraw}
-                className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/30 rounded-xl py-3 px-4 font-semibold transition-all duration-200 flex items-center justify-center space-x-2"
+                className="bg-gray-300/20 backdrop-blur-sm border-2 border-gray-300/30 text-gray-300 hover:bg-gray-300/30 rounded-xl py-3 px-4 font-semibold transition-all duration-200 flex items-center justify-center space-x-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -383,13 +383,13 @@ export function WalletScreen({
           transition={{ delay: 0.3 }}
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Transactions</h2>
-            <button className="text-sm text-[#f44708] hover:text-[#ff5722] transition-colors">
+            <h2 className="text-lg font-semibold">Recent Transactions</h2>
+            <button className="text-sm text-primary hover:text-primary-hover transition-colors">
               View All
             </button>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="bg-gray-300 border border-gray-200 rounded-xl overflow-hidden">
             {walletData.transactions.length === 0 ? (
               <div className="p-8 text-center">
                 <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center mx-auto mb-4">
@@ -488,7 +488,7 @@ export function WalletScreen({
             </div>
             <motion.button
               onClick={onManagePaymentMethods}
-              className="bg-[#f44708] hover:bg-[#ff5722] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+              className="bg-primary hover:bg-primary-hover text-gray-300 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

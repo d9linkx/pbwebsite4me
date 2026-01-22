@@ -91,7 +91,7 @@ export function NotificationsScreen({
   const getNotificationIcon = (type: string, actionRequired?: boolean) => {
     const iconProps = {
       size: 20,
-      className: actionRequired ? 'text-[#f44708]' : 'text-gray-700'
+      className: actionRequired ? 'text-primary' : 'text-gray-700'
     };
 
     switch (type) {
@@ -154,7 +154,7 @@ export function NotificationsScreen({
           {currentNotifications.filter(n => !n.read).length > 0 && (
             <motion.button
               onClick={onMarkAllAsRead}
-              className="text-sm text-[#f44708] hover:text-[#ff5722] transition-colors"
+              className="text-sm text-primary hover:text-primary-hover transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -169,7 +169,7 @@ export function NotificationsScreen({
             onClick={() => setActiveTab('alerts')}
             className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 relative flex items-center justify-center ${
               activeTab === 'alerts'
-                ? 'bg-[#f44708] text-white shadow-sm'
+                ? 'bg-primary text-white shadow-sm'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
             whileHover={{ scale: 1.02 }}
@@ -177,7 +177,7 @@ export function NotificationsScreen({
           >
             <span>Alerts</span>
             {totalUnreadAlerts > 0 && (
-              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold bg-white text-[#f44708] rounded-full">
+              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold bg-white text-primary rounded-full">
                 {totalUnreadAlerts}
               </span>
             )}
@@ -186,7 +186,7 @@ export function NotificationsScreen({
             onClick={() => setActiveTab('general')}
             className={`flex-1 py-3 rounded-xl font-medium transition-all duration-300 relative flex items-center justify-center ${
               activeTab === 'general'
-                ? 'bg-[#f44708] text-white shadow-sm'
+                ? 'bg-primary text-white shadow-sm'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
             whileHover={{ scale: 1.02 }}
@@ -194,7 +194,7 @@ export function NotificationsScreen({
           >
             <span>General</span>
             {totalUnreadGeneral > 0 && (
-              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold bg-white text-[#f44708] rounded-full">
+              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold bg-white text-primary rounded-full">
                 {totalUnreadGeneral}
               </span>
             )}
@@ -210,7 +210,7 @@ export function NotificationsScreen({
           animate={{ opacity: 1 }}
         >
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#f44708] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-gray-600">Loading notifications...</p>
           </div>
         </motion.div>
@@ -235,7 +235,7 @@ export function NotificationsScreen({
               key={notification.id}
               className={`bg-white border ${
                 !notification.read
-                  ? 'border-[#f44708]/40 bg-[#f44708]/5'
+                  ? 'border-primary/40 bg-primary/5'
                   : 'border-gray-200'
               } rounded-xl p-4 cursor-pointer hover:bg-gray-50 transition-all duration-300 shadow-sm relative`}
               onClick={() => handleNotificationClick(notification)}
@@ -248,7 +248,7 @@ export function NotificationsScreen({
               <div className="flex space-x-3">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                   notification.actionRequired
-                    ? 'bg-[#f44708]/20'
+                    ? 'bg-primary-light'
                     : 'bg-gray-100'
                 }`}>
                   {getNotificationIcon(notification.type, notification.actionRequired)}
@@ -262,15 +262,15 @@ export function NotificationsScreen({
                   </div>
                   <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
                   {notification.actionRequired && (
-                    <div className="inline-flex items-center space-x-2 bg-[#f44708]/20 px-3 py-1 rounded-full">
-                      <Zap size={14} className="text-[#f44708]" />
-                      <span className="text-xs font-medium text-[#f44708]">Action Required</span>
+                    <div className="inline-flex items-center space-x-2 bg-primary-light px-3 py-1 rounded-full">
+                      <Zap size={14} className="text-primary" />
+                      <span className="text-xs font-medium text-primary">Action Required</span>
                     </div>
                   )}
                 </div>
               </div>
               {!notification.read && (
-                <div className="absolute top-4 right-4 w-2 h-2 bg-[#f44708] rounded-full"></div>
+                <div className="absolute top-4 right-4 w-2 h-2 bg-primary rounded-full"></div>
               )}
             </motion.div>
           ))
