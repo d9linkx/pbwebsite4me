@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback, useRef } from "react";
 import { apiService } from "./apiService";
 import { apiClient } from "./apiClient";
@@ -24,13 +25,13 @@ export function useApi<T>(
   apiCall: () => Promise<ApiResponse<T>>,
   options: UseApiOptions & {
     requiresAuth?: boolean;
-  } = {}
+  } = {},
 ): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const cacheRef = useRef<Map<string, { data: T; timestamp: number }>>(
-    new Map()
+    new Map(),
   );
   const isExecutingRef = useRef(false); // Prevent multiple simultaneous calls
 
@@ -281,8 +282,49 @@ export function useAuth() {
         setLoading(false);
       }
     },
-    []
+    [],
   );
+
+  const preRegister = useCallback(
+    async (userData: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phone: string;
+      city?: string;
+      state?: string;
+      interests: ("pal" | "sender" | "receiver" | "proxy")[];
+      referralCode?: string;
+    }) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await apiService.preRegister(userData);
+
+        if (response.success && response.data) {
+          return {
+            success: true,
+            data: response.data,
+            message: response.message,
+          };
+        } else {
+          setError(response.message || "Pre-registration failed");
+          return { success: false, error: response.message };
+        }
+      } catch (err: any) {
+        const errorMessage = err.message || "Pre-registration failed";
+        setError(errorMessage);
+        return { success: false, error: errorMessage };
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  // Don't forget to return preRegister in your hook return statement
+  // return { login, register, preRegister, ... }
 
   const verifyEmail = useCallback(
     async (email: string, verificationCode: string) => {
@@ -325,7 +367,7 @@ export function useAuth() {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const logout = useCallback(async () => {
@@ -349,6 +391,7 @@ export function useAuth() {
     error,
     login,
     register,
+    preRegister,
     logout,
     refreshAuth,
     verifyEmail,
@@ -383,7 +426,7 @@ export function useUpdateProfile() {
         email?: string;
         phone?: string;
         address?: string;
-      }
+      },
     ) => {
       setLoading(true);
       setError(null);
@@ -405,7 +448,7 @@ export function useUpdateProfile() {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { updateProfile, loading, error };

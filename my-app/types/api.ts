@@ -5,8 +5,8 @@ import {
   UserRole,
   DeliveryStatus,
   ItemSize,
-//   VehicleType,
-} from './index';
+  //   VehicleType,
+} from "./index";
 
 // API Request/Response Types
 export interface LoginRequest {
@@ -29,7 +29,7 @@ export interface RegisterRequest {
   phone: string;
   password: string;
   role: UserRole;
-//   vehicleType?: VehicleType;
+  //   vehicleType?: VehicleType;
   location?: {
     address: string;
     coordinates: {
@@ -53,6 +53,26 @@ export interface AuthResponse {
   tokens?: {
     accessToken: string;
     refreshToken: string;
+  };
+}
+
+export interface PreRegisterRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city?: string;
+  state?: string;
+  interests: ("pal" | "sender" | "receiver" | "proxy")[];
+  referralCode?: string;
+}
+
+export interface PreRegisterResponse {
+  message: string;
+  data: {
+    rowNumber: number;
+    email: string;
+    timestamp: string;
   };
 }
 
@@ -107,7 +127,7 @@ export interface CreateBidRequest {
   amount: number;
   estimatedTime: string;
   message: string;
-//   vehicleType: VehicleType;
+  //   vehicleType: VehicleType;
 }
 
 export interface UpdateBidRequest {
@@ -152,13 +172,13 @@ export interface UpdateUserRequest {
     };
     delivery?: {
       autoAcceptRadius?: number;
-    //   preferredVehicles?: VehicleType[];
+      //   preferredVehicles?: VehicleType[];
     };
   };
 }
 
 export interface AddPaymentMethodRequest {
-  type: 'card' | 'bank';
+  type: "card" | "bank";
   cardDetails?: {
     number: string;
     expiryMonth: number;
@@ -226,7 +246,7 @@ export interface JobsResponse extends PaginatedResponse<DeliveryJob> {
 export interface LocationSearchRequest {
   query: string;
   limit?: number;
-  types?: ('city' | 'town' | 'village' | 'landmark')[];
+  types?: ("city" | "town" | "village" | "landmark")[];
 }
 
 export interface LocationSearchResponse {
@@ -235,7 +255,7 @@ export interface LocationSearchResponse {
     name: string;
     state: string;
     lga: string;
-    type: 'city' | 'town' | 'village' | 'landmark';
+    type: "city" | "town" | "village" | "landmark";
     coordinates: {
       lat: number;
       lng: number;
@@ -256,7 +276,7 @@ export interface FileUploadResponse {
 
 export interface FileUploadRequest {
   file: File;
-  type: 'image' | 'document' | 'evidence';
+  type: "image" | "document" | "evidence";
   folder?: string;
 }
 
@@ -287,7 +307,7 @@ export interface ProfileResponse {
     completionRate: number;
     joinedDate: string;
   };
-  preferences: User['preferences'];
+  preferences: User["preferences"];
 }
 
 export interface UpdateProfileRequest {
@@ -297,7 +317,7 @@ export interface UpdateProfileRequest {
   email?: string;
   phone?: string;
   profileImage?: File;
-  preferences?: User['preferences'];
+  preferences?: User["preferences"];
 }
 
 // Error Types
@@ -375,7 +395,7 @@ export interface WithdrawalRequest {
 
 export interface PaymentMethodResponse {
   id: string;
-  type: 'card' | 'bank';
+  type: "card" | "bank";
   last4: string;
   isDefault: boolean;
   brand?: string;
@@ -406,7 +426,7 @@ export interface SponsorshipResponse {
     duration: number;
     startDate: string;
     endDate: string;
-    status: 'active' | 'completed' | 'cancelled';
+    status: "active" | "completed" | "cancelled";
     message?: string;
     isAnonymous: boolean;
   };
@@ -422,7 +442,7 @@ export interface ReferralStatsResponse {
     id: string;
     refereeName: string;
     joinDate: string;
-    status: 'active' | 'completed';
+    status: "active" | "completed";
     earnings: number;
   }>;
 }
@@ -432,7 +452,7 @@ export interface PricingSuggestionRequest {
   pickupLocation: string;
   dropoffLocation: string;
   packageSize: string;
-  urgency?: 'low' | 'medium' | 'high';
+  urgency?: "low" | "medium" | "high";
   pickupTime?: string;
 }
 
@@ -452,7 +472,7 @@ export interface PricingSuggestionResponse {
   factors: {
     distance: number;
     estimatedDuration: number;
-    difficulty: 'easy' | 'medium' | 'hard';
+    difficulty: "easy" | "medium" | "hard";
   };
 }
 
@@ -476,7 +496,7 @@ export interface BackendPackageResponse {
   orderNumber?: string;
   pickupTime?: string;
   escrowAmount?: number;
-  
+
   // Nested objects from backend
   sender?: {
     id?: string;

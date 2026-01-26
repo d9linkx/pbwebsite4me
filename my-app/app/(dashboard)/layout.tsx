@@ -263,7 +263,7 @@ export default function DashboardLayout({
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden lg:mt-24">
+      <div className="flex-1 flex overflow-hidden mt-12 lg:mt-24">
         {/* Desktop Sidebar */}
         <div className="hidden xl:block flex-shrink-0 fixed h-full">
           <DesktopSidebar currentPath={pathname} />

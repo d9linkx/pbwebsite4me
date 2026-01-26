@@ -12,6 +12,7 @@ export const ROUTES = {
   BECOME_PAL: "/become-pal",
   BECOME_PROXY: "/become-proxy",
   SEND_ITEMS: "/send-items",
+  PRE_REGISTER: "/pre-register",
 
   // App routes
 

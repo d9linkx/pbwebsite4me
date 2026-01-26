@@ -136,7 +136,7 @@ export function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <motion.button
-                  onClick={() => router.push(ROUTES.AUTH)}
+                  onClick={() => router.push(ROUTES.PRE_REGISTER)}
                   className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
@@ -1033,7 +1033,7 @@ export function HomePage() {
             needs.
           </motion.p>
           <motion.button
-            onClick={() => router.push(ROUTES.AUTH)}
+            onClick={() => router.push(ROUTES.PRE_REGISTER)}
             className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover shadow-2xl"
             variants={scaleIn}
             whileHover={{

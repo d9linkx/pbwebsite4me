@@ -343,7 +343,7 @@ export function ContactPage() {
             Join Prawnbox today and experience the future of delivery in Nigeria
           </p>
           <button
-            onClick={() => router.push(ROUTES.AUTH)}
+            onClick={() => router.push(ROUTES.PRE_REGISTER)}
             className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Create Account

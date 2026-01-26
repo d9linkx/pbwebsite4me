@@ -1116,7 +1116,7 @@ export function AboutPage() {
             here for you.
           </p>
           <button
-            onClick={() => router.push(ROUTES.AUTH)}
+            onClick={() => router.push(ROUTES.PRE_REGISTER)}
             className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Get Started Today

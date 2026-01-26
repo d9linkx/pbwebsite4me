@@ -14,6 +14,7 @@ export type Screen =
   | "website-become-pal"
   | "website-become-proxy"
   | "website-send-items"
+  | "website-pre-register"
   // App Screens
   | "splash"
   | "onboarding"

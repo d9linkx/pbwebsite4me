@@ -2,9 +2,6 @@
 import React, { useState } from "react";
 import {
   ArrowRight,
-  Package,
-  Shield,
-  Zap,
   Mail,
   Lock,
   User as UserIcon,
@@ -17,20 +14,13 @@ import { User } from "../types";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../utils/apiHooks";
 import { isValidPassword, isValidUsername } from "@/utils/helpers";
-// Using a placeholder for the logo - you can replace this with your actual logo
-// import prawnboxLogo from '../public/prawnbox-logo.png';
+import Image from "next/image";
 
 interface AuthScreenProps {
   onLogin: (user: User) => void;
-  onDemoLogin?: (userType: "sender" | "pal" | "receiver" | "proxy") => void;
-  onNavigate?: (screen: string) => void;
 }
 
-export function AuthScreen({
-  onLogin,
-  onDemoLogin,
-  onNavigate,
-}: AuthScreenProps) {
+export function AuthScreen({ onLogin }: AuthScreenProps) {
   const [isLogin, setIsLogin] = useState(true);
   const [identifier, setIdentifier] = useState(""); // Can be email or username
   const [password, setPassword] = useState("");
@@ -73,14 +63,14 @@ export function AuthScreen({
 
     if (!isLogin && !isValidUsername(userName)) {
       setError(
-        "Username must only contain letters and numbers and must be between 3 and 30 characters"
+        "Username must only contain letters and numbers and must be between 3 and 30 characters",
       );
       return;
     }
 
     if (!isLogin && !isValidPassword(password)) {
       setError(
-        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character"
+        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
       );
       return;
     }
@@ -114,7 +104,7 @@ export function AuthScreen({
         }
       } else {
         setError(
-          result.error || (isLogin ? "Login failed" : "Registration failed")
+          result.error || (isLogin ? "Login failed" : "Registration failed"),
         );
       }
     } catch (error) {
@@ -124,7 +114,7 @@ export function AuthScreen({
 
   const handleSocialLogin = async (
     provider: string,
-    event?: React.MouseEvent
+    event?: React.MouseEvent,
   ) => {
     if (event) {
       event.preventDefault();
@@ -136,40 +126,10 @@ export function AuthScreen({
 
     // For now, show a message that social login is not implemented
     setError(
-      `${provider} login is not yet implemented. Please use email/password.`
+      `${provider} login is not yet implemented. Please use email/password.`,
     );
     return;
-
-    // TODO: Implement OAuth flow when backend is ready
-    // try {
-    //   const response = await fetch(`/auth/social/${provider}`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error(`${provider} login failed`);
-    //   }
-
-    //   const userData = await response.json();
-    //   const user: User = { /* transform userData to User interface */ };
-    //   onLogin(user);
-    // } catch (error) {
-    //   setError(error instanceof Error ? error.message : 'An error occurred');
-    // }
   };
-
-  // const handleDemoLogin = (userType: 'sender' | 'pal' | 'receiver' | 'proxy') => {
-  //   if (onDemoLogin) {
-  //     setIsLoading(true);
-  //     setTimeout(() => {
-  //       onDemoLogin(userType);
-  //       setIsLoading(false);
-  //     }, 800);
-  //   }
-  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col overflow-hidden">
@@ -210,9 +170,11 @@ export function AuthScreen({
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
           >
-            <img
+            <Image
               src="/P-logo.png"
               alt="Prawnbox"
+              width={100}
+              height={100}
               className="w-12 h-12 object-contain mx-auto"
             />
           </motion.button>
@@ -473,83 +435,6 @@ export function AuthScreen({
               </motion.button>
             </div>
           </div>
-
-          {/* Demo Login */}
-          {/* {onDemoLogin && (
-            <motion.div
-              className="mt-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <p className="text-center text-sm text-gray-400 mb-3">Quick Demo Login:</p>
-              <div className="grid grid-cols-2 gap-2">
-                <motion.button
-                  onClick={() => handleDemoLogin('sender')}
-                  disabled={isLoading}
-                  className="bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-blue-300 py-2.5 rounded-xl text-sm font-medium disabled:opacity-50"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Sender
-                </motion.button>
-                <motion.button
-                  onClick={() => handleDemoLogin('pal')}
-                  disabled={isLoading}
-                  className="bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-300 py-2.5 rounded-xl text-sm font-medium disabled:opacity-50"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Pal
-                </motion.button>
-                <motion.button
-                  onClick={() => handleDemoLogin('proxy')}
-                  disabled={isLoading}
-                  className="bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30 text-purple-300 py-2.5 rounded-xl text-sm font-medium disabled:opacity-50"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Proxy
-                </motion.button>
-                <motion.button
-                  onClick={() => handleDemoLogin('receiver')}
-                  disabled={isLoading}
-                  className="bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/30 text-yellow-300 py-2.5 rounded-xl text-sm font-medium disabled:opacity-50"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Receiver
-                </motion.button>
-              </div>
-            </motion.div>
-          )} */}
-
-          {/* Features */}
-          {/* <motion.div
-            className="mt-8 grid grid-cols-3 gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center mx-auto mb-2">
-                <Package size={24} className="text-blue-400" />
-              </div>
-              <p className="text-xs text-gray-400">Fast Delivery</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-2xl bg-green-500/20 flex items-center justify-center mx-auto mb-2">
-                <Shield size={24} className="text-green-400" />
-              </div>
-              <p className="text-xs text-gray-400">Secure</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center mx-auto mb-2">
-                <Zap size={24} className="text-purple-400" />
-              </div>
-              <p className="text-xs text-gray-400">Reliable</p>
-            </div>
-          </motion.div> */}
         </motion.div>
       </div>
     </div>

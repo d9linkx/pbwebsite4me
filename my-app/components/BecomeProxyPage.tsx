@@ -235,7 +235,7 @@ export function BecomeProxyPage() {
               </div>
 
               <button
-                onClick={() => router.push(ROUTES.AUTH)}
+                onClick={() => router.push(ROUTES.PRE_REGISTER)}
                 className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
               >
                 <span>Start Earning Passive Income</span>
@@ -387,7 +387,7 @@ export function BecomeProxyPage() {
               48 hours
             </p>
             <button
-              onClick={() => router.push(ROUTES.AUTH)}
+              onClick={() => router.push(ROUTES.PRE_REGISTER)}
               className="bg-dark text-white px-8 py-4 rounded-xl font-semibold hover:bg-darkest transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
             >
               <span>Register Your Location</span>
@@ -553,7 +553,7 @@ export function BecomeProxyPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <button
-              onClick={() => router.push(ROUTES.AUTH)}
+              onClick={() => router.push(ROUTES.PRE_REGISTER)}
               className="group bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-primary-hover transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>Sign Up as a Proxy</span>

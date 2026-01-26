@@ -65,11 +65,17 @@ export function WebsiteHeader() {
 
           <div className="hidden lg:flex items-center space-x-4">
             <button
+              onClick={() => handleNavigate(ROUTES.PRE_REGISTER)}
+              className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
+            >
+              Join the Waitlist
+            </button>
+            {/* <button
               onClick={() => handleNavigate(ROUTES.AUTH)}
               className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
             >
               Sign In
-            </button>
+            </button> */}
             <GetStartedDropdown
               items={GET_STARTED_ITEMS}
               isOpen={isGetStartedOpen}
@@ -161,7 +167,7 @@ function GetStartedDropdown({
         className="px-6 py-2.5 text-primary hover:text-primary-hover transition-all duration-200 flex items-center space-x-1 font-semibold"
         aria-expanded={isOpen}
       >
-        <span>Get Started</span>
+        <span>Explore More</span>
         <ChevronDown
           size={16}
           className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
@@ -207,7 +213,7 @@ function MobileMenu({
         ))}
         <div className="pt-4 border-t border-gray-800 mt-4">
           <p className="px-4 py-2 text-sm font-semibold text-gray-400">
-            Get Started
+            Join the Waitlist
           </p>
           {getStartedItems.map((item) => (
             <button
@@ -219,14 +225,14 @@ function MobileMenu({
             </button>
           ))}
         </div>
-        <div className="pt-4 space-y-2">
+        {/* <div className="pt-4 space-y-2">
           <button
             onClick={() => onNavigate(ROUTES.AUTH)}
             className="block w-full px-4 py-3 text-center text-white border border-gray-700 rounded-lg hover:bg-white/10 transition-all duration-200"
           >
             Sign In
           </button>
-        </div>
+        </div> */}
       </nav>
     </div>
   );
