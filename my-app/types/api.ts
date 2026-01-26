@@ -61,10 +61,7 @@ export interface PreRegisterRequest {
   lastName: string;
   email: string;
   phone: string;
-  city?: string;
-  state?: string;
-  interests: ("pal" | "sender" | "receiver" | "proxy")[];
-  referralCode?: string;
+  address: string;
 }
 
 export interface PreRegisterResponse {

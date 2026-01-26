@@ -8,11 +8,9 @@ interface WebsiteLayoutProps {
 
 export function WebsiteLayout({ children }: WebsiteLayoutProps) {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden flex flex-col overscroll-none">
+    <div className="min-h-screen bg-white overflow-x-hidden flex flex-col">
       <WebsiteHeader />
-      <main className="min-h-screen w-full flex-1 overscroll-none">
-        {children}
-      </main>
+      <main className="flex-1 w-full">{children}</main>
       <WebsiteFooter />
     </div>
   );

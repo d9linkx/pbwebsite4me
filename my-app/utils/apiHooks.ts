@@ -291,10 +291,7 @@ export function useAuth() {
       lastName: string;
       email: string;
       phone: string;
-      city?: string;
-      state?: string;
-      interests: ("pal" | "sender" | "receiver" | "proxy")[];
-      referralCode?: string;
+      address: string;
     }) => {
       setLoading(true);
       setError(null);
