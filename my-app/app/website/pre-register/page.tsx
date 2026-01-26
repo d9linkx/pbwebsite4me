@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   ArrowRight,
@@ -17,6 +18,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/utils/apiHooks";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/routes";
 
 export default function PreRegister() {
   const [firstName, setFirstName] = useState("");
@@ -27,6 +30,7 @@ export default function PreRegister() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const { preRegister, loading } = useAuth();
+  const router = useRouter();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +72,7 @@ export default function PreRegister() {
         lastName,
         email,
         phone: phoneNumber,
-        address: address,
+        address,
       });
 
       if (result.success) {
@@ -81,12 +85,8 @@ export default function PreRegister() {
     }
   };
 
-  const handleGoHome = () => {
-    console.log("Navigate to home");
-  };
-
-  const handleJoinTelegram = () => {
-    window.open("https://t.me/your_telegram_group", "_blank");
+  const handleJoinWhatsApp = () => {
+    window.open("https://chat.whatsapp.com/JrmYB2rOWA0GhguFEVBoUd", "_blank");
   };
 
   return (
@@ -135,7 +135,7 @@ export default function PreRegister() {
       <div className="lg:w-1/2 relative z-10 p-8 lg:p-12 flex flex-col justify-center">
         {/* Back Button */}
         <motion.button
-          onClick={handleGoHome}
+          onClick={() => router.push(ROUTES.HOME)}
           className="absolute top-6 left-6 flex items-center space-x-2 text-white/80 hover:text-white transition-colors duration-200"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -256,8 +256,8 @@ export default function PreRegister() {
                     transition={{ delay: 0.4 }}
                     className="text-gray-300 mb-8 text-lg"
                   >
-                    Welcome to the future of delivery! Check your email for
-                    exclusive updates.
+                    Welcome to the future of delivery! Kindly stay tuned for
+                    updates.
                   </motion.p>
 
                   {/* Action Buttons */}
@@ -268,15 +268,15 @@ export default function PreRegister() {
                     className="space-y-3"
                   >
                     <button
-                      onClick={handleJoinTelegram}
+                      onClick={handleJoinWhatsApp}
                       className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
                     >
                       <Send size={20} />
-                      <span>Join Our Telegram Community</span>
+                      <span>Join Our WhatsApp Community</span>
                     </button>
 
                     <button
-                      onClick={handleGoHome}
+                      onClick={() => router.push(ROUTES.HOME)}
                       className="w-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-all duration-200 hover:scale-[1.02]"
                     >
                       <Home size={20} />
@@ -315,7 +315,7 @@ export default function PreRegister() {
                     </motion.div>
                   )}
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid md:grid-cols-2 gap-3">
                     <div>
                       <label className="text-sm text-gray-300 mb-2 block font-medium">
                         First Name <span className="text-red-400">*</span>
