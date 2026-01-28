@@ -9,7 +9,6 @@ import {
   Phone,
   MapPin,
   CheckCircle,
-  Home,
   Send,
   Sparkles,
   Package,
@@ -254,44 +253,86 @@ export default function PreRegister() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-gray-300 mb-8 text-lg"
+                    className="text-gray-300 mb-2 text-lg"
                   >
-                    Welcome to the future of delivery! Kindly stay tuned for
-                    updates.
+                    Welcome to the Prawnbox delivery family!
                   </motion.p>
 
-                  {/* Action Buttons */}
+                  {/* WhatsApp CTA Section */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="space-y-3"
+                    className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border-2 border-orange-500/40 rounded-2xl p-6 mb-6 mt-8"
                   >
-                    <button
-                      onClick={handleJoinWhatsApp}
-                      className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
-                    >
-                      <Send size={20} />
-                      <span>Join Our WhatsApp Community</span>
-                    </button>
+                    <div className="flex items-center justify-center mb-3">
+                      <div className="bg-gradient-to-r from-green-400 to-green-500 rounded-full p-2">
+                        <Send size={24} className="text-white" />
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      🔔 One More Step!
+                    </h3>
+
+                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+                      Join our exclusive WhatsApp community to get:
+                    </p>
+
+                    <div className="text-left space-y-2 mb-6">
+                      <div className="flex items-start space-x-2">
+                        <span className="text-orange-400 mt-0.5">⚡</span>
+                        <p className="text-gray-300 text-sm">
+                          <strong className="text-white">
+                            Instant launch alerts
+                          </strong>{" "}
+                          - Be the first to know when we go live
+                        </p>
+                      </div>
+                      <div className="flex items-start space-x-2">
+                        <span className="text-orange-400 mt-0.5">🎁</span>
+                        <p className="text-gray-300 text-sm">
+                          <strong className="text-white">
+                            Exclusive bonuses
+                          </strong>{" "}
+                          for early members
+                        </p>
+                      </div>
+                      <div className="flex items-start space-x-2">
+                        <span className="text-orange-400 mt-0.5">💬</span>
+                        <p className="text-gray-300 text-sm">
+                          <strong className="text-white">Direct support</strong>{" "}
+                          from the team
+                        </p>
+                      </div>
+                    </div>
 
                     <button
-                      onClick={() => router.push(ROUTES.HOME)}
-                      className="w-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-all duration-200 hover:scale-[1.02]"
+                      onClick={handleJoinWhatsApp}
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-xl transition-all duration-200 hover:shadow-2xl hover:scale-[1.03] animate-pulse hover:animate-none"
                     >
-                      <Home size={20} />
-                      <span>Explore More</span>
+                      <Send size={22} />
+                      <span>Get Instant Updates 📱</span>
                     </button>
                   </motion.div>
 
-                  <motion.p
+                  {/* Additional Info */}
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
-                    className="text-gray-500 text-sm mt-6"
+                    className="space-y-3"
                   >
-                    Stay connected for exclusive launch updates and perks!
-                  </motion.p>
+                    <div className="flex items-center justify-center space-x-2 text-gray-400 text-sm">
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                      <span>Join delivery partners already in the group</span>
+                    </div>
+
+                    <p className="text-gray-500 text-xs">
+                      Don&apos;t worry, you can leave anytime. No spam, just
+                      value! 🚀
+                    </p>
+                  </motion.div>
                 </motion.div>
               ) : (
                 <form onSubmit={handleFormSubmit} className="space-y-4">
