@@ -1,4 +1,4 @@
-import { apiClient, retry } from "../utils/apiClient";
+import { apiClient, retry } from "./apiClient";
 import {
   User,
   DeliveryJob,
@@ -36,7 +36,7 @@ import {
   PreRegisterResponse,
 } from "../types/api";
 
-import { ApiResponse } from "../utils/apiClient";
+import { ApiResponse } from "./apiClient";
 import {
   LoginRequest,
   RegisterRequest,
