@@ -561,7 +561,7 @@ export function PricingPage() {
                     {
                       feature: "Platform Fee (Sender)",
                       prawnbox: "FREE (₦0)",
-                      traditional: "5-10% + VAT",
+                      traditional: "5-10% + Hidden Charges",
                     },
                     {
                       feature: "Delivery Scheduling",

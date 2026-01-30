@@ -256,8 +256,7 @@ export function ContactPage() {
                     <h3 className="font-semibold text-dark mb-1">
                       Visit Us
                     </h3>
-                    <p className="text-gray-600">123 Admiralty Way</p>
-                    <p className="text-gray-600">Lekki Phase 1, Lagos</p>
+                    <p className="text-gray-600">Lagos</p>
                     <p className="text-gray-600">Nigeria</p>
                   </div>
                 </div>
