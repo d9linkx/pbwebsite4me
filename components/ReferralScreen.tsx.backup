@@ -16,7 +16,7 @@ interface ReferralScreenProps {
 export function ReferralScreen({ user, onBack }: ReferralScreenProps) {
   const [copied, setCopied] = useState(false);
 
-  const referralCode = user?.id ? `PRAWN${user.id.slice(0, 6).toUpperCase()}` : 'PRAWN000';
+  const referralCode = user?._id ? `PRAWN${user._id.slice(0, 6).toUpperCase()}` : 'PRAWN000';
   const referralLink = `https://prawnbox.com/ref/${referralCode}`;
   
   const mockReferrals = [

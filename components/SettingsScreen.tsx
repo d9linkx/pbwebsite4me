@@ -182,7 +182,7 @@ export function SettingsScreen({
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-sm">
                 <span className="text-gray-300 text-xl font-bold">
-                  {user.name
+                  {user.firstName
                     ?.split(" ")
                     .map((n) => n[0])
                     .join("") || "U"}
@@ -191,7 +191,7 @@ export function SettingsScreen({
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
                   <h3 className="text-gray-900 text-lg font-semibold">
-                    {user.name || "User"}
+                    {user.firstName || "User"}
                   </h3>
                   {user.isVerified && (
                     <CheckCircle size={16} className="text-green-600" />

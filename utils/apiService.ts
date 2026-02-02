@@ -1,14 +1,11 @@
-import { apiClient, retry } from "./apiClient";
+import { apiClient, retry } from "../lib/apiClient";
 import {
-  User,
   DeliveryJob,
   Bid,
   ProxyItem,
   ChatThread,
   ChatMessage,
   Notification,
-  Transaction,
-  UserRole,
   DeliveryStatus,
   NigerianLocation,
   DisputeResolution,
@@ -36,7 +33,7 @@ import {
   PreRegisterResponse,
 } from "../types/api";
 
-import { ApiResponse } from "./apiClient";
+import { ApiResponse } from "../lib/apiClient";
 import {
   LoginRequest,
   RegisterRequest,
@@ -58,6 +55,8 @@ import {
   PricingSuggestionRequest,
   PricingSuggestionResponse,
 } from "../types/api";
+import { User } from "@/types/user";
+import { Transaction } from "@/types/transaction";
 
 export class ApiService {
   // Authentication

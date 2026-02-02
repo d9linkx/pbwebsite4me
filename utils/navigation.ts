@@ -5,7 +5,7 @@ export interface NavigationContext {
   currentScreen: Screen;
   previousScreen?: Screen;
   user: User | null;
-  activeRole: UserRole;
+  activeMode: UserRole;
   selectedJob?: DeliveryJob | null;
 }
 
@@ -44,8 +44,8 @@ export class NavigationManager {
     this.addGuard({
       canAccess: (screen, context) => {
         const config = SCREEN_CONFIGS[screen];
-        if (config?.roles && context.user && !config.roles.includes(context.activeRole)) {
-          console.warn(`🚫 NavigationGuard: Role ${context.activeRole} cannot access ${screen}`);
+        if (config?.roles && context.user && !config.roles.includes(context.activeMode)) {
+          console.warn(`🚫 NavigationGuard: Role ${context.activeMode} cannot access ${screen}`);
           return false;
         }
         return true;
@@ -155,7 +155,7 @@ export class NavigationManager {
   private getFallbackScreen(): Screen {
     if (!this.context.user) return 'auth';
 
-    switch (this.context.activeRole) {
+    switch (this.context.activeMode) {
       case 'pal': return 'available-jobs';
       case 'sender': return 'dashboard';
       case 'receiver': return 'dashboard';
@@ -275,7 +275,7 @@ export class NavigationManager {
     this.context.currentScreen = 'auth';
     this.context.previousScreen = undefined;
     this.context.user = null;
-    this.context.activeRole = 'sender';
+    this.context.activeMode = 'sender';
     this.context.selectedJob = null;
     console.log('🔄 NavigationManager: Reset to initial state');
   }

@@ -7,7 +7,8 @@
  * Key Principle: A package should only appear in ONE screen per user based on their role in that delivery.
  */
 
-import { DeliveryJob, User, UserRole, DeliveryStatus } from '@/types'
+import { DeliveryJob, UserRole, DeliveryStatus } from '@/types'
+import { User, UserMode } from '@/types/user'
 
 /**
  * Core filter predicates - Pure functions that return filter functions
@@ -54,7 +55,7 @@ export const PackageFilters = {
    * Filter packages by active role
    * Use for: Main dashboard when switching roles
    */
-  byRole: (userId: string, role: UserRole) => (job: DeliveryJob): boolean => {
+  byRole: (userId: string, role: UserMode) => (job: DeliveryJob): boolean => {
     const userIdStr = userId?.toString()
     switch (role) {
       case 'sender':
@@ -215,10 +216,10 @@ export function filterPackages(
 export function getUserPackages(
   jobs: DeliveryJob[],
   user: User | null,
-  role: UserRole
+  role: UserMode
 ): DeliveryJob[] {
   if (!user) return []
-  return jobs.filter(PackageFilters.byRole(user.id, role))
+  return jobs.filter(PackageFilters.byRole(user._id, role))
 }
 
 /**
@@ -267,7 +268,7 @@ export function getAllUserPackages(jobs: DeliveryJob[], userId: string): Deliver
 export function getPackagesByRoleAndStatus(
   jobs: DeliveryJob[],
   userId: string,
-  role: UserRole,
+  role: UserMode,
   statusFilter: (job: DeliveryJob) => boolean
 ): DeliveryJob[] {
   if (!userId) return []

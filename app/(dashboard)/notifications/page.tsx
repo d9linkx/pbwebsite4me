@@ -28,12 +28,12 @@ export default function NotificationsPage() {
     setNotifications,
     notificationTab,
     setNotificationTab,
-    activeRole = 'sender' as const // Default to 'sender' which is a valid UserRole
+    activeMode = 'sender' as const // Default to 'sender' which is a valid UserRole
   } = useAppStore()
 
   // Debug: Log user and role info
   console.log('🔔 User data:', user)
-  console.log('🔔 Active role from store:', activeRole)
+  console.log('🔔 Active role from store:', activeMode)
 
   // Type for database notification structure
 interface DatabaseNotification {
@@ -217,7 +217,7 @@ interface NotificationData {
       onNotificationAction={handleNotificationAction}
       onNavigate={handleNavigate}
       onBack={handleBack}
-      activeRole={activeRole}
+      activeMode={activeMode}
       onMarkAsRead={handleMarkAsRead}
       onMarkAllAsRead={handleMarkAllAsRead}
       initialTab={notificationTab}

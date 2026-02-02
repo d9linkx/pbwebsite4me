@@ -34,7 +34,7 @@ export function WalletWithdrawScreen({ user, onBack, onWithdrawComplete }: Walle
     }).format(value);
   };
 
-  const availableBalance = user?.walletBalance || 0;
+  const availableBalance = user?.balance || 0;
   const withdrawAmount = parseFloat(amount) || 0;
   const fee = withdrawAmount >= 5000 ? 0 : 50;
   const amountToReceive = withdrawAmount;

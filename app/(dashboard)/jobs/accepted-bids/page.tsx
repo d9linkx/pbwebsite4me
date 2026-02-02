@@ -144,7 +144,7 @@ export default function AcceptedBidsPage() {
             orderNumber: pkg.orderNumber || `ORD-${(pkg._id || '').slice(0, 8).toUpperCase()}`,
             // Add acceptedBidAmount for this specific page
             acceptedBidAmount: pkg.bids?.find((b) =>
-              b.palId === user.id && (b.isAccepted || pkg.pal?.palId === user.id)
+              b.palId === user._id && (b.isAccepted || pkg.pal?.palId === user._id)
             )?.amount || 0,
           }))
 
@@ -168,7 +168,7 @@ export default function AcceptedBidsPage() {
     return deliveryJobs
       .filter((job) => {
         // Job must be assigned to this pal
-        return job.selectedPalId === user.id &&
+        return job.selectedPalId === user._id &&
                (job.status === 'assigned' ||
                 job.status === 'picked-up' ||
                 job.status === 'in-transit' ||

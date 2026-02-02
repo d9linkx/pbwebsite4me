@@ -1,5 +1,7 @@
 // Core types for the Prawnbox delivery application
 
+import { User, UserRole } from "./user";
+
 export type Screen =
   // Website Screens
   | "website-home"
@@ -97,8 +99,6 @@ export type Screen =
   | "sponsorship-management"
   | "sponsorship-details";
 
-export type UserRole = "sender" | "pal" | "receiver" | "proxy";
-
 export type DeliveryStatus =
   | "pending"
   | "bidding"
@@ -165,41 +165,6 @@ export interface Dispute {
   reportedAt: string;
   status: DisputeStatus;
   resolution?: DisputeResolution;
-}
-
-export interface User {
-  id: string;
-  _id?: string; // MongoDB ObjectId field
-  userName: string;
-  firstName: string;
-  lastName: string;
-  name: string; // Full name (computed from firstName + lastName)
-  fullName?: string;
-  email: string;
-  phone: string; // Frontend expects 'phone', backend returns 'phoneNumber'
-  phoneNumber?: string; // Backend field name
-  role: UserRole;
-  profileImage?: string;
-  walletBalance?: number;
-  rating?: number;
-  totalDeliveries?: number;
-  joinedDate?: string;
-  vehicleType?: "car" | "motorcycle" | "bike" | "truck" | "van" | "bicycle";
-  isVerified?: boolean;
-  governmentIdUrl?: string;
-  governmentIdStatus?: "pending" | "verified" | "rejected";
-  activeEscrows?: SponsorshipEscrow[];
-  transactions?: Transaction[];
-  bankAccounts?: BankAccount[];
-  cards?: PaymentCard[];
-  preferences?: UserPreferences;
-  location?: {
-    address: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-  };
 }
 
 export interface UserPreferences {
@@ -271,32 +236,6 @@ export type PaymentMethod =
       accountName: string;
       isDefault: boolean;
     };
-
-export interface Transaction {
-  id: string;
-  userId: string;
-  type:
-    | "earning"
-    | "withdrawal"
-    | "escrow_payment"
-    | "refund"
-    | "fee"
-    | "bonus"
-    | "tip_payment"
-    | "storage_fee"
-    | "wallet_topup"
-    | "equipment_fee";
-  amount: number; // Positive for credits, negative for debits
-  status: "pending" | "completed" | "failed" | "cancelled";
-  description: string;
-  jobId?: string;
-  timestamp: string;
-  paymentMethod: "wallet" | "bank_transfer" | "card" | "cash";
-  reference: string;
-  metadata?: {
-    [key: string]: unknown;
-  };
-}
 
 export interface DispurteResolution {
   id: string;
@@ -415,6 +354,71 @@ export interface DeliveryJob {
   metadata?: {
     [key: string]: unknown;
   };
+}
+
+export interface BackendPackage {
+  _id?: string;
+  id?: string;
+  orderNumber?: string;
+  title: string;
+  description?: string;
+  status?: string;
+  pickupDate?: string;
+  pickupTime?: string;
+  pickupLocation?: string;
+  dropoffLocation?: string;
+  notes?: string;
+  price?: number;
+  value?: number;
+  category?: string;
+  weight?: string;
+  createdAt?: string;
+  sender?: {
+    senderId?: string | { _id: string };
+    name?: string;
+    phone?: string;
+    formattedAddress?: string;
+    address?: string;
+  };
+  receiver?: {
+    receiverId?: string;
+    name?: string;
+    phone?: string;
+    formattedAddress?: string;
+    address?: string;
+  };
+  items?: Array<{
+    size?: string;
+    category?: string;
+    weight?: string | number;
+    images?: Array<{ url: string }>;
+  }>;
+  pal?: {
+    palId?: string;
+    name?: string;
+    phone?: string;
+  };
+  proxy?: {
+    proxyId?: string;
+    name?: string;
+    phone?: string;
+  };
+  bids?: Array<{
+    _id?: string;
+    id?: string;
+    palId?: string;
+    palName?: string;
+    palRating?: number;
+    amount?: number;
+    vehicleType?: string;
+    estimatedTime?: string;
+    message?: string;
+    canEdit?: boolean;
+    isAccepted?: boolean;
+    placedAt?: string;
+    createdAt?: string;
+    [key: string]: unknown;
+  }>;
 }
 
 export type VehicleType =

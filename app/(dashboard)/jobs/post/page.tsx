@@ -173,9 +173,9 @@ export default function PostDeliveryPage() {
           receiverPhone: backendPackage.receiver?.phone || '',
           senderId: backendPackage.sender?.senderId 
             ? (typeof backendPackage.sender.senderId === 'object' ? backendPackage.sender.senderId._id : backendPackage.sender.senderId)
-            : user.id,
-          senderName: backendPackage.sender?.name || user.name,
-          senderPhone: backendPackage.sender?.phone || user.phone,
+            : user._id,
+          senderName: backendPackage.sender?.name || user.firstName,
+          senderPhone: backendPackage.sender?.phone || user.phoneNumber,
           status: validateDeliveryStatus(backendPackage.status),
           pickupDate: backendPackage.pickupDate || new Date().toISOString(),
           pickupTime: jobData.pickupTime || '',
@@ -236,7 +236,7 @@ export default function PostDeliveryPage() {
         onSubmit={handleJobSubmit}
         onBack={handleBack}
         onLocationSelect={handleLocationSelect}
-        userId={user?.id || ''}
+        userId={user?._id || ''}
         onNavigateToMyDeliveries={handleNavigateToMyDeliveries}
         onChooseFavoritePal={handleChooseFavoritePal}
       />

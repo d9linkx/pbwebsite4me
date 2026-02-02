@@ -54,14 +54,14 @@ export default function ProxyJobsPage() {
           const allMappedJobs: DeliveryJob[] = response.data.map((pkg: BackendPackageResponse) => {
             const senderId = pkg.sender?.senderId
               ? (typeof pkg.sender.senderId === 'object' ? pkg.sender.senderId._id : pkg.sender.senderId)
-              : user?.id || ''
+              : user?._id || ''
 
             const job: DeliveryJob = {
               id: pkg._id || pkg.id || '',
               orderNumber: pkg.orderNumber || `ORD-${(pkg._id || '').slice(0, 8).toUpperCase()}`,
               senderId,
-              senderName: pkg.sender?.name || user?.name || '',
-              senderPhone: pkg.sender?.phone || user?.phone || '',
+              senderName: pkg.sender?.name || user?.firstName || '',
+              senderPhone: pkg.sender?.phone || user?.phoneNumber || '',
               title: pkg.title,
               description: pkg.description || '',
               pickupLocation: pkg.sender?.formattedAddress || pkg.pickupLocation || 'Pickup address not specified',
@@ -125,7 +125,7 @@ export default function ProxyJobsPage() {
   const proxyJobs = useMemo(() => {
     if (!user) return []
 
-    return getProxyPackages(deliveryJobs, user.id)
+    return getProxyPackages(deliveryJobs, user._id)
       .map(job => ({
         ...job,
         orderNumber: job.orderNumber || `ORD-${job.id.slice(0, 8).toUpperCase()}`,

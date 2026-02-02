@@ -140,11 +140,11 @@ export function SupportResolutionScreen({
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Sender:</span>
-              <span className="text-white">{senderUser?.name || 'Sender Name'}</span>
+              <span className="text-white">{senderuser?.firstName || 'Sender Name'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Pal:</span>
-              <span className="text-white">{palUser?.name || 'Pal Name'}</span>
+              <span className="text-white">{paluser?.firstName || 'Pal Name'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Issue Type:</span>

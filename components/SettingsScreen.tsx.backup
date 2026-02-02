@@ -161,12 +161,12 @@ export function SettingsScreen({ user, onBack, onNavigate, onLogout }: SettingsS
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-lg">
                 <span className="text-white text-xl font-bold">
-                  {user.name?.split(' ').map(n => n[0]).join('') || 'U'}
+                  {user.firstName?.split(' ').map(n => n[0]).join('') || 'U'}
                 </span>
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
-                  <h3 className="text-white text-lg font-semibold">{user.name || 'User'}</h3>
+                  <h3 className="text-white text-lg font-semibold">{user.firstName || 'User'}</h3>
                   {user.isVerified && (
                     <CheckCircle size={16} className="text-green-400" />
                   )}

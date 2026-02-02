@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback, useRef } from "react";
 import { apiService } from "./apiService";
-import { apiClient } from "./apiClient";
-import { ApiResponse } from "./apiClient";
+import { apiClient } from "../lib/apiClient";
+import { ApiResponse } from "../lib/apiClient";
 import { User, UserRole } from "../types";
 import { AuthResponse } from "../types/api";
 
@@ -220,9 +220,9 @@ export function useAuth() {
           // Normalize user object - ensure id is set from _id if needed
           const normalizedUser = {
             ...user,
-            id: user.id || user._id || "",
-            phone: user.phone || user.phoneNumber || "",
-            name: user.name || `${user.firstName} ${user.lastName}`.trim(),
+            id: user._id || user._id || "",
+            phone: user.phoneNumber || user.phoneNumberNumber || "",
+            name: user.firstName || `${user.firstName} ${user.lastName}`.trim(),
           };
 
           console.log("👤 Normalized user:", normalizedUser);

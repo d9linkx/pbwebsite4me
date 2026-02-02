@@ -1,14 +1,15 @@
 import React from "react";
 import { Bell, Menu, X, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { UserRole, User, Notification } from "@/types";
+import { UserRole, Notification } from "@/types";
 import { ROLE_PRIORITIES } from "@/constants/dashboard";
 import { ROUTES } from "@/lib/routes";
 import Image from "next/image";
+import { User, UserMode } from "@/types/user";
 
 interface DashboardHeaderProps {
-  activeRole: UserRole;
-  onRoleChange: (role: UserRole) => void;
+  activeMode: UserMode;
+  onModeChange: (mode: UserMode) => void;
   onNotificationsClick: () => void;
   onMenuToggle: () => void;
   onProfileClick: () => void;
@@ -21,8 +22,8 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({
-  activeRole,
-  onRoleChange,
+  activeMode,
+  onModeChange,
   onNotificationsClick,
   onMenuToggle,
   onProfileClick,
@@ -33,14 +34,14 @@ export function DashboardHeader({
   currentPath,
   onAlertsClick,
 }: DashboardHeaderProps) {
-  const getRoleDisplayLabel = (role: UserRole): string => {
-    const roleLabels: Record<UserRole, string> = {
+  const getModeDisplayLabel = (mode: UserMode): string => {
+    const modeLabels: Record<UserMode, string> = {
+      receiver: "Receive",
       sender: "Send",
       pal: "Deliver",
-      receiver: "Receive",
       proxy: "Proxy",
     };
-    return roleLabels[role];
+    return modeLabels[mode];
   };
 
   const getUrgentNotificationsCount = () => {
@@ -108,12 +109,12 @@ export function DashboardHeader({
           <div className="hidden xl:flex flex-1 max-w-md mx-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-1 w-full border border-white/20">
               <div className="grid grid-cols-4 gap-1">
-                {ROLE_PRIORITIES.map((role, index) => (
+                {ROLE_PRIORITIES.map((mode, index) => (
                   <motion.button
-                    key={role}
-                    onClick={() => onRoleChange(role)}
+                    key={mode}
+                    onClick={() => onModeChange(mode)}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 capitalize text-center ${
-                      activeRole === role
+                      activeMode === mode
                         ? "bg-primary text-white shadow-lg"
                         : "text-gray-300 hover:text-white hover:bg-white/10"
                     }`}
@@ -123,7 +124,7 @@ export function DashboardHeader({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {getRoleDisplayLabel(role)}
+                    {getModeDisplayLabel(mode)}
                   </motion.button>
                 ))}
               </div>
@@ -182,7 +183,7 @@ export function DashboardHeader({
             {user?.profileImage ? (
               <Image
                 src={user.profileImage}
-                alt={user.fullName || "Profile"}
+                alt={`${user.firstName} ${user.lastName}` || "Profile"}
                 width={100}
                 height={100}
                 className="w-full h-full object-cover"
@@ -190,8 +191,8 @@ export function DashboardHeader({
             ) : (
               <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center">
                 <span className="text-xs font-bold">
-                  {user?.name
-                    ? user.name
+                  {user?.firstName
+                    ? user.firstName
                         .split(" ")
                         .map((n: string) => n[0])
                         .join("")
@@ -219,7 +220,7 @@ export function DashboardHeader({
         </div>
       </div>
 
-      {/* Mobile Role Switcher */}
+      {/* Mobile Mode Switcher */}
       {shouldShowRoleSwitcher && (
         <motion.div
           className="xl:hidden mt-4 pt-4 border-t border-white/10"
@@ -229,12 +230,12 @@ export function DashboardHeader({
         >
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-1 w-full border border-white/20">
             <div className="grid grid-cols-4 gap-1">
-              {ROLE_PRIORITIES.map((role, index) => (
+              {ROLE_PRIORITIES.map((mode, index) => (
                 <motion.button
-                  key={role}
-                  onClick={() => onRoleChange(role)}
+                  key={mode}
+                  onClick={() => onModeChange(mode)}
                   className={`px-3 py-3 sm:py-4 rounded-lg text-sm sm:text-base font-medium transition-all duration-200 capitalize text-center ${
-                    activeRole === role
+                    activeMode === mode
                       ? "bg-primary text-white shadow-lg"
                       : "text-gray-300 hover:text-white hover:bg-white/10"
                   }`}
@@ -244,7 +245,7 @@ export function DashboardHeader({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {getRoleDisplayLabel(role)}
+                  {getModeDisplayLabel(mode)}
                 </motion.button>
               ))}
             </div>

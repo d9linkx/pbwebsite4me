@@ -83,7 +83,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
     if (senderId === 'system') {
       return { name: 'System', role: 'system' as UserRole, color: 'text-gray-400' };
     }
-    if (senderId === currentUser.id) {
+    if (senderId === currentuser._id) {
       return { name: 'You', role: currentUser.role, color: 'text-white' };
     }
     return { name: 'Participant', role: 'sender' as UserRole, color: 'text-white' };
@@ -449,7 +449,7 @@ export function ChatScreen({ chatThread, currentUser, onBack, onSendMessage, onR
               </motion.div>
             ) : (
               chatThread.messages.map((msg, index) => {
-                const isCurrentUser = msg.senderId === currentUser.id;
+                const isCurrentUser = msg.senderId === currentuser._id;
                 const isSystemMessage = msg.type === 'system';
                 const participantInfo = getParticipantInfo(msg.senderId);
                 const isRecentMessage = index >= chatThread.messages.length - 3;

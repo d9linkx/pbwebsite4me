@@ -5,10 +5,9 @@
  * Replaces the 32+ useState hooks from the monolithic dashboard/page.tsx
  */
 
-import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 import type {
-  User,
   UserRole,
   DeliveryJob,
   Bid,
@@ -19,169 +18,176 @@ import type {
   DisputeResolution,
   FavoritePalData,
   ProxyUserData,
-} from '@/types/index'
-import { notificationListener } from '@/utils/notificationListener'
+} from "@/types/index";
+import { notificationListener } from "@/utils/notificationListener";
+import { User, UserMode } from "@/types/user";
 
 interface AppState {
   // ========================================
   // User & Authentication
   // ========================================
-  user: User | null
-  activeRole: UserRole
-  setUser: (user: User | null) => void
-  setActiveRole: (role: UserRole) => void
-  updateUser: (updates: Partial<User>) => void
+  user: User | null;
+   activeMode: UserMode
+  setUser: (user: User | null) => void;
+setActiveMode: (mode: UserMode) => void
+  updateUser: (updates: Partial<User>) => void;
 
   // ========================================
   // Selection State (Navigation Context)
   // ========================================
-  selectedJob: DeliveryJob | null
-  selectedBid: Bid | null
-  selectedPal: User | null
-  selectedChatThread: ChatThread | null
-  selectedProxyItem: ProxyItem | null
-  selectedNotification: Notification | null
-  selectedFavoritePal: FavoritePalData | null
-  selectedProxyReceiver: ProxyUserData | null
+  selectedJob: DeliveryJob | null;
+  selectedBid: Bid | null;
+  selectedPal: User | null;
+  selectedChatThread: ChatThread | null;
+  selectedProxyItem: ProxyItem | null;
+  selectedNotification: Notification | null;
+  selectedFavoritePal: FavoritePalData | null;
+  selectedProxyReceiver: ProxyUserData | null;
 
-  setSelectedJob: (job: DeliveryJob | null) => void
-  setSelectedBid: (bid: Bid | null) => void
-  setSelectedPal: (pal: User | null) => void
-  setSelectedChatThread: (thread: ChatThread | null) => void
-  setSelectedProxyItem: (item: ProxyItem | null) => void
-  setSelectedNotification: (notification: Notification | null) => void
-  setSelectedFavoritePal: (pal: FavoritePalData | null) => void
-  setSelectedProxyReceiver: (receiver: ProxyUserData | null) => void
+  setSelectedJob: (job: DeliveryJob | null) => void;
+  setSelectedBid: (bid: Bid | null) => void;
+  setSelectedPal: (pal: User | null) => void;
+  setSelectedChatThread: (thread: ChatThread | null) => void;
+  setSelectedProxyItem: (item: ProxyItem | null) => void;
+  setSelectedNotification: (notification: Notification | null) => void;
+  setSelectedFavoritePal: (pal: FavoritePalData | null) => void;
+  setSelectedProxyReceiver: (receiver: ProxyUserData | null) => void;
 
   // ========================================
   // Data Collections
   // ========================================
-  deliveryJobs: DeliveryJob[]
-  proxyItems: ProxyItem[]
-  chatThreads: ChatThread[]
-  notifications: Notification[]
+  deliveryJobs: DeliveryJob[];
+  proxyItems: ProxyItem[];
+  chatThreads: ChatThread[];
+  notifications: Notification[];
 
-  setDeliveryJobs: (jobs: DeliveryJob[]) => void
-  setProxyItems: (items: ProxyItem[]) => void
-  setChatThreads: (threads: ChatThread[]) => void
-  setNotifications: (notifications: Notification[]) => void
-  addNotification: (notification: Notification) => void
-  markNotificationAsRead: (notificationId: string) => void
-  markAllNotificationsAsRead: () => void
-  initializeNotifications: (user: User) => void
-  cleanupNotifications: () => void
-  addDeliveryJob: (job: DeliveryJob) => void
-  updateDeliveryJob: (jobId: string, updates: Partial<DeliveryJob>) => void
-  removeDeliveryJob: (jobId: string) => void
+  setDeliveryJobs: (jobs: DeliveryJob[]) => void;
+  setProxyItems: (items: ProxyItem[]) => void;
+  setChatThreads: (threads: ChatThread[]) => void;
+  setNotifications: (notifications: Notification[]) => void;
+  addNotification: (notification: Notification) => void;
+  markNotificationAsRead: (notificationId: string) => void;
+  markAllNotificationsAsRead: () => void;
+  initializeNotifications: (user: User) => void;
+  cleanupNotifications: () => void;
+  addDeliveryJob: (job: DeliveryJob) => void;
+  updateDeliveryJob: (jobId: string, updates: Partial<DeliveryJob>) => void;
+  removeDeliveryJob: (jobId: string) => void;
 
   // ========================================
   // UI State
   // ========================================
-  isMobileMenuOpen: boolean
-  notificationTab: 'alerts' | 'general'
-  showCompletedDeliveries: boolean
+  isMobileMenuOpen: boolean;
+  notificationTab: "alerts" | "general";
+  showCompletedDeliveries: boolean;
 
-  setMobileMenuOpen: (open: boolean) => void
-  setNotificationTab: (tab: 'alerts' | 'general') => void
-  setShowCompletedDeliveries: (show: boolean) => void
+  setMobileMenuOpen: (open: boolean) => void;
+  setNotificationTab: (tab: "alerts" | "general") => void;
+  setShowCompletedDeliveries: (show: boolean) => void;
 
   // ========================================
   // Processing Job State (minimized bar)
   // ========================================
-  processingJob: DeliveryJob | null
-  isProcessingMinimized: boolean
-  processingBidCount: number
+  processingJob: DeliveryJob | null;
+  isProcessingMinimized: boolean;
+  processingBidCount: number;
 
-  setProcessingJob: (job: DeliveryJob | null) => void
-  setProcessingMinimized: (minimized: boolean) => void
-  setProcessingBidCount: (count: number) => void
-  clearProcessingJob: () => void
+  setProcessingJob: (job: DeliveryJob | null) => void;
+  setProcessingMinimized: (minimized: boolean) => void;
+  setProcessingBidCount: (count: number) => void;
+  clearProcessingJob: () => void;
 
   // ========================================
   // Flow Context (for multi-step flows)
   // ========================================
   locationSelectionContext: {
-    type: 'pickup' | 'dropoff'
-    returnScreen: Screen
-  } | null
+    type: "pickup" | "dropoff";
+    returnScreen: Screen;
+  } | null;
 
   paymentContext: {
-    amount: number
-    purpose: string
-    returnScreen: Screen
-    paymentReference?: string
-  } | null
+    amount: number;
+    purpose: string;
+    returnScreen: Screen;
+    paymentReference?: string;
+  } | null;
 
-  scanContext: 'pickup' | 'delivery' | 'proxy-handover' | 'receiver-unavailable'
-  scanCompleted: boolean
-  scanningProxyItem: ProxyItem | null
+  scanContext:
+    | "pickup"
+    | "delivery"
+    | "proxy-handover"
+    | "receiver-unavailable";
+  scanCompleted: boolean;
+  scanningProxyItem: ProxyItem | null;
 
-  setLocationSelectionContext: (context: AppState['locationSelectionContext']) => void
-  setPaymentContext: (context: AppState['paymentContext']) => void
-  setScanContext: (context: AppState['scanContext']) => void
-  setScanCompleted: (completed: boolean) => void
-  setScanningProxyItem: (item: ProxyItem | null) => void
+  setLocationSelectionContext: (
+    context: AppState["locationSelectionContext"],
+  ) => void;
+  setPaymentContext: (context: AppState["paymentContext"]) => void;
+  setScanContext: (context: AppState["scanContext"]) => void;
+  setScanCompleted: (completed: boolean) => void;
+  setScanningProxyItem: (item: ProxyItem | null) => void;
 
   // ========================================
   // Dispute & Resolution
   // ========================================
-  currentDispute: DisputeResolution | null
-  violationFee: number
-  refundAmount: number
-  disputeTimer: number
+  currentDispute: DisputeResolution | null;
+  violationFee: number;
+  refundAmount: number;
+  disputeTimer: number;
 
-  setCurrentDispute: (dispute: DisputeResolution | null) => void
-  setViolationFee: (fee: number) => void
-  setRefundAmount: (amount: number) => void
-  setDisputeTimer: (timer: number) => void
+  setCurrentDispute: (dispute: DisputeResolution | null) => void;
+  setViolationFee: (fee: number) => void;
+  setRefundAmount: (amount: number) => void;
+  setDisputeTimer: (timer: number) => void;
 
   // ========================================
   // Sponsorship Flow
   // ========================================
-  selectedAspiringPal: User | null
+  selectedAspiringPal: User | null;
   sponsorshipData: {
-    amount: number
-    paymentMethod: string
-    message: string
-    isAnonymous: boolean
-    sponsorPercentage?: number
-    duration?: number
-    startDate?: string
-    endDate?: string
-    escrowId?: string
-    status?: string
-  } | null
+    amount: number;
+    paymentMethod: string;
+    message: string;
+    isAnonymous: boolean;
+    sponsorPercentage?: number;
+    duration?: number;
+    startDate?: string;
+    endDate?: string;
+    escrowId?: string;
+    status?: string;
+  } | null;
 
-  setSelectedAspiringPal: (pal: User | null) => void
-  setSponsorshipData: (data: AppState['sponsorshipData']) => void
+  setSelectedAspiringPal: (pal: User | null) => void;
+  setSponsorshipData: (data: AppState["sponsorshipData"]) => void;
 
   // ========================================
   // Pending Actions (for resuming flows)
   // ========================================
   pendingBid: {
-    jobId: string
-    bidAmount: number
-    job: DeliveryJob
-  } | null
+    jobId: string;
+    bidAmount: number;
+    job: DeliveryJob;
+  } | null;
 
-  setPendingBid: (bid: AppState['pendingBid']) => void
+  setPendingBid: (bid: AppState["pendingBid"]) => void;
 
   // ========================================
   // Timers
   // ========================================
-  globalPickupTimers: { [jobId: string]: number }
-  updatePickupTimer: (jobId: string, timerValue: number) => void
+  globalPickupTimers: { [jobId: string]: number };
+  updatePickupTimer: (jobId: string, timerValue: number) => void;
 
   // ========================================
   // Utility Actions
   // ========================================
-  reset: () => void // Clear all state (for logout)
+  reset: () => void; // Clear all state (for logout)
 }
 
 const initialState = {
   // User & Auth
   user: null,
-  activeRole: 'sender' as UserRole,
+  activeMode: "receiver" as UserMode,
 
   // Selections
   selectedJob: null,
@@ -201,7 +207,7 @@ const initialState = {
 
   // UI State
   isMobileMenuOpen: false,
-  notificationTab: 'alerts' as const,
+  notificationTab: "alerts" as const,
   showCompletedDeliveries: false,
 
   // Processing Job State
@@ -212,7 +218,7 @@ const initialState = {
   // Flow Context
   locationSelectionContext: null,
   paymentContext: null,
-  scanContext: 'pickup' as const,
+  scanContext: "pickup" as const,
   scanCompleted: false,
   scanningProxyItem: null,
 
@@ -231,7 +237,7 @@ const initialState = {
 
   // Timers
   globalPickupTimers: {},
-}
+};
 
 export const useAppStore = create<AppState>()(
   devtools(
@@ -242,55 +248,66 @@ export const useAppStore = create<AppState>()(
         // ========================================
         // User & Auth Actions
         // ========================================
-        setUser: (user) => set({ 
-          user, 
-          // Clear processing job when user changes (login/logout)
-          processingJob: null,
-          isProcessingMinimized: false,
-          processingBidCount: 0
-        }),
-        setActiveRole: (activeRole) => set({ activeRole }),
-        updateUser: (updates) => set((state) => ({
-          user: state.user ? { ...state.user, ...updates } : null,
-        })),
+        setUser: (user) =>
+          set({
+            user,
+            // Clear processing job when user changes (login/logout)
+            processingJob: null,
+            isProcessingMinimized: false,
+            processingBidCount: 0,
+          }),
+        setActiveMode: (activeMode) => set({ activeMode }),
+        updateUser: (updates) =>
+          set((state) => ({
+            user: state.user ? { ...state.user, ...updates } : null,
+          })),
 
         // ========================================
         // Notification Actions
         // ========================================
         initializeNotifications: async (user) => {
           try {
-            await notificationListener.initialize(user)
-            
+            await notificationListener.initialize(user);
+
             // Set up real-time notification handler
             notificationListener.onNotification((notification) => {
               set((state) => ({
-                notifications: [notification, ...state.notifications]
-              }))
-            })
-            
-            console.log('✅ Notifications initialized for user:', user.userName)
+                notifications: [notification, ...state.notifications],
+              }));
+            });
+
+            console.log(
+              "✅ Notifications initialized for user:",
+              user.userName,
+            );
           } catch (error) {
-            console.error('❌ Failed to initialize notifications:', error)
+            console.error("❌ Failed to initialize notifications:", error);
           }
         },
-        
+
         cleanupNotifications: () => {
-          notificationListener.disconnect()
+          notificationListener.disconnect();
         },
 
-        addNotification: (notification) => set((state) => ({
-          notifications: [notification, ...state.notifications]
-        })),
+        addNotification: (notification) =>
+          set((state) => ({
+            notifications: [notification, ...state.notifications],
+          })),
 
-        markNotificationAsRead: (notificationId) => set((state) => ({
-          notifications: state.notifications.map((notif) =>
-            notif.id === notificationId ? { ...notif, read: true } : notif
-          )
-        })),
+        markNotificationAsRead: (notificationId) =>
+          set((state) => ({
+            notifications: state.notifications.map((notif) =>
+              notif.id === notificationId ? { ...notif, read: true } : notif,
+            ),
+          })),
 
-        markAllNotificationsAsRead: () => set((state) => ({
-          notifications: state.notifications.map((notif) => ({ ...notif, read: true }))
-        })),
+        markAllNotificationsAsRead: () =>
+          set((state) => ({
+            notifications: state.notifications.map((notif) => ({
+              ...notif,
+              read: true,
+            })),
+          })),
 
         // ========================================
         // Selection Actions
@@ -298,11 +315,15 @@ export const useAppStore = create<AppState>()(
         setSelectedJob: (selectedJob) => set({ selectedJob }),
         setSelectedBid: (selectedBid) => set({ selectedBid }),
         setSelectedPal: (selectedPal) => set({ selectedPal }),
-        setSelectedChatThread: (selectedChatThread) => set({ selectedChatThread }),
+        setSelectedChatThread: (selectedChatThread) =>
+          set({ selectedChatThread }),
         setSelectedProxyItem: (selectedProxyItem) => set({ selectedProxyItem }),
-        setSelectedNotification: (selectedNotification) => set({ selectedNotification }),
-        setSelectedFavoritePal: (selectedFavoritePal) => set({ selectedFavoritePal }),
-        setSelectedProxyReceiver: (selectedProxyReceiver) => set({ selectedProxyReceiver }),
+        setSelectedNotification: (selectedNotification) =>
+          set({ selectedNotification }),
+        setSelectedFavoritePal: (selectedFavoritePal) =>
+          set({ selectedFavoritePal }),
+        setSelectedProxyReceiver: (selectedProxyReceiver) =>
+          set({ selectedProxyReceiver }),
 
         // ========================================
         // Data Collection Actions
@@ -312,43 +333,51 @@ export const useAppStore = create<AppState>()(
         setChatThreads: (chatThreads) => set({ chatThreads }),
         setNotifications: (notifications) => set({ notifications }),
 
-        addDeliveryJob: (job) => set((state) => ({
-          deliveryJobs: [...state.deliveryJobs, job],
-        })),
+        addDeliveryJob: (job) =>
+          set((state) => ({
+            deliveryJobs: [...state.deliveryJobs, job],
+          })),
 
-        updateDeliveryJob: (jobId, updates) => set((state) => ({
-          deliveryJobs: state.deliveryJobs.map((job) =>
-            job.id === jobId ? { ...job, ...updates } : job
-          ),
-        })),
+        updateDeliveryJob: (jobId, updates) =>
+          set((state) => ({
+            deliveryJobs: state.deliveryJobs.map((job) =>
+              job.id === jobId ? { ...job, ...updates } : job,
+            ),
+          })),
 
-        removeDeliveryJob: (jobId) => set((state) => ({
-          deliveryJobs: state.deliveryJobs.filter((job) => job.id !== jobId),
-        })),
+        removeDeliveryJob: (jobId) =>
+          set((state) => ({
+            deliveryJobs: state.deliveryJobs.filter((job) => job.id !== jobId),
+          })),
 
         // ========================================
         // UI Actions
         // ========================================
         setMobileMenuOpen: (isMobileMenuOpen) => set({ isMobileMenuOpen }),
         setNotificationTab: (notificationTab) => set({ notificationTab }),
-        setShowCompletedDeliveries: (showCompletedDeliveries) => set({ showCompletedDeliveries }),
+        setShowCompletedDeliveries: (showCompletedDeliveries) =>
+          set({ showCompletedDeliveries }),
 
         // ========================================
         // Processing Job Actions
         // ========================================
         setProcessingJob: (processingJob) => set({ processingJob }),
-        setProcessingMinimized: (isProcessingMinimized) => set({ isProcessingMinimized }),
-        setProcessingBidCount: (processingBidCount) => set({ processingBidCount }),
-        clearProcessingJob: () => set({
-          processingJob: null,
-          isProcessingMinimized: false,
-          processingBidCount: 0
-        }),
+        setProcessingMinimized: (isProcessingMinimized) =>
+          set({ isProcessingMinimized }),
+        setProcessingBidCount: (processingBidCount) =>
+          set({ processingBidCount }),
+        clearProcessingJob: () =>
+          set({
+            processingJob: null,
+            isProcessingMinimized: false,
+            processingBidCount: 0,
+          }),
 
         // ========================================
         // Flow Context Actions
         // ========================================
-        setLocationSelectionContext: (locationSelectionContext) => set({ locationSelectionContext }),
+        setLocationSelectionContext: (locationSelectionContext) =>
+          set({ locationSelectionContext }),
         setPaymentContext: (paymentContext) => set({ paymentContext }),
         setScanContext: (scanContext) => set({ scanContext }),
         setScanCompleted: (scanCompleted) => set({ scanCompleted }),
@@ -365,7 +394,8 @@ export const useAppStore = create<AppState>()(
         // ========================================
         // Sponsorship Actions
         // ========================================
-        setSelectedAspiringPal: (selectedAspiringPal) => set({ selectedAspiringPal }),
+        setSelectedAspiringPal: (selectedAspiringPal) =>
+          set({ selectedAspiringPal }),
         setSponsorshipData: (sponsorshipData) => set({ sponsorshipData }),
 
         // ========================================
@@ -376,28 +406,29 @@ export const useAppStore = create<AppState>()(
         // ========================================
         // Timer Actions
         // ========================================
-        updatePickupTimer: (jobId, timerValue) => set((state) => ({
-          globalPickupTimers: {
-            ...state.globalPickupTimers,
-            [jobId]: timerValue,
-          },
-        })),
+        updatePickupTimer: (jobId, timerValue) =>
+          set((state) => ({
+            globalPickupTimers: {
+              ...state.globalPickupTimers,
+              [jobId]: timerValue,
+            },
+          })),
 
         // ========================================
         // Utility Actions
         // ========================================
         reset: () => {
           // Cleanup notifications before resetting
-          notificationListener.disconnect()
-          set(initialState)
+          notificationListener.disconnect();
+          set(() => ({ ...initialState }));
         },
       }),
       {
-        name: 'prawnbox-app-store',
+        name: "prawnbox-app-store",
         // Only persist essential data, not UI state or selections
         partialize: (state) => ({
           user: state.user,
-          activeRole: state.activeRole,
+          activeMode: state.activeMode,
           deliveryJobs: state.deliveryJobs,
           notifications: state.notifications,
           // Persist processing job state so it survives page refresh
@@ -405,15 +436,15 @@ export const useAppStore = create<AppState>()(
           isProcessingMinimized: state.isProcessingMinimized,
           processingBidCount: state.processingBidCount,
         }),
-      }
-    )
-  )
-)
+      },
+    ),
+  ),
+);
 
 // Convenience selectors
-export const selectUser = (state: AppState) => state.user
-export const selectActiveRole = (state: AppState) => state.activeRole
-export const selectSelectedJob = (state: AppState) => state.selectedJob
-export const selectNotifications = (state: AppState) => state.notifications
+export const selectUser = (state: AppState) => state.user;
+export const selectactiveMode = (state: AppState) => state.activeMode;
+export const selectSelectedJob = (state: AppState) => state.selectedJob;
+export const selectNotifications = (state: AppState) => state.notifications;
 export const selectUnreadCount = (state: AppState) =>
-  state.notifications.filter((n) => !n.read).length
+  state.notifications.filter((n) => !n.read).length;

@@ -69,8 +69,8 @@ export default function JobTrackingPage() {
   }
 
   // Determine user role based on job and current user
-  const userRole = user?.id === job.senderId ? 'sender' : 
-                  user?.id === job.selectedPalId ? 'pal' : 
+  const userRole = user?._id === job.senderId ? 'sender' : 
+                  user?._id === job.selectedPalId ? 'pal' : 
                   'receiver'
 
   return (

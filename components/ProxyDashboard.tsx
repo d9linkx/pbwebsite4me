@@ -91,7 +91,7 @@ export function ProxyDashboard({
             </motion.button>
             <div>
               <h1 className="text-lg font-semibold text-gray-900">Proxy Dashboard</h1>
-              <p className="text-sm text-gray-600">{user?.name || 'Proxy'}</p>
+              <p className="text-sm text-gray-600">{user?.firstName || 'Proxy'}</p>
             </div>
           </div>
           <Badge className="bg-green-50 text-green-700 border-green-200 flex items-center space-x-1">

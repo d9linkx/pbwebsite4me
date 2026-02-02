@@ -5,7 +5,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
   const now = new Date();
   const senderFirstName = job.senderName?.split(' ')[0] || 'Alex';
   const palFirstName = job.selectedPalName?.split(' ')[0] || 'Mike';
-  const receiverFirstName = user?.name?.split(' ')[0] || 'Sarah';
+  const receiverFirstName = user?.firstName?.split(' ')[0] || 'Sarah';
   
   return [
     // Initial system message
@@ -137,7 +137,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     {
       id: `msg-9-${Date.now()}`,
       threadId: `thread-${job.id || 'default'}`,
-      senderId: user?.id || '',
+      senderId: user?._id || '',
       senderName: receiverFirstName,
       senderRole: 'receiver',
       message: `Hi everyone! Just saw the updates. ${palFirstName}, I'm at home and ready to receive the package. Should I wait downstairs or will you call when you arrive?`,
@@ -161,7 +161,7 @@ export const generateConversationMessages = (job: DeliveryJob, user?: User | nul
     {
       id: `msg-11-${Date.now()}`,
       threadId: `thread-${job.id || 'default'}`,
-      senderId: user?.id || '',
+      senderId: user?._id || '',
       senderName: receiverFirstName,
       senderRole: 'receiver',
       message: `Yes, that's correct! I'll be ready. Also, ${senderFirstName}, thank you so much for arranging this delivery! 😊`,

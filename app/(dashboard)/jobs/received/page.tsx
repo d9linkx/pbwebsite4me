@@ -18,7 +18,7 @@ export default function ReceivedDeliveriesPage() {
   const { user, deliveryJobs, setSelectedJob } = useAppStore()
 
   // Filter jobs where user is the receiver
-  const receivedJobs = deliveryJobs.filter(job => job.receiverId === user?.id)
+  const receivedJobs = deliveryJobs.filter(job => job.receiverId === user?._id)
 
   const handleBack = () => {
     router.push('/dashboard')

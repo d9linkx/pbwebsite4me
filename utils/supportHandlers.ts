@@ -35,12 +35,12 @@ export class SupportHandlers {
       senderId: this.context.job.senderId,
       reason,
       description,
-      reportedBy: this.context.user.id,
+      reportedBy: this.context.user._id,
       reportedAt: new Date().toISOString(),
       timestamp: new Date().toISOString(),
       timeoutAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(), // 10 minutes
       status: 'pending',
-      involvedParties: [this.context.user.id, this.context.job.selectedPalId || '', this.context.job.senderId],
+      involvedParties: [this.context.user._id, this.context.job.selectedPalId || '', this.context.job.senderId],
       evidence: evidenceFiles ? this.processEvidenceFiles(evidenceFiles) : undefined
     };
 
@@ -125,7 +125,7 @@ ${damageDetails.estimatedValue ? `Estimated damage value: ₦${damageDetails.est
 
     const communicationMessage = {
       id: Date.now().toString(),
-      from: this.context.user.id,
+      from: this.context.user._id,
       fromRole: this.context.user.role,
       to: recipient,
       message,

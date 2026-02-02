@@ -28,7 +28,7 @@ export default function WithdrawPage() {
       return
     }
 
-    const currentBalance = user.walletBalance || 0
+    const currentBalance = user.balance || 0
 
     if (amount > currentBalance) {
       toast.error('Insufficient balance')

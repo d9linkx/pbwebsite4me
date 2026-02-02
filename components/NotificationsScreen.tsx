@@ -7,7 +7,7 @@ import { filterNotificationsByRole } from '../utils/helpers';
 
 interface NotificationsScreenProps {
   notifications: Notification[];
-  activeRole: UserRole;
+  activeMode: UserRole;
   onBack: () => void;
   onNavigate: (screen: Screen) => void;
   onMarkAsRead: (notificationId: string) => void;
@@ -21,7 +21,7 @@ type TabType = 'alerts' | 'general';
 
 export function NotificationsScreen({ 
   notifications, 
-  activeRole,
+  activeMode,
   onBack, 
   onNavigate,
   onMarkAsRead,
@@ -34,7 +34,7 @@ export function NotificationsScreen({
 
   // Debug: Log what notifications we received
   console.log('🔔 NotificationsScreen received notifications:', notifications.length, notifications)
-  console.log('🔔 Active role:', activeRole)
+  console.log('🔔 Active role:', activeMode)
   
   // Debug: Check first notification structure if any exist
   if (notifications.length > 0) {
@@ -42,8 +42,8 @@ export function NotificationsScreen({
     console.log('🔔 First notification full details:', JSON.stringify(notifications[0], null, 2))
   }
 
-  const filteredNotifications = filterNotificationsByRole(notifications, activeRole);
-  console.log('🔔 Filtered notifications for role:', activeRole, filteredNotifications.length)
+  const filteredNotifications = filterNotificationsByRole(notifications, activeMode);
+  console.log('🔔 Filtered notifications for role:', activeMode, filteredNotifications.length)
   
   // Temporarily bypass role filtering to test
   const bypassedNotifications = notifications; // Use all notifications for testing

@@ -63,7 +63,7 @@ export default function JobBidsPage() {
     };
 
     fetchJobWithBids();
-  }, [jobId, user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [jobId, user?._id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handler functions
   const handleBidSelect = useCallback((bid: Bid) => {
@@ -81,7 +81,7 @@ export default function JobBidsPage() {
       return;
     }
 
-    if (job.senderId !== user.id) {
+    if (job.senderId !== user._id) {
       toast.error('Only the sender can accept bids');
       return;
     }
@@ -125,7 +125,7 @@ export default function JobBidsPage() {
     } finally {
       setIsAcceptingBid(false);
     }
-  }, [job, user?.id, jobId, setSelectedJob, setDeliveryJobs, deliveryJobs, user, router]);
+  }, [job, user?._id, jobId, setSelectedJob, setDeliveryJobs, deliveryJobs, user, router]);
 
   const handleViewProfile = useCallback((bid: Bid) => {
     console.log('👤 Viewing profile for Pal:', { palId: bid.palId, palName: bid.palName });

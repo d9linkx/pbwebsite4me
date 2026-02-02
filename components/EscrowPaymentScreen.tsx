@@ -40,7 +40,7 @@ export function EscrowPaymentScreen({ job, onBack, onPaymentComplete, bid, user 
         // Update user wallet (deduct payment)
         const updatedUser = {
           ...user,
-          walletBalance: (user.walletBalance || 0) - totalAmount
+          walletBalance: (user.balance || 0) - totalAmount
         };
         
         onPaymentComplete(updatedJob, updatedUser);

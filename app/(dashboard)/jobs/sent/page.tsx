@@ -46,15 +46,15 @@ export default function SentDeliveriesPage() {
             // Get sender ID whether it's nested or direct
             const senderId = pkg.sender?.senderId 
               ? (typeof pkg.sender.senderId === 'object' ? pkg.sender.senderId._id : pkg.sender.senderId)
-              : user?.id || '';
+              : user?._id || '';
             
             // Create the DeliveryJob object with all required fields
             const job: DeliveryJob = {
               id: pkg._id || pkg.id || '',
               orderNumber: pkg.orderNumber || `ORD-${(pkg._id || '').slice(0, 8).toUpperCase()}`,
               senderId,
-              senderName: pkg.sender?.name || user?.name || '',
-              senderPhone: pkg.sender?.phone || user?.phone || '',
+              senderName: pkg.sender?.name || user?.firstName || '',
+              senderPhone: pkg.sender?.phone || user?.phoneNumber || '',
               title: pkg.title,
               description: pkg.description || '',
               pickupLocation: pkg.pickupLocation || pkg.sender?.formattedAddress || 'Pickup address not specified',
@@ -127,7 +127,7 @@ export default function SentDeliveriesPage() {
     return deliveryJobs
       .filter(job => {
         const jobSenderId = job.senderId?.toString();
-        const currentUserId = user.id?.toString();
+        const currentUserId = user._id?.toString();
         return jobSenderId === currentUserId;
       })
       .map(job => ({

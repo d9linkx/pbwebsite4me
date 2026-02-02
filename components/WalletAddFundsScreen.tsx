@@ -123,7 +123,7 @@ export function WalletAddFundsScreen({
           animate={{ opacity: 1, y: 0 }}
         >
           <p className="text-sm text-gray-600 mb-2">Current Balance</p>
-          <p className="text-3xl font-bold text-primary">{formatAmount(user.walletBalance || 0)}</p>
+          <p className="text-3xl font-bold text-primary">{formatAmount(user.balance || 0)}</p>
         </motion.div>
 
         {/* Amount Input */}
@@ -248,7 +248,7 @@ export function WalletAddFundsScreen({
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">New balance:</span>
                 <span className="font-bold text-xl text-gray-900">
-                  {formatAmount((user.walletBalance || 0) + parseFloat(amount))}
+                  {formatAmount((user.balance || 0) + parseFloat(amount))}
                 </span>
               </div>
               <div className="pt-4 border-t border-gray-200">

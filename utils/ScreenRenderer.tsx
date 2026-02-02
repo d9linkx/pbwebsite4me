@@ -4,18 +4,18 @@ import { Screen, User, UserRole, DeliveryJob } from '../types';
 // Enhanced screen rendering utilities
 export class ScreenRenderer {
   private user: User | null;
-  private activeRole: UserRole;
+  private activeMode: UserRole;
   private selectedJob: DeliveryJob | null;
 
-  constructor(user: User | null, activeRole: UserRole, selectedJob: DeliveryJob | null) {
+  constructor(user: User | null, activeMode: UserRole, selectedJob: DeliveryJob | null) {
     this.user = user;
-    this.activeRole = activeRole;
+    this.activeMode = activeMode;
     this.selectedJob = selectedJob;
   }
 
-  updateContext(user: User | null, activeRole: UserRole, selectedJob: DeliveryJob | null) {
+  updateContext(user: User | null, activeMode: UserRole, selectedJob: DeliveryJob | null) {
     this.user = user;
-    this.activeRole = activeRole;
+    this.activeMode = activeMode;
     this.selectedJob = selectedJob;
   }
 
@@ -31,7 +31,7 @@ export class ScreenRenderer {
           </div>
           <p className="text-prawnbox-text-light text-sm font-medium">{message}</p>
           {this.user && (
-            <p className="text-xs text-prawnbox-text-light mt-2">Welcome back, {this.user.name}</p>
+            <p className="text-xs text-prawnbox-text-light mt-2">Welcome back, {this.user.firstName}</p>
           )}
         </div>
       </div>
@@ -131,7 +131,7 @@ export class ScreenRenderer {
     proxy?: JSX.Element;
     default?: JSX.Element;
   }): JSX.Element {
-    return content[this.activeRole] || content.default || <div>Role content not available</div>;
+    return content[this.activeMode] || content.default || <div>Role content not available</div>;
   }
 
   // Enhanced responsive wrapper

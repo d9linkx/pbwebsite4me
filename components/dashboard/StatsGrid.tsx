@@ -4,7 +4,7 @@
 // import { DashboardStats, formatAmount } from '../../utils/dashboard';
 
 // interface StatsGridProps {
-//   activeRole: UserRole;
+//   activeMode: UserRole;
 //   stats: DashboardStats;
 // }
 
@@ -17,11 +17,11 @@
 //   DollarSign
 // };
 
-// export function StatsGrid({ activeRole, stats }: StatsGridProps) {
-//   const roleConfig = STATS_CONFIG[activeRole.toUpperCase() as keyof typeof STATS_CONFIG];
+// export function StatsGrid({ activeMode, stats }: StatsGridProps) {
+//   const roleConfig = STATS_CONFIG[activeMode.toUpperCase() as keyof typeof STATS_CONFIG];
 
 //   if (!roleConfig) {
-//     console.warn('No stats config found for role:', activeRole);
+//     console.warn('No stats config found for role:', activeMode);
 //     return null;
 //   }
 

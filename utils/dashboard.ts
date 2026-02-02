@@ -123,7 +123,7 @@ export const calculateProxyStats = (proxyItems: ProxyItem[]): DashboardStats => 
 };
 
 export const calculateDashboardStats = (
-  activeRole: UserRole,
+  activeMode: UserRole,
   allJobs: DeliveryJob[],
   proxyItems: ProxyItem[],
   user: User | null
@@ -135,17 +135,17 @@ export const calculateDashboardStats = (
     earnings: 0
   };
 
-  if (!user?.id) return baseStats;
+  if (!user?._id) return baseStats;
 
-  switch (activeRole) {
+  switch (activeMode) {
     case 'sender':
-      return calculateSenderStats(allJobs, user.id);
+      return calculateSenderStats(allJobs, user._id);
     
     case 'pal':
-      return calculatePalStats(allJobs, user.id);
+      return calculatePalStats(allJobs, user._id);
     
     case 'receiver':
-      return calculateReceiverStats(allJobs, user.id);
+      return calculateReceiverStats(allJobs, user._id);
     
     case 'proxy':
       return calculateProxyStats(proxyItems);

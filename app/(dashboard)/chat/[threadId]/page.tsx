@@ -5,70 +5,66 @@
  * Dynamic route: /chat/[threadId]
  */
 
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { useAppStore } from '@/stores/appStore'
-import type { ChatMessage } from '@/types/index'
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useAppStore } from "@/stores/appStore";
+import type { ChatMessage } from "@/types/index";
 
 export default function ChatThreadPage() {
-  const params = useParams()
-  const router = useRouter()
-  const threadId = params.threadId as string
+  const params = useParams();
+  const router = useRouter();
+  const threadId = params.threadId as string;
 
-  const {
-    user,
-    chatThreads,
-    selectedChatThread,
-    setSelectedChatThread,
-  } = useAppStore()
+  const { user, chatThreads, selectedChatThread, setSelectedChatThread } =
+    useAppStore();
 
-  const [newMessage, setNewMessage] = useState('')
+  const [newMessage, setNewMessage] = useState("");
 
-  const thread = chatThreads.find((t) => t.id === threadId)
+  const thread = chatThreads.find((t) => t.id === threadId);
 
   useEffect(() => {
     if (thread) {
-      setSelectedChatThread(thread)
+      setSelectedChatThread(thread);
     }
-  }, [thread, setSelectedChatThread])
+  }, [thread, setSelectedChatThread]);
 
   if (!thread) {
     return (
       <div className="container mx-auto px-4 py-6">
         <p>Chat thread not found</p>
       </div>
-    )
+    );
   }
 
   const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newMessage.trim() || !user) return
+    e.preventDefault();
+    if (!newMessage.trim() || !user) return;
 
     const message: ChatMessage = {
       id: `msg-${Date.now()}`,
       threadId: thread.id,
-      senderId: user.id,
-      senderName: user.name,
-      senderRole: user.role, // Assuming user has a role property
+      senderId: user._id,
+      senderName: user.firstName,
+      senderRole: user.role ?? "user",
       message: newMessage,
-      type: 'text',
+      type: "text",
       timestamp: new Date().toISOString(),
       read: false,
-    }
+    };
 
-    console.log('Sending message:', message)
+    console.log("Sending message:", message);
     // In production, this would make an API call
-    setNewMessage('')
-  }
+    setNewMessage("");
+  };
 
   const handleCall = (phone: string) => {
-    const cleanPhone = phone.replace(/\D/g, '')
-    if (typeof window !== 'undefined') {
-      window.open(`https://wa.me/${cleanPhone}`, '_blank')
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (typeof window !== "undefined") {
+      window.open(`https://wa.me/${cleanPhone}`, "_blank");
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">
@@ -82,14 +78,16 @@ export default function ChatThreadPage() {
             ←
           </button>
           <div>
-            <h2 className="font-semibold text-gray-900">{thread.otherUserName}</h2>
+            <h2 className="font-semibold text-gray-900">
+              {thread.otherUserName}
+            </h2>
             <p className="text-sm text-gray-500">
-              {thread.jobTitle || 'General Chat'}
+              {thread.jobTitle || "General Chat"}
             </p>
           </div>
         </div>
         <button
-          onClick={() => handleCall(thread.otherUserPhone || '')}
+          onClick={() => handleCall(thread.otherUserPhone || "")}
           className="text-primary hover:text-[#d63a00]"
         >
           📞 Call
@@ -105,30 +103,30 @@ export default function ChatThreadPage() {
         ) : (
           <div className="space-y-4">
             {thread.messages.map((message) => {
-              const isOwn = message.senderId === user?.id
+              const isOwn = message.senderId === user?._id;
               return (
                 <div
                   key={message.id}
-                  className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
+                  className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
                 >
                   <div
                     className={`max-w-[70%] rounded-lg px-4 py-2 ${
                       isOwn
-                        ? 'bg-primary text-white'
-                        : 'bg-white text-gray-900 border border-gray-200'
+                        ? "bg-primary text-white"
+                        : "bg-white text-gray-900 border border-gray-200"
                     }`}
                   >
                     <p>{message.message}</p>
                     <p
                       className={`text-xs mt-1 ${
-                        isOwn ? 'text-white/70' : 'text-gray-500'
+                        isOwn ? "text-white/70" : "text-gray-500"
                       }`}
                     >
                       {new Date(message.timestamp).toLocaleTimeString()}
                     </p>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         )}
@@ -154,5 +152,5 @@ export default function ChatThreadPage() {
         </button>
       </form>
     </div>
-  )
+  );
 }

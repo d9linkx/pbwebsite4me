@@ -10,7 +10,7 @@ export const useAppState = () => {
   // Core state
   const [currentScreen, setCurrentScreen] = useState<Screen>('auth');
   const [user, setUser] = useState<User | null>(null);
-  const [activeRole, setActiveRole] = useState<UserRole>('sender');
+  const [activeMode, setactiveMode] = useState<UserRole>('sender');
 
   // Entity selection state
   const [selectedJob, setSelectedJob] = useState<DeliveryJob | null>(null);
@@ -64,7 +64,7 @@ export const useAppState = () => {
     // Core state
     currentScreen, setCurrentScreen,
     user, setUser,
-    activeRole, setActiveRole,
+    activeMode, setactiveMode,
 
     // Entity selection state
     selectedJob, setSelectedJob,

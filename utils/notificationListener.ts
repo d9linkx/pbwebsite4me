@@ -48,7 +48,7 @@ class NotificationListener {
       this.setupEventListeners()
 
       // Join user-specific room for targeted notifications
-      socketService.joinRoom(`user_${user.id || user._id}`)
+      socketService.joinRoom(`user_${user._id || user._id}`)
 
     } catch (error) {
       console.error('❌ Failed to initialize notification listener:', error)
@@ -190,7 +190,7 @@ class NotificationListener {
    * Handle incoming notification
    */
   private handleNotification(notification: Notification): void {
-    if (!this.currentUser || notification.userId !== this.currentUser.id && notification.userId !== this.currentUser._id) {
+    if (!this.currentUser || notification.userId !== this.currentuser._id && notification.userId !== this.currentUser._id) {
       return // Not for this user
     }
 
@@ -215,10 +215,10 @@ class NotificationListener {
     if (!this.currentUser) return
 
     // Only notify if this user is the receiver
-    if (data.receiverId === this.currentUser.id || data.receiverId === this.currentUser._id) {
+    if (data.receiverId === this.currentuser._id || data.receiverId === this.currentUser._id) {
       const notification: Notification = {
         id: `package-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'package-created',
         title: 'Package Created for You 📦',
         message: `A package (${data.orderNumber}) has been created for delivery to you. You'll be notified when a Pal is assigned.`,
@@ -261,7 +261,7 @@ class NotificationListener {
     if (userRole && relevantRoles.includes(userRole)) {
       const notification: Notification = {
         id: `package-update-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'package-update',
         title: 'Package Status Updated 📋',
         message: `Your package ${data.orderNumber} status has been updated to ${data.status}.`,
@@ -297,10 +297,10 @@ class NotificationListener {
     if (!this.currentUser) return
 
     // Only notify the sender
-    if (data.senderId === this.currentUser.id || data.senderId === this.currentUser._id) {
+    if (data.senderId === this.currentuser._id || data.senderId === this.currentUser._id) {
       const notification: Notification = {
         id: `bid-${data.bidId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'bid-placed',
         title: 'New Bid Received! 💰',
         message: `${data.bidderName} placed a bid of ₦${data.amount} for your ${data.packageTitle}. Review and accept now.`,
@@ -334,10 +334,10 @@ class NotificationListener {
     if (!this.currentUser) return
 
     // Notify the Pal whose bid was accepted
-    if (data.palId === this.currentUser.id || data.palId === this.currentUser._id) {
+    if (data.palId === this.currentuser._id || data.palId === this.currentUser._id) {
       const notification: Notification = {
         id: `bid-accepted-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'bid_accepted',
         title: 'Bid Accepted! 🎉',
         message: `Your bid for package ${data.orderNumber} has been accepted! Proceed to pickup.`,
@@ -368,10 +368,10 @@ class NotificationListener {
     if (!this.currentUser) return
 
     // Notify the Pal whose bid was rejected
-    if (data.palId === this.currentUser.id || data.palId === this.currentUser._id) {
+    if (data.palId === this.currentuser._id || data.palId === this.currentUser._id) {
       const notification: Notification = {
         id: `bid-rejected-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'bid-rejected',
         title: 'Bid Rejected',
         message: `Your bid for package ${data.orderNumber} was not selected.`,
@@ -403,10 +403,10 @@ class NotificationListener {
     if (!this.currentUser) return
 
     // Notify the Pal
-    if (data.palId === this.currentUser.id || data.palId === this.currentUser._id) {
+    if (data.palId === this.currentuser._id || data.palId === this.currentUser._id) {
       const notification: Notification = {
         id: `delivery-assigned-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'delivery-assigned',
         title: 'Delivery Assigned! 📦',
         message: `You've been assigned to deliver ${data.packageTitle}. Pickup from ${data.pickupLocation}.`,
@@ -438,10 +438,10 @@ class NotificationListener {
     if (!this.currentUser) return
 
     // Notify the receiver
-    if (data.receiverId === this.currentUser.id || data.receiverId === this.currentUser._id) {
+    if (data.receiverId === this.currentuser._id || data.receiverId === this.currentUser._id) {
       const notification: Notification = {
         id: `delivery-started-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'delivery-update',
         title: 'Delivery Started! 🚗',
         message: `${data.palName} has picked up your package and is on the way.`,
@@ -498,7 +498,7 @@ class NotificationListener {
 
       const notification: Notification = {
         id: `delivery-completed-${data.packageId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'delivery-completed',
         title,
         message,
@@ -528,10 +528,10 @@ class NotificationListener {
   }): void {
     if (!this.currentUser) return
 
-    if (data.userId === this.currentUser.id || data.userId === this.currentUser._id) {
+    if (data.userId === this.currentuser._id || data.userId === this.currentUser._id) {
       const notification: Notification = {
         id: `payment-${data.paymentId}-${Date.now()}`,
-        userId: this.currentUser.id,
+        userId: this.currentuser._id,
         type: 'payment-received',
         title: 'Payment Processed! 💳',
         message: `Payment of ₦${data.amount} has been ${data.type === 'received' ? 'received' : 'sent'} successfully.`,
@@ -563,7 +563,7 @@ class NotificationListener {
 
     const notification: Notification = {
       id: `system-${Date.now()}`,
-      userId: this.currentUser.id,
+      userId: this.currentuser._id,
       type: 'system-message',
       title: 'System Maintenance 🔧',
       message: data.message || 'System maintenance scheduled. Service may be temporarily unavailable.',
@@ -592,10 +592,10 @@ class NotificationListener {
   }): 'sender' | 'receiver' | 'pal' | 'proxy' | null {
     if (!this.currentUser || !packageData) return null
 
-    if (packageData.senderId === this.currentUser.id || packageData.senderId === this.currentUser._id) return 'sender'
-    if (packageData.receiverId === this.currentUser.id || packageData.receiverId === this.currentUser._id) return 'receiver'
-    if (packageData.palId === this.currentUser.id || packageData.palId === this.currentUser._id) return 'pal'
-    if (packageData.proxyId === this.currentUser.id || packageData.proxyId === this.currentUser._id) return 'proxy'
+    if (packageData.senderId === this.currentuser._id || packageData.senderId === this.currentUser._id) return 'sender'
+    if (packageData.receiverId === this.currentuser._id || packageData.receiverId === this.currentUser._id) return 'receiver'
+    if (packageData.palId === this.currentuser._id || packageData.palId === this.currentUser._id) return 'pal'
+    if (packageData.proxyId === this.currentuser._id || packageData.proxyId === this.currentUser._id) return 'proxy'
 
     return null
   }
@@ -632,7 +632,7 @@ class NotificationListener {
    */
   disconnect(): void {
     if (this.currentUser) {
-      socketService.leaveRoom(`user_${this.currentUser.id || this.currentUser._id}`)
+      socketService.leaveRoom(`user_${this.currentuser._id || this.currentUser._id}`)
     }
 
     this.notificationCallbacks.clear()

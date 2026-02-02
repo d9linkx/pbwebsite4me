@@ -145,12 +145,12 @@ function AvailableJobsPage() {
           bidsCount: jobs[0]?.bids?.length,
           bids: jobs[0]?.bids,
           senderId: jobs[0]?.senderId,
-          isUserSender: jobs[0]?.senderId === user?.id
+          isUserSender: jobs[0]?.senderId === user?._id
         });
         
         // Check if user is only seeing their own jobs
-        const userJobs = jobs.filter(job => job.senderId === user?.id);
-        const otherUserJobs = jobs.filter(job => job.senderId !== user?.id);
+        const userJobs = jobs.filter(job => job.senderId === user?._id);
+        const otherUserJobs = jobs.filter(job => job.senderId !== user?._id);
         
         console.log('👤 Jobs created by user:', userJobs.length);
         console.log('🌍 Jobs created by others:', otherUserJobs.length);
@@ -187,16 +187,16 @@ function AvailableJobsPage() {
         const isAppropriateStatus = ['pending', 'bidding', 'assigned', 'in-transit'].includes(job.status);
         
         // Check if user has already bid on this package
-        const hasUserBid = job.bids.some(bid => bid.palId === user?.id);
+        const hasUserBid = job.bids.some(bid => bid.palId === user?._id);
         
         // Debug logging for ALL jobs (not just ones with bids)
         console.log(`🔍 Job ${job.id}:`, {
           title: job.title,
           status: job.status,
           bidsCount: job.bids.length,
-          userBids: job.bids.filter(bid => bid.palId === user?.id),
+          userBids: job.bids.filter(bid => bid.palId === user?._id),
           allBids: job.bids.map(b => ({ palId: b.palId, amount: b.amount, id: b.id })),
-          userId: user?.id,
+          userId: user?._id,
           isAppropriateStatus,
           hasUserBid,
           willBeAvailable: isAppropriateStatus && !hasUserBid,
@@ -211,7 +211,7 @@ function AvailableJobsPage() {
     );
     
     console.log('📋 Available jobs count:', filtered.length);
-    console.log('👤 Current user ID:', user?.id);
+    console.log('👤 Current user ID:', user?._id);
     console.log('👤 Current user:', user);
     return filtered;
   }, [deliveryJobs, user]);
@@ -224,7 +224,7 @@ function AvailableJobsPage() {
         const isAppropriateStatus = ['pending', 'bidding', 'assigned', 'in-transit'].includes(job.status);
         
         // Check if user has already bid on this package
-        const hasUserBid = job.bids.some(bid => bid.palId === user?.id);
+        const hasUserBid = job.bids.some(bid => bid.palId === user?._id);
         
         // Only include if status is appropriate AND user has bid
         return isAppropriateStatus && hasUserBid;
@@ -275,19 +275,19 @@ function AvailableJobsPage() {
           // Debug logging for the updated job
           console.log('🔄 Updated job with new bid:', updatedJob);
           console.log('🔄 User bids in updated job:', updatedJob.bids);
-          console.log('🔄 Current user ID:', user?.id);
+          console.log('🔄 Current user ID:', user?._id);
           
           // Additional debugging to check bid structure
-          const userBids = updatedJob.bids.filter(bid => bid.palId === user?.id);
+          const userBids = updatedJob.bids.filter(bid => bid.palId === user?._id);
           console.log('🔍 User bids after filtering:', userBids);
           console.log('🔍 Bid palId values:', updatedJob.bids.map(b => ({ palId: b.palId, amount: b.amount })));
           console.log('🔍 User ID comparison:', {
-            userId: user?.id,
+            userId: user?._id,
             userBidsFound: userBids.length,
             bidMatches: updatedJob.bids.map(bid => ({
               palId: bid.palId,
-              userId: user?.id,
-              matches: bid.palId === user?.id
+              userId: user?._id,
+              matches: bid.palId === user?._id
             }))
           });
         }

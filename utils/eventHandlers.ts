@@ -2,7 +2,7 @@ import { DeliveryJob, User, UserRole, Screen } from '../types';
 
 export interface EventContext {
   user: User | null;
-  activeRole: UserRole;
+  activeMode: UserRole;
   selectedJob: DeliveryJob | null;
 }
 
@@ -105,7 +105,7 @@ export class EventHandlers {
     return this.createButtonHandler(
       `navigate-${targetScreen}`,
       () => {
-        if (options.requireRole && this.context.activeRole !== options.requireRole) {
+        if (options.requireRole && this.context.activeMode !== options.requireRole) {
           console.warn('⚠️ EventHandler: Navigation requires role -', options.requireRole);
           return;
         }

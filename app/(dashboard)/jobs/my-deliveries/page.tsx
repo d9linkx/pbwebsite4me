@@ -25,7 +25,7 @@ export default function MyDeliveriesPage() {
 
   const {
     user,
-    activeRole,
+    activeMode,
     deliveryJobs,
     setDeliveryJobs,
     setSelectedJob,
@@ -111,15 +111,15 @@ export default function MyDeliveriesPage() {
     if (!user) return []
 
     let filtered = deliveryJobs.filter((job) => {
-      switch (activeRole) {
+      switch (activeMode) {
         case 'sender':
-          return job.senderId === user.id
+          return job.senderId === user._id
         case 'pal':
-          return job.selectedPalId === user.id
+          return job.selectedPalId === user._id
         case 'receiver':
-          return job.receiverId === user.id
+          return job.receiverId === user._id
         case 'proxy':
-          return job.proxyId === user.id
+          return job.proxyId === user._id
         default:
           return false
       }
@@ -138,7 +138,7 @@ export default function MyDeliveriesPage() {
     return filtered.sort((a, b) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
-  }, [user, activeRole, deliveryJobs, filter])
+  }, [user, activeMode, deliveryJobs, filter])
 
   const handleJobClick = (job: DeliveryJob) => {
     setSelectedJob(job)
@@ -190,9 +190,9 @@ export default function MyDeliveriesPage() {
         </button>
         <h1 className="text-2xl font-bold text-gray-900">My Deliveries</h1>
         <p className="text-gray-600 mt-1">
-          {activeRole === 'sender' && 'Deliveries you\'ve sent'}
-          {activeRole === 'pal' && 'Deliveries you\'ve delivered'}
-          {activeRole === 'receiver' && 'Deliveries you\'ve received'}
+          {activeMode === 'sender' && 'Deliveries you\'ve sent'}
+          {activeMode === 'pal' && 'Deliveries you\'ve delivered'}
+          {activeMode === 'receiver' && 'Deliveries you\'ve received'}
         </p>
       </div>
 
@@ -238,11 +238,11 @@ export default function MyDeliveriesPage() {
             No deliveries yet
           </h3>
           <p className="text-gray-600 mb-4">
-            {activeRole === 'sender' && 'Post your first delivery to get started'}
-            {activeRole === 'pal' && 'Find available jobs to start delivering'}
-            {activeRole === 'receiver' && 'You haven\'t received any deliveries yet'}
+            {activeMode === 'sender' && 'Post your first delivery to get started'}
+            {activeMode === 'pal' && 'Find available jobs to start delivering'}
+            {activeMode === 'receiver' && 'You haven\'t received any deliveries yet'}
           </p>
-          {activeRole === 'sender' && (
+          {activeMode === 'sender' && (
             <button
               onClick={() => router.push('/jobs/post')}
               className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] transition-colors"
@@ -250,7 +250,7 @@ export default function MyDeliveriesPage() {
               Post a Delivery
             </button>
           )}
-          {activeRole === 'pal' && (
+          {activeMode === 'pal' && (
             <button
               onClick={() => router.push('/jobs')}
               className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-[#d63a00] transition-colors"

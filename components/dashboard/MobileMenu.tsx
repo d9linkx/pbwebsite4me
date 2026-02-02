@@ -16,14 +16,14 @@ import {
   Store,
 } from "lucide-react";
 import { ROUTES } from "@/lib/routes";
-import { User, UserRole } from "@/types";
 import Image from "next/image";
+import { User, UserMode } from "@/types/user";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   user: User | null;
-  activeRole: UserRole;
+  activeMode: UserMode;
   currentPath: string;
 }
 
@@ -31,7 +31,7 @@ export function MobileMenu({
   isOpen,
   onClose,
   user,
-  activeRole,
+  activeMode,
   currentPath,
 }: MobileMenuProps) {
   const router = useRouter();
@@ -67,7 +67,7 @@ export function MobileMenu({
     },
   ];
 
-  const roleQuickActions = {
+  const modeQuickActions = {
     sender: {
       label: "Post New Delivery",
       icon: Plus,
@@ -121,7 +121,7 @@ export function MobileMenu({
                   <div>
                     <h2 className="text-lg font-bold text-white">Prawnbox</h2>
                     <p className="text-sm text-gray-200 capitalize">
-                      {activeRole} Account
+                      {activeMode} Account
                     </p>
                   </div>
                 </div>
@@ -142,14 +142,14 @@ export function MobileMenu({
                     {user.profileImage ? (
                       <Image
                         src={user.profileImage}
-                        alt={user.fullName || "User"}
+                        alt={`${user.firstName} ${user.lastName}` || "User"}
                         width={100}
                         height={100}
                         className="w-full h-full rounded-2xl object-cover"
                       />
                     ) : (
                       <span className="text-2xl font-bold text-white">
-                        {user.name
+                        {user.firstName
                           ?.split(" ")
                           .map((n) => n[0])
                           .join("")
@@ -160,7 +160,7 @@ export function MobileMenu({
                   </div>
                   <div className="flex-1">
                     <h3 className="text-white font-bold text-lg">
-                      {user.name || "User"}
+                      {user.firstName || "User"}
                     </h3>
                     <p className="text-gray-400 text-sm">{user.email}</p>
                   </div>
@@ -199,7 +199,7 @@ export function MobileMenu({
 
               {/* Role Quick Action */}
               {(() => {
-                const action = roleQuickActions[activeRole];
+                const action = modeQuickActions[activeMode];
                 const Icon = action.icon;
                 return (
                   <button

@@ -34,9 +34,9 @@ export default function DashboardLayout({
   // Global state
   const {
     user,
-    activeRole,
+    activeMode,
     setUser,
-    setActiveRole,
+    setActiveMode,
     notifications,
     setNotifications,
     initializeNotifications,
@@ -135,7 +135,7 @@ export default function DashboardLayout({
     }
 
     const job = deliveryJobs.find((j) => j.id === data.jobId);
-    if (job && job.senderId === user?.id) {
+    if (job && job.senderId === user?._id) {
       toast.success("New bid received on your delivery", {
         duration: 4000,
         action: {
@@ -215,8 +215,8 @@ export default function DashboardLayout({
           style={{ top: `${processingBarHeight}px` }}
         >
           <DashboardHeader
-            activeRole={activeRole}
-            onRoleChange={setActiveRole}
+            activeMode={activeMode}
+            onModeChange={setActiveMode}
             onNotificationsClick={() => router.push(ROUTES.NOTIFICATIONS)}
             onMenuToggle={() => setMobileMenuOpen(!isMobileMenuOpen)}
             onProfileClick={() => router.push(ROUTES.PROFILE_INFORMATION)}
@@ -265,7 +265,7 @@ export default function DashboardLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden mt-12 lg:mt-24">
         {/* Desktop Sidebar */}
-        <div className="hidden xl:block flex-shrink-0 fixed h-full">
+        <div className="hidden xl:block flex-shrink-0 sticky top-0 left-0">
           <DesktopSidebar currentPath={pathname} />
         </div>
 
@@ -278,7 +278,7 @@ export default function DashboardLayout({
                 isOpen={isMobileMenuOpen}
                 onClose={() => setMobileMenuOpen(false)}
                 user={user}
-                activeRole={activeRole}
+                activeMode={activeMode}
                 currentPath={pathname}
               />
             </div>
@@ -293,14 +293,16 @@ export default function DashboardLayout({
 
           {/* Page Content */}
           <main
-            className={`flex-1 overflow-y-auto overflow-x-hidden ${shouldHideHeader() ? "pb-6" : "pb-24 xl:pb-6"}`}
+            className={`flex-1 overflow-y-auto overflow-x-hidden p-4 ${shouldHideHeader() ? "pb-6" : "pb-24 xl:pb-6"}`}
             style={{
               paddingTop: shouldHideHeader()
                 ? "0px"
                 : `${processingBarHeight + 20}px`,
             }}
           >
-            <div className="xl:max-w-[70vw] xl:mx-auto rounded-2xl bg-dark">{children}</div>
+            <div className="xl:mx-auto rounded-2xl bg-dark mt-24 xl:mt-0">
+              {children}
+            </div>
           </main>
         </div>
       </div>

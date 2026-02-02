@@ -192,7 +192,7 @@ export function AvailableJobsScreen({
 
   const getCurrentUserBid = (job: DeliveryJob): Bid | undefined => {
     if (!currentUser) return undefined;
-    return job.bids?.find(bid => bid.palId === currentUser.id);
+    return job.bids?.find(bid => bid.palId === currentuser._id);
   };
 
   const getBidStatusMessage = (job: DeliveryJob) => {
@@ -201,7 +201,7 @@ export function AvailableJobsScreen({
       return { message: 'No bid placed', statusType: 'none' as const, canEdit: false };
     }
 
-    if (job.selectedPalId === currentUser?.id) {
+    if (job.selectedPalId === currentuser?._id) {
       return { 
         message: '🎉 Congratulations! Your bid has been accepted by the sender. The job is now yours!', 
         statusType: 'accepted' as const, 
@@ -209,7 +209,7 @@ export function AvailableJobsScreen({
       };
     }
 
-    if (job.selectedPalId && job.selectedPalId !== currentUser?.id) {
+    if (job.selectedPalId && job.selectedPalId !== currentuser?._id) {
       return { 
         message: 'The sender selected another Pal for this delivery. Better luck next time!', 
         statusType: 'outbid' as const, 
@@ -217,7 +217,7 @@ export function AvailableJobsScreen({
       };
     }
 
-    const otherBids = job.bids?.filter(bid => bid.palId !== currentUser?.id) || [];
+    const otherBids = job.bids?.filter(bid => bid.palId !== currentuser?._id) || [];
     const lowestBid = otherBids.length > 0 ? Math.min(...otherBids.map(b => b.amount)) : currentUserBid.amount;
 
     if (currentUserBid.amount <= lowestBid) {
@@ -301,7 +301,7 @@ export function AvailableJobsScreen({
     }
 
     // Temporarily disable wallet balance check for testing
-    // if (!currentUser?.walletBalance || currentUser.walletBalance < bidAmount) {
+    // if (!currentuser?.balance || currentuser.balance < bidAmount) {
     //   if (onNavigateToWallet) {
     //     onNavigateToWallet(job, bidAmount);
     //   }

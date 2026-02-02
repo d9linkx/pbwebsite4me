@@ -51,7 +51,7 @@ export function ProfileInformationScreen({
   // you areconst typedUser = currentUser as User | null;
 
   // Validate that currentUser has the expected structure
-  const isValidUser = currentUser && typeof currentUser === 'object' && (currentUser.id || currentUser._id);
+  const isValidUser = currentUser && typeof currentUser === 'object' && (currentuser._id || currentUser._id);
 
   // Update form data when user data loads
   useEffect(() => {
@@ -61,7 +61,7 @@ export function ProfileInformationScreen({
         lastName: currentUser.lastName || '',
         userName: currentUser.userName || '',
         email: currentUser.email || '',
-        phone: currentUser.phoneNumber || '',
+        phone: currentuser.phoneNumberNumber || '',
         address: currentUser.location?.address || ''
       });
     }
@@ -95,10 +95,10 @@ export function ProfileInformationScreen({
   }
 
   const handleSave = async () => {
-    if (!currentUser?.id) return;
+    if (!currentuser?._id) return;
 
     try {
-      const response = await updateProfile(currentUser.id, {
+      const response = await updateProfile(currentuser._id, {
         firstName: formData.firstName,
         lastName: formData.lastName,
         userName: formData.userName,
@@ -214,7 +214,7 @@ export function ProfileInformationScreen({
         lastName: currentUser.lastName || '',
         userName: currentUser.userName || '',
         email: currentUser.email || '',
-        phone: currentUser.phone || '',
+        phone: currentuser.phoneNumber || '',
         address: currentUser.location?.address || ''
       });
     }

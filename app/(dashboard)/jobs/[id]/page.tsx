@@ -25,7 +25,7 @@ export default function JobDetailPage() {
 
   const {
     user,
-    activeRole,
+    activeMode,
     deliveryJobs,
     setDeliveryJobs,
     setSelectedJob,
@@ -262,15 +262,15 @@ export default function JobDetailPage() {
     return colors[status] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
 
-  const canViewBids = user && (user.id === job.senderId || activeRole === 'pal')
+  const canViewBids = user && (user._id === job.senderId || activeMode === 'pal')
   const canTrack = job.status !== 'pending' && job.status !== 'bidding'
 
   // Debug logging for permissions
   console.log('🔐 Job Details Permissions:', {
-    userId: user?.id,
+    userId: user?._id,
     jobSenderId: job?.senderId,
-    isSender: user?.id === job?.senderId,
-    activeRole,
+    isSender: user?._id === job?.senderId,
+    activeMode,
     canViewBids,
     jobStatus: job?.status,
     canTrack
@@ -387,7 +387,7 @@ export default function JobDetailPage() {
           )}
 
           {/* Status Update (for Pal) */}
-          {activeRole === 'pal' && job.selectedPalId === user?.id && (
+          {activeMode === 'pal' && job.selectedPalId === user?._id && (
             <div className="mb-6">
               <h3 className="font-semibold text-gray-900 mb-3">Update Status</h3>
               <div className="grid grid-cols-2 gap-2">

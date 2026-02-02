@@ -30,7 +30,7 @@ export const PROXY_STATUS_GROUPS = {
   COMPLETED: ['collected'] as unknown as ProxyStatus[],
 } as const;
 
-export const ROLE_PRIORITIES = ['sender', 'pal', 'receiver', 'proxy'] as const;
+export const ROLE_PRIORITIES = ['receiver', 'sender', 'pal', 'proxy'] as const;
 
 export const ACTION_BUTTON_CONFIGS = {
   SENDER: {

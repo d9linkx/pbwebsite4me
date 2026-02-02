@@ -15,7 +15,7 @@ import type { Screen } from '@/types/index'
 
 export default function RatingsPage() {
   const router = useRouter()
-  const { selectedJob, activeRole = 'sender' as const } = useAppStore()
+  const { selectedJob, activeMode = 'sender' as const } = useAppStore()
 
   const handleRatingComplete = () => {
     // Handle rating completion
@@ -31,7 +31,7 @@ export default function RatingsPage() {
     <div className="container mx-auto px-4 py-6">
       <RatingsScreen
         job={selectedJob}
-        userRole={activeRole}
+        userRole={activeMode}
         onBack={handleBack}
         onRatingComplete={handleRatingComplete}
       />
