@@ -1,4 +1,3 @@
-// API Configuration and Client
 export const API_CONFIG = {
   BASE_URL:
     typeof window === "undefined"
@@ -8,16 +7,6 @@ export const API_CONFIG = {
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000, // 1 second
 } as const;
-
-// Public endpoints that don't require authentication tokens
-const PUBLIC_ENDPOINTS = [
-  "/user/register",
-  "/user/login",
-  "/auth/login",
-  "/auth/register",
-  "/user/verify-verification-code",
-  "/auth/refresh",
-] as const;
 
 // Type for JSON-serializable data
 export type RequestData =
@@ -118,7 +107,7 @@ export class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
 
@@ -155,30 +144,6 @@ export class ApiClient {
       }
     }
 
-    // Add auth token if available (skip token check for public endpoints)
-    const isPublicEndpoint = PUBLIC_ENDPOINTS.some((publicPath) =>
-      endpoint.startsWith(publicPath)
-    );
-    const token = this.getAuthToken();
-
-    if (!isPublicEndpoint) {
-      console.log(
-        "🔍 Checking token for request to",
-        endpoint,
-        ":",
-        token ? "Token found" : "No token"
-      );
-    }
-
-    if (token && token !== "undefined" && token !== "null") {
-      headers.Authorization = `Bearer ${token}`;
-      if (!isPublicEndpoint) {
-        console.log("🔑 Adding Authorization header to request");
-      }
-    } else if (!isPublicEndpoint) {
-      console.warn("⚠️ No valid token available for request to", endpoint);
-    }
-
     const config: RequestInit = {
       ...options,
       headers,
@@ -208,7 +173,7 @@ export class ApiClient {
           success: false,
           message: `Invalid JSON response from server: ${responseText.substring(
             0,
-            200
+            200,
           )}`,
         } as ApiResponse<T>;
       }
@@ -311,32 +276,9 @@ export class ApiClient {
     };
   }
 
-  public getAuthToken(): string | null {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("auth_token");
-      // Don't return invalid token strings
-      if (
-        token &&
-        token !== "undefined" &&
-        token !== "null" &&
-        token.trim() !== ""
-      ) {
-        console.log(
-          "🔑 Retrieved token from localStorage:",
-          token.substring(0, 10) + "..."
-        );
-        return token;
-      }
-      console.warn("⚠️ No valid token found in localStorage");
-      return null;
-    }
-    console.warn("⚠️ getAuthToken called on server side");
-    return null;
-  }
-
   async get<T>(
     endpoint: string,
-    params?: Record<string, string>
+    params?: Record<string, string>,
   ): Promise<ApiResponse<T>> {
     const queryString = params
       ? `?${new URLSearchParams(params).toString()}`
@@ -349,7 +291,7 @@ export class ApiClient {
   async post<T>(
     endpoint: string,
     data?: unknown,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<ApiResponse<T>> {
     const requestOptions: RequestInit = {
       method: "POST",
@@ -377,7 +319,7 @@ export class ApiClient {
   async put<T>(
     endpoint: string,
     data?: unknown,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<ApiResponse<T>> {
     const requestOptions: RequestInit = {
       method: "PUT",
@@ -403,7 +345,7 @@ export class ApiClient {
   async patch<T>(
     endpoint: string,
     data?: unknown,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<ApiResponse<T>> {
     const requestOptions: RequestInit = {
       method: "PATCH",
@@ -431,31 +373,6 @@ export class ApiClient {
       method: "DELETE",
     });
   }
-
-  setAuthToken(token: string) {
-    if (typeof window !== "undefined") {
-      console.log(
-        "🔒 Setting auth token in localStorage:",
-        token ? token.substring(0, 10) + "..." : "empty"
-      );
-      localStorage.setItem("auth_token", token);
-      // Verify the token was set correctly
-      const storedToken = localStorage.getItem("auth_token");
-      if (storedToken !== token) {
-        console.error("❌ Token was not stored correctly in localStorage");
-      } else {
-        console.log("✅ Token stored successfully in localStorage");
-      }
-    } else {
-      console.warn("⚠️ setAuthToken called on server side");
-    }
-  }
-
-  clearAuthToken() {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("auth_token");
-    }
-  }
 }
 
 // Create and export a default API client instance
@@ -468,7 +385,7 @@ export const sleep = (ms: number) =>
 export const retry = async <T>(
   fn: () => Promise<T>,
   attempts: number = API_CONFIG.RETRY_ATTEMPTS,
-  delay: number = API_CONFIG.RETRY_DELAY
+  delay: number = API_CONFIG.RETRY_DELAY,
 ): Promise<T> => {
   try {
     return await fn();

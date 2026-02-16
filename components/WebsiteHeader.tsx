@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { ROUTES } from "@/lib/routes";
 import Image from "next/image";
 
 interface NavItem {
@@ -11,19 +10,19 @@ interface NavItem {
 }
 
 const MENU_ITEMS: NavItem[] = [
-  { label: "Home", path: ROUTES.HOME },
-  { label: "About", path: ROUTES.ABOUT },
-  { label: "How It Works", path: ROUTES.HOW_IT_WORKS },
-  { label: "Pricing", path: ROUTES.PRICING },
-  { label: "Safety", path: ROUTES.SAFETY },
-  { label: "FAQs", path: ROUTES.FAQS },
-  { label: "Contact", path: ROUTES.CONTACT },
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "How It Works", path: "/how-it-works" },
+  { label: "Pricing", path: "/pricing" },
+  { label: "Safety", path: "/safety" },
+  { label: "FAQs", path: "/faqs" },
+  { label: "Contact", path: "/contact" },
 ];
 
 const GET_STARTED_ITEMS: NavItem[] = [
-  { label: "Become a Pal", path: ROUTES.BECOME_PAL },
-  { label: "Become a Proxy", path: ROUTES.BECOME_PROXY },
-  { label: "Send Items", path: ROUTES.SEND_ITEMS },
+  { label: "Become a Pal", path: "/become-pal" },
+  { label: "Become a Proxy", path: "/become-proxy" },
+  { label: "Send Items", path: "/send-items" },
 ];
 
 export function WebsiteHeader() {
@@ -31,6 +30,7 @@ export function WebsiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isGetStartedOpen, setIsGetStartedOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   const handleNavigate = (path: string) => {
     router.push(path);
@@ -61,17 +61,21 @@ export function WebsiteHeader() {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Logo onNavigate={handleNavigate} />
-          <DesktopNav items={MENU_ITEMS} onNavigate={handleNavigate} />
+          <DesktopNav
+            items={MENU_ITEMS}
+            onNavigate={handleNavigate}
+            pathname={pathname}
+          />
 
           <div className="hidden lg:flex items-center space-x-4">
             <button
-              onClick={() => handleNavigate(ROUTES.PRE_REGISTER)}
+              onClick={() => handleNavigate("/pre-register")}
               className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
             >
               Join the Waitlist
             </button>
             {/* <button
-              onClick={() => handleNavigate(ROUTES.AUTH)}
+              onClick={() => handleNavigate("/")}
               className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
             >
               Sign In
@@ -109,7 +113,7 @@ export function WebsiteHeader() {
 function Logo({ onNavigate }: { onNavigate: (path: string) => void }) {
   return (
     <button
-      onClick={() => onNavigate(ROUTES.HOME)}
+      onClick={() => onNavigate("/")}
       className="flex items-center space-x-3 group"
       aria-label="Go to home"
     >
@@ -128,9 +132,11 @@ function Logo({ onNavigate }: { onNavigate: (path: string) => void }) {
 function DesktopNav({
   items,
   onNavigate,
+  pathname,
 }: {
   items: NavItem[];
   onNavigate: (path: string) => void;
+  pathname: string;
 }) {
   return (
     <nav className="hidden lg:flex items-center space-x-1">
@@ -138,7 +144,7 @@ function DesktopNav({
         <button
           key={item.path}
           onClick={() => onNavigate(item.path)}
-          className="px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+          className={`px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 ${pathname === item.path ? "bg-white/10 text-white" : ""}`}
         >
           {item.label}
         </button>
@@ -227,7 +233,7 @@ function MobileMenu({
         </div>
         {/* <div className="pt-4 space-y-2">
           <button
-            onClick={() => onNavigate(ROUTES.AUTH)}
+            onClick={() => onNavigate("/")}
             className="block w-full px-4 py-3 text-center text-white border border-gray-700 rounded-lg hover:bg-white/10 transition-all duration-200"
           >
             Sign In

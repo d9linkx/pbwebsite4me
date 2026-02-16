@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { getCurrentSubdomain } from "../utils/domain";
 import { Toaster } from "sonner";
+import { WebsiteHeader } from "@/components/WebsiteHeader";
+import { WebsiteFooter } from "@/components/WebsiteFooter";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -19,10 +20,12 @@ export default async function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body
-        className={`${plusJakartaSans.variable} antialiased`}
-      >
-        {children}
+      <body className={`${plusJakartaSans.variable} antialiased`}>
+        <div className="min-h-screen bg-white overflow-x-hidden flex flex-col">
+          <WebsiteHeader />
+          <main className="flex-1 w-full">{children}</main>
+          <WebsiteFooter />
+        </div>
         <Toaster />
       </body>
     </html>
@@ -31,22 +34,22 @@ export default async function RootLayout({
 
 // Generate metadata based on subdomain
 export async function generateMetadata(): Promise<Metadata> {
-  const subdomain = await getCurrentSubdomain();
-
   // Get domain from environment variables with fallbacks
-  const websiteDomain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'localhost:3000'
-  const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN || 'localhost:3000'
+  const websiteDomain =
+    process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "localhost:3000";
 
-  const baseUrl = subdomain === 'app' ? `https://${appDomain}` : `https://${websiteDomain}`
+  const baseUrl = `https://${websiteDomain}`;
 
   return {
-    title: subdomain === 'app' ? "Prawnbox - Dashboard" : "Prawnbox - Peer-to-Peer Delivery",
-    description: subdomain === 'app'
-      ? "Manage your deliveries, track packages, and earn money with Prawnbox"
-      : "Fast, secure, and reliable peer-to-peer delivery service in Nigeria",
-    keywords: subdomain === 'app'
-      ? ["delivery dashboard", "package tracking", "logistics management"]
-      : ["peer delivery", "package delivery", "logistics Nigeria", "courier service"],
+    title: "Prawnbox - Peer-to-Peer Delivery",
+    description:
+      "Fast, secure, and reliable peer-to-peer delivery service in Nigeria",
+    keywords: [
+      "peer delivery",
+      "package delivery",
+      "logistics Nigeria",
+      "courier service",
+    ],
     authors: [{ name: "Prawnbox" }],
     creator: "Prawnbox",
     publisher: "Prawnbox",
@@ -55,21 +58,19 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: baseUrl,
     },
     openGraph: {
-      type: 'website',
-      locale: 'en_NG',
+      type: "website",
+      locale: "en_NG",
       url: baseUrl,
-      title: subdomain === 'app' ? "Prawnbox - Dashboard" : "Prawnbox - Peer-to-Peer Delivery",
-      description: subdomain === 'app'
-        ? "Manage your deliveries, track packages, and earn money with Prawnbox"
-        : "Fast, secure, and reliable peer-to-peer delivery service in Nigeria",
-      siteName: 'Prawnbox',
+      title: "Prawnbox - Peer-to-Peer Delivery",
+      description:
+        "Fast, secure, and reliable peer-to-peer delivery service in Nigeria",
+      siteName: "Prawnbox",
     },
     twitter: {
-      card: 'summary_large_image',
-      title: subdomain === 'app' ? "Prawnbox - Dashboard" : "Prawnbox - Peer-to-Peer Delivery",
-      description: subdomain === 'app'
-        ? "Manage your deliveries, track packages, and earn money with Prawnbox"
-        : "Fast, secure, and reliable peer-to-peer delivery service in Nigeria",
+      card: "summary_large_image",
+      title: "Prawnbox - Peer-to-Peer Delivery",
+      description:
+        "Fast, secure, and reliable peer-to-peer delivery service in Nigeria",
     },
   };
 }

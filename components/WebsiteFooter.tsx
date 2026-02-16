@@ -12,7 +12,6 @@ import {
   MapPin,
 } from "lucide-react";
 import Image from "next/image";
-import { ROUTES } from "@/lib/routes";
 
 interface NavItem {
   label: string;
@@ -20,23 +19,23 @@ interface NavItem {
 }
 
 const quickLinks: NavItem[] = [
-  { label: "About", path: ROUTES.ABOUT },
-  { label: "How It Works", path: ROUTES.HOW_IT_WORKS },
-  { label: "Pricing", path: ROUTES.PRICING },
-  { label: "Safety", path: ROUTES.SAFETY },
+  { label: "About", path: "/about" },
+  { label: "How It Works", path: "/how-it-works" },
+  { label: "Pricing", path: "/pricing" },
+  { label: "Safety", path: "/safety" },
 ];
 
 const getStarted: NavItem[] = [
-  { label: "Become a Pal", path: ROUTES.BECOME_PAL },
-  { label: "Become a Proxy", path: ROUTES.BECOME_PROXY },
-  { label: "Send Items", path: ROUTES.BECOME_SENDER },
+  { label: "Become a Pal", path: "/become-pal" },
+  { label: "Become a Proxy", path: "/become-proxy" },
+  { label: "Send Items", path: "/send-items" },
 ];
 
 const support: NavItem[] = [
-  { label: "FAQs", path: ROUTES.FAQS },
-  { label: "Contact US", path: ROUTES.CONTACT },
-  { label: "Terms of Service", path: ROUTES.TERMS },
-  { label: "Privacy Policy", path: ROUTES.PRIVACY },
+  { label: "FAQs", path: "/faqs" },
+  { label: "Contact US", path: "/contact" },
+  { label: "Terms of Service", path: "/terms" },
+  { label: "Privacy Policy", path: "/privacy" },
 ];
 
 export function WebsiteFooter() {
