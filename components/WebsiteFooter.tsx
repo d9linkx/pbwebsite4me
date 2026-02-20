@@ -11,7 +11,7 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
-import Image from "next/image";
+import Logo from "./Logo";
 
 interface NavItem {
   label: string;
@@ -54,16 +54,7 @@ export function WebsiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <Image
-                src="/P-logo.png"
-                alt="Prawnbox"
-                width={50}
-                height={50}
-                className="w-10 h-10 object-contain"
-              />
-              <span className="text-xl font-bold text-white">Prawnbox</span>
-            </div>
+            <Logo onNavigate={handleNavigate} />
             <p className="text-sm text-gray-400 mb-4">
               Nigeria&apos;s trusted peer-to-peer delivery platform. Fast,
               secure, and reliable delivery services at your fingertips.
@@ -159,27 +150,21 @@ export function WebsiteFooter() {
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
-                <Mail size={18} className="text-primary mt-1 flex-shrink-0" />
+                <Mail size={18} className="text-primary mt-1 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-sm">info@prawnbox.com</span>
                   <span className="text-sm">partners@prawnbox.com</span>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <Phone
-                  size={18}
-                  className="text-primary mt-1 flex-shrink-0"
-                />
+                <Phone size={18} className="text-primary mt-1 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-sm">+234 906 870 9992</span>
                   <span className="text-sm">+234 707 098 9034</span>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <MapPin
-                  size={18}
-                  className="text-primary mt-1 flex-shrink-0"
-                />
+                <MapPin size={18} className="text-primary mt-1 shrink-0" />
                 <span className="text-sm">Lagos, Nigeria</span>
               </li>
             </ul>

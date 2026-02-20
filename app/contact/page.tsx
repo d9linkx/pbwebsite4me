@@ -14,7 +14,6 @@ import {
   Linkedin,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -26,7 +25,6 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +43,7 @@ export default function ContactPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
+      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -68,7 +66,7 @@ export default function ContactPage() {
                 <span className="h2-animated-underline relative inline-block">
                   Send Us a Message
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -196,7 +194,7 @@ export default function ContactPage() {
                 <span className="h2-animated-underline relative inline-block">
                   Contact Information
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -207,7 +205,7 @@ export default function ContactPage() {
 
               <div className="space-y-6 mb-8">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
                     <Mail className="text-white" size={24} />
                   </div>
                   <div>
@@ -218,7 +216,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
                     <Phone className="text-white" size={24} />
                   </div>
                   <div>
@@ -229,7 +227,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
                     <MessageCircle className="text-white" size={24} />
                   </div>
                   <div>
@@ -242,7 +240,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
                     <MapPin className="text-white" size={24} />
                   </div>
                   <div>
@@ -253,7 +251,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
                     <Clock className="text-white" size={24} />
                   </div>
                   <div>
@@ -324,7 +322,7 @@ export default function ContactPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white">
+      <section className="py-20 bg-linear-to-br from-dark to-darkest text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Ready to Get Started?
@@ -333,7 +331,9 @@ export default function ContactPage() {
             Join Prawnbox today and experience the future of delivery in Nigeria
           </p>
           <button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Create Account

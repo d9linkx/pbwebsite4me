@@ -12,13 +12,11 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function PricingPage() {
   const [palBid, setPalBid] = useState(3000);
   const [hasProxyFee, setHasProxyFee] = useState(false);
   const [proxyFee, setProxyFee] = useState(1000);
-  const router = useRouter();
 
   // Animation variants
   const fadeInUp = {
@@ -57,7 +55,7 @@ export default function PricingPage() {
   return (
     <div className="pt-20">
       {/* Hero Section with Background Image */}
-      <section className="relative bg-gradient-to-br from-dark to-darker text-white py-20 overflow-hidden">
+      <section className="relative bg-linear-to-br from-dark to-darker text-white py-20 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-20">
           <Image
@@ -67,7 +65,7 @@ export default function PricingPage() {
             height={500}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/80 to-darker"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-dark via-dark/80 to-darker"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -98,7 +96,7 @@ export default function PricingPage() {
               <span className="h2-animated-underline relative inline-block">
                 Pricing Calculator
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -333,30 +331,21 @@ export default function PricingPage() {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-start space-x-2">
-                  <Check
-                    className="text-primary flex-shrink-0 mt-0.5"
-                    size={16}
-                  />
+                  <Check className="text-primary shrink-0 mt-0.5" size={16} />
                   <p className="text-gray-700">
                     <span className="font-semibold">Senders:</span> Pay only the
                     bid + proxy fee (if needed). Money locked in escrow.
                   </p>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <Check
-                    className="text-primary flex-shrink-0 mt-0.5"
-                    size={16}
-                  />
+                  <Check className="text-primary shrink-0 mt-0.5" size={16} />
                   <p className="text-gray-700">
                     <span className="font-semibold">Pals:</span> Receive 80% of
                     bid after successful delivery from escrow.
                   </p>
                 </div>
                 <div className="flex items-start space-x-2">
-                  <Check
-                    className="text-primary flex-shrink-0 mt-0.5"
-                    size={16}
-                  />
+                  <Check className="text-primary shrink-0 mt-0.5" size={16} />
                   <p className="text-gray-700">
                     <span className="font-semibold">Proxies:</span> Keep 100% of
                     emergency fee when receiver doesn&apos;t show up.
@@ -382,7 +371,7 @@ export default function PricingPage() {
               <span className="h2-animated-underline relative inline-block">
                 Complete Fee Breakdown
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -481,7 +470,7 @@ export default function PricingPage() {
                     <li key={idx} className="flex items-start space-x-2">
                       <Check
                         size={20}
-                        className="text-primary flex-shrink-0 mt-0.5"
+                        className="text-primary shrink-0 mt-0.5"
                       />
                       <span className="text-gray-600">{feature}</span>
                     </li>
@@ -519,7 +508,7 @@ export default function PricingPage() {
               <span className="h2-animated-underline relative inline-block">
                 Save Up to 60% vs Traditional Couriers in Nigeria
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -538,7 +527,7 @@ export default function PricingPage() {
           >
             {/* Horizontal scroll container for mobile */}
             <div className="overflow-x-auto scrollbar-smooth">
-              <table className="w-full min-w-[640px]">
+              <table className="w-full min-w-160">
                 <thead className="bg-dark text-white">
                   <tr>
                     <th className="px-6 py-4 text-left">Feature</th>
@@ -693,7 +682,7 @@ export default function PricingPage() {
       </section>
 
       {/* CTA Section with Background */}
-      <section className="py-20 bg-gradient-to-br from-primary to-primary-hover text-white relative overflow-hidden">
+      <section className="py-20 bg-linear-to-br from-primary to-primary-hover text-white relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-10">
           <Image
@@ -723,7 +712,9 @@ export default function PricingPage() {
             Prawnbox&apos;s transparent pricing
           </motion.p>
           <motion.button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
             variants={scaleIn}
             whileHover={{

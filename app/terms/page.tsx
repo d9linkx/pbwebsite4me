@@ -9,7 +9,7 @@ export default function TermsPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
+      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <FileText className="w-16 h-16 text-primary mx-auto mb-6" />
@@ -191,7 +191,9 @@ export default function TermsPage() {
             Create your account and start delivering or sending today
           </p>
           <button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             Get Started

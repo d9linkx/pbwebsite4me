@@ -220,7 +220,7 @@ export default function FAQsPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
+      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -298,12 +298,12 @@ export default function FAQsPage() {
                     </span>
                     {expandedFaq === faq.id ? (
                       <ChevronUp
-                        className="text-primary flex-shrink-0"
+                        className="text-primary shrink-0"
                         size={24}
                       />
                     ) : (
                       <ChevronDown
-                        className="text-gray-400 flex-shrink-0"
+                        className="text-gray-400 shrink-0"
                         size={24}
                       />
                     )}
@@ -326,7 +326,7 @@ export default function FAQsPage() {
             <span className="h2-animated-underline relative inline-block">
               Still Have Questions?
               <motion.span
-                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                 initial={{ width: "0%", opacity: 0 }}
                 whileInView={{ width: "100%", opacity: 1 }}
                 viewport={{ once: false, margin: "-50px" }}

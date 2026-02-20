@@ -174,7 +174,7 @@ export default function SendItemsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-dark via-darker to-darkest text-white overflow-hidden">
+      <section className="relative bg-linear-to-br from-dark via-darker to-darkest text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -187,9 +187,9 @@ export default function SendItemsPage() {
           ></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-[0px] pt-[56px] pr-[28px] pb-[112px] pl-[28px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-[0px] p-[0px] mx-[-20px] my-[0px] mr-[-15px] mb-[0px] ml-[-15px] mt-[-30px] lg:mt-[-13px] lg:ml-[-25px] lg:mr-[-25px]">
-            <div className="pt-[80px] pr-[0px] pb-[0px] pl-[0px]">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-0 pt-14 pr-7 pb-28 pl-7">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-0 p-0 -mx-5 my-0 -mr-3.75 mb-0 -ml-3.75 -mt-7.5 lg:-mt-3.25 lg:-ml-6.25 lg:-mr-6.25">
+            <div className="pt-20 pr-0 pb-0 pl-0">
               <div className="inline-flex items-center space-x-2 bg-primary-light px-4 py-2 rounded-full mb-6">
                 <Package className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-primary">
@@ -226,7 +226,9 @@ export default function SendItemsPage() {
               </div>
 
               <button
-                onClick={() => router.push("/pre-register")}
+                onClick={() => {
+                  window.location.href = "https://app.prawnbox.com/register";
+                }}
                 className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
               >
                 <span>Send Your First Item</span>
@@ -239,16 +241,16 @@ export default function SendItemsPage() {
             </div>
 
             {/* Hero Image */}
-            <div className="relative sm-hidden lg:mt-[80px]">
+            <div className="relative sm-hidden lg:mt-20">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="/couple.jpg"
                   alt="Prawnbox delivery in Lagos"
                   width={1000}
                   height={600}
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-125 object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent m-[0px] p-[0px]"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent m-0 p-0"></div>
 
                 {/* Floating Card */}
                 <div className="absolute bottom-6 left-6 right-6 bg-white rounded-xl p-4 shadow-xl">
@@ -287,7 +289,7 @@ export default function SendItemsPage() {
               <span className="h2-animated-underline relative inline-block">
                 Why Send with Prawnbox?
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -308,7 +310,7 @@ export default function SendItemsPage() {
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  <div className="shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
@@ -355,7 +357,7 @@ export default function SendItemsPage() {
               <span className="h2-animated-underline relative inline-block">
                 What Can You Send?
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -372,7 +374,7 @@ export default function SendItemsPage() {
             {useCases.map((useCase, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                className="bg-linear-to-br from-gray-50 to-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
               >
                 <div className="text-dark mb-4">{useCase.icon}</div>
                 <h3 className="text-xl font-bold text-dark mb-2">
@@ -410,7 +412,7 @@ export default function SendItemsPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="py-20 bg-linear-to-br from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
@@ -445,7 +447,7 @@ export default function SendItemsPage() {
 
                 {/* Connector Line */}
                 {index < howItWorks.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-primary to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
+                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-linear-to-r from-primary to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
                 )}
               </div>
             ))}
@@ -469,7 +471,7 @@ export default function SendItemsPage() {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="bg-linear-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Profile */}
                 <div className="flex items-center space-x-4 mb-6">
@@ -571,7 +573,7 @@ export default function SendItemsPage() {
               </div>
 
               {/* Prawnbox */}
-              <div className="p-8 bg-gradient-to-br from-primary/5 to-orange-50">
+              <div className="p-8 bg-linear-to-br from-primary/5 to-orange-50">
                 <h3 className="text-xl font-bold text-primary mb-6 text-center">
                   Prawnbox
                 </h3>
@@ -614,7 +616,7 @@ export default function SendItemsPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white relative overflow-hidden">
+      <section className="py-20 bg-linear-to-br from-dark to-darkest text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -637,7 +639,9 @@ export default function SendItemsPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <button
-              onClick={() => router.push("/pre-register")}
+              onClick={() => {
+                window.location.href = "https://app.prawnbox.com/register";
+              }}
               className="group bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-primary-hover transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>Post Your First Delivery</span>

@@ -28,11 +28,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function AboutPage() {
-  const router = useRouter();
-
   // Animation variants (compatible with framer-motion v12)
 
   const fadeInUp = {
@@ -63,7 +60,7 @@ export default function AboutPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
+      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -109,7 +106,7 @@ export default function AboutPage() {
                 <span className="h2-animated-underline relative inline-block">
                   Our Story
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -209,7 +206,7 @@ export default function AboutPage() {
               <span className="h2-animated-underline relative inline-block">
                 Our Mission & Values
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -337,7 +334,7 @@ export default function AboutPage() {
               <span className="h2-animated-underline relative inline-block">
                 Our Growing Reach Across Nigeria
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -359,7 +356,7 @@ export default function AboutPage() {
             variants={staggerContainer}
           >
             {/* Currently Active */}
-            <div className="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-8 text-white shadow-2xl">
+            <div className="bg-linear-to-br from-primary to-primary-hover rounded-2xl p-8 text-white shadow-2xl">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
                   <Zap className="text-white" size={24} />
@@ -379,7 +376,7 @@ export default function AboutPage() {
                   { city: "Ibadan", description: "Oyo State capital" },
                 ].map((location, index) => (
                   <li key={index} className="flex items-start">
-                    <div className="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-white rounded-full mt-2 mr-3 shrink-0"></div>
                     <div>
                       <span className="font-semibold text-lg">
                         {location.city}
@@ -419,7 +416,7 @@ export default function AboutPage() {
                   { city: "Calabar", description: "Cross River State capital" },
                 ].map((location, index) => (
                   <li key={index} className="flex items-start">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 shrink-0"></div>
                     <div>
                       <span className="font-semibold text-dark">
                         {location.city}
@@ -437,7 +434,7 @@ export default function AboutPage() {
       </section>
 
       {/* Roadmap Section - Next Generation Design */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-darker to-gray-900 relative overflow-hidden">
+      <section className="py-20 bg-linear-to-br from-gray-900 via-darker to-gray-900 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full filter blur-3xl animate-pulse"></div>
@@ -462,7 +459,7 @@ export default function AboutPage() {
               <span className="h2-animated-underline relative inline-block">
                 Prawnbox Roadmap
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -480,7 +477,7 @@ export default function AboutPage() {
           {/* Vertical Timeline - All Content Visible */}
           <div className="relative">
             {/* Timeline Vertical Line */}
-            <div className="absolute left-4 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-gray-300 to-gray-200"></div>
+            <div className="absolute left-4 md:left-8 top-0 bottom-0 w-0.5 bg-linear-to-b from-primary via-gray-300 to-gray-200"></div>
 
             {/* Timeline Milestones */}
             <div className="space-y-12 md:space-y-16">
@@ -518,7 +515,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <BarChart3 className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -542,7 +539,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <Rocket className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -566,7 +563,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <CheckCircle className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -590,7 +587,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <Building2 className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -614,7 +611,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <Code className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -638,7 +635,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <Lock className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -661,7 +658,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                           <Gift className="w-5 h-5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -726,9 +723,9 @@ export default function AboutPage() {
                     variants={scaleIn}
                     className="group relative md:col-span-2 lg:col-span-3"
                   >
-                    <div className="relative bg-gradient-to-br from-primary to-primary-hover rounded-xl p-6 md:p-8 border-2 border-white/20 shadow-xl">
+                    <div className="relative bg-linear-to-br from-primary to-primary-hover rounded-xl p-6 md:p-8 border-2 border-white/20 shadow-xl">
                       <div className="flex items-start gap-4 md:gap-6">
-                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white rounded-lg flex items-center justify-center shrink-0">
                           <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-primary" />
                         </div>
                         <div className="flex-1">
@@ -772,7 +769,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <Brain className="w-5 h-5 text-purple-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -796,7 +793,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <Handshake className="w-5 h-5 text-blue-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -820,7 +817,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <Coins className="w-5 h-5 text-green-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -877,7 +874,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <Map className="w-5 h-5 text-yellow-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -901,7 +898,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <GraduationCap className="w-5 h-5 text-indigo-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -925,7 +922,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <ShieldCheck className="w-5 h-5 text-red-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -953,7 +950,7 @@ export default function AboutPage() {
                   <motion.div variants={scaleIn} className="group relative">
                     <div className="relative bg-white rounded-xl p-5 md:p-6 border border-gray-200 hover:border-primary transition-all duration-300 hover:shadow-xl">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="w-10 h-10 bg-teal-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-teal-500/10 rounded-lg flex items-center justify-center shrink-0">
                           <Globe className="w-5 h-5 text-teal-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -985,7 +982,7 @@ export default function AboutPage() {
               >
                 <div className="bg-gray-200 rounded-full h-2 overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-primary to-primary-hover"
+                    className="h-full bg-linear-to-r from-primary to-primary-hover"
                     initial={{ width: "0%" }}
                     whileInView={{ width: "45%" }}
                     viewport={{ once: false }}
@@ -1014,7 +1011,7 @@ export default function AboutPage() {
               <span className="h2-animated-underline relative inline-block">
                 Meet the Team
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -1056,7 +1053,7 @@ export default function AboutPage() {
             ].map((member, index) => (
               <div
                 key={index}
-                className="text-center bg-gray-50 rounded-[0px] hover:shadow-xl transition-all duration-300 group relative pt-[7px] pr-[7px] pb-[20px] pl-[7px]"
+                className="text-center bg-gray-50 rounded-none hover:shadow-xl transition-all duration-300 group relative pt-1.75 pr-1.75 pb-5 pl-1.75"
               >
                 {/* Square Image with slight rounding - positioned at top with 99% width */}
                 <div className="w-[99%] aspect-square rounded-lg mx-auto mb-4 overflow-hidden group-hover:scale-105 transition-transform duration-300 shadow-lg">
@@ -1069,7 +1066,7 @@ export default function AboutPage() {
                       className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-dark to-darker flex items-center justify-center">
+                    <div className="w-full h-full bg-linear-to-br from-dark to-darker flex items-center justify-center">
                       <span className="text-white text-3xl font-bold">
                         {member.initials}
                       </span>
@@ -1102,7 +1099,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary to-primary-hover text-white">
+      <section className="py-20 bg-linear-to-br from-primary to-primary-hover text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Join the Prawnbox Community
@@ -1112,7 +1109,9 @@ export default function AboutPage() {
             here for you.
           </p>
           <button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Get Started Today

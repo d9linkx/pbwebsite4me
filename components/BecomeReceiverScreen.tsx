@@ -18,7 +18,7 @@ export function BecomeReceiverScreen({ onBack, onComplete }: BecomeReceiverScree
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-500 rounded-full opacity-10 blur-3xl"></div>
@@ -51,12 +51,12 @@ export function BecomeReceiverScreen({ onBack, onComplete }: BecomeReceiverScree
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {/* Hero Section */}
         <motion.div 
-          className="bg-gradient-to-r from-yellow-500/20 to-green-500/20 border border-yellow-500/30 rounded-2xl p-6"
+          className="bg-linear-to-r from-yellow-500/20 to-green-500/20 border border-yellow-500/30 rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex items-center space-x-4 mb-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500 to-green-500 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-linear-to-br from-yellow-500 to-green-500 flex items-center justify-center">
               <Package size={32} className="text-white" />
             </div>
             <div>
@@ -84,7 +84,7 @@ export function BecomeReceiverScreen({ onBack, onComplete }: BecomeReceiverScree
               const Icon = benefit.icon;
               return (
                 <div key={index} className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-yellow-400" />
                   </div>
                   <p className="text-gray-300">{benefit.text}</p>
@@ -110,7 +110,7 @@ export function BecomeReceiverScreen({ onBack, onComplete }: BecomeReceiverScree
               { step: '4', text: 'Verify and confirm item receipt' }
             ].map((item) => (
               <div key={item.step} className="flex items-start space-x-3">
-                <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold shrink-0">
                   {item.step}
                 </div>
                 <p className="text-gray-300 pt-1">{item.text}</p>
@@ -158,7 +158,7 @@ export function BecomeReceiverScreen({ onBack, onComplete }: BecomeReceiverScree
         <motion.button
           onClick={handleSubmit}
           disabled={!agreedToTerms}
-          className="w-full bg-gradient-to-r from-yellow-500 to-green-500 hover:from-yellow-600 hover:to-green-600 text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-linear-to-r from-yellow-500 to-green-500 hover:from-yellow-600 hover:to-green-600 text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           whileHover={agreedToTerms ? { scale: 1.02 } : {}}
           whileTap={agreedToTerms ? { scale: 0.98 } : {}}
           initial={{ opacity: 0, y: 20 }}

@@ -48,7 +48,7 @@ export default function HomePage() {
   return (
     <div className="pt-20 min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-dark via-darker to-darkest text-white overflow-hidden min-h-[calc(100vh-5rem)]">
+      <section className="relative bg-linear-to-br from-dark via-darker to-darkest text-white overflow-hidden min-h-[calc(100vh-5rem)]">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -135,7 +135,9 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <motion.button
-                  onClick={() => router.push("/pre-register")}
+                  onClick={() => {
+                    window.location.href = "https://app.prawnbox.com/register";
+                  }}
                   className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center justify-start space-x-2"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.05 }}
@@ -173,12 +175,12 @@ export default function HomePage() {
                 <motion.img
                   src="/woman.jpg"
                   alt="Prawnbox delivery Pal with package - Professional delivery service"
-                  className="w-full h-[500px] object-cover object-center"
+                  className="w-full h-125 object-cover object-center"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 1.05 }}
                   transition={{ duration: 0.4 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}
                 <motion.div
@@ -219,7 +221,7 @@ export default function HomePage() {
               <span className="h2-animated-underline relative inline-block">
                 Why Choose Prawnbox?
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -315,7 +317,7 @@ export default function HomePage() {
               <span className="h2-animated-underline relative inline-block">
                 How to send items
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -404,7 +406,7 @@ export default function HomePage() {
               <span className="h2-animated-underline relative inline-block">
                 Empowering Nigerian Entrepreneurs
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -631,7 +633,7 @@ export default function HomePage() {
                 <span className="h2-animated-underline relative inline-block">
                   A Platform Built on Trust
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -663,7 +665,7 @@ export default function HomePage() {
                     transition={{ duration: 0.2 }}
                   >
                     <item.icon
-                      className="text-primary flex-shrink-0"
+                      className="text-primary shrink-0"
                       size={24}
                     />
                     <span className="text-gray-700">{item.label}</span>
@@ -722,7 +724,7 @@ export default function HomePage() {
                 <span className="h2-animated-underline relative inline-block">
                   Connecting Communities Across Nigeria
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -795,7 +797,7 @@ export default function HomePage() {
                 <span className="h2-animated-underline relative inline-block">
                   Earn Money on Your Own Terms
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -816,7 +818,7 @@ export default function HomePage() {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shrink-0">
                     <Zap className="text-white" size={24} />
                   </div>
                   <div>
@@ -836,7 +838,7 @@ export default function HomePage() {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shrink-0">
                     <TrendingUp className="text-white" size={24} />
                   </div>
                   <div>
@@ -854,7 +856,7 @@ export default function HomePage() {
                   whileTap={{ x: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shrink-0">
                     <Star className="text-white" size={24} />
                   </div>
                   <div>
@@ -920,7 +922,7 @@ export default function HomePage() {
                 <span className="h2-animated-underline relative inline-block">
                   Supporting Nigerian SMEs
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -942,7 +944,7 @@ export default function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-primary flex-shrink-0 mt-1"
+                    className="text-primary shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -957,7 +959,7 @@ export default function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-primary flex-shrink-0 mt-1"
+                    className="text-primary shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -972,7 +974,7 @@ export default function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-primary flex-shrink-0 mt-1"
+                    className="text-primary shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -987,7 +989,7 @@ export default function HomePage() {
                   transition={{ duration: 0.2 }}
                 >
                   <CheckCircle
-                    className="text-primary flex-shrink-0 mt-1"
+                    className="text-primary shrink-0 mt-1"
                     size={20}
                   />
                   <span className="text-gray-700">
@@ -1009,7 +1011,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white">
+      <section className="py-20 bg-linear-to-br from-dark to-darkest text-white">
         <motion.div
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial="hidden"
@@ -1028,7 +1030,9 @@ export default function HomePage() {
             needs.
           </motion.p>
           <motion.button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover shadow-2xl"
             variants={scaleIn}
             whileHover={{

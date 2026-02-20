@@ -182,7 +182,7 @@ export default function BecomeProxyPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-dark via-darker to-darkest text-white overflow-hidden">
+      <section className="relative bg-linear-to-br from-dark via-darker to-darkest text-white overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -195,9 +195,9 @@ export default function BecomeProxyPage() {
           ></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-[0px] pt-[56px] pr-[28px] pb-[112px] pl-[28px]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-[0px] p-[0px] mx-[-20px] my-[0px] mr-[-15px] mb-[0px] ml-[-15px] mt-[-30px] lg:mt-[-13px] lg:ml-[-25px] lg:mr-[-25px]">
-            <div className="pt-[80px] pr-[0px] pb-[0px] pl-[0px]">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-16 lg:pb-32 m-0 pt-14 pr-7 pb-28 pl-7">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-0 p-0 -mx-5 my-0 -mr-3.75 mb-0 -ml-3.75 -mt-7.5 lg:-mt-3.25 lg:-ml-6.25 lg:-mr-6.25">
+            <div className="pt-20 pr-0 pb-0 pl-0">
               <div className="inline-flex items-center space-x-2 bg-primary-light px-4 py-2 rounded-full mb-6">
                 <Store className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-primary">
@@ -234,7 +234,9 @@ export default function BecomeProxyPage() {
               </div>
 
               <button
-                onClick={() => router.push("/pre-register")}
+                onClick={() => {
+                  window.location.href = "https://app.prawnbox.com/register";
+                }}
                 className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center space-x-2"
               >
                 <span>Start Earning Passive Income</span>
@@ -248,16 +250,16 @@ export default function BecomeProxyPage() {
             </div>
 
             {/* Hero Image */}
-            <div className="relative hidden lg:block lg:mt-[80px]">
+            <div className="relative hidden lg:block lg:mt-20">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="/proxy.jpg"
                   alt="Prawnbox Proxy - Shop owner with smartphone"
                   width={600}
                   height={500}
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-125 object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-darkest/60 to-transparent lg:from-darkest/20 lg:to-transparent"></div>
 
                 {/* Floating Card */}
                 <div className="absolute bottom-6 left-6 right-6 bg-white rounded-xl p-4 shadow-xl">
@@ -304,7 +306,7 @@ export default function BecomeProxyPage() {
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  <div className="shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                     {benefit.icon}
                   </div>
                   <div className="flex-1">
@@ -355,7 +357,7 @@ export default function BecomeProxyPage() {
             ))}
           </div>
 
-          <div className="mt-12 bg-gradient-to-r from-primary/10 to-orange-100 rounded-2xl p-8 text-center">
+          <div className="mt-12 bg-linear-to-r from-primary/10 to-orange-100 rounded-2xl p-8 text-center">
             <h3 className="text-2xl font-bold text-dark mb-4">Perfect For:</h3>
             <div className="flex flex-wrap justify-center gap-3">
               {[
@@ -384,7 +386,9 @@ export default function BecomeProxyPage() {
               48 hours
             </p>
             <button
-              onClick={() => router.push("/pre-register")}
+              onClick={() => {
+                window.location.href = "https://app.prawnbox.com/register";
+              }}
               className="bg-dark text-white px-8 py-4 rounded-xl font-semibold hover:bg-darkest transition-all duration-300 shadow-lg hover:shadow-xl inline-flex items-center space-x-2"
             >
               <span>Register Your Location</span>
@@ -395,7 +399,7 @@ export default function BecomeProxyPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      <section className="py-20 bg-linear-to-br from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-dark mb-4">
@@ -430,7 +434,7 @@ export default function BecomeProxyPage() {
 
                 {/* Connector Line */}
                 {index < howItWorks.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-primary to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
+                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-linear-to-r from-primary to-gray-300 transform translate-x-0 -translate-y-1/2"></div>
                 )}
               </div>
             ))}
@@ -454,7 +458,7 @@ export default function BecomeProxyPage() {
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="bg-linear-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Profile */}
                 <div className="flex items-center space-x-4 mb-6">
@@ -523,7 +527,7 @@ export default function BecomeProxyPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white relative overflow-hidden">
+      <section className="py-20 bg-linear-to-br from-dark to-darkest text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div
@@ -546,7 +550,9 @@ export default function BecomeProxyPage() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <button
-              onClick={() => router.push("/pre-register")}
+              onClick={() => {
+                window.location.href = "https://app.prawnbox.com/register";
+              }}
               className="group bg-primary text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-primary-hover transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto"
             >
               <span>Sign Up as a Proxy</span>

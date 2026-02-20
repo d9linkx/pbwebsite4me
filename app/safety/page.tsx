@@ -12,11 +12,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 
 export default function SafetyPage() {
-  const router = useRouter();
-
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
@@ -63,7 +60,7 @@ export default function SafetyPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
+      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div>
@@ -175,7 +172,7 @@ export default function SafetyPage() {
               <span className="h2-animated-underline relative inline-block">
                 How We Verify Pals
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -258,7 +255,7 @@ export default function SafetyPage() {
                 <span className="h2-animated-underline relative inline-block">
                   Safety Tips for Senders
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -278,7 +275,7 @@ export default function SafetyPage() {
                   <li key={index} className="flex items-start space-x-3">
                     <CheckCircle
                       size={20}
-                      className="text-primary flex-shrink-0 mt-1"
+                      className="text-primary shrink-0 mt-1"
                     />
                     <span className="text-gray-700">{tip}</span>
                   </li>
@@ -297,7 +294,7 @@ export default function SafetyPage() {
                 <span className="h2-animated-underline relative inline-block">
                   Safety Tips for Pals
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -317,7 +314,7 @@ export default function SafetyPage() {
                   <li key={index} className="flex items-start space-x-3">
                     <CheckCircle
                       size={20}
-                      className="text-primary flex-shrink-0 mt-1"
+                      className="text-primary shrink-0 mt-1"
                     />
                     <span className="text-gray-700">{tip}</span>
                   </li>
@@ -344,7 +341,7 @@ export default function SafetyPage() {
                 <span className="h2-animated-underline relative inline-block">
                   Prohibited Items
                   <motion.span
-                    className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                    className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                     initial={{ width: "0%", opacity: 0 }}
                     whileInView={{ width: "100%", opacity: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -416,7 +413,7 @@ export default function SafetyPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary to-primary-hover text-white">
+      <section className="py-20 bg-linear-to-br from-primary to-primary-hover text-white">
         <motion.div
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
           initial="hidden"
@@ -434,7 +431,9 @@ export default function SafetyPage() {
             Experience peace of mind with every delivery
           </motion.p>
           <motion.button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
             variants={scaleIn}
             whileHover={{

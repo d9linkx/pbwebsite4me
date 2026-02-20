@@ -262,7 +262,7 @@ export default function HowItWorksPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-dark to-darker text-white py-20">
+      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -318,12 +318,12 @@ export default function HowItWorksPage() {
               >
                 {/* Step Number and Icon */}
                 <motion.div
-                  className="flex-shrink-0 relative"
+                  className="shrink-0 relative"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
                   <motion.div
-                    className="w-32 h-32 rounded-2xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-2xl"
+                    className="w-32 h-32 rounded-2xl bg-linear-to-br from-primary to-primary-hover flex items-center justify-center shadow-2xl"
                     whileHover={{
                       boxShadow: "0 30px 60px -12px rgba(244, 71, 8, 0.5)",
                     }}
@@ -365,7 +365,7 @@ export default function HowItWorksPage() {
               <span className="h2-animated-underline relative inline-block">
                 See It in Action
                 <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                  className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                   initial={{ width: "0%", opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: false, margin: "-50px" }}
@@ -401,7 +401,7 @@ export default function HowItWorksPage() {
             <span className="h2-animated-underline relative inline-block">
               Still Have Questions?
               <motion.span
-                className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-primary to-[#f4470899] rounded-full"
+                className="absolute bottom-0 left-0 h-0.75 bg-linear-to-r from-primary to-[#f4470899] rounded-full"
                 initial={{ width: "0%", opacity: 0 }}
                 whileInView={{ width: "100%", opacity: 1 }}
                 viewport={{ once: false, margin: "-50px" }}
@@ -423,7 +423,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-dark to-darkest text-white">
+      <section className="py-20 bg-linear-to-br from-dark to-darkest text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Ready to Get Started?
@@ -432,7 +432,9 @@ export default function HowItWorksPage() {
             Join thousands of Nigerians using Prawnbox every day
           </p>
           <button
-            onClick={() => router.push("/pre-register")}
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
             className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-2xl"
           >
             Create Free Account

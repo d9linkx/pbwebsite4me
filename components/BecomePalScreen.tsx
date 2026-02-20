@@ -34,7 +34,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark via-darker to-dark flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-dark via-darker to-dark flex flex-col">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500 rounded-full opacity-10 blur-3xl"></div>
@@ -69,12 +69,12 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
       <div className="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
         {/* Hero Section */}
         <motion.div
-          className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-2xl p-6"
+          className="bg-linear-to-r from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex items-center space-x-4 mb-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-linear-to-br from-green-500 to-blue-500 flex items-center justify-center">
               <TrendingUp size={32} className="text-white" />
             </div>
             <div>
@@ -102,7 +102,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
               const Icon = benefit.icon;
               return (
                 <div key={index} className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-green-400" />
                   </div>
                   <p className="text-gray-300">{benefit.text}</p>
@@ -200,7 +200,7 @@ export function BecomePalScreen({ onBack, onComplete }: BecomePalScreenProps) {
         <motion.button
           onClick={handleSubmit}
           disabled={!vehicleType || !availability || !agreedToTerms}
-          className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full bg-linear-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white py-4 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           whileHover={
             vehicleType && availability && agreedToTerms ? { scale: 1.02 } : {}
           }

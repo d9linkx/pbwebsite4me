@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
-import Image from "next/image";
+import Logo from "./Logo";
 
 interface NavItem {
   label: string;
@@ -19,7 +19,7 @@ const MENU_ITEMS: NavItem[] = [
   { label: "Contact", path: "/contact" },
 ];
 
-const GET_STARTED_ITEMS: NavItem[] = [
+const JOIN_ITEMS: NavItem[] = [
   { label: "Become a Pal", path: "/become-pal" },
   { label: "Become a Proxy", path: "/become-proxy" },
   { label: "Send Items", path: "/send-items" },
@@ -28,7 +28,7 @@ const GET_STARTED_ITEMS: NavItem[] = [
 export function WebsiteHeader() {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isGetStartedOpen, setIsGetStartedOpen] = useState(false);
+  const [isJoinOpen, setIsJoinOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -40,7 +40,7 @@ export function WebsiteHeader() {
 
   const closeMenus = () => {
     setIsMobileMenuOpen(false);
-    setIsGetStartedOpen(false);
+    setIsJoinOpen(false);
   };
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export function WebsiteHeader() {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsGetStartedOpen(false);
+        setIsJoinOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -61,34 +61,36 @@ export function WebsiteHeader() {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Logo onNavigate={handleNavigate} />
+
           <DesktopNav
             items={MENU_ITEMS}
             onNavigate={handleNavigate}
             pathname={pathname}
           />
 
-          <div className="hidden lg:flex items-center space-x-4">
+          {/* Desktop CTAs */}
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Secondary CTA: Sign In */}
             <button
-              onClick={() => handleNavigate("/pre-register")}
-              className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
-            >
-              Join the Waitlist
-            </button>
-            {/* <button
-              onClick={() => handleNavigate("/")}
-              className="px-6 py-2.5 text-white hover:text-primary transition-colors duration-200"
+              onClick={() => {
+                window.location.href = "https://app.prawnbox.com/login";
+              }}
+              className="px-4 py-2 text-sm text-gray-300 hover:text-white transition-colors duration-200"
             >
               Sign In
-            </button> */}
-            <GetStartedDropdown
-              items={GET_STARTED_ITEMS}
-              isOpen={isGetStartedOpen}
-              onToggle={() => setIsGetStartedOpen(!isGetStartedOpen)}
+            </button>
+
+            {/* Primary CTA: split-button — label registers directly, chevron reveals role paths */}
+            <JoinDropdown
+              items={JOIN_ITEMS}
+              isOpen={isJoinOpen}
+              onToggle={() => setIsJoinOpen(!isJoinOpen)}
               onNavigate={handleNavigate}
               dropdownRef={dropdownRef}
             />
           </div>
 
+          {/* Mobile menu toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors duration-200"
@@ -102,30 +104,11 @@ export function WebsiteHeader() {
       {isMobileMenuOpen && (
         <MobileMenu
           menuItems={MENU_ITEMS}
-          getStartedItems={GET_STARTED_ITEMS}
+          joinItems={JOIN_ITEMS}
           onNavigate={handleNavigate}
         />
       )}
     </header>
-  );
-}
-
-function Logo({ onNavigate }: { onNavigate: (path: string) => void }) {
-  return (
-    <button
-      onClick={() => onNavigate("/")}
-      className="flex items-center space-x-3 group"
-      aria-label="Go to home"
-    >
-      <Image
-        src="/P-logo.png"
-        alt="Prawnbox Logo"
-        width={100}
-        height={100}
-        className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-200"
-      />
-      <span className="text-2xl font-bold text-white">Prawnbox</span>
-    </button>
   );
 }
 
@@ -144,7 +127,9 @@ function DesktopNav({
         <button
           key={item.path}
           onClick={() => onNavigate(item.path)}
-          className={`px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 ${pathname === item.path ? "bg-white/10 text-white" : ""}`}
+          className={`px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 ${
+            pathname === item.path ? "bg-white/10 text-white" : ""
+          }`}
         >
           {item.label}
         </button>
@@ -153,7 +138,12 @@ function DesktopNav({
   );
 }
 
-function GetStartedDropdown({
+/**
+ * Split-button CTA:
+ * - Left segment → /register (the primary action, no ambiguity)
+ * - Right chevron → dropdown showing role-specific entry points
+ */
+function JoinDropdown({
   items,
   isOpen,
   onToggle,
@@ -167,25 +157,40 @@ function GetStartedDropdown({
   dropdownRef: React.RefObject<HTMLDivElement | null>;
 }) {
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative flex" ref={dropdownRef}>
+      {/* Primary action */}
+      <button
+        onClick={() => {
+          window.location.href = "https://app.prawnbox.com/register";
+        }}
+        className="px-5 py-2.5 bg-primary text-white font-semibold rounded-l-lg hover:bg-primary-hover transition-all duration-200 text-sm"
+      >
+        Get Started
+      </button>
+
+      {/* Role-picker toggle */}
       <button
         onClick={onToggle}
-        className="px-6 py-2.5 text-primary hover:text-primary-hover transition-all duration-200 flex items-center space-x-1 font-semibold"
         aria-expanded={isOpen}
+        aria-label="Choose how to get started"
+        className="px-2.5 py-2.5 bg-primary text-white rounded-r-lg hover:bg-primary-hover transition-all duration-200 border-l border-white/20"
       >
-        <span>Explore More</span>
         <ChevronDown
           size={16}
           className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
+
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-56 bg-darker border border-gray-800 rounded-lg shadow-xl overflow-hidden z-50">
+        <div className="absolute top-full right-0 mt-2 w-52 bg-darker border border-gray-800 rounded-lg shadow-xl overflow-hidden z-50">
+          <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            I want to…
+          </p>
           {items.map((item) => (
             <button
               key={item.path}
               onClick={() => onNavigate(item.path)}
-              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-primary-light transition-all duration-200 border-b border-gray-800 last:border-b-0"
+              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-primary-light transition-all duration-200 border-t border-gray-800"
             >
               {item.label}
             </button>
@@ -198,11 +203,11 @@ function GetStartedDropdown({
 
 function MobileMenu({
   menuItems,
-  getStartedItems,
+  joinItems,
   onNavigate,
 }: {
   menuItems: NavItem[];
-  getStartedItems: NavItem[];
+  joinItems: NavItem[];
   onNavigate: (path: string) => void;
 }) {
   return (
@@ -217,28 +222,44 @@ function MobileMenu({
             {item.label}
           </button>
         ))}
-        <div className="pt-4 border-t border-gray-800 mt-4">
-          <p className="px-4 py-2 text-sm font-semibold text-gray-400">
-            Join the Waitlist
-          </p>
-          {getStartedItems.map((item) => (
-            <button
-              key={item.path}
-              onClick={() => onNavigate(item.path)}
-              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-primary-light rounded-lg transition-all duration-200"
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        {/* <div className="pt-4 space-y-2">
+
+        <div className="pt-4 border-t border-gray-800 mt-4 space-y-3">
+          {/* Primary CTA — full-width, impossible to miss */}
           <button
-            onClick={() => onNavigate("/")}
-            className="block w-full px-4 py-3 text-center text-white border border-gray-700 rounded-lg hover:bg-white/10 transition-all duration-200"
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/register";
+            }}
+            className="block w-full px-4 py-3 text-center text-white bg-primary font-semibold rounded-lg hover:bg-primary-hover transition-all duration-200"
+          >
+            Get Started
+          </button>
+
+          {/* Role-specific paths — subordinate, clearly labelled */}
+          <div className="space-y-1">
+            <p className="px-4 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              I want to…
+            </p>
+            {joinItems.map((item) => (
+              <button
+                key={item.path}
+                onClick={() => onNavigate(item.path)}
+                className="block w-full text-left px-4 py-2.5 text-gray-400 hover:text-white hover:bg-primary-light rounded-lg transition-all duration-200 text-sm"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Secondary CTA: Sign In */}
+          <button
+            onClick={() => {
+              window.location.href = "https://app.prawnbox.com/login";
+            }}
+            className="block w-full px-4 py-3 text-center text-gray-300 border border-gray-700 rounded-lg hover:text-white hover:bg-white/10 transition-all duration-200"
           >
             Sign In
           </button>
-        </div> */}
+        </div>
       </nav>
     </div>
   );
