@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Hero from "@/components/shared/hero";
 
 export default function HowItWorksPage() {
   const [activeTab, setActiveTab] = useState<
@@ -262,19 +263,11 @@ export default function HowItWorksPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              How Prawnbox Works
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Simple, transparent, and secure. Choose your role to see how easy
-              it is to get started.
-            </p>
-          </div>
-        </div>
-      </section>
+      <Hero
+        title="How Prawnbox Works"
+        description="Simple, transparent, and secure. Choose your role to see how easy
+              it is to get started."
+      />
 
       {/* Tab Navigation */}
       <section className="bg-white border-b border-gray-200 sticky top-20 z-40">

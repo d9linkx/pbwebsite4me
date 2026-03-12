@@ -14,6 +14,7 @@ import {
   Linkedin,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Hero from "@/components/shared/hero";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -43,18 +44,11 @@ export default function ContactPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="bg-linear-to-br from-dark to-darker text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Get in Touch
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              We would love to hear from you. Our team is always ready to help.
-            </p>
-          </div>
-        </div>
-      </section>
+      <Hero
+        title="Get in Touch"
+        description="We would love to hear from you. Our team is always ready to help."
+        Icon={Phone}
+      />
 
       {/* Contact Content */}
       <section className="py-20 bg-white">

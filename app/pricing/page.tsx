@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Hero from "@/components/shared/hero";
 
 export default function PricingPage() {
   const [palBid, setPalBid] = useState(3000);
@@ -55,31 +56,11 @@ export default function PricingPage() {
   return (
     <div className="pt-20">
       {/* Hero Section with Background Image */}
-      <section className="relative bg-linear-to-br from-dark to-darker text-white py-20 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 opacity-20">
-          <Image
-            src="/rider.jpg"
-            alt="Nigerian delivery rider"
-            width={1000}
-            height={500}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-linear-to-r from-dark via-dark/80 to-darker"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Transparent Pricing
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              No hidden fees. No surprises. Just fair, transparent pricing for
-              everyone in Nigeria.
-            </p>
-          </div>
-        </div>
-      </section>
+      <Hero
+        title="Transparent Pricing"
+        description="No hidden fees. No surprises. Just fair, transparent pricing for
+              everyone in Nigeria."
+      />
 
       {/* Pricing Calculator */}
       <section className="py-20 bg-white">
