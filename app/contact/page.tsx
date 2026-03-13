@@ -7,7 +7,6 @@ import {
   Send,
   MessageCircle,
   Clock,
-  ArrowRight,
   Facebook,
   X,
   Instagram,
@@ -15,6 +14,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Hero from "@/components/shared/hero";
+import CTAs from "@/components/shared/cta";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -316,25 +316,7 @@ export default function ContactPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-linear-to-br from-dark to-darkest text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Ready to Get Started?
-          </h2>
-          <p className="text-xl mb-8">
-            Join Prawnbox today and experience the future of delivery in Nigeria
-          </p>
-          <button
-            onClick={() => {
-              window.location.href = "https://app.prawnbox.com/register";
-            }}
-            className="px-8 py-4 bg-primary text-white text-lg font-semibold rounded-xl hover:bg-primary-hover transform hover:scale-105 transition-all duration-200 shadow-2xl"
-          >
-            Create Account
-            <ArrowRight className="inline ml-2" size={20} />
-          </button>
-        </div>
-      </section>
+      <CTAs description="Join Prawnbox today and experience the future of delivery in Nigeria" />
     </div>
   );
 }

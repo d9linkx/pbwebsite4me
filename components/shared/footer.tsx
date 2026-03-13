@@ -11,7 +11,7 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
-import Logo from "./Logo";
+import Logo from "./logo";
 
 interface NavItem {
   label: string;

@@ -221,14 +221,10 @@ export default function PrivacyPage() {
             </p>
             <div className="bg-gray-50 p-6 rounded-xl">
               <p className="text-gray-700">
-                <strong>Email:</strong> privacy@prawnbox.ng
+                <strong>Email:</strong> info@prawnbox.com
               </p>
               <p className="text-gray-700">
-                <strong>Phone:</strong> +234 800 PRAWNBOX
-              </p>
-              <p className="text-gray-700">
-                <strong>Address:</strong> 123 Admiralty Way, Lekki Phase 1,
-                Lagos, Nigeria
+                <strong>Phone:</strong> +234 906 870 9992
               </p>
             </div>
 

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { WebsiteHeader } from "@/components/WebsiteHeader";
-import { WebsiteFooter } from "@/components/WebsiteFooter";
+import { WebsiteHeader } from "@/components/shared/header";
+import { WebsiteFooter } from "@/components/shared/footer";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",

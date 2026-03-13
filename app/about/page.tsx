@@ -5,7 +5,7 @@ import Stats from "@/components/about/stats";
 import OurReach from "@/components/about/our-reach";
 import RoadMap from "@/components/about/roadmap";
 import Team from "@/components/about/team";
-import CTA from "@/components/about/cta";
+import CTAs from "@/components/shared/cta";
 
 export default function AboutPage() {
   return (
@@ -62,7 +62,12 @@ export default function AboutPage() {
       <Team />
 
       {/* CTA Section */}
-      <CTA />
+      <CTAs
+        title="Join the Prawnbox Community"
+        description="Whether you want to send packages or earn money as a Pal, we are here
+          for you."
+        accent="primary"
+      />
     </div>
   );
 }

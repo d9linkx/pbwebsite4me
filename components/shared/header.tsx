@@ -1,8 +1,11 @@
 "use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
-import Logo from "./Logo";
+import Logo from "./logo";
+import Link from "next/link";
+import { cn } from "../ui/utils";
 
 interface NavItem {
   label: string;
@@ -85,8 +88,8 @@ export function WebsiteHeader() {
               items={JOIN_ITEMS}
               isOpen={isJoinOpen}
               onToggle={() => setIsJoinOpen(!isJoinOpen)}
-              onNavigate={handleNavigate}
               dropdownRef={dropdownRef}
+              pathname={pathname}
             />
           </div>
 
@@ -106,6 +109,7 @@ export function WebsiteHeader() {
           menuItems={MENU_ITEMS}
           joinItems={JOIN_ITEMS}
           onNavigate={handleNavigate}
+          pathname={pathname}
         />
       )}
     </header>
@@ -122,39 +126,35 @@ function DesktopNav({
   pathname: string;
 }) {
   return (
-    <nav className="hidden lg:flex items-center space-x-1">
+    <nav className="hidden lg:flex items-center space-x-6">
       {items.map((item) => (
-        <button
-          key={item.path}
-          onClick={() => onNavigate(item.path)}
-          className={`px-4 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 ${
-            pathname === item.path ? "bg-white/10 text-white" : ""
-          }`}
+        <Link
+          key={item.label}
+          href={item.path}
+          className={cn(
+            "hover:text-primary",
+            pathname === item.path && "text-primary",
+          )}
         >
           {item.label}
-        </button>
+        </Link>
       ))}
     </nav>
   );
 }
 
-/**
- * Split-button CTA:
- * - Left segment → /register (the primary action, no ambiguity)
- * - Right chevron → dropdown showing role-specific entry points
- */
 function JoinDropdown({
   items,
   isOpen,
   onToggle,
-  onNavigate,
   dropdownRef,
+  pathname,
 }: {
   items: NavItem[];
   isOpen: boolean;
   onToggle: () => void;
-  onNavigate: (path: string) => void;
   dropdownRef: React.RefObject<HTMLDivElement | null>;
+  pathname: string;
 }) {
   return (
     <div className="relative flex" ref={dropdownRef}>
@@ -187,13 +187,15 @@ function JoinDropdown({
             I want to…
           </p>
           {items.map((item) => (
-            <button
-              key={item.path}
-              onClick={() => onNavigate(item.path)}
-              className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-primary-light transition-all duration-200 border-t border-gray-800"
+            <Link
+              href={item.path}
+              className={cn(
+                "block px-4 py-3 hover:bg-primary border-t border-gray-800",
+                pathname === item.path && "bg-primary",
+              )}
             >
               {item.label}
-            </button>
+            </Link>
           ))}
         </div>
       )}
@@ -205,26 +207,29 @@ function MobileMenu({
   menuItems,
   joinItems,
   onNavigate,
+  pathname,
 }: {
   menuItems: NavItem[];
   joinItems: NavItem[];
   onNavigate: (path: string) => void;
+  pathname: string;
 }) {
   return (
-    <div className="lg:hidden bg-darker border-t border-gray-800 w-full">
+    <div className="lg:hidden bg-darker border-t border-gray-800 w-full overflow-scroll max-h-screen pb-16">
       <nav className="px-4 py-6 space-y-2 max-w-7xl mx-auto">
         {menuItems.map((item) => (
-          <button
-            key={item.path}
-            onClick={() => onNavigate(item.path)}
-            className="block w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+          <Link
+            href={item.path}
+            className={cn(
+              "block px-4 py-3 hover:text-primary",
+              pathname === item.path && "text-primary",
+            )}
           >
             {item.label}
-          </button>
+          </Link>
         ))}
 
         <div className="pt-4 border-t border-gray-800 mt-4 space-y-3">
-          {/* Primary CTA — full-width, impossible to miss */}
           <button
             onClick={() => {
               window.location.href = "https://app.prawnbox.com/register";
@@ -234,23 +239,23 @@ function MobileMenu({
             Get Started
           </button>
 
-          {/* Role-specific paths — subordinate, clearly labelled */}
           <div className="space-y-1">
             <p className="px-4 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
               I want to…
             </p>
             {joinItems.map((item) => (
-              <button
-                key={item.path}
-                onClick={() => onNavigate(item.path)}
-                className="block w-full text-left px-4 py-2.5 text-gray-400 hover:text-white hover:bg-primary-light rounded-lg transition-all duration-200 text-sm"
+              <Link
+                href={item.path}
+                className={cn(
+                  "block px-4 py-2.5 text-gray-400 hover:text-white hover:bg-primary-light rounded-lg transition-all duration-200 text-sm",
+                  pathname === item.path && "text-primary",
+                )}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
           </div>
 
-          {/* Secondary CTA: Sign In */}
           <button
             onClick={() => {
               window.location.href = "https://app.prawnbox.com/login";

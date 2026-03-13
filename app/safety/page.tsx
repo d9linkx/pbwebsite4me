@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Hero from "@/components/shared/hero";
+import CTAs from "@/components/shared/cta";
 
 export default function SafetyPage() {
   // Animation variants
@@ -404,40 +405,12 @@ export default function SafetyPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-linear-to-br from-primary to-primary-hover text-white">
-        <motion.div
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          <motion.h2
-            className="text-3xl md:text-5xl font-bold mb-6"
-            variants={fadeInUp}
-          >
-            Safe, Secure, Reliable
-          </motion.h2>
-          <motion.p className="text-xl mb-8" variants={fadeInUp}>
-            Experience peace of mind with every delivery
-          </motion.p>
-          <motion.button
-            onClick={() => {
-              window.location.href = "https://app.prawnbox.com/register";
-            }}
-            className="px-8 py-4 bg-white text-primary text-lg font-semibold rounded-xl hover:bg-gray-100 shadow-2xl"
-            variants={scaleIn}
-            whileHover={{
-              scale: 1.1,
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get Started Safely
-            <ArrowRight className="inline ml-2" size={20} />
-          </motion.button>
-        </motion.div>
-      </section>
+      <CTAs
+        title="Safe, Secure, Reliable"
+        description="Experience peace of mind with every delivery"
+        buttonText="Get Started Safely"
+        accent="primary"
+      />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import Trust from "@/components/home/trust";
 import CommunityImpact from "@/components/home/commnunity-impact";
 import FlexibleEarning from "@/components/home/flexible-earning";
 import SupportingSMEs from "@/components/home/supporting-smes";
-import CTAs from "@/components/home/cta";
+import CTAs from "@/components/shared/cta";
 
 export default function HomePage() {
   return (
