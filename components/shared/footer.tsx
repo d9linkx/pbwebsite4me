@@ -56,7 +56,7 @@ export function WebsiteFooter() {
           <div>
             <Logo onNavigate={handleNavigate} />
             <p className="text-sm text-gray-400 mb-4">
-              A simple and reliable way to complete trades and get items across Nigeria without complications.
+              A simple and reliable way to complete trades and get items across Nigeria without confusions or complications.
             </p>
             {/* Social Links */}
             <div className="flex space-x-3">
