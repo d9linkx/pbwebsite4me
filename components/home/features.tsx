@@ -9,39 +9,39 @@ import { Shield, Zap, Package, Users, TrendingUp, Star } from "lucide-react";
 const FEATURES = [
   {
     icon: Zap,
-    title: "Lightning Fast",
+    title: "Fast Execution",
     description:
-      "Get your items delivered in hours, not days. Our network of Pals ensures quick pickups and deliveries across Nigeria.",
+      "Once a trade is created, a verified Pal (our Trade Partner) steps in to carry it through. Which means most items reach the right person within minutes instead of days.",
   },
   {
     icon: Shield,
-    title: "Secure & Safe",
+    title: "Safe Process",
     description:
-      "Escrow payments, verified Pals, and insurance protection. Your packages are always safe with us.",
+      "Every trade is set up from the beginning with clear steps. Everyone involved knows their role, and the process is designed to run smoothly without confusion or uncertainty.",
   },
   {
     icon: Package,
-    title: "Track Everything",
+    title: "Full Visibility",
     description:
-      "Real-time tracking, live updates, and direct chat with your Pal. Always know where your package is.",
+      "You don't need to keep calling or checking up on both the Pal and the Ender (the prearranged buyer at the end of the trade). You can see updates, so you always know what is happening.",
   },
   {
     icon: Users,
-    title: "Trusted Community",
+    title: "A Trusted Network",
     description:
-      "Join thousands of verified Pals and satisfied customers. Build your reputation and earn trust.",
+      "Everyone (you the Supplier, the Pal, the Ender, and the Proxy) on Prawnbox is verified and rated based on past activity. You work with people who have already built trust on the platform.",
   },
   {
     icon: TrendingUp,
-    title: "Best Prices",
+    title: "Transparent Pricing",
     description:
-      "Competitive bidding system ensures you always get the best rates. No hidden fees, transparent pricing.",
+      "Before you list your item, you see exactly what it will cost and can accept the best bid from our trusted Pals. There are no hidden charges or unexpected changes along the way.",
   },
   {
     icon: Star,
-    title: "Quality Service",
+    title: "Reliable Experience",
     description:
-      "Rated 4.8/5 by our users. We are committed to providing excellent service every single time.",
+      "Rated 4.8/5 by our users. Thousands of users use Prawnbox because the system is simple and it works consistently. We are committed to providing excellent service every single time.",
   },
 ] as const;
 
@@ -60,8 +60,7 @@ export default function Features() {
             <AnimatedHeading>Why Choose Prawnbox?</AnimatedHeading>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Experience the future of delivery with our innovative platform
-            designed for you.
+            We’ve changed how inventory moves from one person to another.
           </p>
         </motion.div>
 

@@ -6,9 +6,9 @@ import { ArrowRight, Package } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const STATS = [
-  { value: "10k+", label: "Verified Pals" },
-  { value: "50k+", label: "Deliveries" },
-  { value: "4.8★", label: "Avg. Rating" },
+  { value: "1k+", label: "Verified Partners (Pals)" },
+  { value: "100+", label: "Completed Trades" },
+  { value: "4.8★", label: "Average Reviews Rating" },
 ] as const;
 
 export default function Hero() {
@@ -44,7 +44,7 @@ export default function Hero() {
             >
               <Package className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                Trusted by 50,000+ Users
+                Trusted by 3,000+ Users
               </span>
             </motion.div>
 
@@ -52,17 +52,41 @@ export default function Hero() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
               variants={Animations.fadeInUp}
             >
-              Send <span className="text-primary">Anything</span>, Anywhere in
-              Nigeria
+              Move Items Across Nigeria
             </motion.h1>
 
             <motion.p
               className="text-xl text-gray-300 mb-8 leading-relaxed"
               variants={Animations.fadeInUp}
             >
-              Enjoy 7x faster, safer, and 5x more affordable peer-to-peer
-              delivery services within Nigeria &amp; beyond.
+              Turn any item into a clear, structured trade. List your item on Prawnbox, someone steps in to execute it properly, and the item gets to the right person without stress.
             </motion.p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <motion.button
+                onClick={() => {
+                  window.location.href = "https://app.prawnbox.com/register";
+                }}
+                className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl inline-flex items-center justify-start space-x-2"
+                variants={Animations.fadeInUp}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>List your item</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+
+              <motion.button
+                onClick={() => router.push("/send-items")}
+                className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-lg inline-flex items-center justify-start space-x-2"
+                variants={Animations.fadeInUp}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>See how it works</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            </div>
 
             {/* Quick Stats */}
             <motion.div
@@ -83,39 +107,6 @@ export default function Hero() {
                 </motion.div>
               ))}
             </motion.div>
-
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <motion.button
-                onClick={() => {
-                  window.location.href = "https://app.prawnbox.com/register";
-                }}
-                className="group bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-hover transition-all duration-300 shadow-lg hover:shadow-2xl inline-flex items-center justify-start space-x-2"
-                variants={Animations.fadeInUp}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Send an item today</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-
-              <motion.button
-                onClick={() => router.push("/send-items")}
-                className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 shadow-lg inline-flex items-center justify-start space-x-2"
-                variants={Animations.fadeInUp}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>See how it works</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </div>
-
-            <motion.p
-              className="text-sm text-gray-400"
-              variants={Animations.fadeInUp}
-            >
-              ✓ No hidden fees ✓ 24/7 support ✓ Instant matching
-            </motion.p>
           </motion.div>
 
           {/* Hero Image — eager load since it's above the fold */}
@@ -148,7 +139,7 @@ export default function Hero() {
                     <div className="text-sm text-gray-600 mb-1">
                       Active Deliveries Today
                     </div>
-                    <div className="text-2xl font-bold text-dark">2,847</div>
+                    <div className="text-2xl font-bold text-dark">2,847 </div>
                   </div>
                   <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
                     +28%
