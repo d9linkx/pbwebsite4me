@@ -8,10 +8,10 @@ import { CheckCircle, Shield, Package, Star } from "lucide-react";
 import Image from "next/image";
 
 const TRUST_ITEMS = [
-  { label: "Verified ID & Background Checks", icon: CheckCircle },
-  { label: "Secure Escrow Payments", icon: Shield },
-  { label: "Real-time GPS Tracking", icon: Package },
-  { label: "Rated & Reviewed Community", icon: Star },
+  { label: "Verified identity checks for all users", icon: CheckCircle },
+  { label: "Structured payment flow within the platform", icon: Shield },
+  { label: "Live updates as trades progress", icon: Package },
+  { label: "A rating system that builds accountability", icon: Star },
 ] as const;
 
 export default function Trust() {
@@ -29,9 +29,7 @@ export default function Trust() {
               <AnimatedHeading>A Platform Built on Trust</AnimatedHeading>
             </h2>
             <p className="text-lg text-gray-600 mb-6">
-              Every Pal on Prawnbox goes through a rigorous verification
-              process. We prioritize safety, security, and reliability so you
-              can have peace of mind with every delivery.
+              Prawnbox is designed so that every trade runs through a structured and dependable process. This reduces confusion and increases the chances of successful completion every time.
             </p>
             <motion.div
               className="space-y-4"

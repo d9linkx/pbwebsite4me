@@ -39,14 +39,14 @@ export default function CTAs({
           className="text-3xl md:text-5xl font-bold mb-6"
           variants={Animations.fadeInUp}
         >
-          {title || "Ready to Start Delivering?"}
+          {title || "Ready to get started?"}
         </motion.h2>
         <motion.p
           className="text-xl text-gray-300 mb-8"
           variants={Animations.fadeInUp}
         >
           {description ||
-            "Join thousands of Nigerians who trust Prawnbox for their delivery needs."}
+            "Join thousands of Nigerians who already use Prawnbox to complete trades quickly and without stress."}
         </motion.p>
         <motion.button
           onClick={() => {

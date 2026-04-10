@@ -11,9 +11,9 @@ const DATA = [
   {
     src: "/city.jpeg",
     alt: "Nigerian entrepreneur",
-    title: "Built for all senders",
-    body: "Send inventory, products, and documents across Nigeria with ease. Focus on growing your business while we handle deliveries.",
-    cta: "Start Sending",
+    title: "Built for your needs",
+    body: "Whether personal items or business goods, Prawnbox gives you a simple and more secure way to get it across via a structured trade.",
+    cta: "Start a trade",
     href: "/send-items",
     variants: Animations.fadeInLeft,
     disabled: false,
@@ -21,12 +21,11 @@ const DATA = [
   {
     src: "/professional.jpeg",
     alt: "Delivery professional",
-    title: "Earn as a Delivery Pal",
+    title: "Earn from your trades",
     body: (
       <>
-        Join our network of verified Pals{" "}
-        <span className="font-bold">with or without a vehicle</span>. Set your
-        own rates, choose your schedule, and build your reputation.
+        Get verified and{" "}
+        <span className="font-bold"> bid on trades</span>, carry them through, and earn from completing them. Choose how you move, and when you'll be active.
       </>
     ),
     cta: "Become a Pal",
@@ -37,8 +36,8 @@ const DATA = [
   {
     src: "/tamper-proof-tape.png",
     alt: "Tamper-proof security tape",
-    title: "Tamper-Proof Security Tapes",
-    body: "Enhanced security for your deliveries with our exclusive tamper-proof tapes. Ensure package integrity from pickup to delivery.",
+    title: "Tamper-roof tapes",
+    body: "Additional tools to help keep items protected and intact throughout the process.",
     cta: "Coming Soon",
     href: null,
     badge: "Coming Soon",
@@ -48,8 +47,8 @@ const DATA = [
   {
     src: "/woman-in-a-shop.png",
     alt: "Nigerian woman shop owner",
-    title: "Earn as a Proxy Receiver",
-    body: "Turn your business location into a secure package hub. Earn storage fees by safely holding deliveries for pickup when receivers are unavailable.",
+    title: "Earn as a Proxy",
+    body: "If you have a shop or a safe space, you can serve as a reliable handover point and earn when trades are completed through your location.",
     cta: "Become a Proxy",
     href: "/become-proxy",
     variants: Animations.fadeInRight,
@@ -71,11 +70,10 @@ export default function Empowerment() {
           variants={Animations.fadeInUp}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
-            <AnimatedHeading>Empowering Nigerian Entrepreneurs</AnimatedHeading>
+            <AnimatedHeading>Empowering Nigerians</AnimatedHeading>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            From small business owners to delivery professionals, Prawnbox is
-            transforming how Nigerians work and earn.
+            Anyone can supply and list an item, become a Pal, or even a Proxy, creating new income opportunities and fostering economic growth across Nigeria.
           </p>
         </motion.div>
 

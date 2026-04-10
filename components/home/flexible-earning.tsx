@@ -10,13 +10,13 @@ import Image from "next/image";
 const DATA = [
   {
     icon: Zap,
-    title: "Set Your Own Rates",
-    body: "Bid on deliveries that match your schedule and price expectations.",
+    title: "Set your own rates",
+    body: "Choose trades that match your availability and your preferred level of activity.",
   },
   {
     icon: TrendingUp,
-    title: "Weekly Payouts",
-    body: "Get paid weekly for completed deliveries with instant wallet withdrawals.",
+    title: "Constant payouts",
+    body: "Earnings are processed after trades are completed, with simple withdrawal options.",
   },
   {
     icon: Star,
@@ -37,12 +37,10 @@ export default function FlexibleEarning() {
             variants={Animations.fadeInLeft}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
-              <AnimatedHeading>Earn Money on Your Own Terms</AnimatedHeading>
+              <AnimatedHeading>Earn as a Pal on every executed trade</AnimatedHeading>
             </h2>
             <p className="text-lg text-gray-600 mb-6">
-              Whether you&apos;re a motorcycle rider, car owner, passenger, or
-              have spare time for deliveries, Prawnbox lets you earn income
-              flexibly. Work when you want, where you want.
+              Prawnbox allows you to earn by stepping into trades and carrying them through successfully. You are not locked into fixed schedules, and you decide how active you want to be.
             </p>
             <motion.div
               className="space-y-6"

@@ -9,21 +9,21 @@ import { ArrowRight } from "lucide-react";
 const HOW_STEPS = [
   {
     step: "01",
-    title: "Post Your Delivery",
+    title: "List your item",
     description:
-      "Tell us what you need delivered, where it is going, and when you need it. Get instant bids from verified Pals.",
+      "Add details of the item, include who it is meant for, and choose when you want it completed. At this point, you are simply setting up a trade that needs to be carried out.",
   },
   {
     step: "02",
-    title: "Choose Your Pal",
+    title: "We match the trade",
     description:
-      "Review bids, check ratings, and select the best Pal for your delivery. Secure payment held in escrow.",
+      "Choose the bid that suits you and we'll automatically assign the verified Pal to step into the trade and complete it. You can also chat in-app with your Pal to coordinate the trade.",
   },
   {
     step: "03",
-    title: "Track & Receive",
+    title: "Pal completes the trade",
     description:
-      "Track your delivery in real-time, chat with your Pal, and confirm receipt. Payment released on delivery.",
+      "The item is exchanged as planned, and it reaches the Ender (the final buyer). You receive updates along the way, so you stay informed until everything is done.",
   },
 ] as const;
 
@@ -39,9 +39,9 @@ export default function HowItWorks() {
           variants={Animations.fadeInUp}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
-            <AnimatedHeading>How to send items</AnimatedHeading>
+            <AnimatedHeading>How to start a trade</AnimatedHeading>
           </h2>
-          <p className="text-xl text-gray-600">Get started in 3 simple steps</p>
+          <p className="text-xl text-gray-600">Complete a trade in 3 simple steps</p>
         </motion.div>
 
         <motion.div

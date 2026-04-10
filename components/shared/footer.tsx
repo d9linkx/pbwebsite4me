@@ -56,8 +56,7 @@ export function WebsiteFooter() {
           <div>
             <Logo onNavigate={handleNavigate} />
             <p className="text-sm text-gray-400 mb-4">
-              Nigeria&apos;s trusted peer-to-peer delivery platform. Fast,
-              secure, and reliable delivery services at your fingertips.
+              A simple and reliable way to complete trades and get items across Nigeria without complications.
             </p>
             {/* Social Links */}
             <div className="flex space-x-3">

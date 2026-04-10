@@ -30,7 +30,7 @@ export default function FAQsPage() {
         id: "g1",
         question: "What is Prawnbox?",
         answer:
-          "Prawnbox is Nigeria's peer-to-peer delivery platform that connects people who need to send packages with verified Pals (delivery partners) who can deliver them. Think of it as Uber, but for package delivery.",
+          "Prawnbox is a simple and reliable way to complete trades and get items across Nigeria without complications.",
       },
       {
         id: "g2",

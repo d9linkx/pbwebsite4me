@@ -10,9 +10,9 @@ import Image from "next/image";
 
 const SME_BENEFITS = [
   "Affordable rates for businesses of all sizes",
-  "Same-day and scheduled delivery options",
-  "Business accounts with volume discounts",
-  "Integration with online stores and marketplaces",
+  "Options for same-day or scheduled completion",
+  "Business-friendly pricing structure",
+  "Easy to fit into your current sales process",
 ] as const;
 
 export default function SupportingSMEs() {
@@ -46,12 +46,10 @@ export default function SupportingSMEs() {
             variants={Animations.fadeInRight}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6">
-              <AnimatedHeading>Supporting Nigerian SMEs</AnimatedHeading>
+              <AnimatedHeading>Supporting SMEs</AnimatedHeading>
             </h2>
             <p className="text-lg text-gray-600 mb-6">
-              Small and medium businesses are the backbone of Nigeria&apos;s
-              economy. Prawnbox provides affordable, reliable delivery solutions
-              that help local businesses compete and grow.
+              For businesses, Prawnbox offers a practical way to ensure items reach customers or partners without unnecessary delays or complications.
             </p>
             <motion.ul
               className="space-y-4 mb-8"

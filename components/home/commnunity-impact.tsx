@@ -40,9 +40,7 @@ export default function CommunityImpact() {
               </AnimatedHeading>
             </h2>
             <p className="text-lg text-gray-600 mb-6">
-              From Lagos to Abuja, Port Harcourt to Kano, Prawnbox is bringing
-              people together through reliable delivery services. We&apos;re not
-              just moving packages — we&apos;re building connections.
+              From Lagos to Abuja, Port Harcourt to Kano, Prawnbox connects people across cities in Nigeria, helping them complete trades smoothly and reliably.
             </p>
             <motion.div
               className="grid grid-cols-2 gap-6"
